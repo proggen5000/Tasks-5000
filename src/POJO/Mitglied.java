@@ -10,9 +10,7 @@ public class Mitglied {
 	int reg_datum;
 	
 	//Kosntruktor
-	public Mitglied(int id){
-		// Daten aus DB holen und Objekt erstellen
-		this.id = id;
+	public Mitglied(){
 	}
 	
 	

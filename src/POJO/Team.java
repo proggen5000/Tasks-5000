@@ -8,9 +8,7 @@ public class Team {
 	int gruppenfuehrerID;
 	
 	//Kosntruktor
-	public Team(int id){
-		this.id = id;
-		// Daten aus Datenbank holen und Objekt erstellen
+	public Team(){
 	}
 
 	//Getters & Setters
