@@ -1,11 +1,11 @@
 package POJO;
 
 public class Team {
-	int id;
-	String name;
-	int gruendungsdatum;
-	String slogan;
-	int gruppenfuehrerID;
+	private int id;
+	private String name;
+	private int gruendungsdatum;
+	private String slogan;
+	private int gruppenfuehrerID;
 	
 	//Kosntruktor
 	public Team(){

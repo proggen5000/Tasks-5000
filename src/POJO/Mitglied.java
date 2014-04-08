@@ -1,13 +1,13 @@
 package POJO;
 
 public class Mitglied {
-	int id;
-	String username;
-	String email;
-	String password;
-	String vorname;
-	String nachname;
-	int reg_datum;
+	private int id;
+	private String username;
+	private String email;
+	private String password;
+	private String vorname;
+	private String nachname;
+	private int reg_datum;
 	
 	//Kosntruktor
 	public Mitglied(){
