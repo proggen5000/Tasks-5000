@@ -1,23 +1,11 @@
 package entities;
 import java.io.Serializable;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
-@Entity
-@Table(name="AufgabenGruppen")
 public class Aufgabengruppe implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue
 	private long id;
-	
-	@NotNull
-	@Column(name="Name")
 	private String name;
-	
-	@Column(name="Beschreibung")
 	private String beschreibung;
 
 	//Getters & Setters

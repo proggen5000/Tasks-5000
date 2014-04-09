@@ -1,42 +1,14 @@
 package entities;
 import java.io.Serializable;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Email;
-
-@Entity
-@Table(name="Mitglieder")
 public class Mitglied implements Serializable{
 	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue
-	@Column(name="MitgliedID")
 	private long id;
-	
-	@NotNull
-	@Column(name="Username")
 	private String username;
-	
-	@NotNull
-	@Email
-	@Column(name="Email")
 	private String email;
-	
-	@NotNull
-	@Column(name="PW-Hash")
 	private String password;
-	
-	@NotNull
-	@Column(name="Vorname")
 	private String vorname;
-	
-	@Column(name="Nachname")
 	private String nachname;
-	
-	@Column(name="Registrierungsdatum")
 	private long reg_datum;
 		
 	//Getter & Setter

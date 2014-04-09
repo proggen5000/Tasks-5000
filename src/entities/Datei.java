@@ -1,42 +1,15 @@
 package entities;
 import java.io.Serializable;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
-@Entity
-@Table(name="Dateien")
 public class Datei implements Serializable {
 	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue
-	@Column(name="DateID")
 	private long id;
-	
-	@NotNull
-	@Column(name="Titel")
 	private String titel;
-	
-	@Column(name="Beschreibung")
 	private String beschreibung;
-	
-	@NotNull
-	@Column(name="Pfad")
-	private String pfad;
-	
-	@NotNull
-	@Column(name="Version")
 	private String version;
-	
-	@OneToOne
-	@JoinColumn(name="TeamID")
 	private Team team;
-	
-	@NotNull
-	@OneToOne
-	@JoinColumn(name="Ersteller")
 	private Mitglied ersteller;
+	private String pfad;
 
 	//Getters & Setters
 	public long getId() {

@@ -1,29 +1,13 @@
 package entities;
 import java.io.Serializable;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
 public class Team implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue
-	@Column(name="TeamID")
 	private long id;
-	
-	@NotNull
-	@Column(name="Teamname")
 	private String name;
-	
-	@Column(name="Gr??ndungsdatum")
 	private long gruendungsdatum;
-	
-	@Column(name="Slogan")
 	private String slogan;
-	
-	@OneToOne
-	@JoinColumn(name="Gruppenf??hrerID")
 	private Mitglied gruppenfuehrer;
 
 	//Getters & Setters
