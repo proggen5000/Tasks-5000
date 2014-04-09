@@ -1,5 +1,5 @@
-<%@ include file="header.jsp" %>
-<%@ include file="menu.jsp" %>
+<%@ include file="jsp/header.jsp" %>
+<%@ include file="jsp/menu.jsp" %>
 		  		
 		  		<h1>Meine Teams</h1>
 		  		<table class="table table-striped table-hover">
@@ -74,4 +74,4 @@
 				</form>
 				
 			</div><%-- Ende Sidebar, ggf. durch Methode ergänzen --%>
-<%@ include file="footer.jsp" %>
+<%@ include file="jsp/footer.jsp" %>

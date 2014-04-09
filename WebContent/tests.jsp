@@ -8,7 +8,7 @@
 </head>
 <body>
 
-	<%@ include file="header.jsp" %> 
+	<%@ include file="jsp/header.jsp" %> 
 
 	<%
 		// Ein Skriptlet, um z.B. Code einzubetten.
@@ -16,6 +16,9 @@
 
 	<%= request.getHeader("User-Agent") %> 
 	<%= "<br />Eine Expression, um Ausgaben zu basteln!<br /><br />" %>
+	<% for (int i = 0; i <= 5; i++) { %>
+   		<p><%=i%></p>
+	<% } %>
 	
 	<%-- JSP-Kommentar, welcher im HTML-Quelltext nicht mehr auftaucht. --%> 
 	

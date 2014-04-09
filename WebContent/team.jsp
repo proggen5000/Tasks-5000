@@ -1,5 +1,5 @@
-<%@ include file="header.jsp" %>
-<%@ include file="menu.jsp" %>
+<%@ include file="jsp/header.jsp" %>
+<%@ include file="jsp/menu.jsp" %>
 				<%-- Brotkrümel 
 				<ol class="breadcrumb">
 					<li><a href="#">Start</a></li>
@@ -102,4 +102,4 @@
 				</div>
 											
 			</div><%-- Ende Sidebar, ggf. durch Methode ergänzen --%>
-<%@ include file="footer.jsp" %>
+<%@ include file="jsp/footer.jsp" %>
