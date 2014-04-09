@@ -1,24 +1,49 @@
-package POJO;
+package entities;
+import java.io.Serializable;
 
-public class Mitglied {
-	private int id;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Email;
+
+@Entity
+@Table(name="Mitglieder")
+public class Mitglied implements Serializable{
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue
+	@Column(name="MitgliedID")
+	private long id;
+	
+	@NotNull
+	@Column(name="Username")
 	private String username;
+	
+	@NotNull
+	@Email
+	@Column(name="Email")
 	private String email;
+	
+	@NotNull
+	@Column(name="PW-Hash")
 	private String password;
+	
+	@NotNull
+	@Column(name="Vorname")
 	private String vorname;
+	
+	@Column(name="Nachname")
 	private String nachname;
-	private int reg_datum;
 	
-	//Kosntruktor
-	public Mitglied(){
-	}
-	
-	
+	@Column(name="Registrierungsdatum")
+	private long reg_datum;
+		
 	//Getter & Setter
-	public int getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public String getUsername() {
@@ -51,10 +76,10 @@ public class Mitglied {
 	public void setNachname(String nachname) {
 		this.nachname = nachname;
 	}
-	public int getReg_datum() {
+	public long getReg_datum() {
 		return reg_datum;
 	}
-	public void setReg_datum(int reg_datum) {
+	public void setReg_datum(long reg_datum) {
 		this.reg_datum = reg_datum;
 	}	
 }
