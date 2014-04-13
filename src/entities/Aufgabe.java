@@ -3,21 +3,14 @@ import java.io.Serializable;
 
 public class Aufgabe implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
 	private long id;
-	
-	private Team team;
-	
-	private Aufgabengruppe aufgGr;
-	
+	private Team team; 
+	private Aufgabengruppe gruppe;
 	private Mitglied ersteller;
-
 	private String titel;
-	
 	private String beschreibung;
-	
 	private int status;
-	
 	private long deadline;
 
 	//Getters & Setters
@@ -37,12 +30,12 @@ public class Aufgabe implements Serializable {
 		this.team = team;
 	}
 
-	public Aufgabengruppe getAufgGr() {
-		return aufgGr;
+	public Aufgabengruppe getGruppe() {
+		return gruppe;
 	}
 
-	public void setAufgGr(Aufgabengruppe aufgGr) {
-		this.aufgGr = aufgGr;
+	public void setGruppe(Aufgabengruppe gruppe) {
+		this.gruppe = gruppe;
 	}
 
 	public Mitglied getErsteller() {
