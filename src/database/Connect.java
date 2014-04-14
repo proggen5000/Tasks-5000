@@ -1,7 +1,7 @@
 package database;
 import java.sql.*;
 
-class connect {
+class Connect {
 	private static Connection con;
 	private static String dbUser ="adminbsTSA3H";
 	private static String dbPw = "6_76lpJkIE8V";
@@ -9,7 +9,7 @@ class connect {
 	private static String dbHost="localhost";
 	private static String dbName="tasks";
 	
-	private connect(){}
+	private Connect(){}
 	
 	public static Connection getConnection(){
 		if (con == null){
