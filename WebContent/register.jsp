@@ -46,7 +46,6 @@
 			      </div>
 			      <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Login</button><br /><br />
 			      <a href="/lostpw"><span class="glyphicon glyphicon-lock"></span> Passwort vergessen?</a><br />
-			      <a href="/register"><span class="glyphicon glyphicon-pencil"></span> Registrieren</a>
 				</form>
 				
 			</div><%-- Ende Sidebar, ggf. durch Methode ergänzen --%>
