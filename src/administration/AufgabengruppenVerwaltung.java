@@ -1,6 +1,8 @@
 package administration;
 
 import java.util.ArrayList;
+
+import entities.Aufgabengruppe;
 public class AufgabengruppenVerwaltung {
 
 	public boolean neu (String name){
@@ -23,11 +25,11 @@ public class AufgabengruppenVerwaltung {
 		return false;
 	}
 	
-	public ArrayList getListe(){
+	public ArrayList<Aufgabengruppe> getListe(){
 		return null;
 	}
 	
-	public ArrayList getListeVonTeam(int teamID){
+	public ArrayList<Aufgabengruppe> getListeVonTeam(int teamID){
 		return null;
 	}
 }

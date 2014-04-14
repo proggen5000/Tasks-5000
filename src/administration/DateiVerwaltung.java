@@ -2,6 +2,8 @@ package administration;
 
 import java.util.ArrayList;
 
+import entities.Datei;
+
 public class DateiVerwaltung {
 
 	public boolean neu (String titel, String beschr, String version, int teamID,
@@ -22,11 +24,11 @@ public class DateiVerwaltung {
 		return false;
 	}
 	
-	public ArrayList getListe(){
+	public ArrayList<Datei> getListe(){
 		return null;
 	}
 	
-	public ArrayList getListeVonAufgabe(int aufgabenID){
+	public ArrayList<Datei> getListeVonAufgabe(int aufgabenID){
 		return null;
 	}
 }

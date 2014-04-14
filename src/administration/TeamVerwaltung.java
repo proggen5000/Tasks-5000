@@ -2,6 +2,8 @@ package administration;
 
 import java.util.ArrayList;
 
+import entities.Team;
+
 public class TeamVerwaltung {
 
 	public boolean neu (String name, String slogan, int gruppenfuehrerID){
@@ -24,11 +26,11 @@ public class TeamVerwaltung {
 		return false;
 	}
 	
-	public ArrayList getListe(){
+	public ArrayList<Team> getListe(){
 		return null;
 	}
 	
-	public ArrayList getListeVonMitglied(int mitgliedID){
+	public ArrayList<Team> getListeVonMitglied(int mitgliedID){
 		return null;
 	}
 	

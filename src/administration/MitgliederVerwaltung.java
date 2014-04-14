@@ -2,6 +2,8 @@ package administration;
 
 import java.util.ArrayList;
 
+import entities.Mitglied;
+
 public class MitgliederVerwaltung {
 
 	public boolean neu (String username, String pw, String email, String vorname,
@@ -26,15 +28,15 @@ public class MitgliederVerwaltung {
 		return false;
 	}
 	
-	public ArrayList getListe(){
+	public ArrayList<Mitglied> getListe(){
 		return null;
 	}
 	
-	public ArrayList getListeVonAufgaben(int aufgID){
+	public ArrayList<Mitglied> getListeVonAufgaben(int aufgID){
 		return null;
 	}
 	
-	public ArrayList getListeVonTeam(int teamID){
+	public ArrayList<Mitglied> getListeVonTeam(int teamID){
 		return null;
 	}
 	

@@ -3,6 +3,10 @@ package administration;
 import java.util.ArrayList;
 import java.util.Date;
 
+import entities.Aufgabe;
+
+
+
 public class AufgabenVerwaltung {
 
 	public boolean neu (int teamID, int aufgGrID, int erstellerID, String titel,
@@ -23,15 +27,15 @@ public class AufgabenVerwaltung {
 		return false;
 	}
 	
-	public ArrayList getListe(){
+	public ArrayList<Aufgabe> getListe(){
 		return null;
 	}
 	
-	public ArrayList getListeVonDatei(int dateiID){
+	public ArrayList<Aufgabe> getListeVonDatei(int dateiID){
 		return null;
 	}
 	
-	public ArrayList getListeVonGruppe(int grID){
+	public ArrayList<Aufgabe> getListeVonGruppe(int grID){
 		return null;
 	}
 	
