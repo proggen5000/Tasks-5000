@@ -1,5 +1,5 @@
 package database;
-import java.sql.*;
+import com.mysql.jdbc.*;
 
 class Connect {
 	private static Connection con;
