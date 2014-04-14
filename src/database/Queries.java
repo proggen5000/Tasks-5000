@@ -81,6 +81,7 @@ public class Queries {
 		}		
 	}
 	
+	//
 	public static boolean insertQuery(String table, String columns, String values){
 		try{
 			PreparedStatement query = Connect.getConnection().prepareStatement("INSERT INTO "+table+" ("+columns+") VALUES ("+values+")");
