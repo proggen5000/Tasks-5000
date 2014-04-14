@@ -7,7 +7,7 @@ public class AufgabengruppenVerwaltung {
 
 	public boolean neu (String name){
 		return false;
-	}
+	}// fŸr manu
 	
 	public boolean bearbeiten (int id, String name){
 		return false;
