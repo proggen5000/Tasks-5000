@@ -6,7 +6,7 @@ public class Aufgabengruppe implements Serializable {
 
 	private long id;
 	private String name;
-	private String beschreibung;
+	private String beschreibung; // unnötig?
 
 	//Getters & Setters
 	public long getId() {
