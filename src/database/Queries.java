@@ -70,7 +70,7 @@ public class Queries {
 			return false;
 		}
 	}
-	
+	 
 	public static boolean deleteQuery(String sql) throws SQLException{
 		try{
 			Statement query = Connect.getConnection().createStatement();
