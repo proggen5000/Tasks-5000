@@ -1,7 +1,7 @@
 <%@page import="entities.Team" %>
 <%@page import="entities.Mitglied" %>
-<jsp:useBean id="Team" class="entities.Team" scope="page"></jsp:useBean>
-<jsp:setProperty property="*" name="Team"></jsp:setProperty>
+<jsp:useBean id="team" class="entities.Team" scope="page"></jsp:useBean>
+<jsp:setProperty property="*" name="team"></jsp:setProperty>
 <%
 	Team team1 = new Team();
 	team1.setId(13);
@@ -11,7 +11,6 @@
 <%@ include file="jsp/header.jsp" %>
 <%@ include file="jsp/menu.jsp" %>
 
-		  		
 		  		<h1>Meine Teams</h1>
 		  		<table class="table table-striped table-hover">
 		  			<thead>
@@ -23,7 +22,7 @@
 				    </thead>
 		  			<tbody>
 					    <tr>
-					        <td><jsp:getProperty property="id" name="Team"></td>
+					        <td>${team.id}</td>
 					        <td></td>
 					        <td>13</td>
 					    </tr>
@@ -70,6 +69,6 @@
 					</a>
 				</div>
 		  		
-			</div><%-- Ende content --%>
+			</div>
 			<%@ include file="jsp/sidebar.jsp" %>
 <%@ include file="jsp/footer.jsp" %>
