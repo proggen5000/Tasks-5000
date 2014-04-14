@@ -1,5 +1,5 @@
 package database;
-import com.mysql.jdbc.*;
+import java.sql.*;
 
 class Connect {
 	private static Connection con;
@@ -14,11 +14,15 @@ class Connect {
 	public static Connection getConnection(){
 		if (con == null){
 			try {
+				Class.forName("com.mysql.jdbc.Driver").newInstance();
 				con = DriverManager.getConnection("jdbc:mysql://"+dbHost+":"+dbPort+"/"+dbName, dbUser, dbPw);
+				System.out.println(con.isClosed());
 			} catch (SQLException e) {
+				return null;
+			}catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			} 
 		}
 		return con;
 	}
