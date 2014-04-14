@@ -5,7 +5,7 @@ import java.sql.*;
 public class Queries {
 	private Queries(){}
 	
-	public static Object scalarQuery(String column, String table, String where, String param, String condition) throws SQLException{
+	public static Object scalarQuery(String table, String column, String where, String param, String condition) throws SQLException{
 		PreparedStatement query;
 		if(where == ""){
 			query = Connect.getConnection().prepareStatement("SELECT "+column+" FROM "+table+" WHERE "+param+" LIKE ?");
@@ -61,6 +61,16 @@ public class Queries {
 		}	
 	}
 
+	public static boolean deleteQuery(String table, String where){
+		try{
+			PreparedStatement query = Connect.getConnection().prepareStatement("DELETE FROM "+table+" WHERE "+where);
+			query.executeQuery();
+			return true;
+		}catch(SQLException e){
+			return false;
+		}
+	}
+	
 	public static boolean deleteQuery(String sql) throws SQLException{
 		try{
 			Statement query = Connect.getConnection().createStatement();
@@ -69,6 +79,16 @@ public class Queries {
 		}catch (SQLException e){
 			return false;
 		}		
+	}
+	
+	public static boolean insertQuery(String table, String columns, String values){
+		try{
+			PreparedStatement query = Connect.getConnection().prepareStatement("INSERT INTO "+table+" ("+columns+") VALUES ("+values+")");
+			query.executeQuery();
+			return true;
+		}catch(SQLException e){
+			return false;
+		}
 	}
 	
 	public static boolean insertQuery(String sql) throws SQLException{
