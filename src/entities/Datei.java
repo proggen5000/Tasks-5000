@@ -10,9 +10,10 @@ public class Datei implements Serializable {
 	private Team team;
 	private Mitglied ersteller;
 	private String pfad;
-	// Was ist mit der Dateigröße? Wird die direkt ermittelt?
+	// Was ist mit der DateigrÃ¶ÃŸe? Wird die direkt ermittelt?
 	
-
+	// Konstruktor!
+	
 	//Getters & Setters
 	public long getId() {
 		return id;

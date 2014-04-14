@@ -12,7 +12,10 @@ public class Aufgabe implements Serializable {
 	private String beschreibung;
 	private int status;
 	private long deadline;
+	// Wem ist Aufgabe zugeteilt? Sollte das hier gespeichert werden?
 
+	// Konstruktor!
+	
 	//Getters & Setters
 	public long getId() {
 		return id;

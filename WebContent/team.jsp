@@ -10,7 +10,7 @@
 		  		Hier k&ouml;nnte ein &auml;u&szlig;erst schlauer Slogan stehen.
 		  		<h2><a href="">Windows 8.1</a></h2>
 				<div class="list-group">
-					<a href="#" class="list-group-item list-group-item-success">
+					<a href="task.jsp" class="list-group-item list-group-item-success">
 						<div class="task-progress"><div class="progress">
 							<div class="progress-bar" role="progressbar" aria-valuenow="76" aria-valuemin="0" aria-valuemax="100" style="width: 76%;">76%</div>
 						</div></div>

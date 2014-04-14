@@ -9,6 +9,11 @@ public class Team implements Serializable {
 	private long gruendungsdatum;
 	private String slogan;
 	private Mitglied gruppenfuehrer;
+	
+	public Team(){
+		this.id = 4;
+		this.name = "Team";
+	}
 
 	//Getters & Setters
 	public long getId() {

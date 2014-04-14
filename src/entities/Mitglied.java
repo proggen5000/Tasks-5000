@@ -10,6 +10,8 @@ public class Mitglied implements Serializable{
 	private String vorname;
 	private String nachname;
 	private long reg_datum;
+	
+	// Konstruktor!
 		
 	//Getter & Setter
 	public long getId() {

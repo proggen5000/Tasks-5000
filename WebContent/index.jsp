@@ -1,5 +1,16 @@
+<%@page import="entities.Team" %>
+<%@page import="entities.Mitglied" %>
+<jsp:useBean id="Team" class="entities.Team" scope="page"></jsp:useBean>
+<jsp:setProperty property="*" name="Team"></jsp:setProperty>
+<%
+	Team team1 = new Team();
+	team1.setId(13);
+	team1.setName("Banoodle Team");
+%>
+
 <%@ include file="jsp/header.jsp" %>
 <%@ include file="jsp/menu.jsp" %>
+
 		  		
 		  		<h1>Meine Teams</h1>
 		  		<table class="table table-striped table-hover">
@@ -12,8 +23,8 @@
 				    </thead>
 		  			<tbody>
 					    <tr>
-					        <td>1</td>
-					        <td>The Banoodles</td>
+					        <td><jsp:getProperty property="id" name="Team"></td>
+					        <td></td>
 					        <td>13</td>
 					    </tr>
 					    <tr>
@@ -60,18 +71,5 @@
 				</div>
 		  		
 			</div><%-- Ende content --%>
-			<div class="sidebar col-sm-3">
-				<h1>Login</h1>
-				<form class="form-horizontal" role="form">
-			      <input type="text" class="form-control" style="margin-bottom: 5px;" id="inputUsername" placeholder="Benutzername">
-			      <input type="password" class="form-control" id="inputPassword" placeholder="Passwort">
-			      <div class="checkbox" style="margin-bottom: 5px;">
-			        <label><input type="checkbox"> Login merken</label>
-			      </div>
-			      <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Login</button><br /><br />
-			      <a href="/lostpw"><span class="glyphicon glyphicon-lock"></span> Passwort vergessen?</a><br />
-			      <a href="/register.jsp"><span class="glyphicon glyphicon-pencil"></span> Registrieren</a>
-				</form>
-				
-			</div><%-- Ende Sidebar, ggf. durch Methode ergänzen --%>
+			<%@ include file="jsp/sidebar.jsp" %>
 <%@ include file="jsp/footer.jsp" %>
