@@ -12,7 +12,8 @@ public class Team implements Serializable {
 	
 	public Team(){
 		this.id = 4;
-		this.name = "Team";
+		this.name = "Team zum Test";
+		this.slogan = "Hier könnte ein toller Slogan stehen!";
 	}
 
 	//Getters & Setters
