@@ -27,7 +27,8 @@
       <span class="glyphicon glyphicon-user"></span> Ich <span class="caret">
     </a>
     <ul class="dropdown-menu">
-      <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Profil &amp; Einstellungen</a></li>
+      <li><a href="member.jsp"><span class="glyphicon glyphicon-user"></span> Mein Profil</a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Profil &auml;ndern</a></li>
       <li class="divider"></li>
       <li><a href="#"><span class="glyphicon glyphicon-remove"></span> Logout</a></li>
     </ul>

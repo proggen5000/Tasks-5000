@@ -1,15 +1,15 @@
 <%@ include file="jsp/header.jsp" %>
 <%@ include file="jsp/menu.jsp" %>
-			
-			<ol class="breadcrumb">
-				<li><a href="index.jsp">Start</a></li>
-				<li><a href="team.jsp">Microsoft Windows Core Development Team</a></li>
-				<li class="active"></li>
-			</ol>
 
 			<h1>Sebastian Herrmann <span class="glyphicon glyphicon-user small"></span></h1>
-				<p>Benutzername: herrherrmann</p>
-				// reg_datum
+				<dl class="dl-horizontal">
+					<dt>Benutzername</dt><dd>herrherrmann</dd>
+					<dt>Mitglied seit</dt><dd>21.02.2013</dd>
+					<dt>Mitglied in</dt>
+						<dd><a href="team.jsp"><span class="glyphicon glyphicon-briefcase"></span> Microsoft Windows Core Development Team</a></dd>
+						<dd><a href="team.jsp"><span class="glyphicon glyphicon-briefcase"></span> Team X</a></dd>
+						<dd><a href="team.jsp"><span class="glyphicon glyphicon-briefcase"></span> Team Y</a></dd>
+				</dl>
 			
 			</div><%-- Ende content --%>
 			<div class="sidebar col-sm-3">

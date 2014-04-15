@@ -35,8 +35,10 @@
 						<div class="list-group-item"><span class="glyphicon glyphicon-calendar"></span> 01.04.2014 <small>14.36 Uhr</small></div>
 						<div class="list-group-item"><span class="glyphicon glyphicon-bell"></span> 14.04.2014</div>
 						<div class="list-group-item"><span class="glyphicon glyphicon-dashboard"></span> Status: 50%</div>
-						<a href="#" class="list-group-item"><span class="glyphicon glyphicon-user"></span> Gunnar Lehker <span class="label label-default">Ersteller</span></a>
-						<a href="#" class="list-group-item"><span class="glyphicon glyphicon-user"></span> Felix Fichte</a>
+					</div>
+					<div class="list-group">
+						<a href="member.jsp" class="list-group-item"><span class="glyphicon glyphicon-user"></span> Gunnar Lehker <span class="label label-default">Ersteller</span></a>
+						<a href="member.jsp" class="list-group-item"><span class="glyphicon glyphicon-user"></span> Felix Fichte</a>
 					</div>
 											
 			</div><%-- Ende Sidebar, ggf. durch Methode ergänzen --%>

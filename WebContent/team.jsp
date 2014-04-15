@@ -95,10 +95,10 @@
 			
 				<h1>Mitglieder</h1>
 				<div class="list-group">
-					<a href="#" class="list-group-item"><span class="glyphicon glyphicon-user"></span> Gunnar Lehker <span class="label label-default">Manager</span></a>
-					<a href="#" class="list-group-item"><span class="glyphicon glyphicon-user"></span> Manuel Taya</a>
-					<a href="#" class="list-group-item"><span class="glyphicon glyphicon-user"></span> Felix Fichte</a>
-					<a href="#" class="list-group-item"><span class="glyphicon glyphicon-user"></span> xXx_bastman5000_xXx</a>		
+					<a href="member.jsp" class="list-group-item"><span class="glyphicon glyphicon-user"></span> Gunnar Lehker <span class="label label-default">Manager</span></a>
+					<a href="member.jsp" class="list-group-item"><span class="glyphicon glyphicon-user"></span> Manuel Taya</a>
+					<a href="member.jsp" class="list-group-item"><span class="glyphicon glyphicon-user"></span> Felix Fichte</a>
+					<a href="member.jsp" class="list-group-item"><span class="glyphicon glyphicon-user"></span> xXx_bastman5000_xXx</a>		
 				</div>
 											
 			</div><%-- Ende Sidebar, ggf. durch Methode ergänzen --%>
