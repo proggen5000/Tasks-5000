@@ -4568,9 +4568,9 @@ a.thumbnail.active {
   width: 20%;
   float: right;
 }
-.task-member {
+.task-details {
   float: right;
-  width: 25%;
+  width: 30%;
 }
 .progress-bar {
   float: left;
