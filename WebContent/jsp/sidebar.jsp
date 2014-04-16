@@ -1,3 +1,4 @@
+</div><%-- Ende content --%>
 <div class="sidebar col-sm-3">
 	<h1>Login</h1>
 	<form class="form" action="#">

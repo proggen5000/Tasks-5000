@@ -1,5 +1,5 @@
-<%@ include file="jsp/header.jsp" %>
-<%@ include file="jsp/menu.jsp" %>
+<jsp:include page="jsp/header.jsp" />
+<jsp:include page="jsp/menu.jsp" />
 		  		
 		  		<h1>Registrierung</h1>
 		  		<p>Registrieren Sie sich mit einem einzigartigen Benutzernamen und Ihrer E-Mail-Adresse, um Tasks 5000 zu benutzen.<br />
@@ -41,7 +41,6 @@
 				    <button type="reset" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Zur&uuml;cksetzen</button>
 				  </div>
 				</form>
-		  		
-			</div><%-- Ende content --%>
-			<%@ include file="jsp/sidebar.jsp" %>
-<%@ include file="jsp/footer.jsp" %>
+
+			<jsp:include page="jsp/sidebar.jsp" />
+<jsp:include page="jsp/footer.jsp" />
