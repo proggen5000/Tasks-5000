@@ -20,8 +20,8 @@ public class DateiVerwaltung {
 		return false;
 	}
 	
-	public boolean vorhanden (int id){
-		return false;
+	public static Datei vorhanden (int id){
+		return null;
 	}
 	
 	public ArrayList<Datei> getListe(){

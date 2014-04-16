@@ -74,7 +74,7 @@ public class AufgabenVerwaltung {
 	public static ArrayList<Aufgabe> getListe(){
 		// returnd eine ArrayListe aller Aufgabe
 		String sql = "SELECT * FROM Aufgabe";
-		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
+		ArrayList<Aufgabe> al = null;
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
 			
@@ -95,13 +95,9 @@ public class AufgabenVerwaltung {
 	}
 	
 	public static ArrayList<Aufgabe> getListeVonDatei(int dateiID){
-		return null;
-	}
-	
-	public static ArrayList<Aufgabe> getListeVonGruppe(int grID){
-		// returnd eine ArrayListe aller Aufgabe
-		String sql = "SELECT * FROM Aufgabe WHERE AufgabenGruppeID = " + grID;
-		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
+		// returnd eine ArrayListe aller Aufgabe die zu einer bestimmten datei gehöhren
+		String sql = "SELECT * FROM aufgaben JOIN aufgaben_dateien ON aufgaben.AufgabeID = aufgaben_dateien.Aufgaben_AufgabeID JOIN dateien ON dateien.DateiID = aufgaben_dateien.Dateien_DateiID WHERE DateiID = " + dateiID;
+		ArrayList<Aufgabe> al = null;
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
 			
@@ -119,6 +115,29 @@ public class AufgabenVerwaltung {
 			al = null;
 		}
 		return al;
+	}
+	
+	public static ArrayList<Aufgabe> getListeVonGruppe(int grID){
+		// returnd eine ArrayListe aller Aufgabe
+				String sql = "SELECT * FROM Aufgabe WHERE AufgabenGruppeID = " + grID;
+				ArrayList<Aufgabe> al = null;
+				try {
+					ResultSet rs = Queries.rowQuery(sql);
+					
+					while(rs.next()){
+						//add every result in resultset to ArrayList
+						Aufgabe a = new Aufgabe(rs.getLong("AufgabeID"), TeamVerwaltung.vorhanden(rs.getInt("TeamID")),
+								AufgabengruppenVerwaltung.vorhanden(rs.getInt("AufgabenGruppeID")),
+								MitgliederVerwaltung.vorhanden(rs.getInt("ErstellerID")), rs.getString("Titel"),
+								rs.getString("Beschreibung"), rs.getInt("Status"), rs.getLong("Titel"));
+						al.add(a);
+					}
+				} catch (SQLException e) {
+					// Falls ein Fehler auftritt soll eine lehere Liste zurückgegeben werden
+					e.printStackTrace();
+					al = null;
+				}
+				return al;
 	}
 	
 }
