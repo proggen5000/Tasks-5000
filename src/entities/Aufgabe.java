@@ -13,8 +13,18 @@ public class Aufgabe implements Serializable {
 	private int status;
 	private long deadline;
 	// Wem ist Aufgabe zugeteilt? Sollte das hier gespeichert werden?
-
-	// Konstruktor!
+	public Aufgabe(){
+	}
+	public Aufgabe(long id, Team team, Aufgabengruppe gruppe, Mitglied ersteller, String titel, String beschreibung, int status, long deadline){
+		this.id = id;
+		this.team = team;
+		this.gruppe = gruppe;
+		this.ersteller = ersteller;
+		this.titel = titel;
+		this.beschreibung = beschreibung;
+		this.status = status;
+		this.deadline = deadline;
+	}
 	
 	//Getters & Setters
 	public long getId() {
