@@ -81,23 +81,33 @@ public class Queries {
 		}		
 	}
 	
-	public static boolean insertQuery(String table, String columns, String values){
+	public static int insertQuery(String table, String columns, String values){
 		try{
 			PreparedStatement query = Connect.getConnection().prepareStatement("INSERT INTO "+table+" ("+columns+") VALUES ("+values+")");
 			query.executeQuery();
-			return true;
+			ResultSet generatedKeys = query.getGeneratedKeys();
+			if (generatedKeys.next()) {
+	            return generatedKeys.getInt(1);
+	        } else {
+	            throw new SQLException("Creating row failed, no generated key obtained.");
+	        }
 		}catch(SQLException e){
-			return false;
+			return -1;
 		}
 	}
 	
-	public static boolean insertQuery(String sql) throws SQLException{
+	public static int insertQuery(String sql) throws SQLException{
 		try{
 			Statement query = Connect.getConnection().createStatement();
 			query.executeUpdate(sql);
-			return (query.getUpdateCount()>0);
+			ResultSet generatedKeys = query.getGeneratedKeys();
+			if (generatedKeys.next()) {
+	            return generatedKeys.getInt(1);
+	        } else {
+	            throw new SQLException("Creating row failed, no generated key obtained.");
+	        }
 		}catch (SQLException e){
-			return false;
+			return -1;
 		}	
 	}
 	
