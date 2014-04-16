@@ -18,12 +18,12 @@ public class TeamVerwaltung {
 		return false;
 	}
 	
-	public boolean vorhanden (int id){
-		return false;
+	public static Team vorhanden (int id){
+		return null;
 	}
 	
-	public boolean vorhanden (String name){
-		return false;
+	public static Team vorhanden (String name){
+		return null;
 	}
 	
 	public ArrayList<Team> getListe(){

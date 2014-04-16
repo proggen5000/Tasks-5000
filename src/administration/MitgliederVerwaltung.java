@@ -66,7 +66,7 @@ public class MitgliederVerwaltung {
 		return result;
 	}
 	
-	public Mitglied vorhanden (long id){
+	public static Mitglied vorhanden (long id){
 		
 		//Suchen des Mitglieds anhand der ID
 		String sql= "SELECT * FROM mitglieder WHERE mitgliedid="+id;
@@ -80,7 +80,7 @@ public class MitgliederVerwaltung {
 		return testmitglied;
 	}
 	
-	public Mitglied vorhanden (String name){
+	public static Mitglied vorhanden (String name){
 		
 		//Suchen des Mitglieds anhand der ID
 		String sql= "SELECT * FROM mitglieder WHERE username="+name;

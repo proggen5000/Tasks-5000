@@ -17,12 +17,12 @@ public class AufgabengruppenVerwaltung {
 		return false;
 	}
 	
-	public boolean vorhanden (int id){
-		return false;
+	public static Aufgabengruppe vorhanden (int id){
+		return null;
 	}
 	
-	public boolean vorhanden (String name){
-		return false;
+	public static Aufgabengruppe vorhanden (String name){
+		return null;
 	}
 	
 	public ArrayList<Aufgabengruppe> getListe(){
