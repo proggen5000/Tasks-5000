@@ -41,4 +41,9 @@ public class TeamVerwaltung {
 	public boolean loescheTeammitglied(int teamID, int mitgliedID){
 		return false;
 	}
+
+	public static Team get(int int1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

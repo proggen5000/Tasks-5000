@@ -116,4 +116,9 @@ public class MitgliederVerwaltung {
 		}
 		return false;
 	}
+
+	public static Mitglied get(int int1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

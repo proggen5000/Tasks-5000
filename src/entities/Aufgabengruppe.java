@@ -8,7 +8,13 @@ public class Aufgabengruppe implements Serializable {
 	private String name;
 	private String beschreibung; // unnötig?
 	
-	// Konstruktor!
+	public Aufgabengruppe(){}
+	
+	public Aufgabengruppe(long id, String name, String beschreibung){
+		this.id = id;
+		this.name = name;
+		this.beschreibung = beschreibung;
+	}
 
 	//Getters & Setters
 	public long getId() {
