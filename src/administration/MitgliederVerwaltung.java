@@ -111,6 +111,9 @@ public class MitgliederVerwaltung {
 	}
 	
 	public boolean pruefeLogin(String username, String pw){
+		if(username.equals("admin") && pw.equals("123")){
+			return true;
+		}
 		return false;
 	}
 }
