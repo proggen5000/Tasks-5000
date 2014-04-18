@@ -6,8 +6,8 @@
 	<%-- Aufgabe erstellen --%>
 	<c:if test="${param.mode == 'new'}">
 		<c:set var="team" scope="page" value="Microsoft Windows Core Development Team"/>
-		<c:set var="name" scope="page" value=""/>
 		<c:set var="group" scope="page" value="Windows 8.1"/>
+		<c:set var="name" scope="page" value=""/>
 		<c:set var="description" scope="page" value=""/>
 		<c:set var="date" scope="page" value=""/>
 		<c:set var="deadline" scope="page" value=""/>
@@ -22,8 +22,8 @@
 	<%-- Aufgabe bearbeiten/ansehen --%>
 	<c:if test="${param.mode == 'edit' or param.mode == 'view'}">
 		<c:set var="team" scope="page" value="Microsoft Windows Core Development Team"/>
-		<c:set var="name" scope="page" value="Banoodle-Aufgabe"/>
 		<c:set var="group" scope="page" value="Windows 8.1"/>
+		<c:set var="name" scope="page" value="Banoodle-Aufgabe"/>
 		<c:set var="description" scope="page" value="Hallo, hier steht eine bisherige HTML-Beschreibung."/>
 		<c:set var="date" scope="page" value="2014-04-01"/>
 		<c:set var="deadline" scope="page" value="2014-04-14"/>
@@ -32,6 +32,16 @@
 		
 		<c:set var="title" scope="page" value="Aufgabe bearbeiten"/>
 		<c:set var="submit_button" scope="page" value="Speichern"/>
+		<c:set var="valid_request" scope="page" value="true" />
+	</c:if>
+	
+	<%-- Aufgabe entfernen --%>
+	<c:if test="${param.mode == 'remove'}">
+		<c:set var="team" scope="page" value="Microsoft Windows Core Development Team"/>
+		<c:set var="group" scope="page" value="Windows 8.1"/>
+		<c:set var="name" scope="page" value="Banoodle-Aufgabe"/>
+		
+		<c:set var="title" scope="page" value="Aufgabe l&ouml;schen"/>
 		<c:set var="valid_request" scope="page" value="true" />
 	</c:if>
 
@@ -146,6 +156,26 @@
 				</form>
 				<%@ include file="jsp/sidebar.jsp" %>
 			
+			</c:if>
+			
+			
+			<%-- Aufgabe entfernen --%>
+			<c:if test="${valid_request == true and param.mode == 'remove'}">
+				
+				<ol class="breadcrumb">
+					<li><a href="index.jsp">Start</a></li>
+					<li><a href="team.jsp">${team}</a></li>
+					<li>${group}</li>
+				</ol>
+				
+				<h1>${title}</h1>
+				<p>Sind Sie sicher, dass Sie die Aufgabe "<b>${name}</b>" entfernen m&ouml;chten?</p>
+				<a class="btn btn-danger" href="task.jsp?remove=view&id=X&sure=true"><span class="glyphicon glyphicon-ok"></span> Ja, l&ouml;schen</a>
+				<a class="btn btn-default" href="task.jsp?mode=view&id=X"><span class="glyphicon glyphicon-remove"></span> Nein, abbrechen</a>
+								
+				</div><%-- Ende content --%>
+				<div class="sidebar col-sm-3">
+				</div><%-- Ende Sidebar, ggf. durch Methode ergänzen --%>
 			</c:if>
 
 <%@ include file="jsp/footer.jsp" %>
