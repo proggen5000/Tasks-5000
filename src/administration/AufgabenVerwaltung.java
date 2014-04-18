@@ -59,7 +59,10 @@ public class AufgabenVerwaltung {
 		return Queries.deleteQuery(table, where);
 	}
 	
-	public static Aufgabe vorhanden (int id){
+	public static boolean vorhanden (int id){
+		return AufgabenVerwaltung.get(id) != null;
+	}	
+	public static Aufgabe get (int id){
 		//Suchen der Aufgabe anhand der ID
 		String sql = "SELECT * FROM Aufgabe WHERE AufgabeID = "+id;
 		Aufgabe aufgabe_neu = null;
