@@ -19,15 +19,20 @@ public class MitgliederVerwaltung {
 				+", "+mitglied.getReg_datum();
 		int testID= Queries.insertQuery(table, columns, values);
 		
-		//Erstellen eines Mitglieds mit den übernommenen Werten (mit ID)
-		Mitglied testmitglied= new Mitglied();
-		String sql= "SELECT * FROM mitglieder WHERE mitgliedid="+testID;
-		try {
-			testmitglied= (Mitglied)Queries.scalarQuery(sql);
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if (testID== -1){
+			return null;
 		}
-		return testmitglied;
+		else{
+			//Erstellen eines Mitglieds mit den übernommenen Werten (mit ID)
+			Mitglied testmitglied= new Mitglied();
+			String sql= "SELECT * FROM mitglieder WHERE mitgliedid="+testID;
+			try {
+				testmitglied= (Mitglied)Queries.scalarQuery(sql);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return testmitglied;
+		}
 	}
 	
 	public Mitglied bearbeiten (Mitglied mitglied){
@@ -62,8 +67,7 @@ public class MitgliederVerwaltung {
 		//Mitglied anhand der ID löschen
 		String table= "mitglieder";
 		String where= "mitgliedid="+mitglied.getId();
-		boolean result= Queries.deleteQuery(table, where);
-		return result;
+		return Queries.deleteQuery(table, where);
 	}
 	
 	public static Mitglied vorhanden (long id){
