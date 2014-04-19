@@ -1,21 +1,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%@ include file="jsp/header.jsp" %>
 <jsp:include page="jsp/menu.jsp"><jsp:param name="menu" value="teams" /></jsp:include>
 
 	<%-- Aufgabe erstellen --%>
 	<c:if test="${param.mode == 'new'}">
-		<c:set var="team" scope="page" value="Microsoft Windows Core Development Team"/>
-		<c:set var="group" scope="page" value="Windows 8.1"/>
-		<c:set var="name" scope="page" value=""/>
-		<c:set var="description" scope="page" value=""/>
-		<c:set var="date" scope="page" value=""/>
-		<c:set var="deadline" scope="page" value=""/>
-		<c:set var="status" scope="page" value=""/>
-		<c:set var="members" scope="page" value=""/> <%-- ??? --%>
+		<c:set var="team" scope="page" value="Microsoft Windows Core Development Team" />
+		<c:set var="group" scope="page" value="Windows 8.1" />
+		<c:set var="name" scope="page" value="" />
+		<c:set var="description" scope="page" value="" />
+		<c:set var="date" scope="page" value="" />
+		<%--<fmt:parseDate value="${date}" var="dateFormatted" pattern="dd-MM-yyyy" /> --%>
+		<c:set var="deadline" scope="page" value="" />
+		<%--<fmt:parseDate value="${deadline}" var="deadlineFormatted" pattern="dd-MM-yyyy" />  --%>
+		<c:set var="status" scope="page" value="" />
+		<c:set var="members" scope="page" value="" /> <%-- ??? --%>
 		
-		<c:set var="title" scope="page" value="Aufgabe erstellen"/>
-		<c:set var="submit_button" scope="page" value="Erstellen"/>
+		<c:set var="title" scope="page" value="Aufgabe erstellen" />
+		<c:set var="submit_button" scope="page" value="Erstellen" />
 		<c:set var="valid_request" scope="page" value="true" />
 	</c:if>
 	
@@ -26,7 +29,9 @@
 		<c:set var="name" scope="page" value="Banoodle-Aufgabe"/>
 		<c:set var="description" scope="page" value="Hallo, hier steht eine bisherige HTML-Beschreibung."/>
 		<c:set var="date" scope="page" value="2014-04-01"/>
+		<%--<fmt:parseDate value="${date}" var="dateFormatted" pattern="dd-MM-yyyy" /> --%>
 		<c:set var="deadline" scope="page" value="2014-04-14"/>
+		<%--<fmt:parseDate value="${deadline}" var="deadlineFormatted" pattern="dd-MM-yyyy" /> --%>
 		<c:set var="status" scope="page" value="33"/>
 		<c:set var="members" scope="page" value=""/> <%-- ??? --%>
 		
@@ -51,7 +56,7 @@
 
 			
 			<%-- Aufgabe ansehen --%>
-			<c:if test="${valid_request == true and param.mode == 'view'}">
+			<c:if test="${valid_request and param.mode == 'view'}">
 				
 				<ol class="breadcrumb">
 					<li><a href="index.jsp">Start</a></li>
@@ -96,7 +101,7 @@
 			</c:if>
 		
 			<%-- Aufgabe bearbeiten/erstellen --%>
-			<c:if test="${valid_request == true and (param.mode == 'edit' or param.mode == 'new')}">
+			<c:if test="${valid_request and (param.mode == 'edit' or param.mode == 'new')}">
 				<ol class="breadcrumb">
 					<li><a href="index.jsp">Start</a></li>
 					<li><a href="team.jsp">${team}</a></li>
@@ -160,7 +165,7 @@
 			
 			
 			<%-- Aufgabe entfernen --%>
-			<c:if test="${valid_request == true and param.mode == 'remove'}">
+			<c:if test="${valid_request and param.mode == 'remove'}">
 				
 				<ol class="breadcrumb">
 					<li><a href="index.jsp">Start</a></li>
