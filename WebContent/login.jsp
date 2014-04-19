@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="administration.MitgliederVerwaltung" %>
 
-<jsp:include page="jsp/header.jsp" />
+<jsp:include page="jsp/header.jsp"><jsp:param name="page_title" value="Login" /></jsp:include>
 <jsp:include page="jsp/menu.jsp" />
 		  		
 		  		<c:choose>
@@ -30,6 +30,7 @@
 			  			<h1>Logout erfolgreich</h1>
 			  			<p>Sie haben sich erfolgreich aus dem System ausgeloggt.</p>
 			  			<p>Sch&ouml;nen Tag noch!</p>
+			  			<a href="index.jsp" class="btn btn-primary">Zur Startseite</a>
 			  		</c:when>
 			  		<%-- Fehler --%>
 			  		<c:otherwise>

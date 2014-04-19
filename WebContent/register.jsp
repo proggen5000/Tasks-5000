@@ -1,4 +1,4 @@
-<jsp:include page="jsp/header.jsp" />
+<jsp:include page="jsp/header.jsp"><jsp:param name="page_title" value="Registrieren" /></jsp:include>
 <jsp:include page="jsp/menu.jsp" />
 		  		
 		  		<h1>Registrierung</h1>

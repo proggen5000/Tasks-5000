@@ -3,7 +3,7 @@
 <%@ page import="entities.Mitglied" %>
 <jsp:useBean id="team" class="entities.Team" scope="page"></jsp:useBean>
 
-<jsp:include page="jsp/header.jsp" />
+<jsp:include page="jsp/header.jsp"><jsp:param name="page_title" value="Start" /></jsp:include>
 <jsp:include page="jsp/menu.jsp" />
 
 				<%-- Startseite (ausgeloggt) --%>
@@ -51,22 +51,22 @@
 					    </thead>
 			  			<tbody>
 						    <tr>
-						        <td><a href="team.jsp">${team.name}</a></td>
+						        <td><a href="team.jsp?mode=view&id=X">${team.name}</a></td>
 						        <td>13 (2)</td>
 						        <td>4</td>
 						    </tr>
 						    <tr>
-						        <td><a href="team.jsp">Hallo Crazytown</a></td>
+						        <td><a href="team.jsp?mode=view&id=X">Hallo Crazytown</a></td>
 						        <td>25 (0)</td>
 						        <td>5</td>
 						    </tr>
 						    <tr>
-						        <td><a href="team.jsp">The Uh Oh's</a></td>
+						        <td><a href="team.jsp?mode=view&id=X">The Uh Oh's</a></td>
 						        <td>108 (1)</td>
 						        <td>9</td>
 						    </tr>
 						    <tr>
-						        <td><a href="team.jsp">Microsoft Windows Core Development Team</a></td>
+						        <td><a href="team.jsp?mode=view&id=X">Microsoft Windows Core Development Team</a></td>
 						        <td>1337 (2)</td>
 						        <td>109</td>
 						    </tr>
@@ -99,5 +99,5 @@
 					</div>
 				</c:if> <%-- Ende Benutzer-Startseite --%>
 		  		
-			<%@ include file="jsp/sidebar.jsp" %>
+			<jsp:include page="jsp/sidebar.jsp" />
 <jsp:include page="jsp/footer.jsp" />

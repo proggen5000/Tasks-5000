@@ -1,8 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<jsp:include page="jsp/header.jsp" />
-<jsp:include page="jsp/menu.jsp" />
-
 	<%-- Profil ansehen --%>
 	<c:if test="${param.mode == 'view'}">
 		<c:set var="username" scope="page" value="herrherrmann"/>
@@ -23,6 +20,9 @@
 		<c:set var="valid_request" scope="page" value="true" />
 	</c:if>
 	
+<jsp:include page="jsp/header.jsp"><jsp:param name="page_title" value="${username}" /></jsp:include>
+<jsp:include page="jsp/menu.jsp" />
+
 			<c:if test="${valid_request != true}">
 				<div class="alert alert-danger">Bitte rufen Sie diese Seite &uuml;ber eine g&uuml;ltige Verkn&uuml;pfung auf!</div>
 			</c:if>
@@ -34,9 +34,9 @@
 					<dt>Echter Name</dt><dd>${realname}</dd>
 					<dt>Mitglied seit</dt><dd>${reg_date}</dd>
 					<dt>Mitglied in</dt>
-						<dd><a href="team.jsp"><span class="glyphicon glyphicon-briefcase"></span> Microsoft Windows Core Development Team</a></dd>
-						<dd><a href="team.jsp"><span class="glyphicon glyphicon-briefcase"></span> Team X</a></dd>
-						<dd><a href="team.jsp"><span class="glyphicon glyphicon-briefcase"></span> Team Y</a></dd>
+						<dd><a href="team.jsp?mode=view&id=X"><span class="glyphicon glyphicon-briefcase"></span> Microsoft Windows Core Development Team</a></dd>
+						<dd><a href="team.jsp?mode=view&id=X"><span class="glyphicon glyphicon-briefcase"></span> Team X</a></dd>
+						<dd><a href="team.jsp?mode=view&id=X"><span class="glyphicon glyphicon-briefcase"></span> Team Y</a></dd>
 				</dl>
 			</c:if>
 			

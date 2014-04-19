@@ -16,7 +16,7 @@
 	      <li><a href="team.jsp?mode=view&id=X"><span class="glyphicon glyphicon-briefcase"></span> Team X</a></li>
 	      <li><a href="team.jsp?mode=view&id=X"><span class="glyphicon glyphicon-briefcase"></span> Team Y</a></li>
 	      <li class="divider"></li>
-	      <li><a href="team?mode=new"><span class="glyphicon glyphicon-pencil"></span> Team erstellen</a></li>
+	      <li><a href="team.jsp?mode=new"><span class="glyphicon glyphicon-pencil"></span> Team erstellen</a></li>
 	    </ul>
 	  </li>
 	  

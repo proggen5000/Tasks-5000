@@ -9,10 +9,7 @@
 /*t1d #3a9184; (dunkler)
 /*t2 #b451c0;
 /*t3 #c8ba59;
-/*gr #ccc;
-
-/*t1*/ #49b8a8 (Standard)
-*/
+/*gr #ccc; */ 
  
 /*! normalize.css v3.0.0 | MIT License | git.io/normalize */
 html {
@@ -742,6 +739,11 @@ pre code {
 }
 
 /* Tasks 5000 */
+::selection { background: /*t1*/ #49b8a8; /* Safari */ }
+::-moz-selection { background: /*t1*/ #49b8a8; /* Firefox */ }
+a::selection { background: /*t1d*/ #3a9184; /* Safari */ }
+a::-moz-selection { background: /*t1d*/ #3a9184; /* Firefox */ }
+
 .container {
   padding-right: 15px;
   padding-left: 15px;

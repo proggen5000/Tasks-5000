@@ -1,9 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%@ include file="jsp/header.jsp" %>
-<jsp:include page="jsp/menu.jsp"><jsp:param name="menu" value="teams" /></jsp:include>
-
 	<%-- Aufgabe erstellen --%>
 	<c:if test="${param.mode == 'new'}">
 		<c:set var="team" scope="page" value="Microsoft Windows Core Development Team" />
@@ -50,8 +47,13 @@
 		<c:set var="valid_request" scope="page" value="true" />
 	</c:if>
 
-			<c:if test="${valid_request != true}">
-				<div class="alert alert-danger">Bitte rufen Sie diese Seite &uuml;ber eine g&uuml;ltige Verkn&uuml;pfung auf!</div>
+
+<jsp:include page="jsp/header.jsp"><jsp:param name="page_title" value="${name}" /></jsp:include>
+<jsp:include page="jsp/menu.jsp"><jsp:param name="menu" value="teams" /></jsp:include>
+
+			<c:if test="${!valid_request}">
+				<h1>Fehler beim Zugriff</h1>
+				<p class="alert alert-danger">Bitte rufen Sie diese Seite &uuml;ber eine g&uuml;ltige Verkn&uuml;pfung auf!</p>
 			</c:if>
 
 			
@@ -60,7 +62,7 @@
 				
 				<ol class="breadcrumb">
 					<li><a href="index.jsp">Start</a></li>
-					<li><a href="team.jsp">${team}</a></li>
+					<li><a href="team.jsp?mode=view&id=X">${team}</a></li>
 					<li>${group}</li>
 				</ol>
 				
@@ -104,7 +106,7 @@
 			<c:if test="${valid_request and (param.mode == 'edit' or param.mode == 'new')}">
 				<ol class="breadcrumb">
 					<li><a href="index.jsp">Start</a></li>
-					<li><a href="team.jsp">${team}</a></li>
+					<li><a href="team.jsp?mode=view&id=X">${team}</a></li>
 				</ol>
 				
 				<h1>${title}</h1>
@@ -143,7 +145,7 @@
 					    	</div>
 					</div>
 					<div class="form-group col-xs">
-						<label for="members"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <small>(mehrere Mitglieder durck Gedr&uuml;ckthalten von Strg markieren)</small>
+						<label for="members"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <small>(mehrere Mitglieder durck Gedr&uuml;ckthalten von Strg/Cmd markieren)</small>
 						<select multiple name="members" id="members" size="3" class="form-control">
 							<option value="1">Felix Fichte</option>
 							<option value="34">Gunnar Lehker</option>
@@ -159,7 +161,7 @@
 						<button type="reset" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Zur&uuml;cksetzen</button>
 					</div>
 				</form>
-				<%@ include file="jsp/sidebar.jsp" %>
+				<jsp:include page="jsp/sidebar.jsp" />
 			
 			</c:if>
 			
@@ -169,7 +171,7 @@
 				
 				<ol class="breadcrumb">
 					<li><a href="index.jsp">Start</a></li>
-					<li><a href="team.jsp">${team}</a></li>
+					<li><a href="team.jsp?mode=view&id=X">${team}</a></li>
 					<li>${group}</li>
 				</ol>
 				
@@ -183,4 +185,4 @@
 				</div><%-- Ende Sidebar, ggf. durch Methode ergänzen --%>
 			</c:if>
 
-<%@ include file="jsp/footer.jsp" %>
+<jsp:include page="jsp/footer.jsp" />
