@@ -11,8 +11,22 @@ public class Mitglied implements Serializable{
 	private String nachname;
 	private long reg_datum;
 	
-	// Konstruktor!
-		
+	// Konstruktor
+	public Mitglied(){
+	}
+	
+	public Mitglied(long id, String username, String email, String password,
+			String vorname, String nachname, long reg_datum) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.vorname = vorname;
+		this.nachname = nachname;
+		this.reg_datum = reg_datum;
+	}
+
 	//Getter & Setter
 	public long getId() {
 		return id;

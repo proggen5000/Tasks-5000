@@ -13,8 +13,8 @@
 	      	<div class="checkbox col-xs-7"><label><input type="checkbox"> Login merken</label></div>
 	      </div>
 	
-	      <a href="/lostpw"><span class="glyphicon glyphicon-lock"></span> Passwort vergessen?</a><br />
-	      <a href="/register.jsp"><span class="glyphicon glyphicon-pencil"></span> Registrieren</a>
+	      <a href="lostpw.jsp"><span class="glyphicon glyphicon-lock"></span> Passwort vergessen?</a><br />
+	      <a href="register.jsp"><span class="glyphicon glyphicon-pencil"></span> Registrieren</a>
 		</form>
 	</c:if>
 	

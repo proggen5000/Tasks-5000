@@ -27,7 +27,7 @@
 	    </a>
 	    <ul class="dropdown-menu">
 	      <li><a href="profile.jsp?mode=view&id=XX"><span class="glyphicon glyphicon-user"></span> Mein Profil</a></li>
-	      <li><a href="profile.jsp?mode=edit&id=XX"><span class="glyphicon glyphicon-cog"></span> Profil &auml;ndern</a></li>
+	      <li><a href="profile.jsp?mode=edit&id=XX"><span class="glyphicon glyphicon-pencil"></span> Profil bearbeiten</a></li>
 	      <li class="divider"></li>
 	      <li><a href="login.jsp?mode=logout"><span class="glyphicon glyphicon-remove"></span> Logout</a></li>
 	    </ul>

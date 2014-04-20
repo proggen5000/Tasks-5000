@@ -8,7 +8,7 @@ import entities.Mitglied;
 
 public class MitgliederVerwaltung {
 
-	public Mitglied neu (Mitglied mitglied){
+	public static Mitglied neu (Mitglied mitglied){
 		
 		//Einfügen der Werte (ohne ID)
 		String table= "mitglieder";
@@ -30,7 +30,7 @@ public class MitgliederVerwaltung {
 		return testmitglied;
 	}
 	
-	public Mitglied bearbeiten (Mitglied mitglied){
+	public static Mitglied bearbeiten (Mitglied mitglied){
 		
 		//Aktualisieren des Mitglieds
 		String table= "mitglieder";
@@ -57,7 +57,7 @@ public class MitgliederVerwaltung {
 		return testmitglied;
 	}
 	
-	public boolean loeschen (Mitglied mitglied){
+	public static boolean loeschen (Mitglied mitglied){
 		
 		//Mitglied anhand der ID löschen
 		String table= "mitglieder";
@@ -94,23 +94,23 @@ public class MitgliederVerwaltung {
 		return testmitglied;
 	}
 	
-	public ArrayList<Mitglied> getListe(){
+	public static ArrayList<Mitglied> getListe(){
 		return null;
 	}
 	
-	public ArrayList<Mitglied> getListeVonAufgaben(int aufgID){
+	public static ArrayList<Mitglied> getListeVonAufgaben(int aufgID){
 		return null;
 	}
 	
-	public ArrayList<Mitglied> getListeVonTeam(int teamID){
+	public static ArrayList<Mitglied> getListeVonTeam(int teamID){
 		return null;
 	}
 	
-	public boolean istMitgliedInTeam(int mitgliedID, int teamID){
+	public static boolean istMitgliedInTeam(int mitgliedID, int teamID){
 		return false;
 	}
 	
-	public boolean pruefeLogin(String username, String pw){
+	public static boolean pruefeLogin(String username, String pw){
 		if(username.equals("admin") && pw.equals("123")){
 			return true;
 		}

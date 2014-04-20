@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 	<%-- Team erstellen --%>
-	<c:if test="${param.mode == 'new' and login}">
+	<c:if test="${login and param.mode == 'new'}">
 		<c:set var="name" scope="page" value="" />
 		<c:set var="slogan" scope="page" value="" />
 		
@@ -11,7 +11,7 @@
 	</c:if>
 	
 	<%-- Team bearbeiten/ansehen --%>
-	<c:if test="${(param.mode == 'edit' or param.mode == 'view') and param.id != null and login}">
+	<c:if test="${login and param.id != null and (param.mode == 'edit' or param.mode == 'view')}">
 		<c:set var="name" scope="page" value="Microsoft Windows Core Development Team" />
 		<c:set var="slogan" scope="page" value="Hier k&ouml;nnte ein toller Slogan stehen." />
 		
@@ -20,8 +20,8 @@
 		<c:set var="valid_request" scope="page" value="true" />
 	</c:if>
 	
-	<%-- Team entfernen --%>
-	<c:if test="${param.mode == 'remove' and param.id != null and login}">
+	<%-- Team löschen --%>
+	<c:if test="${login and param.id != null and param.mode == 'remove'}">
 		<c:set var="name" scope="page" value="Microsoft Windows Core Development Team" />
 		
 		<c:set var="title" scope="page" value="Team l&ouml;schen"/>
@@ -46,7 +46,8 @@
 
 		  		<h1>${name} <span class="glyphicon glyphicon-briefcase small"></span></h1>
 		  		${slogan}
-		  		<h2>Windows 8.1</h2>
+		  		<h2><a href="taskGroup.jsp?mode=edit&id=X" title="Aufgabengruppe bearbeiten">Windows 8.1</a></h2>
+		  		<p>Alle Aufgaben und T&auml;tigkeiten zu Windows 8.1</p>
 				<div class="list-group">
 					<a href="task.jsp?mode=view&id=X" class="list-group-item">
 						<div class="task-progress"><div class="progress">
@@ -82,7 +83,8 @@
 					</a>
 				</div>
 		  		
-		  		<h2>Hier eine weitere Gruppe an Aufgaben</h2>
+		  		<h2><a href="taskGroup.jsp?mode=edit&id=X" title="Aufgabengruppe bearbeiten">Windows 9</a></h2>
+		  		<p>Alle Aufgaben und T&auml;tigkeiten zu Windows 9, welches 2015 erscheinen wird</p>
 		  		<div class="list-group">
 					<a href="task.jsp?mode=view&id=X" class="list-group-item">
 						<div class="task-progress"><div class="progress">
@@ -123,11 +125,12 @@
 				<h1>Aktionen</h1>
 					<div class="list-group">
 						<a href="task.jsp?mode=new&team=X" class="list-group-item"><span class="glyphicon glyphicon-time"></span> Aufgabe erstellen</a>
-						<a href="taskGroup.jsp?mode=new&team=X" class="list-group-item"><span class="glyphicon glyphicon-list"></span> Aufgabengruppe erstellen</a>
+						<a href="taskGroup.jsp?mode=new&team=X" class="list-group-item"><span class="glyphicon glyphicon-tag"></span> Aufgabengruppe erstellen</a>
 					</div>
 					<div class="list-group">
 						<a href="team.jsp?mode=edit&id=X" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Team bearbeiten</a>
-						<a href="profile.jsp?mode=leaveTeam&id=X" class="list-group-item"><span class="glyphicon glyphicon-log-out"></span> Team verlassen</a>
+						<a href="team.jsp?mode=remove&id=X" class="list-group-item"><span class="glyphicon glyphicon-remove"></span> Team l&ouml;schen</a>
+						<a href="profile.jsp?mode=leave&id=X" class="list-group-item"><span class="glyphicon glyphicon-log-out"></span> Team verlassen</a>
 					</div>			
 			
 				<h1>Mitglieder</h1>
@@ -144,14 +147,14 @@
 		<%-- Team bearbeiten/erstellen --%>
 		<c:if test="${valid_request and (param.mode == 'edit' or param.mode == 'new')}">				
 			<h1>${title}</h1>
-			<form class="form" role="form">
+			<form class="form" action="">
 		  		<div class="form-group col-xs row">
 		  			<div class="col-xs-6">
 		  				<label for="name"><span class="glyphicon glyphicon-briefcase"></span> Teamname*</label>
 						<input id="name" name="name" type="text" class="form-control input-lg" placeholder="" value="${name}">
 		  			</div>
 		  			<div class="col-xs-6">
-		  				<label for="leader"><span class="glyphicon glyphicon-user"></span> Teamleiter*</label>
+		  				<label for="leader"><span class="glyphicon glyphicon-user"></span> Teammanager*</label>
 						<select name="leader" size="1" class="form-control input-lg">
 							<option value="1" selected>Sebastian Herrmann</option>
 							<option value="34">Felix Fichte</option>
@@ -165,7 +168,7 @@
 					<textarea id="slogan" name="slogan" class="form-control" rows="2">${slogan}</textarea>
 				</div>
 				<div class="form-group col-xs">
-					<label for="members"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <small>(mehrere Mitglieder durck Gedr&uuml;ckthalten von Strg/Cmd markieren)</small>
+					<label for="members"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <small>(mehrere Mitglieder durck Gedr&uuml;ckthalten von <kbd>Strg</kbd> bzw. <kbd>Cmd</kbd> markieren)</small>
 					<div class="row">
 						<div class="col-xs-4">
 							<select multiple name="members" id="members" size="8" class="form-control">
@@ -194,10 +197,25 @@
 				<div class="form-group">
 					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> ${submit_button}</button>
 					<button type="reset" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Zur&uuml;cksetzen</button>
+					<c:if test="${param.mode == 'edit'}">
+						<a href="team.jsp?mode=remove&id=X" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Team l&ouml;schen</a>
+					</c:if>
 				</div>
 			</form>
 			<jsp:include page="jsp/sidebar.jsp" />
 		
+		</c:if>
+		
+		
+		<%-- Team löschen --%>
+		<c:if test="${valid_request and param.mode == 'remove'}">
+			
+			<h1>${title}</h1>
+			<p>Sind Sie sicher, dass Sie das Team "<b>${name}</b>" dauerhaft l&ouml;schen m&ouml;chten?</p>
+			<a class="btn btn-danger" href="team.jsp?mode=remove&id=X&sure=true"><span class="glyphicon glyphicon-ok"></span> Ja, l&ouml;schen</a>
+			<a class="btn btn-default" href="team.jsp?mode=view&id=X"><span class="glyphicon glyphicon-remove"></span> Nein, abbrechen</a>
+							
+			<jsp:include page="jsp/sidebar.jsp" />
 		</c:if>
 
 <jsp:include page="jsp/footer.jsp" />

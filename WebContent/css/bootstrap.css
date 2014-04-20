@@ -777,9 +777,11 @@ footer {
 }
 footer a {
   color: /*gr*/ #ccc;
+  margin-right: 10px;
 }
 footer a:hover {
-  color: /*gr*/ #bbb;
+  color: /*gr*/ #aaa;
+  text-decoration: none;
 }
 
 @media (min-width: 768px) {
@@ -1626,6 +1628,10 @@ table th[class*="col-"] {
   background-color: #ebcccc;
 }
 @media (max-width: 767px) {
+   .container .sidebar {
+	 border-top: 4px solid /*gr*/ #ccc;
+   }
+	
   .table-responsive {
     width: 100%;
     margin-bottom: 15px;

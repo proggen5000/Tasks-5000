@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 import database.Queries;
 import entities.Aufgabe;
+import entities.Aufgabengruppe;
+import entities.Mitglied;
+import entities.Team;
 
 
 
@@ -70,6 +73,11 @@ public class AufgabenVerwaltung {
 			e.printStackTrace();
 		}
 		return aufgabe_neu;
+	}
+	
+	public static Aufgabe getDummy (int id){
+		Aufgabe dummy = new Aufgabe(id, new Team(13, "Dummy-Team", "Dummy-Slogan", new Mitglied(1337, "superadmin", "admin@email.de", "pw456", "Super", "Admin", 123), 2124), new Aufgabengruppe(3, "Dummy-Gruppe", "Dummy-Gruppenbeschreibung"), new Mitglied(2, "herrherrmann", "basti@email.de", "123", "Sebastian", "Herrmann", 123), "Dummy-Aufgabe", "Dummy-Beschreibung", 45, 315465400);
+		return dummy;
 	}
 	
 	public static ArrayList<Aufgabe> getListe(){

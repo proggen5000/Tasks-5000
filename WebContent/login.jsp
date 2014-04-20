@@ -7,9 +7,9 @@
 		  		<c:choose>
 		  			<%-- Loginversuch --%>
 			  		<c:when test="${param.mode == null and param.username != null and param.password != null}">
-			  			<% MitgliederVerwaltung mv = new MitgliederVerwaltung(); %>
+			  			
 						<%-- Erfolg --%>
-						<c:if test="<%= mv.pruefeLogin(request.getParameter(\"username\"), request.getParameter(\"password\")) %>">
+						<c:if test="<%= MitgliederVerwaltung.pruefeLogin(request.getParameter(\"username\"), request.getParameter(\"password\")) %>">
 				  			<c:set var="login" scope="session" value="true" />
 				  			<c:set var="currentUser" scope="session" value="admin" /> <%-- !!! --%>
 				  			<h1>Login erfolgreich</h1>
@@ -18,20 +18,22 @@
 				  		</c:if>
 				  		
 				  		<%-- Fehler --%>
-				  		<c:if test="<%= !mv.pruefeLogin(request.getParameter(\"username\"), request.getParameter(\"password\")) %>">
+				  		<c:if test="<%= !MitgliederVerwaltung.pruefeLogin(request.getParameter(\"username\"), request.getParameter(\"password\")) %>">
 				  			<h1>Fehler bei der Anmeldung</h1>
 			  				<p>Ihre Logindaten scheinen nicht zu stimmen. Bitte &uuml;berpr&uuml;fen Sie diese und versuchen Sie es erneut.</p>
 				  		</c:if>
 			  		</c:when>
+			  		
 			  		<%-- Logout --%>
 			  		<c:when test="${login and param.mode == 'logout'}">
-			  			<c:set var="login" scope="session" value="false" />
-			  			<c:set var="currentUser" scope="session" value="" /> <%-- ggf. nochmal ändern? --%>
+			  			<c:remove var="login" scope="session" />
+			  			<c:remove var="currentUser" scope="session" /> <%-- ggf. nochmal ändern? --%>
 			  			<h1>Logout erfolgreich</h1>
 			  			<p>Sie haben sich erfolgreich aus dem System ausgeloggt.</p>
 			  			<p>Sch&ouml;nen Tag noch!</p>
 			  			<a href="index.jsp" class="btn btn-primary">Zur Startseite</a>
 			  		</c:when>
+			  		
 			  		<%-- Fehler --%>
 			  		<c:otherwise>
 			  			<h1>Fehler bei der Anmeldung</h1>
