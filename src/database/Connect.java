@@ -1,6 +1,6 @@
 package database;
 import java.sql.*;
-     
+
 class Connect {
 	private static Connection con;
 	private static String dbUser ="%";

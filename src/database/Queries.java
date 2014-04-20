@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class Queries {
 	private Queries(){}
-	 
+	
 	public static Object scalarQuery(String table, String column, String where) throws SQLException{
 			PreparedStatement query;
 			query = Connect.getConnection().prepareStatement("SELECT "+column+" FROM "+table+" WHERE "+where);
