@@ -7,6 +7,7 @@ public class Aufgabengruppe implements Serializable {
 	private long id;
 	private String name;
 	private String beschreibung;
+	// Team??
 	
 	public Aufgabengruppe(){}
 	

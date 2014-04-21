@@ -5,17 +5,19 @@ public class Aufgabe implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private long id;
-	private Team team; 
+	private Team team; // vermutlich unnötig, da Team über Aufgabengruppe ermittelt werden kann!! 
 	private Aufgabengruppe gruppe;
 	private Mitglied ersteller;
 	private String titel;
 	private String beschreibung;
 	private int status;
+	private long date; // ergänzt!!
 	private long deadline;
-	// Wem ist Aufgabe zugeteilt? Sollte das hier gespeichert werden?
+	// Wem ist Aufgabe zugeteilt? Sollte das hier gespeichert werden? -> Extra Bean!
+	
 	public Aufgabe(){
 	}
-	public Aufgabe(long id, Team team, Aufgabengruppe gruppe, Mitglied ersteller, String titel, String beschreibung, int status, long deadline){
+	public Aufgabe(long id, Team team, Aufgabengruppe gruppe, Mitglied ersteller, String titel, String beschreibung, int status, long date, long deadline){
 		this.id = id;
 		this.team = team;
 		this.gruppe = gruppe;
@@ -23,6 +25,7 @@ public class Aufgabe implements Serializable {
 		this.titel = titel;
 		this.beschreibung = beschreibung;
 		this.status = status;
+		this.date = date;
 		this.deadline = deadline;
 	}
 	
@@ -83,6 +86,12 @@ public class Aufgabe implements Serializable {
 		this.status = status;
 	}
 
+	public long getDate() {
+		return date;
+	}
+	public void setDate(long date) {
+		this.date = date;
+	}
 	public long getDeadline() {
 		return deadline;
 	}

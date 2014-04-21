@@ -753,7 +753,6 @@ a::-moz-selection { background: /*t1d*/ #3a9184; /* Firefox */ }
   background-color: #fff;
   margin-top: 5px;
 }
-
 .container  .header {
   background-color: /*t1*/ #49b8a8;
   padding: 10px 20px 5px;
@@ -771,6 +770,7 @@ a::-moz-selection { background: /*t1d*/ #3a9184; /* Firefox */ }
 .container  .sidebar {
   padding: 10px 30px;
 }
+
 footer {
   text-align: center;
   margin: 5px 0;
@@ -782,6 +782,16 @@ footer a {
 footer a:hover {
   color: /*gr*/ #aaa;
   text-decoration: none;
+}
+
+.error {
+	color: #a94442;
+	font-size: 6em;
+	text-align: center;
+	vertical-align: middle;
+}
+.errorlog {
+	color: #a94442;
 }
 
 @media (min-width: 768px) {

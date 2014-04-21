@@ -33,6 +33,10 @@ public class AufgabenVerwaltung {
 		}
 	}
 	
+	public static Aufgabe neuDummy (Aufgabe aufgabe){
+		return aufgabe;
+	}
+	
 	public static Aufgabe bearbeiten (Aufgabe aufgabe){
 		//Aktualisieren der Aufgabe
 		String table = "Aufgabe";
@@ -76,7 +80,7 @@ public class AufgabenVerwaltung {
 	}
 	
 	public static Aufgabe getDummy (int id){
-		Aufgabe dummy = new Aufgabe(id, new Team(13, "Dummy-Team", "Dummy-Slogan", new Mitglied(1337, "superadmin", "admin@email.de", "pw456", "Super", "Admin", 123), 2124), new Aufgabengruppe(3, "Dummy-Gruppe", "Dummy-Gruppenbeschreibung"), new Mitglied(2, "herrherrmann", "basti@email.de", "123", "Sebastian", "Herrmann", 123), "Dummy-Aufgabe", "Dummy-Beschreibung", 45, 315465400);
+		Aufgabe dummy = new Aufgabe(id, new Team(13, "Dummy-Team", "Dummy-Slogan", new Mitglied(1337, "superadmin", "admin@email.de", "pw456", "Super", "Admin", 123), 2124), new Aufgabengruppe(3, "Dummy-Gruppe", "Dummy-Gruppenbeschreibung"), new Mitglied(2, "herrherrmann", "basti@email.de", "123", "Sebastian", "Herrmann", 123), "Dummy-Aufgabe", "Dummy-Beschreibung", 45, 1398100350, 1398500350);
 		return dummy;
 	}
 	

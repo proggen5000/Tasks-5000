@@ -61,6 +61,7 @@ public class AufgabengruppenVerwaltung {
 	public static boolean vorhanden (int id){
 		return AufgabengruppenVerwaltung.get(id) != null;
 	}	
+	
 	public static Aufgabengruppe get (int id){
 		//Suchen der Aufgabe anhand der ID
 		String sql = "SELECT * FROM AufgabenGruppen WHERE AufgabenGruppeID = " + id;
@@ -71,6 +72,10 @@ public class AufgabengruppenVerwaltung {
 			e.printStackTrace();
 		}
 		return aufgabengruppe_neu;
+	}
+	
+	public static Aufgabengruppe getDummy (int id){
+		return new Aufgabengruppe(id, "Dummy-Gruppe", "Dummy-Gruppenbeschreibung");
 	}
 	
 	public static Aufgabengruppe vorhanden (String name){

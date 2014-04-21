@@ -1,7 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="entities.Team" %>
 <%@ page import="entities.Mitglied" %>
-<jsp:useBean id="team" class="entities.Team" scope="page"></jsp:useBean>
 
 <jsp:include page="jsp/header.jsp"><jsp:param name="page_title" value="Start" /></jsp:include>
 <jsp:include page="jsp/menu.jsp" />
@@ -51,7 +50,7 @@
 					    </thead>
 			  			<tbody>
 						    <tr>
-						        <td><a href="team.jsp?mode=view&id=X">${team.name}</a></td>
+						        <td><a href="team.jsp?mode=view&id=X">Test-Team</a></td>
 						        <td>13 (2)</td>
 						        <td>4</td>
 						    </tr>
