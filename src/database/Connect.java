@@ -1,4 +1,4 @@
-package database;
+ package database;
 import java.sql.*;
 
 class Connect {
@@ -11,28 +11,18 @@ class Connect {
 	
 	private Connect(){}
 	
-	public static Connection getConnection(){
+	public static Connection getConnection() throws SQLException{
 		if (con == null){
 			try {
 				Class.forName("com.mysql.jdbc.Driver").newInstance();
-				con = DriverManager.getConnection("jdbc:mysql://"+dbHost+":"+dbPort+"/"+dbName, dbUser, dbPw);
-				System.out.println(con.isClosed());
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				return null;
-			}catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			} 
-			
+			con = DriverManager.getConnection("jdbc:mysql://"+dbHost+":"+dbPort+"/"+dbName, dbUser, dbPw);
 		}
 		return con;
 	}
-	public static void releaseConnection(){
-		try {
-			con.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public static void releaseConnection() throws SQLException{
+		con.close();
 	}
 }

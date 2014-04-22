@@ -3,11 +3,12 @@ package administration;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 
 import database.Queries;
 import entities.Aufgabe;
+import entities.Aufgabengruppe;
 import entities.Mitglied;
+import entities.Team;
 
 
 
@@ -32,10 +33,14 @@ public class AufgabenVerwaltung {
 		}
 	}
 	
+	public static Aufgabe neuDummy (Aufgabe aufgabe){
+		return aufgabe;
+	}
+	
 	public static Aufgabe bearbeiten (Aufgabe aufgabe){
-		//Aktualisieren des Mitglieds
-		String table= "Aufgabe";
-		String updateString= "TeamID = " + aufgabe.getTeam().getId() + ", AufgabenGruppeID = " + aufgabe.getGruppe().getId()
+		//Aktualisieren der Aufgabe
+		String table = "Aufgabe";
+		String updateString = "TeamID = " + aufgabe.getTeam().getId() + ", AufgabenGruppeID = " + aufgabe.getGruppe().getId()
 				+ ", ErstellerID = " + aufgabe.getErsteller().getId() + ", Titel = " + aufgabe.getTitel()
 				+ ", Beschreibung = " + aufgabe.getBeschreibung() + ", Status = " + aufgabe.getStatus()
 				+ ", Deadline = " + aufgabe.getDeadline();
@@ -44,8 +49,8 @@ public class AufgabenVerwaltung {
 		
 		try {
 			if (Queries.updateQuery(table, updateString, where) == true) {
-				String sql= "SELECT * FROM Aufgabe WHERE AufgabeID=" + aufgabe.getId();
-				aufgabe_neu= (Aufgabe) Queries.scalarQuery(sql);
+				String sql = "SELECT * FROM Aufgabe WHERE AufgabeID = " + aufgabe.getId();
+				aufgabe_neu = (Aufgabe) Queries.scalarQuery(sql);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -54,7 +59,7 @@ public class AufgabenVerwaltung {
 	}
 	
 	public static boolean loeschen (Aufgabe aufgabe){
-		String table= "Aufgabe";
+		String table = "Aufgabe";
 		String where = "AufgabeID = " + aufgabe.getId();
 		return Queries.deleteQuery(table, where);
 	}
@@ -74,18 +79,23 @@ public class AufgabenVerwaltung {
 		return aufgabe_neu;
 	}
 	
+	public static Aufgabe getDummy (int id){
+		Aufgabe dummy = new Aufgabe(id, new Team(13, "Dummy-Team", "Dummy-Slogan", new Mitglied(1337, "superadmin", "admin@email.de", "pw456", "Super", "Admin", 123), 2124), new Aufgabengruppe(3, "Dummy-Gruppe", "Dummy-Gruppenbeschreibung"), new Mitglied(2, "herrherrmann", "basti@email.de", "123", "Sebastian", "Herrmann", 123), "Dummy-Aufgabe", "Dummy-Beschreibung", 45, 1398100350, 1398500350);
+		return dummy;
+	}
+	
 	public static ArrayList<Aufgabe> getListe(){
 		// returnd eine ArrayListe aller Aufgabe
 		String sql = "SELECT * FROM Aufgabe";
-		ArrayList<Aufgabe> al = null;
+		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
 			
 			while(rs.next()){
 				//add every result in resultset to ArrayList
-				Aufgabe a = new Aufgabe(rs.getLong("AufgabeID"), TeamVerwaltung.vorhanden(rs.getInt("TeamID")),
-						AufgabengruppenVerwaltung.vorhanden(rs.getInt("AufgabenGruppeID")),
-						MitgliederVerwaltung.vorhanden(rs.getInt("ErstellerID")), rs.getString("Titel"),
+				Aufgabe a = new Aufgabe(rs.getLong("AufgabeID"), TeamVerwaltung.get(rs.getInt("TeamID")),
+						AufgabengruppenVerwaltung.get(rs.getInt("AufgabenGruppeID")),
+						MitgliederVerwaltung.get(rs.getInt("ErstellerID")), rs.getString("Titel"),
 						rs.getString("Beschreibung"), rs.getInt("Status"), rs.getLong("Titel"));
 				al.add(a);
 			}
@@ -100,15 +110,15 @@ public class AufgabenVerwaltung {
 	public static ArrayList<Aufgabe> getListeVonDatei(int dateiID){
 		// returnd eine ArrayListe aller Aufgabe die zu einer bestimmten datei gehšhren
 		String sql = "SELECT * FROM aufgaben JOIN aufgaben_dateien ON aufgaben.AufgabeID = aufgaben_dateien.Aufgaben_AufgabeID JOIN dateien ON dateien.DateiID = aufgaben_dateien.Dateien_DateiID WHERE DateiID = " + dateiID;
-		ArrayList<Aufgabe> al = null;
+		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
 			
 			while(rs.next()){
 				//add every result in resultset to ArrayList
-				Aufgabe a = new Aufgabe(rs.getLong("AufgabeID"), TeamVerwaltung.vorhanden(rs.getInt("TeamID")),
-						AufgabengruppenVerwaltung.vorhanden(rs.getInt("AufgabenGruppeID")),
-						MitgliederVerwaltung.vorhanden(rs.getInt("ErstellerID")), rs.getString("Titel"),
+				Aufgabe a = new Aufgabe(rs.getLong("AufgabeID"), TeamVerwaltung.get(rs.getInt("TeamID")),
+						AufgabengruppenVerwaltung.get(rs.getInt("AufgabenGruppeID")),
+						MitgliederVerwaltung.get(rs.getInt("ErstellerID")), rs.getString("Titel"),
 						rs.getString("Beschreibung"), rs.getInt("Status"), rs.getLong("Titel"));
 				al.add(a);
 			}
@@ -123,15 +133,15 @@ public class AufgabenVerwaltung {
 	public static ArrayList<Aufgabe> getListeVonGruppe(int grID){
 		// returnd eine ArrayListe aller Aufgabe
 				String sql = "SELECT * FROM Aufgabe WHERE AufgabenGruppeID = " + grID;
-				ArrayList<Aufgabe> al = null;
+				ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
 				try {
 					ResultSet rs = Queries.rowQuery(sql);
 					
 					while(rs.next()){
 						//add every result in resultset to ArrayList
-						Aufgabe a = new Aufgabe(rs.getLong("AufgabeID"), TeamVerwaltung.vorhanden(rs.getInt("TeamID")),
-								AufgabengruppenVerwaltung.vorhanden(rs.getInt("AufgabenGruppeID")),
-								MitgliederVerwaltung.vorhanden(rs.getInt("ErstellerID")), rs.getString("Titel"),
+						Aufgabe a = new Aufgabe(rs.getLong("AufgabeID"), TeamVerwaltung.get(rs.getInt("TeamID")),
+								AufgabengruppenVerwaltung.get(rs.getInt("AufgabenGruppeID")),
+								MitgliederVerwaltung.get(rs.getInt("ErstellerID")), rs.getString("Titel"),
 								rs.getString("Beschreibung"), rs.getInt("Status"), rs.getLong("Titel"));
 						al.add(a);
 					}

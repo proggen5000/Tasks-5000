@@ -1,82 +1,48 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="java.util.Date.*" %>
+<%@ page import="java.text.DateFormat" %>
 
-<%@ include file="jsp/header.jsp" %>
+<jsp:include page="jsp/header.jsp"><jsp:param name="page_title" value="${name}" /></jsp:include>
 <jsp:include page="jsp/menu.jsp"><jsp:param name="menu" value="teams" /></jsp:include>
 
-	<%-- Aufgabe erstellen --%>
-	<c:if test="${param.mode == 'new'}">
-		<c:set var="team" scope="page" value="Microsoft Windows Core Development Team"/>
-		<c:set var="group" scope="page" value="Windows 8.1"/>
-		<c:set var="name" scope="page" value=""/>
-		<c:set var="description" scope="page" value=""/>
-		<c:set var="date" scope="page" value=""/>
-		<c:set var="deadline" scope="page" value=""/>
-		<c:set var="status" scope="page" value=""/>
-		<c:set var="members" scope="page" value=""/> <%-- ??? --%>
-		
-		<c:set var="title" scope="page" value="Aufgabe erstellen"/>
-		<c:set var="submit_button" scope="page" value="Erstellen"/>
-		<c:set var="valid_request" scope="page" value="true" />
-	</c:if>
-	
-	<%-- Aufgabe bearbeiten/ansehen --%>
-	<c:if test="${param.mode == 'edit' or param.mode == 'view'}">
-		<c:set var="team" scope="page" value="Microsoft Windows Core Development Team"/>
-		<c:set var="group" scope="page" value="Windows 8.1"/>
-		<c:set var="name" scope="page" value="Banoodle-Aufgabe"/>
-		<c:set var="description" scope="page" value="Hallo, hier steht eine bisherige HTML-Beschreibung."/>
-		<c:set var="date" scope="page" value="2014-04-01"/>
-		<c:set var="deadline" scope="page" value="2014-04-14"/>
-		<c:set var="status" scope="page" value="33"/>
-		<c:set var="members" scope="page" value=""/> <%-- ??? --%>
-		
-		<c:set var="title" scope="page" value="Aufgabe bearbeiten"/>
-		<c:set var="submit_button" scope="page" value="Speichern"/>
-		<c:set var="valid_request" scope="page" value="true" />
-	</c:if>
-	
-	<%-- Aufgabe entfernen --%>
-	<c:if test="${param.mode == 'remove'}">
-		<c:set var="team" scope="page" value="Microsoft Windows Core Development Team"/>
-		<c:set var="group" scope="page" value="Windows 8.1"/>
-		<c:set var="name" scope="page" value="Banoodle-Aufgabe"/>
-		
-		<c:set var="title" scope="page" value="Aufgabe l&ouml;schen"/>
-		<c:set var="valid_request" scope="page" value="true" />
-	</c:if>
-
-			<c:if test="${valid_request != true}">
-				<div class="alert alert-danger">Bitte rufen Sie diese Seite &uuml;ber eine g&uuml;ltige Verkn&uuml;pfung auf!</div>
+			<%-- Zugriff nicht über Servlet --%>
+			<c:if test="${!valid_request}">
+				<c:redirect url="error.jsp" />
 			</c:if>
 
-			
 			<%-- Aufgabe ansehen --%>
-			<c:if test="${valid_request == true and param.mode == 'view'}">
+			<c:if test="${valid_request and param.mode == 'view'}">
+				
+				<c:set var="title" scope="page" value="Aufgabe bearbeiten" />
+				<c:set var="submit_button" scope="page" value="Speichern" />
 				
 				<ol class="breadcrumb">
 					<li><a href="index.jsp">Start</a></li>
-					<li><a href="team.jsp">${team}</a></li>
-					<li>${group}</li>
+					<li><a href="team.jsp?mode=view&id=X">${task.team.name}</a></li>
+					<li>${task.gruppe.name}</li>
+					<li class="active"></li>
 				</ol>
 				
-				<h1>${name} <span class="glyphicon glyphicon-time small"></span></h1>
-				<p>${description}</p>
+				<h1>${task.titel} <span class="glyphicon glyphicon-time small"></span></h1>
+				<p>${task.beschreibung}</p>
 				
 				<%-- prüfen, ob Dateien vorhanden --%>
 				<div class="panel panel-default">
 					<div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-paperclip"></span> Dateien</h3></div>
 					<div class="panel-body">
-						<span class="glyphicon glyphicon-file"></span> <a href="#">meinedatei.docx</a> (72 KB)<br />
-						<span class="glyphicon glyphicon-file"></span> <a href="#">einbild.jpg</a> (205 KB)
+						<span class="glyphicon glyphicon-file"></span> <a href="file.jsp?id=X">meinedatei.docx</a> (72 KB)<br />
+						<span class="glyphicon glyphicon-file"></span> <a href="file.jsp?id=X">einbild.jpg</a> (205 KB)
 					</div>
 				</div>
 				
 				</div><%-- Ende content --%>
+				<%-- Sidebar --%>
 				<div class="sidebar col-sm-3">
 					<h1>Aktionen</h1>
 						<div class="list-group">
-							<a href="task.jsp?mode=edit&id=XX" class="list-group-item list-group-item-info"><span class="glyphicon glyphicon-pencil"></span> Aufgabe bearbeiten</a>
-							<a href="task.jsp?mode=remove&id=XX" class="list-group-item list-group-item-danger"><span class="glyphicon glyphicon-remove"></span> Aufgabe l&ouml;schen</a>
+							<a href="task?mode=edit&id=XX" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Aufgabe bearbeiten</a>
+							<a href="task?mode=remove&id=XX" class="list-group-item"><span class="glyphicon glyphicon-remove"></span> Aufgabe l&ouml;schen</a>
 						</div>
 						<div class="list-group">
 							<a href="file.jsp?mode=new&task=X" class="list-group-item"><span class="glyphicon glyphicon-file"></span> Datei hochladen</a>
@@ -84,30 +50,47 @@
 				
 					<h1>Details</h1>
 						<div class="list-group">
-							<div class="list-group-item"><span class="glyphicon glyphicon-calendar"></span> ${date}</div>
-							<div class="list-group-item"><span class="glyphicon glyphicon-bell"></span> ${deadline}</div>
-							<div class="list-group-item"><span class="glyphicon glyphicon-dashboard"></span> Status: ${status}%</div>
+							<div class="list-group-item"><span class="glyphicon glyphicon-calendar"></span> <fmt:formatDate pattern="dd.MM.yyyy" value="${date}" /></div>
+							<div class="list-group-item"><span class="glyphicon glyphicon-bell"></span> <fmt:formatDate pattern="dd.MM.yyyy" value="${deadline}" /></div>
+							<div class="list-group-item"><span class="glyphicon glyphicon-dashboard"></span> Status: ${task.status}%</div>
 						</div>
 						<div class="list-group">
 							<a href="profile.jsp?mode=view&id=X" class="list-group-item"><span class="glyphicon glyphicon-user"></span> Gunnar Lehker <span class="label label-default">Ersteller</span></a>
 							<a href="profile.jsp?mode=view&id=X" class="list-group-item"><span class="glyphicon glyphicon-user"></span> Felix Fichte</a>
 						</div>
-				</div><%-- Ende Sidebar, ggf. durch Methode ergänzen --%>
+				</div><%-- Ende Sidebar --%>
 			</c:if>
 		
+		
 			<%-- Aufgabe bearbeiten/erstellen --%>
-			<c:if test="${valid_request == true and (param.mode == 'edit' or param.mode == 'new')}">
-				<ol class="breadcrumb">
-					<li><a href="index.jsp">Start</a></li>
-					<li><a href="team.jsp">${team}</a></li>
-				</ol>
+			<c:if test="${valid_request and (param.mode == 'edit' or param.mode == 'new')}">
+			
+				<c:if test="${param.mode == 'new'}">
+					<c:set var="title" scope="page" value="Aufgabe erstellen" />
+					<c:set var="submit_button" scope="page" value="Erstellen" />
+					<ol class="breadcrumb">
+						<li><a href="index.jsp">Start</a></li>
+						<li><a href="team.jsp?mode=view&id=X">${team}</a></li>
+						<li class="active"></li>
+					</ol>
+				</c:if>
+				<c:if test="${param.mode == 'edit'}">
+					<c:set var="title" scope="page" value="Aufgabe bearbeiten" />
+					<c:set var="submit_button" scope="page" value="Speichern" />
+					<ol class="breadcrumb">
+						<li><a href="index.jsp">Start</a></li>
+						<li><a href="team.jsp?mode=view&id=X">${task.team.name}</a></li>
+						<li class="active"></li>
+					</ol>
+				</c:if>
+				
 				
 				<h1>${title}</h1>
-				<form class="form" role="form">
+				<form class="form" action="task" method="post" enctype="multipart/form-data">
 			  		<div class="form-group col-xs row">
 			  			<div class="col-xs-6">
 			  				<label for="name"><span class="glyphicon glyphicon-time"></span> Name</label>
-							<input id="name" name="name" type="text" class="form-control input-lg" placeholder="" value="${name}">
+							<input id="name" name="name" type="text" class="form-control input-lg" placeholder="" value="${task.titel}">
 			  			</div>
 			  			<div class="col-xs-6">
 			  				<label for="group"><span class="glyphicon glyphicon-tag"></span> Aufgabengruppe</label>
@@ -121,24 +104,24 @@
 					</div>
 					<div class="form-group col-xs">
 						<label for="description"><span class="glyphicon glyphicon-align-left"></span> Beschreibung</label>
-						<textarea id="description" name="description" class="form-control" rows="5">${description}</textarea>
+						<textarea id="description" name="description" class="form-control" rows="5">${task.beschreibung}</textarea>
 					</div>
 					<div class="form-group col-xs row">
 					    	<div class="col-xs-4">
 					    		<label><span class="glyphicon glyphicon-calendar"></span> Erstellungsdatum</label>
-					    		<p class="form-control-static">${date}</p>
+					    		<p class="form-control-static"><fmt:formatDate pattern="dd.MM.yyyy" value="${date}" /></p>
 					    	</div>
 					    	<div class="col-xs-4">
 					    		<label for="deadline"><span class="glyphicon glyphicon-bell"></span> Deadline</label>
-								<input id="deadline" name="deadline" type="date" class="form-control" value="${deadline}">
+								<input id="deadline" name="deadline" type="date" class="form-control" value="<fmt:formatDate pattern="yyyy-MM-dd" value="${deadline}" />">
 					    	</div>
 					    	<div class="col-xs-4">
 					    		<label for="status"><span class="glyphicon glyphicon-dashboard"></span> Status</label> <small>(%)</small>
-								<input id="status" name="status" type="number" min="0" max="100" class="form-control" value="${status}">
+								<input id="status" name="status" type="number" min="0" max="100" class="form-control" value="${task.status}">								
 					    	</div>
 					</div>
 					<div class="form-group col-xs">
-						<label for="members"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <small>(mehrere Mitglieder durck Gedr&uuml;ckthalten von Strg markieren)</small>
+						<label for="members"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <small>(mehrere Mitglieder durck Gedr&uuml;ckthalten von <kbd>Strg</kbd> bzw. <kbd>Cmd</kbd> markieren)</small>
 						<select multiple name="members" id="members" size="3" class="form-control">
 							<option value="1">Felix Fichte</option>
 							<option value="34">Gunnar Lehker</option>
@@ -149,33 +132,89 @@
 							<option value="74">z</option>
 						</select>
 					</div>
+					
+					<table class="table table-hover">
+			  			<thead>
+			  			<tr>
+					        <th><span class="glyphicon glyphicon-paperclip"></span> Dateien</th>
+					        <th>Gr&ouml;&szlig;e <small>(KB)</small></th>
+					        <th>L&ouml;schen</th>
+					    </tr>
+					    </thead>
+			  			<tbody>
+						    <tr>
+						        <td><a href="file.jsp?id=X"><span class="glyphicon glyphicon-file"></span> Test.jpg</a></td>
+						        <td>132</td>
+						        <td><input type="checkbox" name="delete" value="2"></td>
+						    </tr>
+						    <tr>
+						        <td><a href="file.jsp?id=X"><span class="glyphicon glyphicon-file"></span> doku.docx</a></td>
+						        <td>78</td>
+						        <td><input type="checkbox" name="delete" value="12"></td>
+						    </tr>
+						    <tr>
+						        <td><a href="file.jsp?id=X"><span class="glyphicon glyphicon-file"></span> foto.png</a></td>
+						        <td>108</td>
+						        <td><input type="checkbox" name="delete" value="12312"></td>
+						    </tr>
+					</tbody>
+					</table>
+					<div class="form-group">
+						<label for="fileUpload"><span class="glyphicon glyphicon-file"></span> Neue Datei hochladen</label>
+						<input type="file" id="fileUpload" name="fileUpload">
+						<p class="help-block">Die Datei wird mit dem Speichern &uuml;bernommen.</p>
+					</div>
+					
+					<c:if test="${param.mode == 'new'}">
+						<input type="hidden" name="mode" value="new">
+					</c:if>
+					<c:if test="${param.mode == 'edit'}">
+						<input type="hidden" name="mode" value="edit">
+					</c:if>
+					
+					<input type="hidden" name="team" value="${task.team.name}">
+					
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> ${submit_button}</button>
 						<button type="reset" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Zur&uuml;cksetzen</button>
+						<c:if test="${param.mode == 'edit'}">
+							<a href="task?mode=remove&id=X" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Aufgabe l&ouml;schen</a>
+						</c:if>
 					</div>
 				</form>
-				<%@ include file="jsp/sidebar.jsp" %>
+				<jsp:include page="jsp/sidebar.jsp" />
 			
 			</c:if>
 			
 			
-			<%-- Aufgabe entfernen --%>
-			<c:if test="${valid_request == true and param.mode == 'remove'}">
-				
+			<%-- Aufgabe löschen --%>
+			<c:if test="${valid_request and param.mode == 'remove'}">			
+				<c:set var="title" scope="page" value="Aufgabe l&ouml;schen"/>
+			
 				<ol class="breadcrumb">
 					<li><a href="index.jsp">Start</a></li>
-					<li><a href="team.jsp">${team}</a></li>
-					<li>${group}</li>
+					<li><a href="team.jsp?mode=view&id=X">${task.team.name}</a></li>
+					<li>${task.gruppe.name}</li>
+					<li class="active"></li>
 				</ol>
-				
 				<h1>${title}</h1>
-				<p>Sind Sie sicher, dass Sie die Aufgabe "<b>${name}</b>" entfernen m&ouml;chten?</p>
-				<a class="btn btn-danger" href="task.jsp?remove=view&id=X&sure=true"><span class="glyphicon glyphicon-ok"></span> Ja, l&ouml;schen</a>
-				<a class="btn btn-default" href="task.jsp?mode=view&id=X"><span class="glyphicon glyphicon-remove"></span> Nein, abbrechen</a>
-								
-				</div><%-- Ende content --%>
-				<div class="sidebar col-sm-3">
-				</div><%-- Ende Sidebar, ggf. durch Methode ergänzen --%>
+				
+				<c:choose>
+					<%-- Abfrage --%>
+					<c:when test="${!param.sure}">
+						<p>Sind Sie sicher, dass Sie die Aufgabe "<b>${task.titel}</b>" l&ouml;schen m&ouml;chten?</p>
+						<a class="btn btn-danger" href="${pageContext.request.requestURL}?${pageContext.request.queryString}&sure=true"><span class="glyphicon glyphicon-ok"></span> Ja, l&ouml;schen</a>
+						<a class="btn btn-default" href="task?mode=view&id=X"><span class="glyphicon glyphicon-remove"></span> Nein, abbrechen</a>
+					</c:when>
+					<%-- Abfrage bestätigt -> Löschen --%>
+					<c:when test="${param.sure}">
+						<%-- AufgabenVerwaltung.loeschen(aufgabe); --%>
+						<p>Die Aufgabe "<b>${task.titel}</b>" wurde erfolreich gel&ouml;scht!</p>
+						<a class="btn btn-primary" href="team.jsp?mode=view&id=X"><span class="glyphicon glyphicon-ok"></span> Zur&uuml;ck zum Team</a>
+					</c:when>
+				</c:choose>
+
+				<jsp:include page="jsp/sidebar.jsp" />
 			</c:if>
 
-<%@ include file="jsp/footer.jsp" %>
+<jsp:include page="jsp/footer.jsp" />

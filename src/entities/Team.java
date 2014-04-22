@@ -6,14 +6,21 @@ public class Team implements Serializable {
 
 	private long id;
 	private String name;
-	private long gruendungsdatum;
 	private String slogan;
 	private Mitglied gruppenfuehrer;
+	private long gruendungsdatum;
 	
 	public Team(){
-		this.id = 4;
-		this.name = "Team zum Test";
-		this.slogan = "Hier könnte ein toller Slogan stehen!";
+	}
+
+	public Team(long id, String name, String slogan,
+			Mitglied gruppenfuehrer, long gruendungsdatum) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.slogan = slogan;
+		this.gruppenfuehrer = gruppenfuehrer;
+		this.gruendungsdatum = gruendungsdatum;
 	}
 
 	//Getters & Setters

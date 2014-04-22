@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/bootstrap.css" rel="stylesheet">
-<title>Tasks 5000 &#187; Test</title><%-- Tasks 5000 > Unterseitentitel --%>
+<title>Tasks 5000 &#187; ${param.page_title}</title><%-- Tasks 5000 > Unterseitentitel --%>
 </head>
 <body> 
 	<div class="container"><div id="mainbox">
