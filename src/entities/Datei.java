@@ -6,10 +6,10 @@ public class Datei implements Serializable {
 	private long id;
 	private String titel;
 	private String beschreibung;
+	private String pfad;
 	private String version;
 	private Team team;
 	private Mitglied ersteller;
-	private String pfad;
 	// Was ist mit der Dateigröße? Wird die direkt ermittelt?
 	
 	// Konstruktor!

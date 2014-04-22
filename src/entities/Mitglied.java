@@ -5,26 +5,26 @@ public class Mitglied implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private long id;
 	private String username;
-	private String email;
 	private String password;
+	private String email;
 	private String vorname;
 	private String nachname;
-	private long reg_datum;
+	private long regdatum;
 	
 	// Konstruktor
 	public Mitglied(){
 	}
 	
-	public Mitglied(long id, String username, String email, String password,
-			String vorname, String nachname, long reg_datum) {
+	public Mitglied(long id, String username, String password, String email, 
+			String vorname, String nachname, long regdatum) {
 		super();
 		this.id = id;
 		this.username = username;
-		this.email = email;
 		this.password = password;
+		this.email = email;
 		this.vorname = vorname;
 		this.nachname = nachname;
-		this.reg_datum = reg_datum;
+		this.regdatum = regdatum;
 	}
 
 	//Getter & Setter
@@ -64,10 +64,10 @@ public class Mitglied implements Serializable{
 	public void setNachname(String nachname) {
 		this.nachname = nachname;
 	}
-	public long getReg_datum() {
-		return reg_datum;
+	public long getRegdatum() {
+		return regdatum;
 	}
-	public void setReg_datum(long reg_datum) {
-		this.reg_datum = reg_datum;
+	public void setRegdatum(long reg_datum) {
+		this.regdatum = reg_datum;
 	}	
 }
