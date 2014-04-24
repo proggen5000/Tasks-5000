@@ -1,5 +1,6 @@
 package administration;
 
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -12,10 +13,17 @@ public class TeamVerwaltung {
 		
 		//Einfügen der Werte (ohne ID)
 		String table= "teams";
-		String columns= "teamid, teamname, gründungsdatum, slogan, gruppenführerid";
-		String values= "NULL, "+team.getName()+", "+team.getGruendungsdatum()+", "
-				+team.getSlogan()+", "+team.getGruppenfuehrer().getId();
-		int testID= Queries.insertQuery(table, columns, values);
+		String columns= "teamid, teamname, gruendungsdatum, slogan, gruppenfuehrerid";
+		String values= "NULL, "+team.getTeamname()+", "+team.getGruendungsdatum()+", "
+				+team.getSlogan()+", "+team.getGruppenfuehrerId().getId();
+		int testID;
+		try {
+			testID = Queries.insertQuery(table, columns, values);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			testID= -1;
+		}
 		
 		if (testID== -1){
 			return null;
@@ -23,7 +31,7 @@ public class TeamVerwaltung {
 		else{
 			//Erstellen eines Teams mit den übernommenen Werten (mit ID)
 			Team testteam= new Team();
-			String sql= "SELECT * FROM team WHERE testid="+testID;
+			String sql= "SELECT * FROM teams WHERE testid="+testID;
 			try {
 				testteam= (Team)Queries.scalarQuery(sql);
 			} catch (SQLException e) {
@@ -37,8 +45,8 @@ public class TeamVerwaltung {
 		
 		//Aktualisieren des Teams
 		String table= "teams";
-		String updateString= "teamname="+team.getName()+", slogan="+team.getSlogan()
-				+", gruppenführerid="+team.getGruppenfuehrer().getId();
+		String updateString= "teamname="+team.getTeamname()+", slogan="+team.getSlogan()
+				+", gruppenfuehrerid="+team.getGruppenfuehrerId().getId();
 		String where= "teamid="+team.getId();
 		Team testteam= new Team();
 		
@@ -64,12 +72,18 @@ public class TeamVerwaltung {
 		//Team anhand der ID löschen
 		String table= "teams";
 		String where= "teamid="+team.getId();
-		return Queries.deleteQuery(table, where);
+		try {
+			return Queries.deleteQuery(table, where);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	public static Team vorhanden (long id){
 		
-		//Suchen des Mitglieds anhand der ID
+		//Suchen des Teams anhand der ID
 		String sql= "SELECT * FROM teams WHERE teamid="+id;
 		Team testteam= new Team();
 		try {
