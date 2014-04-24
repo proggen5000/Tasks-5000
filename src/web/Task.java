@@ -59,8 +59,6 @@ public class Task extends HttpServlet {
 			if(id != -1){
 				Aufgabe task = AufgabenVerwaltung.getDummy(id); // TODO
 				request.setAttribute("task", task);			
-				
-				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("jsp/task/taskView.jsp");
 			} else {
@@ -88,9 +86,6 @@ public class Task extends HttpServlet {
 		else if(mode.equals("edit")){
 			Aufgabe task = AufgabenVerwaltung.getDummy(id); // TODO
 			request.setAttribute("task", task);
-			request.setAttribute("date", new java.util.Date(task.getDate()));
-			request.setAttribute("deadline", new java.util.Date(task.getDeadline()));
-			
 			request.setAttribute("mode", mode);
 			request.setAttribute("valid_request", true);
 			view = request.getRequestDispatcher("jsp/task/taskEdit.jsp");
@@ -104,7 +99,7 @@ public class Task extends HttpServlet {
 				request.setAttribute("task", task);
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("task.jsp");
+				view = request.getRequestDispatcher("jsp/task/taskRemove.jsp");
 			} else if (AufgabenVerwaltung.vorhanden(id) && sure.equals("true")){
 				AufgabenVerwaltung.loeschen(AufgabenVerwaltung.getDummy(id)); // TODO
 				request.setAttribute("mode", mode);

@@ -108,4 +108,12 @@ public class DateiVerwaltung {
 		
 		return al;
 	}
+	
+	public static ArrayList<Datei> getListeVonTeam(long teamID){
+		ArrayList<Datei> al = new ArrayList<Datei>();
+		
+		// TODO bitte ergänzen
+		
+		return al;
+	}
 }

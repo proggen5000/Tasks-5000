@@ -18,7 +18,7 @@ public class AufgabengruppenVerwaltung {
 			   Beschreibung varchar(45)	
 			   */
 			String values = aufgabengruppe.getName() + ", " + aufgabengruppe.getBeschreibung();
-			int id = Queries.insertQuery("AufgabenGruppen", "Name, Beschreibung", values);
+			long id = Queries.insertQuery("AufgabenGruppen", "Name, Beschreibung", values);
 			if (id == -1){
 				return null;
 			}
@@ -58,11 +58,11 @@ public class AufgabengruppenVerwaltung {
 		return Queries.deleteQuery(table, where);
 	}
 	
-	public static boolean vorhanden (int id){
+	public static boolean vorhanden (long id){
 		return AufgabengruppenVerwaltung.get(id) != null;
 	}	
 	
-	public static Aufgabengruppe get (int id){
+	public static Aufgabengruppe get (long id){
 		//Suchen der Aufgabe anhand der ID
 		String sql = "SELECT * FROM AufgabenGruppen WHERE AufgabenGruppeID = " + id;
 		Aufgabengruppe aufgabengruppe_neu = null;
@@ -74,7 +74,7 @@ public class AufgabengruppenVerwaltung {
 		return aufgabengruppe_neu;
 	}
 	
-	public static Aufgabengruppe getDummy (int id){
+	public static Aufgabengruppe getDummy (long id){
 		return new Aufgabengruppe(id, "Dummy-Gruppe", "Dummy-Gruppenbeschreibung");
 	}
 	
@@ -91,7 +91,7 @@ public class AufgabengruppenVerwaltung {
 	}
 	
 	// voll unnötig, oder? :P
-	public ArrayList<Aufgabengruppe> getListe(){
+	public static ArrayList<Aufgabengruppe> getListe(){
 		// returnd eine ArrayListe aller Aufgabe
 		String sql = "SELECT * FROM Aufgabe";
 		ArrayList<Aufgabengruppe> al = new ArrayList<Aufgabengruppe>();
@@ -112,7 +112,7 @@ public class AufgabengruppenVerwaltung {
 		return al;
 	}
 	
-	public ArrayList<Aufgabengruppe> getListeVonTeam(int teamID){
+	public static ArrayList<Aufgabengruppe> getListeVonTeam(long teamID){
 		String sql = "SELECT * FROM `aufgaben` WHERE `TeamID` = 1 group by `AufgabenGruppeID`";
 		ArrayList<Aufgabengruppe> al = new ArrayList<Aufgabengruppe>();
 		try {
@@ -128,6 +128,19 @@ public class AufgabengruppenVerwaltung {
 			e.printStackTrace();
 			al = null;
 		}
+		return al;
+	}
+	
+	public static ArrayList<Aufgabengruppe> getListeVonTeamDummy(long teamID){ // TODO
+		ArrayList<Aufgabengruppe> al = new ArrayList<Aufgabengruppe>();
+		
+		Aufgabengruppe ag1 = new Aufgabengruppe(1, "Windows 8.1", "Alle Aufgaben, die mit Windows 8.1 zutun haben.");
+		Aufgabengruppe ag2 = new Aufgabengruppe(1, "Windows 9", "Alle Aufgaben, die mit Windows 9 zutun haben. Erscheinung geplant f&uuml;r Winter 2015!");
+		Aufgabengruppe ag3 = new Aufgabengruppe(1, "Windows 10", "Alle Aufgaben, die mit Windows 10 zutun haben.");
+		al.add(ag1);
+		al.add(ag2);
+		al.add(ag3);
+		
 		return al;
 	}
 }

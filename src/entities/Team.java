@@ -12,18 +12,18 @@ public class Team implements Serializable {
 	private String teamname;
 	private long gruendungsdatum;
 	private String slogan;
-	private Mitglied gruppenfuehrerid;
+	private Mitglied gruppenfuehrer;
 	
 	public Team(){
 	}
 
 	public Team(long id, String teamname, long gruendungsdatum, String slogan,
-			Mitglied gruppenfuehrerid) {
+			Mitglied gruppenfuehrer) {
 		super();
 		this.id = id;
 		this.teamname = teamname;
 		this.slogan = slogan;
-		this.gruppenfuehrerid = gruppenfuehrerid;
+		this.gruppenfuehrer = gruppenfuehrer;
 		this.gruendungsdatum = gruendungsdatum;
 	}
 
@@ -60,12 +60,12 @@ public class Team implements Serializable {
 		this.slogan = slogan;
 	}
 
-	public Mitglied getGruppenfuehrerId() {
-		return gruppenfuehrerid;
+	public Mitglied getGruppenfuehrer() {
+		return gruppenfuehrer;
 	}
 
-	public void setGruppenfuehrerId(Mitglied gruppenfuehrer) {
-		this.gruppenfuehrerid = gruppenfuehrer;
+	public void setGruppenfuehrer(Mitglied gruppenfuehrer) {
+		this.gruppenfuehrer = gruppenfuehrer;
 	}
 	
 	/**

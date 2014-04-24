@@ -6,31 +6,31 @@
 	  <c:if test="${param.menu == null}"><li class="active"><a href="/"><span class="glyphicon glyphicon-home"></span> Start</a></li></c:if>
 	  <c:if test="${param.menu != null}"><li class=""><a href="/"><span class="glyphicon glyphicon-home"></span> Start</a></li></c:if>
 	
-	  <c:if test="${param.menu == 'teams'}"><li class="dropdown active"></c:if>
-	  <c:if test="${param.menu != 'teams'}"><li class="dropdown"></c:if>
-	    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-	      <span class="glyphicon glyphicon-briefcase"></span> Meine Teams <span class="caret"></span>
-	    </a>
-	    <ul class="dropdown-menu">
-	      <li><a href="team?mode=view&id=X"><span class="glyphicon glyphicon-briefcase"></span> Microsoft Windows Core Development Team</a></li>
-	      <li><a href="team?mode=view&id=X"><span class="glyphicon glyphicon-briefcase"></span> Team X</a></li>
-	      <li><a href="team?mode=view&id=X"><span class="glyphicon glyphicon-briefcase"></span> Team Y</a></li>
-	      <li class="divider"></li>
-	      <li><a href="team?mode=new"><span class="glyphicon glyphicon-pencil"></span> Team erstellen</a></li>
-	    </ul>
-	  </li>
+		<c:if test="${param.menu == 'teams'}"><li class="dropdown active"></c:if>
+		<c:if test="${param.menu != 'teams'}"><li class="dropdown"></c:if>
+		    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+		      <span class="glyphicon glyphicon-briefcase"></span> Meine Teams <span class="caret"></span>
+		    </a>
+		    <ul class="dropdown-menu">
+		    	<c:forEach var="team" items="${teams}">
+		    		<li><a href="team?mode=view&id=${team.id}"><span class="glyphicon glyphicon-briefcase"></span> ${team.teamname}</a></li>
+		    	</c:forEach>
+				<li class="divider"></li>
+				<li><a href="team?mode=new"><span class="glyphicon glyphicon-pencil"></span> Team erstellen</a></li>
+		    </ul>
+		</li>
 	  
-	  <c:if test="${param.menu == 'me'}"><li class="dropdown active"></c:if>
-	  <c:if test="${param.menu != 'me'}"><li class="dropdown"></c:if>
-	    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-	      <span class="glyphicon glyphicon-user"></span> Ich <span class="caret"></span>
-	    </a>
-	    <ul class="dropdown-menu">
-	      <li><a href="user?mode=view&id=${currentUser}"><span class="glyphicon glyphicon-user"></span> Mein Profil</a></li>
-	      <li><a href="user?mode=edit"><span class="glyphicon glyphicon-pencil"></span> Profil bearbeiten</a></li>
-	      <li class="divider"></li>
-	      <li><a href="login?mode=logout"><span class="glyphicon glyphicon-remove"></span> Logout</a></li>
-	    </ul>
-	  </li>  
+		<c:if test="${param.menu == 'me'}"><li class="dropdown active"></c:if>
+		<c:if test="${param.menu != 'me'}"><li class="dropdown"></c:if>
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				<span class="glyphicon glyphicon-user"></span> Ich <span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu">
+				<li><a href="user?mode=view&id=${currentUser}"><span class="glyphicon glyphicon-user"></span> Mein Profil</a></li>
+				<li><a href="user?mode=edit"><span class="glyphicon glyphicon-pencil"></span> Profil bearbeiten</a></li>
+				<li class="divider"></li>
+				<li><a href="login?mode=logout"><span class="glyphicon glyphicon-remove"></span> Logout</a></li>
+		    </ul>
+		</li>  
 	</ul>
 </c:if>

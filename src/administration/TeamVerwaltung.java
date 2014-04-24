@@ -16,7 +16,7 @@ public class TeamVerwaltung {
 		String table= "teams";
 		String columns= "teamid, teamname, gruendungsdatum, slogan, gruppenfuehrerid";
 		String values= "NULL, "+team.getTeamname()+", "+team.getGruendungsdatum()+", "
-				+team.getSlogan()+", "+team.getGruppenfuehrerId().getId();
+				+team.getSlogan()+", "+team.getGruppenfuehrer().getId();
 		int testID;
 		try {
 			testID = Queries.insertQuery(table, columns, values);
@@ -47,7 +47,7 @@ public class TeamVerwaltung {
 		//Aktualisieren des Teams
 		String table= "teams";
 		String updateString= "teamname="+team.getTeamname()+", slogan="+team.getSlogan()
-				+", gruppenfuehrerid="+team.getGruppenfuehrerId().getId();
+				+", gruppenfuehrerid="+team.getGruppenfuehrer().getId();
 		String where= "teamid="+team.getId();
 		Team testteam= new Team();
 		
@@ -82,32 +82,12 @@ public class TeamVerwaltung {
 		}
 	}
 	
-	public static Team vorhanden (long id){
-		
-		//Suchen des Teams anhand der ID
-		String sql= "SELECT * FROM teams WHERE teamid="+id;
-		Team testteam= new Team();
-		try {
-			testteam=(Team)Queries.scalarQuery(sql);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return testteam;
+	public static boolean vorhanden (long id){
+		return false;
 	}
 	
-	public static Team vorhanden (String name){
-		
-		//Suchen des Teams anhand des Namens
-		String sql= "SELECT * FROM teams WHERE teamname="+name;
-		Team testteam= new Team();
-		try {
-			testteam=(Team)Queries.scalarQuery(sql);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return testteam;
+	public static boolean vorhanden (String name){
+		return false;
 	}
 	
 	public static ArrayList<Team> getListe(){
@@ -139,7 +119,33 @@ public class TeamVerwaltung {
 	}
 
 	public static Team get(long teamID) {
-		// TODO Auto-generated method stub
-		return null;
+		//Suchen des Teams anhand der ID
+		String sql= "SELECT * FROM teams WHERE teamid="+teamID;
+		Team testteam= new Team();
+		try {
+			testteam=(Team)Queries.scalarQuery(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return testteam;
+	}
+	
+	public static Team getDummy(long teamID){ // TODO
+		Mitglied dummyMitglied = new Mitglied(14, "Dummy-Mitglied", "qwertz", "test@mail.de", "Dummy", "User", 23453467);
+		return new Team(teamID, "Dummy-Team", 214325, "Wir rulen. Das ist unser Slogan.", dummyMitglied);
+	}
+	
+	public static Team get(String name){
+		//Suchen des Teams anhand des Namens
+		String sql= "SELECT * FROM teams WHERE teamname="+name;
+		Team testteam= new Team();
+		try {
+			testteam=(Team)Queries.scalarQuery(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return testteam;
 	}
 }

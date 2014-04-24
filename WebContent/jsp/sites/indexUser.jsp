@@ -25,8 +25,8 @@
 		  				<c:forEach var="team" items="${teams}">
 		  					<tr>
 						        <td><a href="team?mode=view&id=${team.id}">${team.teamname}</a></td>
-						        <td>${team.aufgabenAnzahl} ${team.getAufgabenAnzahlVonMitglied(currentUserID)}</td>
-						        <td>${team.getAnzahlMitglieder()}</td>
+						        <td><%-- ${team.aufgabenAnzahl} ${team.getAufgabenAnzahlVonMitglied(currentUserID)}--%>4 (2)</td>
+						        <td><%--${team.getAnzahlMitglieder()} --%>3</td>
 						    </tr>
 		  				</c:forEach>
 					</tbody>
@@ -45,11 +45,11 @@
 							</div>
 							<h4 class="list-group-item-heading">${task.titel}</h4>
 							<p class="list-group-item-text">
-								<c:if test="${fn:length(task.beschreibung) <= 40}">
+								<c:if test="${fn:length(task.beschreibung) <= 50}">
 									${task.beschreibung}
 								</c:if>
-								<c:if test="${fn:length(task.beschreibung) > 40}">
-									${fn:substring(task.beschreibung, 0, 40)}...
+								<c:if test="${fn:length(task.beschreibung) > 50}">
+									${fn:substring(task.beschreibung, 0, 50)}...
 								</c:if>
 							</p>
 						</a>			  		

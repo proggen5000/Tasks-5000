@@ -72,7 +72,7 @@ public class User extends HttpServlet {
 				Mitglied user = MitgliederVerwaltung.getDummy(id); // TODO
 				
 				request.setAttribute("user", user);
-				request.setAttribute("teams", TeamVerwaltung.getListeVonMitglied(user.getId()));
+				request.setAttribute("teams", TeamVerwaltung.getListeVonMitgliedDummy(id)); // TODO
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("jsp/user/userView.jsp");
 			} else {
