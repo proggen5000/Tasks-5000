@@ -26,7 +26,36 @@ public class Login extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		boolean login = false;
+		if(request.getSession().getAttribute("login") != null){
+			login = (boolean) request.getSession().getAttribute("login");
+		}
 		
+		String mode = request.getParameter("mode");
+		if(request.getAttribute("mode") != null){
+			mode = (String) request.getAttribute("mode");
+		}
+		
+		RequestDispatcher view = request.getRequestDispatcher("error.jsp");
+		
+		if(mode.equals("logout")){
+			if(login){
+				HttpSession session = request.getSession(true);
+				session.removeAttribute("login");
+				session.removeAttribute("currentUser");
+				
+				request.setAttribute("valid_request", true);
+				view = request.getRequestDispatcher("jsp/login/logout.jsp");
+			} else {
+				request.setAttribute("error", "Sie sind bereits ausgeloggt!");
+				view = request.getRequestDispatcher("error.jsp");
+			}
+		} else {
+			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
+			view = request.getRequestDispatcher("error.jsp");
+		}
+			
+		view.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -86,7 +115,7 @@ public class Login extends HttpServlet {
 		} else if(mode.equals("register")){
 			if(!login){
 				Mitglied user = new Mitglied();
-				// user.setId(id); // TODO nötig?
+				// user.setId(id); // TODO nï¿½tig?
 				user.setUsername(request.getParameter("username"));
 				user.setVorname(request.getParameter("vorname"));
 				user.setNachname(request.getParameter("nachname"));
@@ -106,7 +135,7 @@ public class Login extends HttpServlet {
 		
 		// Fehler - kein mode angegeben
 		else {
-			request.setAttribute("error", "Kein g&uuml;ltiger Modus!");
+			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
 			view = request.getRequestDispatcher("error.jsp");
 		}
 		

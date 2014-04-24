@@ -97,7 +97,7 @@ public class Task extends HttpServlet {
 			view = request.getRequestDispatcher("jsp/task/taskEdit.jsp");
 		}
 		
-		// Aufgabe löschen
+		// Aufgabe lÃ¶schen
 		else if(mode.equals("remove") && id != -1){
 			String sure = request.getParameter("sure");
 			if(AufgabenVerwaltung.vorhanden(id) && !sure.equals("true")){
@@ -112,12 +112,15 @@ public class Task extends HttpServlet {
 				request.setAttribute("sure", true);
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("jsp/task/taskRemove.jsp");
+			} else {
+				request.setAttribute("error", "Ung&uuml;ltige Aufgaben-ID!");
+				view = request.getRequestDispatcher("error.jsp");
 			}
 		}
 		
 		// Fehler - kein mode angegeben
 		else {
-			request.setAttribute("error", "Kein g&uuml;ltiger Modus!");
+			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
 			view = request.getRequestDispatcher("error.jsp");
 		}
 		
@@ -164,7 +167,7 @@ public class Task extends HttpServlet {
 			task.setId(4);
 			task.setErsteller(MitgliederVerwaltung.get(currentUser));
 			task.setTitel(request.getParameter("name"));
-			// task.setTeam(team); // hoffentlich bald unnötig
+			// task.setTeam(team); // hoffentlich bald unnï¿½tig
 			task.setGruppe(AufgabengruppenVerwaltung.get(Integer.parseInt(request.getParameter("group"))));
 			task.setBeschreibung(request.getParameter("description"));			
 			// task.setDate(date);
@@ -181,18 +184,18 @@ public class Task extends HttpServlet {
 			task.setId(id);
 			task.setErsteller(MitgliederVerwaltung.get(currentUser));
 			task.setTitel(request.getParameter("name"));
-			// task.setTeam(team); // hoffentlich bald unnötig
+			// task.setTeam(team); // hoffentlich bald unnï¿½tig
 			task.setGruppe(AufgabengruppenVerwaltung.getDummy(Integer.parseInt(request.getParameter("group")))); // TODO dummy weg
 			task.setBeschreibung(request.getParameter("description"));			
 			// task.setDate(date);
 			// task.setDeadline(deadline);
 			task.setStatus(Integer.parseInt(request.getParameter("status")));
 
-			Aufgabe taskUpdated = AufgabenVerwaltung.neuDummy(task); // TODO zu .bearbeiten(task) ändern
+			Aufgabe taskUpdated = AufgabenVerwaltung.neuDummy(task); // TODO zu .bearbeiten(task) ï¿½ndern
 			response.sendRedirect("task?mode=view&id="+taskUpdated.getId());
 		}
 		
-		// Aufgabe löschen (Aktion)
+		// Aufgabe lÃ¶schen (Aktion)
 		else if(mode.equals("remove")){
 			String sure = request.getParameter("sure");
 			if(AufgabenVerwaltung.vorhanden(id) && !sure.equals("true")){
@@ -206,7 +209,7 @@ public class Task extends HttpServlet {
 				request.setAttribute("valid_request", true);
 				response.sendRedirect("team&mode=view&id="+teamId);
 			} else {
-				request.setAttribute("error", "Keine g&uuml;ltige Aufgaben-ID!");
+				request.setAttribute("error", "Ung&uuml;ltige Aufgaben-ID!");
 				response.sendRedirect("error.jsp");
 			}
 		}

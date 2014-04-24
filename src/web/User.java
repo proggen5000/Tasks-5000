@@ -1,6 +1,7 @@
 package web;
 
 import java.io.IOException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -62,14 +63,20 @@ public class User extends HttpServlet {
 		}
 
 		// Mitgliedsprofil ansehen
-		else if(mode.equals("view") && id != -1){
-			Mitglied user = MitgliederVerwaltung.getDummy(id); // TODO
+		else if(mode.equals("view")){
+			if(id != -1){
+				Mitglied user = MitgliederVerwaltung.getDummy(id); // TODO
+				
+				request.setAttribute("user", user);
+				request.setAttribute("date", new java.util.Date(user.getRegdatum()));
+				request.setAttribute("teams", TeamVerwaltung.getListeVonMitglied(user.getId()));
+				request.setAttribute("valid_request", true);
+				view = request.getRequestDispatcher("jsp/user/userView.jsp");
+			} else {
+				request.setAttribute("error", "Ung&uuml;ltige Benutzer-ID!");
+				view = request.getRequestDispatcher("error.jsp");
+			}
 			
-			request.setAttribute("user", user);
-			request.setAttribute("date", new java.util.Date(user.getRegdatum()));
-			request.setAttribute("teams", TeamVerwaltung.getListeVonMitglied(user.getId()));
-			request.setAttribute("valid_request", true);
-			view = request.getRequestDispatcher("jsp/user/userView.jsp");
 		}
 		
 		// Profil bearbeiten (Formular)
@@ -81,7 +88,7 @@ public class User extends HttpServlet {
 			view = request.getRequestDispatcher("jsp/user/userEdit.jsp");
 		}
 		
-		// Profil löschen
+		// Profil lÃ¶schen
 		else if(mode.equals("remove")){
 			Mitglied user = MitgliederVerwaltung.getDummy(currentUser); // TODO
 			
@@ -92,9 +99,8 @@ public class User extends HttpServlet {
 		
 		// Team verlassen
 		else if(mode.equals("leaveTeam")){
-			Mitglied user = MitgliederVerwaltung.getDummy(currentUser); // TODO
-			
 			if(MitgliederVerwaltung.istMitgliedInTeam(currentUser, id)){
+				Mitglied user = MitgliederVerwaltung.getDummy(currentUser); // TODO
 				request.setAttribute("user", user);
 				request.setAttribute("team", TeamVerwaltung.get(id));
 				request.setAttribute("valid_request", true);
@@ -111,7 +117,7 @@ public class User extends HttpServlet {
 		
 		// Fehler - kein mode angegeben
 		else {
-			request.setAttribute("error", "Kein g&uuml;ltiger Modus!");
+			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
 			view = request.getRequestDispatcher("error.jsp");
 		}
 		
@@ -154,25 +160,33 @@ public class User extends HttpServlet {
 			view = request.getRequestDispatcher("error.jsp");
 		}
 
+		// Profil bearbeiten (Aktion)
 		if(mode.equals("edit")){
 			Mitglied user = MitgliederVerwaltung.getDummy(currentUser); // TODO
-			
 			
 			request.setAttribute("user", user);
 			request.setAttribute("valid_request", true);
 			view = request.getRequestDispatcher("jsp/user/userEdit.jsp");
 		}
 		
-		// Profil löschen
+		// Profil lÃ¶schen (Aktion)
 		else if(mode.equals("remove")){
 			Mitglied user = MitgliederVerwaltung.getDummy(currentUser); // TODO
+			String sure = request.getParameter("sure");
 			
-			request.setAttribute("user", user);			
-			request.setAttribute("valid_request", true);
-			view = request.getRequestDispatcher("jsp/user/userRemove.jsp");
+			if(!sure.equals("true")){
+				request.setAttribute("user", user);			
+				request.setAttribute("valid_request", true);
+				view = request.getRequestDispatcher("jsp/user/userRemove.jsp");
+			} else if(sure.equals("true")){
+				MitgliederVerwaltung.loeschen(user);
+				// TODO hier lieber auf nettes "Auf Wiedersehen"-JSP weiterleiten?
+				view = request.getRequestDispatcher("/login?mode=logout");
+			}
+			
 		}
 		
-		// Team verlassen
+		// Team verlassen (Aktion)
 		else if(mode.equals("leaveTeam")){
 			Mitglied user = MitgliederVerwaltung.getDummy(currentUser); // TODO
 			
@@ -193,7 +207,7 @@ public class User extends HttpServlet {
 		
 		// Fehler - kein mode angegeben
 		else {
-			request.setAttribute("error", "Kein g&uuml;ltiger Modus!");
+			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
 			view = request.getRequestDispatcher("error.jsp");
 		}
 		
