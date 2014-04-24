@@ -1,5 +1,6 @@
 package entities;
 import java.io.Serializable;
+import java.util.Date;
 
 public class Team implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -62,6 +63,13 @@ public class Team implements Serializable {
 
 	public void setGruppenfuehrerId(Mitglied gruppenfuehrer) {
 		this.gruppenfuehrerid = gruppenfuehrer;
+	}
+	
+	/**
+	 * Liefert das Gründungsdatum als Dateobjekt
+	 */
+	public Date getGruendungsdatumAsDate(){
+		return new java.util.Date(gruendungsdatum);
 	}
 
 }

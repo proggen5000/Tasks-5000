@@ -1,5 +1,6 @@
 package entities;
 import java.io.Serializable;
+import java.util.Date;
 
 public class Mitglied implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -70,4 +71,11 @@ public class Mitglied implements Serializable{
 	public void setRegdatum(long reg_datum) {
 		this.regdatum = reg_datum;
 	}	
+	
+	/**
+	 * Liefert das Registrierungsdatum als Dateobjekt
+	 */
+	public Date getRegdatumAsDate(){
+		return new java.util.Date(regdatum);
+	}
 }

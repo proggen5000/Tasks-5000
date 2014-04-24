@@ -1,19 +1,18 @@
 package entities;
 import java.io.Serializable;
-
-import administration.DateiVerwaltung;
+import java.util.Date;
 
 public class Aufgabe implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private long id;
-	private Team team; // vermutlich unnötig, da Team über Aufgabengruppe ermittelt werden kann!! 
+	private Team team; // vermutlich unnï¿½tig, da Team ï¿½ber Aufgabengruppe ermittelt werden kann!! 
 	private Aufgabengruppe gruppe;
 	private Mitglied ersteller;
 	private String titel;
 	private String beschreibung;
 	private int status;
-	private long date; // ergänzt!!
+	private long date; // ergï¿½nzt!!
 	private long deadline;
 	// Wem ist Aufgabe zugeteilt? Sollte das hier gespeichert werden? -> Extra Bean!
 	
@@ -105,7 +104,21 @@ public class Aufgabe implements Serializable {
 	
 	public int getFilecount(){
 		return 3;
-		//return DateiVerwaltung.getListeVonAufgabe(this.getId()).size();
+		//TODO return DateiVerwaltung.getListeVonAufgabe(this.getId()).size();
+	}
+	
+	/**
+	 * Liefert das Erstellungsdatum als Dateobjekt
+	 */
+	public Date getDateAsDate(){
+		return new java.util.Date(date);
+	}
+	
+	/**
+	 * Liefert die Deadline als Dateobjekt
+	 */
+	public Date getDeadlineAsDate(){
+		return new java.util.Date(deadline);
 	}
 
 }

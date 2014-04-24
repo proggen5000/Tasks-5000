@@ -109,7 +109,6 @@
 					<p class="help-block">Die Datei wird mit dem Speichern &uuml;bernommen.</p>
 				</div>
 				
-				
 				<c:if test="${param.mode == 'new'}">
 					<input type="hidden" name="mode" value="new">
 				</c:if>
@@ -123,7 +122,7 @@
 					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> ${submit_button}</button>
 					<button type="reset" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Zur&uuml;cksetzen</button>
 					<c:if test="${param.mode == 'edit'}">
-						<a href="task?mode=remove&id=X" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Aufgabe l&ouml;schen</a>
+						<a href="task?mode=remove&id=${task.id}" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Aufgabe l&ouml;schen</a>
 					</c:if>
 				</div>
 			</form>
