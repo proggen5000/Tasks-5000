@@ -12,7 +12,7 @@ public class Aufgabe implements Serializable {
 	private String titel;
 	private String beschreibung;
 	private int status;
-	private long date; // erg�nzt!!
+	private long date; // ergaenzt!!
 	private long deadline;
 	// Wem ist Aufgabe zugeteilt? Sollte das hier gespeichert werden? -> Extra Bean!
 	
@@ -102,7 +102,7 @@ public class Aufgabe implements Serializable {
 	}
 	
 	
-	public int getFilecount(){
+	public int getAnzahlDateien(){
 		return 3;
 		//TODO return DateiVerwaltung.getListeVonAufgabe(this.getId()).size();
 	}

@@ -180,7 +180,7 @@ public class User extends HttpServlet {
 			view = request.getRequestDispatcher("jsp/user/userEdit.jsp");
 		}
 		
-		// Profil löschen (Aktion)
+		// Profil loeschen (Aktion)
 		else if(mode.equals("remove")){
 			Mitglied user = MitgliederVerwaltung.getDummy(currentUser); // TODO
 			String sure = request.getParameter("sure");
@@ -194,7 +194,6 @@ public class User extends HttpServlet {
 				// TODO hier lieber auf nettes "Auf Wiedersehen"-JSP weiterleiten?
 				view = request.getRequestDispatcher("/login?mode=logout");
 			}
-			
 		}
 		
 		// Team verlassen (Aktion)

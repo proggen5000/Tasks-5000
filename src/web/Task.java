@@ -96,7 +96,7 @@ public class Task extends HttpServlet {
 			view = request.getRequestDispatcher("jsp/task/taskEdit.jsp");
 		}
 		
-		// Aufgabe löschen
+		// Aufgabe loeschen
 		else if(mode.equals("remove") && id != -1){
 			String sure = request.getParameter("sure");
 			if(AufgabenVerwaltung.vorhanden(id) && !sure.equals("true")){
@@ -194,7 +194,7 @@ public class Task extends HttpServlet {
 			response.sendRedirect("task?mode=view&id="+taskUpdated.getId());
 		}
 		
-		// Aufgabe löschen (Aktion)
+		// Aufgabe loeschen (Aktion)
 		else if(mode.equals("remove")){
 			String sure = request.getParameter("sure");
 			if(AufgabenVerwaltung.vorhanden(id) && !sure.equals("true")){

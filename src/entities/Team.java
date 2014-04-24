@@ -2,6 +2,9 @@ package entities;
 import java.io.Serializable;
 import java.util.Date;
 
+import administration.AufgabenVerwaltung;
+import administration.MitgliederVerwaltung;
+
 public class Team implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -66,10 +69,22 @@ public class Team implements Serializable {
 	}
 	
 	/**
-	 * Liefert das Gründungsdatum als Dateobjekt
+	 * Liefert das Gruendungsdatum als Dateobjekt
 	 */
 	public Date getGruendungsdatumAsDate(){
 		return new java.util.Date(gruendungsdatum);
+	}
+	
+	public int getAufgabenAnzahl(){
+		return AufgabenVerwaltung.getListeVonTeam(id).size();
+	}
+	
+	public int getAufgabenAnzahlVonMitglied(long mitgliedID){
+		return AufgabenVerwaltung.getListeVonMitgliedVonTeam(mitgliedID, id).size();
+	}
+	
+	public int getAnzahlMitglieder(){
+		return MitgliederVerwaltung.getListeVonTeam(id).size();
 	}
 
 }

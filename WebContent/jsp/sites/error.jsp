@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<jsp:include page="jsp/header.jsp"><jsp:param name="page_title" value="Fehler! :(" /></jsp:include>
-<jsp:include page="jsp/menu.jsp" />
+<jsp:include page="../header.jsp"><jsp:param name="page_title" value="Fehler! :(" /></jsp:include>
+<jsp:include page="../menu.jsp" />
 		  		
 		  		<h1>Fehler bei der Verarbeitung</h1>
 		  		<div class="row">
@@ -18,5 +18,5 @@
 		  			<p class="errorlog">${requestScope.error}</p>
 		  		</c:if>
 		  		
-				<jsp:include page="jsp/sidebar.jsp" />
-<jsp:include page="jsp/footer.jsp" />
+				<jsp:include page="../sidebar.jsp" />
+<jsp:include page="../footer.jsp" />

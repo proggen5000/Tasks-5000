@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import database.Queries;
+import entities.Mitglied;
 import entities.Team;
 
 public class TeamVerwaltung {
@@ -115,6 +116,18 @@ public class TeamVerwaltung {
 	
 	public static ArrayList<Team> getListeVonMitglied(long mitgliedID){
 		return null;
+	}
+	
+	public static ArrayList<Team> getListeVonMitgliedDummy(long mitgliedID){ // TODO
+		Mitglied dummyMitglied = new Mitglied(mitgliedID, "Dummy-Mitglied", "qwertz", "test@mail.de", "Dummy", "User", 23453467);
+		Team dummyTeam1 = new Team(1337, "Dummy-Team 1", 214325, "Wir rulen.", dummyMitglied);
+		Team dummyTeam2 = new Team(12, "Dummy-Team Zwei", 214325, "Wir rulen.", dummyMitglied);
+		Team dummyTeam3 = new Team(1987, "Dummy-Team III", 214325, "Wir rulen.", dummyMitglied);
+		ArrayList<Team> liste = new ArrayList<Team>();
+		liste.add(dummyTeam1);
+		liste.add(dummyTeam2);
+		liste.add(dummyTeam3);
+		return liste;
 	}
 	
 	public static boolean neuesTeammitglied(long teamID, long mitgliedID){
