@@ -17,7 +17,7 @@ public class MitgliederVerwaltung {
 		String values= "NULL, "+mitglied.getUsername()+", "+mitglied.getPassword()+", "
 				+mitglied.getEmail()+", "+mitglied.getVorname()+", "+mitglied.getNachname()
 				+", "+mitglied.getReg_datum();
-		int testID= Queries.insertQuery(table, columns, values);
+		long testID= Queries.insertQuery(table, columns, values);
 		
 		if (testID== -1){
 			return null;
@@ -102,27 +102,54 @@ public class MitgliederVerwaltung {
 		return null;
 	}
 	
-	public static ArrayList<Mitglied> getListeVonAufgaben(int aufgID){
+	public static ArrayList<Mitglied> getListeVonAufgabe(long aufgID){
 		return null;
 	}
 	
-	public static ArrayList<Mitglied> getListeVonTeam(int teamID){
+	public static ArrayList<Mitglied> getListeVonTeam(long teamID){
 		return null;
 	}
 	
-	public static boolean istMitgliedInTeam(int mitgliedID, int teamID){
+	public static boolean istMitgliedInTeam(long mitgliedID, long teamID){
 		return false;
 	}
 	
 	public static boolean pruefeLogin(String username, String pw){
-		if(username.equals("admin") && pw.equals("123")){
+		if(username.equals("admin") && pw.equals("123")){ // TODO
 			return true;
 		}
 		return false;
 	}
 
-	public static Mitglied get(int int1) {
+	public static Mitglied get(long id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public static Mitglied getDummy(long id) {
+		Mitglied dummyMitglied = new Mitglied(4, "Dummy-Mitglied", "qwertz", "test@mail.de", "Max", "Mustermann", 1398100350);
+		return dummyMitglied;
+	}
+	
+	/**
+	 * Liefert das Mitglied mit dem angegebenen Username 
+	 * @return Objekt des Mitglieds mit dem angegebenen Username
+	 */
+	public static Mitglied getAnhandUsername(String username){
+		return null;
+	}
+	
+	public static Mitglied getAnhandUsernameDummy(String username){
+		Mitglied dummyMitglied = new Mitglied(4, "Dummy-Mitglied", "qwertz", "test@mail.de", "Max", "Mustermann", 1398100350);
+		return dummyMitglied;
+	}
+	
+	/**
+	 * Entfernt das Mitglied aus dem angegebenen Team.
+	 * @param teamID
+	 * @return true bei Misserfolg, false bei Misserfolg
+	 */
+	public static boolean verlasseTeam(long teamID){
+		return false;
 	}
 }

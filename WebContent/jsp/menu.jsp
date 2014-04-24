@@ -3,8 +3,8 @@
 <c:if test="${login}">
 	<%-- Menü --%>
 	<ul class="nav nav-tabs nav-justified">
-	  <c:if test="${param.menu == null}"><li class="active"><a href="/index.jsp"><span class="glyphicon glyphicon-home"></span> Start</a></li></c:if>
-	  <c:if test="${param.menu != null}"><li class=""><a href="/index.jsp"><span class="glyphicon glyphicon-home"></span> Start</a></li></c:if>
+	  <c:if test="${param.menu == null}"><li class="active"><a href="/"><span class="glyphicon glyphicon-home"></span> Start</a></li></c:if>
+	  <c:if test="${param.menu != null}"><li class=""><a href="/"><span class="glyphicon glyphicon-home"></span> Start</a></li></c:if>
 	
 	  <c:if test="${param.menu == 'teams'}"><li class="dropdown active"></c:if>
 	  <c:if test="${param.menu != 'teams'}"><li class="dropdown"></c:if>
@@ -12,11 +12,11 @@
 	      <span class="glyphicon glyphicon-briefcase"></span> Meine Teams <span class="caret"></span>
 	    </a>
 	    <ul class="dropdown-menu">
-	      <li><a href="team.jsp?mode=view&id=X"><span class="glyphicon glyphicon-briefcase"></span> Microsoft Windows Core Development Team</a></li>
-	      <li><a href="team.jsp?mode=view&id=X"><span class="glyphicon glyphicon-briefcase"></span> Team X</a></li>
-	      <li><a href="team.jsp?mode=view&id=X"><span class="glyphicon glyphicon-briefcase"></span> Team Y</a></li>
+	      <li><a href="team?mode=view&id=X"><span class="glyphicon glyphicon-briefcase"></span> Microsoft Windows Core Development Team</a></li>
+	      <li><a href="team?mode=view&id=X"><span class="glyphicon glyphicon-briefcase"></span> Team X</a></li>
+	      <li><a href="team?mode=view&id=X"><span class="glyphicon glyphicon-briefcase"></span> Team Y</a></li>
 	      <li class="divider"></li>
-	      <li><a href="team.jsp?mode=new"><span class="glyphicon glyphicon-pencil"></span> Team erstellen</a></li>
+	      <li><a href="team?mode=new"><span class="glyphicon glyphicon-pencil"></span> Team erstellen</a></li>
 	    </ul>
 	  </li>
 	  
@@ -26,10 +26,10 @@
 	      <span class="glyphicon glyphicon-user"></span> Ich <span class="caret"></span>
 	    </a>
 	    <ul class="dropdown-menu">
-	      <li><a href="profile.jsp?mode=view&id=XX"><span class="glyphicon glyphicon-user"></span> Mein Profil</a></li>
-	      <li><a href="profile.jsp?mode=edit&id=XX"><span class="glyphicon glyphicon-pencil"></span> Profil bearbeiten</a></li>
+	      <li><a href="user?mode=view&id=${currentUser}"><span class="glyphicon glyphicon-user"></span> Mein Profil</a></li>
+	      <li><a href="user?mode=edit"><span class="glyphicon glyphicon-pencil"></span> Profil bearbeiten</a></li>
 	      <li class="divider"></li>
-	      <li><a href="login.jsp?mode=logout"><span class="glyphicon glyphicon-remove"></span> Logout</a></li>
+	      <li><a href="login?mode=logout"><span class="glyphicon glyphicon-remove"></span> Logout</a></li>
 	    </ul>
 	  </li>  
 	</ul>

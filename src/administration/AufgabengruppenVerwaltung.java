@@ -90,6 +90,7 @@ public class AufgabengruppenVerwaltung {
 		return aufgabengruppe_neu;
 	}
 	
+	// voll unnötig, oder? :P
 	public ArrayList<Aufgabengruppe> getListe(){
 		// returnd eine ArrayListe aller Aufgabe
 		String sql = "SELECT * FROM Aufgabe";

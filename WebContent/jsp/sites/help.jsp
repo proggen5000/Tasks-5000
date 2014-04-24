@@ -1,5 +1,5 @@
-<jsp:include page="jsp/header.jsp"><jsp:param name="page_title" value="Impressum" /></jsp:include>
-<jsp:include page="jsp/menu.jsp" />
+<jsp:include page="../header.jsp"><jsp:param name="page_title" value="Hilfe" /></jsp:include>
+<jsp:include page="../menu.jsp" />
 		  		
 		  		<h1>Hilfe</h1>
 		  		<p>Zuallererst: Vielen Dank f&uuml;rs Benutzen von Tasks 5000!</p>
@@ -8,5 +8,5 @@
 		  		<p>Hallo, hier steht ein normaler Absatz.</p>
 		  		<p>Noch ein Absatz.</p>
 		  		
-			<jsp:include page="jsp/sidebar.jsp" />
-<jsp:include page="jsp/footer.jsp" />
+			<jsp:include page="../sidebar.jsp" />
+<jsp:include page="../footer.jsp" />
