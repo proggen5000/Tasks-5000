@@ -14,8 +14,8 @@
 			<c:set var="submit_button" scope="page" value="Speichern" />
 			
 			<ol class="breadcrumb">
-				<li><a href="index.jsp">Start</a></li>
-				<li><a href="team.jsp?mode=view&id=X">${task.team.teamname}</a></li>
+				<li><a href="/">Start</a></li>
+				<li><a href="team?mode=view&id=${task.team.id}">${task.team.teamname}</a></li>
 				<li>${task.gruppe.name}</li>
 				<li class="active"></li>
 			</ol>
@@ -37,17 +37,17 @@
 			<div class="sidebar col-sm-3">
 				<h1>Aktionen</h1>
 					<div class="list-group">
-						<a href="task?mode=edit&id=XX" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Aufgabe bearbeiten</a>
-						<a href="task?mode=remove&id=XX" class="list-group-item"><span class="glyphicon glyphicon-remove"></span> Aufgabe l&ouml;schen</a>
+						<a href="task?mode=edit&id=${task.id}" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Aufgabe bearbeiten</a>
+						<a href="task?mode=remove&id=${task.id}" class="list-group-item"><span class="glyphicon glyphicon-remove"></span> Aufgabe l&ouml;schen</a>
 					</div>
 					<div class="list-group">
-						<a href="file.jsp?mode=new&task=X" class="list-group-item"><span class="glyphicon glyphicon-file"></span> Datei hochladen</a>
+						<a href="file?mode=new&task=${task.id}" class="list-group-item"><span class="glyphicon glyphicon-file"></span> Datei hochladen</a>
 					</div>	
 			
 				<h1>Details</h1>
 					<div class="list-group">
-						<div class="list-group-item"><span class="glyphicon glyphicon-calendar"></span> <fmt:formatDate pattern="dd.MM.yyyy" value="${date}" /></div>
-						<div class="list-group-item"><span class="glyphicon glyphicon-bell"></span> <fmt:formatDate pattern="dd.MM.yyyy" value="${deadline}" /></div>
+						<div class="list-group-item"><span class="glyphicon glyphicon-calendar"></span> <fmt:formatDate pattern="dd.MM.yyyy" value="${task.dateAsDate}" /></div>
+						<div class="list-group-item"><span class="glyphicon glyphicon-bell"></span> <fmt:formatDate pattern="dd.MM.yyyy" value="${task.deadlineAsDate}" /></div>
 						<div class="list-group-item"><span class="glyphicon glyphicon-dashboard"></span> Status: ${task.status}%</div>
 					</div>
 					<div class="list-group">

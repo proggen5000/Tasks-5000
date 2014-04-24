@@ -11,14 +11,14 @@ import entities.Mitglied;
 public class MitgliederVerwaltung {
 
 	/**
-	 * Fügt Werte eines Mitglieds in die Datenbank ein,
-	 * liefert ein Mitglied mit den eben eingefügten Werten zurück (inkl. ID)
+	 * Fï¿½gt Werte eines Mitglieds in die Datenbank ein,
+	 * liefert ein Mitglied mit den eben eingefï¿½gten Werten zurï¿½ck (inkl. ID)
 	 * @param mitglied
 	 * @return testmitglied
 	 */
 	public static Mitglied neu (Mitglied mitglied){
 		
-		//Einfügen der Werte (ohne ID)
+		//Einfï¿½gen der Werte (ohne ID)
 		String table= "mitglieder";
 		String columns= "mitgliedid, username, password, email, vorname, nachname, "
 				+"regdatum";
@@ -38,7 +38,7 @@ public class MitgliederVerwaltung {
 			return null;
 		}
 		else{
-			//Erstellen eines Mitglieds mit den übernommenen Werten (mit ID)
+			//Erstellen eines Mitglieds mit den ï¿½bernommenen Werten (mit ID)
 			Mitglied testmitglied= new Mitglied();
 			String sql= "SELECT * FROM mitglieder WHERE mitgliedid="+testID;
 			try {
@@ -52,8 +52,8 @@ public class MitgliederVerwaltung {
 	
 	/**
 	 * Aktualisiert Werte eines Mitglieds in der Datenbank,
-	 * liefert ein Mitglied mit allen Werten zurück
-	 * ID und Registrierungsdatum können nicht geändert werden
+	 * liefert ein Mitglied mit allen Werten zurï¿½ck
+	 * ID und Registrierungsdatum kï¿½nnen nicht geï¿½ndert werden
 	 * @param mitglied
 	 * @return testmitglied
 	 */
@@ -85,13 +85,13 @@ public class MitgliederVerwaltung {
 	}
 	
 	/**
-	 * Löscht ein Mitglied komplett aus der Datenbank
+	 * Lï¿½scht ein Mitglied komplett aus der Datenbank
 	 * @param mitglied
 	 * @return boolean
 	 */
 	public static boolean loeschen (Mitglied mitglied){
 		
-		//Mitglied anhand der ID löschen
+		//Mitglied anhand der ID lï¿½schen
 		String table= "mitglieder";
 		String where= "mitgliedid="+mitglied.getId();
 		try {
@@ -105,7 +105,7 @@ public class MitgliederVerwaltung {
 	
 	/**
 	 * Sucht ein Mitglied anhand der ID in der Datenbank
-	 * liefert ein Mitglied mit den gefundenen Werten zurück
+	 * liefert ein Mitglied mit den gefundenen Werten zurï¿½ck
 	 * @param id
 	 * @return testmitglied
 	 */
@@ -125,7 +125,7 @@ public class MitgliederVerwaltung {
 	
 	/**
 	 * Sucht ein Mitglied anhand des usernamens in der Datenbank
-	 * liefert ein Mitglied mit den gefundenen Werten zurück
+	 * liefert ein Mitglied mit den gefundenen Werten zurï¿½ck
 	 * @param username
 	 * @return testmitglied
 	 */
@@ -231,7 +231,7 @@ public class MitgliederVerwaltung {
 	}
 	
 	/**
-	 * Prüft ob ein bestimmtes Mitglied einem bestimmten Team zugeordnet ist
+	 * Prï¿½ft ob ein bestimmtes Mitglied einem bestimmten Team zugeordnet ist
 	 * @param mitgliedID
 	 * @param teamID
 	 * @return boolean
@@ -261,7 +261,7 @@ public class MitgliederVerwaltung {
 	}
 	
 	/**
-	 * Prüft ob Username und Password übereinstimmen
+	 * Prï¿½ft ob Username und Password ï¿½bereinstimmen
 	 * @param username
 	 * @param password
 	 * @return boolean
@@ -281,6 +281,14 @@ public class MitgliederVerwaltung {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public static boolean pruefeLoginDummy(String username, String password){ // TODO
+		if(username.equals("admin") && password.equals("123")){
+			return true;
+		} else {
 			return false;
 		}
 	}

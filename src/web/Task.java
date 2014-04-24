@@ -1,8 +1,6 @@
 package web;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -12,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import entities.Aufgabe;
-import entities.Aufgabengruppe;
 import administration.AufgabenVerwaltung;
 import administration.AufgabengruppenVerwaltung;
 import administration.MitgliederVerwaltung;
@@ -36,9 +33,9 @@ public class Task extends HttpServlet {
 			request.setAttribute("error", e);
 		}
 		
-		long groupId = -1;
+		long teamId = -1;
 		try {
-			id = Long.parseLong(request.getParameter("groupId"));
+			id = Long.parseLong(request.getParameter("teamId"));
 		} catch (NumberFormatException e){
 			request.setAttribute("error", e);
 		}
@@ -58,21 +55,23 @@ public class Task extends HttpServlet {
 		}
 
 		// Aufgabe ansehen
-		else if(mode.equals("view") && id != -1){
-			Aufgabe task = AufgabenVerwaltung.getDummy(id); // TODO
-			
-			request.setAttribute("task", task);
-			request.setAttribute("date", new java.util.Date(task.getDate()));
-			request.setAttribute("deadline", new java.util.Date(task.getDeadline()));
-			
-			request.setAttribute("valid_request", true);
-			request.setAttribute("mode", mode);
-			view = request.getRequestDispatcher("jsp/task/taskView.jsp");
+		else if(mode.equals("view")){
+			if(id != -1){
+				Aufgabe task = AufgabenVerwaltung.getDummy(id); // TODO
+				request.setAttribute("task", task);			
+				
+				request.setAttribute("mode", mode);
+				request.setAttribute("valid_request", true);
+				view = request.getRequestDispatcher("jsp/task/taskView.jsp");
+			} else {
+				request.setAttribute("error", "Ung&uuml;ltige Aufgaben-ID!");
+				view = request.getRequestDispatcher("error.jsp");
+			}
 		}
 		
 		// Aufgabe erstellen (Formular)
 		else if(mode.equals("new")){
-			if(groupId != -1){
+			if(teamId != -1){
 				// TODO Team setzen
 				// String team = AufgabengruppenVerwaltung.get(groupId).getTeam();
 				// request.setAttribute("team", team);
@@ -80,7 +79,7 @@ public class Task extends HttpServlet {
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("jsp/task/taskEdit.jsp");
 			} else {
-				request.setAttribute("error", "Ung&uuml;ltige Gruppen-ID!");
+				request.setAttribute("error", "Ung&uuml;ltige Team-ID!");
 				view = request.getRequestDispatcher("error.jsp");
 			}
 		}

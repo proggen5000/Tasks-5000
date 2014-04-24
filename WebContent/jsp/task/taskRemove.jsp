@@ -1,13 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<%-- Zugriff nicht über Servlet --%>
+<c:if test="${!valid_request}">
+	<c:redirect url="error.jsp"><c:param name="error" value="Zugriff verweigert"></c:param></c:redirect>
+</c:if>
+
 <jsp:include page="../header.jsp"><jsp:param name="page_title" value="${name}" /></jsp:include>
 <jsp:include page="../menu.jsp"><jsp:param name="menu" value="teams" /></jsp:include>
-
-			<%-- Zugriff nicht über Servlet --%>
-			<c:if test="${!valid_request}">
-				<c:redirect url="error.jsp"><c:param name="error" value="Zugriff verweigert"></c:param></c:redirect>
-			</c:if>
 			
 			<ol class="breadcrumb">
 				<li><a href="index.jsp">Start</a></li>
@@ -15,15 +15,15 @@
 				<li>${task.gruppe.name}</li>
 				<li class="active"></li>
 			</ol>
-			<h1>${title}</h1>
+			<h1>Aufgabe l&ouml;schen</h1>
 			
 			<c:choose>
 				<%-- Abfrage --%>
 				<c:when test="${!param.sure}">
 					<p>Sind Sie sicher, dass Sie die Aufgabe "<b>${task.titel}</b>" l&ouml;schen m&ouml;chten?</p>
 					<form action="/task" method="post">
-						<input type="hidden" name="id" value="${task.id}">
-						<input type="hidden" name="sure" value="true">
+						<input type="hidden" name="id" value="${task.id}" />
+						<input type="hidden" name="sure" value="true" />
 						<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-ok"></span> Ja, l&ouml;schen</button>
 						<a class="btn btn-default" href="task?mode=view&id=X"><span class="glyphicon glyphicon-remove"></span> Nein, abbrechen</a>
 					</form>

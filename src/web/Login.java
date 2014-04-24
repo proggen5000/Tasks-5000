@@ -78,7 +78,7 @@ public class Login extends HttpServlet {
 		// Login
 		if(mode.equals("login")){
 			if(!login){
-				if(MitgliederVerwaltung.pruefeLogin(username, password)){
+				if(MitgliederVerwaltung.pruefeLoginDummy(username, password)){ // TODO
 					Mitglied user =  MitgliederVerwaltung.getAnhandUsernameDummy(username);
 					
 					HttpSession session = request.getSession(true);
