@@ -1,5 +1,7 @@
 package administration;
 
+
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -12,12 +14,19 @@ public class MitgliederVerwaltung {
 		
 		//Einfügen der Werte (ohne ID)
 		String table= "mitglieder";
-		String columns= "mitgliedid, username, pw-hash, email, vorname, nachname, "
-				+"registrierungsdatum";
+		String columns= "mitgliedid, username, password, email, vorname, nachname, "
+				+"regdatum";
 		String values= "NULL, "+mitglied.getUsername()+", "+mitglied.getPassword()+", "
 				+mitglied.getEmail()+", "+mitglied.getVorname()+", "+mitglied.getNachname()
-				+", "+mitglied.getReg_datum();
-		long testID= Queries.insertQuery(table, columns, values);
+				+", "+mitglied.getRegdatum();
+		int testID;
+		try {
+			testID = Queries.insertQuery(table, columns, values);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			testID= -1;
+		}
 		
 		if (testID== -1){
 			return null;
@@ -39,7 +48,7 @@ public class MitgliederVerwaltung {
 		
 		//Aktualisieren des Mitglieds
 		String table= "mitglieder";
-		String updateString= "username="+mitglied.getUsername()+", pw-hash="
+		String updateString= "username="+mitglied.getUsername()+", password="
 				+mitglied.getPassword()+", email="+mitglied.getEmail()+", vorname="
 				+mitglied.getVorname()+", nachname="+mitglied.getNachname();
 		String where= "mitgliedid="+mitglied.getId();
@@ -67,7 +76,13 @@ public class MitgliederVerwaltung {
 		//Mitglied anhand der ID löschen
 		String table= "mitglieder";
 		String where= "mitgliedid="+mitglied.getId();
-		return Queries.deleteQuery(table, where);
+		try {
+			return Queries.deleteQuery(table, where);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	public static Mitglied vorhanden (long id){
@@ -99,23 +114,65 @@ public class MitgliederVerwaltung {
 	}
 	
 	public static ArrayList<Mitglied> getListe(){
+
+		// returnd eine ArrayListe aller Mitglieder
+		String sql = "SELECT * FROM mitglieder";
+		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
+		
+		try {
+			ResultSet rs = Queries.rowQuery(sql);
+			
+			while(rs.next()){
+				Mitglied a= new Mitglied(rs.getLong("MitgliedID"), rs.getString("username"),
+						rs.getString("password"), rs.getString("email"),
+						rs.getString("vorname"), rs.getString("nachname"),
+						rs.getLong("regdatum"));
+				al.add(a);
+			}
+		} catch (SQLException e) {
+			// Falls ein Fehler auftritt soll eine lehere Liste zurueckgegeben werden
+			e.printStackTrace();
+			al = null;
+		}
+		return al;
+	}
+	
+	public static ArrayList<Mitglied> getListeVonAufgaben(int aufgID){
+		
+		// returned eine ArrayListe aller Aufgabe die zu einer bestimmten Datei gehoehren
+		String sql = "SELECT * FROM mitglieder JOIN aufgaben_mitglieder "
+					+"ON mitglieder.mitgliedid= aufgaben_mitglieder.mitglieder_mitgliedid"
+					+"JOIN aufgaben ON aufgaben.aufgabeid = aufgaben_mitglieder.aufgaben_aufgabeid"
+					+"WHERE aufgaben.aufgabeid= " + aufgID;
+		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
+		
+		try {
+			ResultSet rs = Queries.rowQuery(sql);	
+			while(rs.next()){
+				Mitglied a= new Mitglied(rs.getLong("MitgliedID"), rs.getString("username"),
+						rs.getString("password"), rs.getString("email"),
+						rs.getString("vorname"), rs.getString("nachname"),
+						rs.getLong("regdatum"));
+				al.add(a);
+			}
+		} catch (SQLException e) {
+			// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben werden
+			e.printStackTrace();
+			al = null;
+		}
+		return al;
+	}
+	
+	public static ArrayList<Mitglied> getListeVonTeam(int teamID){
 		return null;
 	}
 	
-	public static ArrayList<Mitglied> getListeVonAufgabe(long aufgID){
-		return null;
-	}
-	
-	public static ArrayList<Mitglied> getListeVonTeam(long teamID){
-		return null;
-	}
-	
-	public static boolean istMitgliedInTeam(long mitgliedID, long teamID){
+	public static boolean istMitgliedInTeam(int mitgliedID, int teamID){
 		return false;
 	}
 	
 	public static boolean pruefeLogin(String username, String pw){
-		if(username.equals("admin") && pw.equals("123")){ // TODO
+		if(username.equals("admin") && pw.equals("123")){
 			return true;
 		}
 		return false;
