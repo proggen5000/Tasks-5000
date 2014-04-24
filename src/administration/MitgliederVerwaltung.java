@@ -19,7 +19,7 @@ public class MitgliederVerwaltung {
 		String values= "NULL, "+mitglied.getUsername()+", "+mitglied.getPassword()+", "
 				+mitglied.getEmail()+", "+mitglied.getVorname()+", "+mitglied.getNachname()
 				+", "+mitglied.getRegdatum();
-		int testID;
+		long testID;
 		try {
 			testID = Queries.insertQuery(table, columns, values);
 		} catch (SQLException e1) {
@@ -137,7 +137,7 @@ public class MitgliederVerwaltung {
 		return al;
 	}
 	
-	public static ArrayList<Mitglied> getListeVonAufgaben(int aufgID){
+	public static ArrayList<Mitglied> getListeVonAufgaben(long aufgID){
 		
 		// returned eine ArrayListe aller Aufgabe die zu einer bestimmten Datei gehoehren
 		String sql = "SELECT * FROM mitglieder JOIN aufgaben_mitglieder "
@@ -163,11 +163,11 @@ public class MitgliederVerwaltung {
 		return al;
 	}
 	
-	public static ArrayList<Mitglied> getListeVonTeam(int teamID){
+	public static ArrayList<Mitglied> getListeVonTeam(long teamID){
 		return null;
 	}
 	
-	public static boolean istMitgliedInTeam(int mitgliedID, int teamID){
+	public static boolean istMitgliedInTeam(long mitgliedID, long teamID){
 		return false;
 	}
 	

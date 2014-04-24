@@ -1,6 +1,7 @@
 package web;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -32,22 +33,6 @@ public class Login extends HttpServlet {
 		boolean login = false;
 		if(request.getSession().getAttribute("login") != null){
 			login = (boolean) request.getSession().getAttribute("login");
-		}
-		
-		long currentUser = -1;
-		if(request.getSession().getAttribute("currentUser") != null){
-			try {
-				currentUser = Long.parseLong(request.getSession().getAttribute("currentUser").toString());
-			} catch (NullPointerException e){
-				request.setAttribute("error", e);
-			} 
-		}
-		
-		long id = -1;
-		try {
-			id = Long.parseLong(request.getParameter("id"));
-		} catch (NumberFormatException e){
-			request.setAttribute("error", e);
 		}
 		
 		String username = request.getParameter("username");
@@ -82,12 +67,34 @@ public class Login extends HttpServlet {
 				request.setAttribute("error", "Sie sind bereits eingeloggt!");
 				view = request.getRequestDispatcher("error.jsp");
 			}
+			
 		// Logout
 		} else if(mode.equals("logout")){
 			if(login){
 				HttpSession session = request.getSession(true);
 				session.removeAttribute("login");
 				session.removeAttribute("currentUser");
+				
+				request.setAttribute("valid_request", true);
+				view = request.getRequestDispatcher("jsp/login/logout.jsp");
+			} else {
+				request.setAttribute("error", "Sie sind bereits ausgeloggt!");
+				view = request.getRequestDispatcher("error.jsp");
+			}
+		
+		// Registrierung
+		} else if(mode.equals("register")){
+			if(!login){
+				Mitglied user = new Mitglied();
+				// user.setId(id); // TODO nötig?
+				user.setUsername(request.getParameter("username"));
+				user.setVorname(request.getParameter("vorname"));
+				user.setNachname(request.getParameter("nachname"));
+				user.setEmail(request.getParameter("email"));
+				user.setPassword(request.getParameter("password"));
+				user.setRegdatum(new Date().getTime());
+				
+				MitgliederVerwaltung.neu(user);
 				
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("jsp/login/logout.jsp");
