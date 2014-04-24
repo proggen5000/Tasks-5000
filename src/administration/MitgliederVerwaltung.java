@@ -10,6 +10,12 @@ import entities.Mitglied;
 
 public class MitgliederVerwaltung {
 
+	/**
+	 * Fügt Werte eines Mitglieds in die Datenbank ein,
+	 * liefert ein Mitglied mit den eben eingefügten Werten zurück (inkl. ID)
+	 * @param mitglied
+	 * @return testmitglied
+	 */
 	public static Mitglied neu (Mitglied mitglied){
 		
 		//Einfügen der Werte (ohne ID)
@@ -44,6 +50,13 @@ public class MitgliederVerwaltung {
 		}
 	}
 	
+	/**
+	 * Aktualisiert Werte eines Mitglieds in der Datenbank,
+	 * liefert ein Mitglied mit allen Werten zurück
+	 * ID und Registrierungsdatum können nicht geändert werden
+	 * @param mitglied
+	 * @return testmitglied
+	 */
 	public static Mitglied bearbeiten (Mitglied mitglied){
 		
 		//Aktualisieren des Mitglieds
@@ -71,6 +84,11 @@ public class MitgliederVerwaltung {
 		return testmitglied;
 	}
 	
+	/**
+	 * Löscht ein Mitglied komplett aus der Datenbank
+	 * @param mitglied
+	 * @return boolean
+	 */
 	public static boolean loeschen (Mitglied mitglied){
 		
 		//Mitglied anhand der ID löschen
@@ -85,6 +103,12 @@ public class MitgliederVerwaltung {
 		}
 	}
 	
+	/**
+	 * Sucht ein Mitglied anhand der ID in der Datenbank
+	 * liefert ein Mitglied mit den gefundenen Werten zurück
+	 * @param id
+	 * @return testmitglied
+	 */
 	public static Mitglied vorhanden (long id){
 		
 		//Suchen des Mitglieds anhand der ID
@@ -99,10 +123,16 @@ public class MitgliederVerwaltung {
 		return testmitglied;
 	}
 	
-	public static Mitglied vorhanden (String name){
+	/**
+	 * Sucht ein Mitglied anhand des usernamens in der Datenbank
+	 * liefert ein Mitglied mit den gefundenen Werten zurück
+	 * @param username
+	 * @return testmitglied
+	 */
+	public static Mitglied vorhanden (String username){
 		
 		//Suchen des Mitglieds anhand der ID
-		String sql= "SELECT * FROM mitglieder WHERE username="+name;
+		String sql= "SELECT * FROM mitglieder WHERE username="+username;
 		Mitglied testmitglied= new Mitglied();
 		try {
 			testmitglied=(Mitglied)Queries.scalarQuery(sql);
@@ -113,9 +143,12 @@ public class MitgliederVerwaltung {
 		return testmitglied;
 	}
 	
+	/**
+	 * liefert eine ArrayList aller Mitglieder
+	 * @return al
+	 */
 	public static ArrayList<Mitglied> getListe(){
 
-		// returnd eine ArrayListe aller Mitglieder
 		String sql = "SELECT * FROM mitglieder";
 		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
 		
@@ -130,19 +163,23 @@ public class MitgliederVerwaltung {
 				al.add(a);
 			}
 		} catch (SQLException e) {
-			// Falls ein Fehler auftritt soll eine lehere Liste zurueckgegeben werden
+			// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben werden
 			e.printStackTrace();
 			al = null;
 		}
 		return al;
 	}
 	
+	/**
+	 * liefert eine ArrayList aller Mitglieder, die einer bestimmten Aufgabe zugeordnet sind
+	 * @param aufgID
+	 * @return al
+	 */
 	public static ArrayList<Mitglied> getListeVonAufgaben(int aufgID){
 		
-		// returned eine ArrayListe aller Aufgabe die zu einer bestimmten Datei gehoehren
 		String sql = "SELECT * FROM mitglieder JOIN aufgaben_mitglieder "
-					+"ON mitglieder.mitgliedid= aufgaben_mitglieder.mitglieder_mitgliedid"
-					+"JOIN aufgaben ON aufgaben.aufgabeid = aufgaben_mitglieder.aufgaben_aufgabeid"
+					+"ON mitglieder.mitgliedid= aufgaben_mitglieder.mitglieder_mitgliedid "
+					+"JOIN aufgaben ON aufgaben.aufgabeid = aufgaben_mitglieder.aufgaben_aufgabeid "
 					+"WHERE aufgaben.aufgabeid= " + aufgID;
 		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
 		
@@ -163,19 +200,89 @@ public class MitgliederVerwaltung {
 		return al;
 	}
 	
+	/**
+	 * liefert eine ArrayList aller Mitglieder eines Teams
+	 * @param teamID
+	 * @return al
+	 */
 	public static ArrayList<Mitglied> getListeVonTeam(int teamID){
-		return null;
-	}
-	
-	public static boolean istMitgliedInTeam(int mitgliedID, int teamID){
-		return false;
-	}
-	
-	public static boolean pruefeLogin(String username, String pw){
-		if(username.equals("admin") && pw.equals("123")){
-			return true;
+		
+		String sql = "SELECT * FROM mitglieder JOIN mitglieder_teams "
+					+"ON mitglieder.mitgliedid= mitglieder_teams.mitglieder_mitgliedid "
+					+"JOIN teams ON teams.teamid = mitglieder_teams.teams_teamid "
+					+"WHERE teams.teamid= " + teamID;
+		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
+		
+		try {
+			ResultSet rs = Queries.rowQuery(sql);	
+			while(rs.next()){
+				Mitglied a= new Mitglied(rs.getLong("MitgliedID"), rs.getString("username"),
+						rs.getString("password"), rs.getString("email"),
+						rs.getString("vorname"), rs.getString("nachname"),
+						rs.getLong("regdatum"));
+				al.add(a);
+			}
+		} catch (SQLException e) {
+			// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben werden
+			e.printStackTrace();
+			al = null;
 		}
-		return false;
+		return al;
+	}
+	
+	/**
+	 * Prüft ob ein bestimmtes Mitglied einem bestimmten Team zugeordnet ist
+	 * @param mitgliedID
+	 * @param teamID
+	 * @return boolean
+	 */
+	public static boolean istMitgliedInTeam(int mitgliedID, int teamID){
+		
+		String sql= "SELECT * FROM mitglieder JOIN mitglieder_teams "
+					+"ON "+mitgliedID+"= mitglieder_teams.mitglieder_mitgliedid "
+					+"JOIN teams ON teams.teamid= mitglieder_teams.teams_teamid "
+					+"WHERE teams.teamid= " + teamID;
+		long testID;
+		
+		try {
+			ResultSet rs= Queries.rowQuery(sql);
+			testID=rs.getLong("MitgliedID");
+			if (testID!= -1){
+				return true;
+			}
+			else{
+				return false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	/**
+	 * Prüft ob Username und Password übereinstimmen
+	 * @param username
+	 * @param password
+	 * @return boolean
+	 */
+	public static boolean pruefeLogin(String username, String password){
+		
+		String sql= "SELECT * FROM mitglieder WHERE username="+username;
+		
+		try {
+			Mitglied testmitglied = (Mitglied)Queries.scalarQuery(sql);
+			if (testmitglied.getPassword()==password){
+				return true;
+			}
+			else{
+				return false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public static Mitglied get(long id) {
