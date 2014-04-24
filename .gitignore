@@ -2,5 +2,5 @@
 .settings/
 .classpath
 .project
-/src/database/ConnectionData,java
+/src/database/ConnectionData.java
 /src/database/test.java
