@@ -6,6 +6,11 @@ class Connect {
 	
 	private Connect(){}
 	
+	/**
+	 * Stellt eine Verbindung zur Datenbank her.
+	 * @return  Verbindungsobjekt der Datenbank
+	 * @exception SQLException Wird geworfen bei Fehlern mit der Verbindung.
+	 */
 	public static Connection getConnection() throws SQLException{
 		if (con == null){
 			try {
@@ -17,6 +22,10 @@ class Connect {
 		}
 		return con;
 	}
+	/**
+	 * Schlieﬂt die Verbindung zur Datenbank
+	 * @throws SQLException
+	 */
 	public static void releaseConnection() throws SQLException{
 		con.close();
 	}
