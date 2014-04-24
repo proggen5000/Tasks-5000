@@ -1,5 +1,5 @@
-<jsp:include page="jsp/header.jsp"><jsp:param name="page_title" value="Impressum" /></jsp:include>
-<jsp:include page="jsp/menu.jsp" />
+<jsp:include page="../header.jsp"><jsp:param name="page_title" value="Impressum" /></jsp:include>
+<jsp:include page="../menu.jsp" />
 		  		
 		  		<h1>Passwort wiederherstellen</h1>
 		  		<p>Haben Sie Ihr Passwort vergessen? Kein Problem, lassen Sie es sich erneut per E-Mail zusenden.</p>
@@ -15,5 +15,5 @@
 				  </div>
 				</form>
 		  		
-			<jsp:include page="jsp/sidebar.jsp" />
-<jsp:include page="jsp/footer.jsp" />
+			<jsp:include page="../sidebar.jsp" />
+<jsp:include page="../footer.jsp" />

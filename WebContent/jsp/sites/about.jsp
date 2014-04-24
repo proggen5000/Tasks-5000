@@ -1,5 +1,5 @@
-<jsp:include page="jsp/header.jsp"><jsp:param name="page_title" value="Impressum" /></jsp:include>
-<jsp:include page="jsp/menu.jsp" />
+<jsp:include page="../header.jsp"><jsp:param name="page_title" value="Impressum" /></jsp:include>
+<jsp:include page="../menu.jsp" />
 		  		
 		  		<h1>Impressum</h1>
 		  		<p>Hallo! Sie schauen auf Tasks 5000 der <b>Version 0.1</b>.</p>
@@ -23,8 +23,11 @@
 		  		</ul>
 		  		<p>Die Darstellung der Anwendung wurde f&uuml;r aktuelle Browser (Google Chrome, Mozilla Firefox und Internet Explorer) angepasst. Zudem wird die Webanwendung auf mobilen Endger&auml;ten entsprechend skaliert.</p>
 		  		
+		  		<h3>Quellen</h3>
+		  		Der Quelltext von Tasks 5000 befindet sich auf <a href="https://github.com/proggen5000/Aufgaben-Verwaltung-5000" target="_blank">GitHub</a>.
+		  		
 		  		<h3>Disclaimer</h3>
 		  		<p>Unsere Website verlinkt ggf. auf andere Webauftritte, von deren Inhalten wir uns hiermit distanzieren. Denn wir m&ouml;chten nicht aufgrund suboptimaler Gesetzeslagen f&uuml;r fremdes Material zur Verantwortung gezogen werden.</p>
 
-			<jsp:include page="jsp/sidebar.jsp" />
-<jsp:include page="jsp/footer.jsp" />
+			<jsp:include page="../sidebar.jsp" />
+<jsp:include page="../footer.jsp" />

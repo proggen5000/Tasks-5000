@@ -8,7 +8,7 @@ import entities.Team;
 
 public class TeamVerwaltung {
 
-	public Team neu (Team team){
+	public static Team neu (Team team){
 		
 		//Einfügen der Werte (ohne ID)
 		String table= "teams";
@@ -33,7 +33,7 @@ public class TeamVerwaltung {
 		}
 	}
 	
-	public Team bearbeiten (Team team){
+	public static Team bearbeiten (Team team){
 		
 		//Aktualisieren des Teams
 		String table= "teams";
@@ -59,7 +59,7 @@ public class TeamVerwaltung {
 		return testteam;
 	}
 	
-	public boolean loeschen (Team team){
+	public static boolean loeschen (Team team){
 		
 		//Team anhand der ID löschen
 		String table= "teams";
@@ -67,7 +67,7 @@ public class TeamVerwaltung {
 		return Queries.deleteQuery(table, where);
 	}
 	
-	public static Team vorhanden (int id){
+	public static Team vorhanden (long id){
 		
 		//Suchen des Mitglieds anhand der ID
 		String sql= "SELECT * FROM teams WHERE teamid="+id;
@@ -95,23 +95,23 @@ public class TeamVerwaltung {
 		return testteam;
 	}
 	
-	public ArrayList<Team> getListe(){
+	public static ArrayList<Team> getListe(){
 		return null;
 	}
 	
-	public ArrayList<Team> getListeVonMitglied(int mitgliedID){
+	public static ArrayList<Team> getListeVonMitglied(long mitgliedID){
 		return null;
 	}
 	
-	public boolean neuesTeammitglied(int teamID, int mitgliedID){
+	public static boolean neuesTeammitglied(long teamID, long mitgliedID){
 		return false;
 	}
 	
-	public boolean loescheTeammitglied(int teamID, int mitgliedID){
+	public static boolean loescheTeammitglied(long teamID, long mitgliedID){
 		return false;
 	}
 
-	public static Team get(int int1) {
+	public static Team get(long teamID) {
 		// TODO Auto-generated method stub
 		return null;
 	}

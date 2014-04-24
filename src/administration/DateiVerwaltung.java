@@ -6,29 +6,33 @@ import entities.Datei;
 
 public class DateiVerwaltung {
 
-	public boolean neu (String titel, String beschr, String version, int teamID,
-			int mitgliedID){
+	public static boolean neu (String titel, String beschr, String version, long teamID,
+			long mitgliedID){
 		return false;
 	} //als Parameter noch Pfad oder Dateiobjekt übergeben?
 	
-	public boolean bearbeiten (int id, String titel, String beschr, String version,
-			int teamID, int mitgliedID){
+	public static boolean bearbeiten (long id, String titel, String beschr, String version,
+			long teamID, long mitgliedID){
 		return false;
 	}
 	
-	public boolean loeschen (int id){
+	public static boolean loeschen (long id){
 		return false;
 	}
 	
-	public static Datei vorhanden (int id){
+	public static Datei vorhanden (long id){
 		return null;
 	}
 	
-	public ArrayList<Datei> getListe(){
+	public static ArrayList<Datei> getListe(){
 		return null;
 	}
 	
-	public ArrayList<Datei> getListeVonAufgabe(int aufgabenID){
-		return null;
+	public static ArrayList<Datei> getListeVonAufgabe(long aufgabenID){
+		ArrayList<Datei> al = new ArrayList<Datei>();
+		
+		// TODO bitte ergänzen
+		
+		return al;
 	}
 }

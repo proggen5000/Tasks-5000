@@ -1,6 +1,8 @@
 package entities;
 import java.io.Serializable;
 
+import administration.DateiVerwaltung;
+
 public class Aufgabe implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -100,5 +102,10 @@ public class Aufgabe implements Serializable {
 		this.deadline = deadline;
 	}
 	
+	
+	public int getFilecount(){
+		return 3;
+		//return DateiVerwaltung.getListeVonAufgabe(this.getId()).size();
+	}
 
 }
