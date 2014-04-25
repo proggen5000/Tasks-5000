@@ -1,8 +1,11 @@
 package administration;
 
 
+
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import database.Queries;
 import entities.Mitglied;
@@ -10,12 +13,22 @@ import entities.Team;
 
 public class TeamVerwaltung {
 
+	/**
+	 * Fuegt Werte eines Teams in die DB ein (ohne ID),
+	 * liefert ein Team mit den eben eingefuegten Werten zurueck (inkl. ID)
+	 * @param team Werte werden in die DB eingefuegt
+	 * @return testteam mit den Werten aus der Datenbank
+	 */
 	public static Team neu (Team team){
+		
+		//aktuelles Datum beziehen
+		Calendar cal = Calendar.getInstance();
+		long gruendungsdatum= cal.getTimeInMillis();
 		
 		//Einfügen der Werte (ohne ID)
 		String table= "teams";
 		String columns= "teamid, teamname, gruendungsdatum, slogan, gruppenfuehrerid";
-		String values= "NULL, "+team.getTeamname()+", "+team.getGruendungsdatum()+", "
+		String values= "NULL, "+team.getTeamname()+", "+gruendungsdatum+", "
 				+team.getSlogan()+", "+team.getGruppenfuehrer().getId();
 		int testID;
 		try {
@@ -42,6 +55,13 @@ public class TeamVerwaltung {
 		}
 	}
 	
+	/**
+	 * Aktualisiert Werte eines Teams in der DB,
+	 * liefert ein Team mit aktualisierten Werten zurueck
+	 * ID und Gruendungsdatum koennen nicht geaendert werden
+	 * @param team mit aktualiserten Werten wird eingefuegt
+	 * @return testteam mit den aktualisierten Werten aus der DB
+	 */
 	public static Team bearbeiten (Team team){
 		
 		//Aktualisieren des Teams
@@ -68,11 +88,16 @@ public class TeamVerwaltung {
 		return testteam;
 	}
 	
-	public static boolean loeschen (Team team){
+	/**
+	 * Loescht ein Team komplett aus der DB
+	 * @param team
+	 * @return boolean
+	 */
+	public static boolean loeschen (long teamid){
 		
 		//Team anhand der ID löschen
 		String table= "teams";
-		String where= "teamid="+team.getId();
+		String where= "teamid="+teamid;
 		try {
 			return Queries.deleteQuery(table, where);
 		} catch (SQLException e) {
@@ -82,20 +107,137 @@ public class TeamVerwaltung {
 		}
 	}
 	
-	public static boolean vorhanden (long id){
-		return false;
+	/**
+	 * Sucht ein Team anhand der ID in der Datenbank
+	 * liefert ein Team mit den gefundenen Werten zurueck
+	 * @param teamid
+	 * @return testteam
+	 */
+	public static Team getTeamWithId(long teamid){
+		
+		//Suchen des Teams anhand der ID
+		String sql= "SELECT * FROM teams WHERE teamid="+teamid;
+		Team testteam= new Team();
+		try {
+			testteam=(Team)Queries.scalarQuery(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return testteam;
 	}
 	
-	public static boolean vorhanden (String name){
-		return false;
+	/**
+	 * Sucht ein Team anhand des Teamnamens in der Datenbank
+	 * liefert ein Team mit den gefundenen Werten zurueck
+	 * @param teamname
+	 * @return testteam
+	 */
+	public static Team getTeamWithName(String teamname){
+		
+		//Suchen des Mitglieds anhand des usernamens
+		String sql= "SELECT * FROM mitglieder WHERE username="+teamname;
+		Team testteam= new Team();
+		try {
+			testteam=(Team)Queries.scalarQuery(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return testteam;
 	}
 	
+	/**
+	 * Sucht ein Team anhand einer ID
+	 * liefert true bei Fund, false bei Nichtexistenz zurueck
+	 * @param teamid ID des gesuchten Teams
+	 * @return boolean
+	 */
+	public static boolean vorhanden(long teamid){
+		
+		String sql= "SELECT * FROM teams WHERE teamid= "+teamid;
+		Team testteam= new Team();
+		try{
+			testteam=(Team)Queries.scalarQuery(sql);
+			if (testteam.getId()!= -1){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}catch (SQLException e){
+			return false;
+		}
+	}
+	
+	/**
+	 * Sucht ein Mitglied anhand eines Usernamens
+	 * liefert true bei Fund, false bei Nichtexistenz zurueck
+	 * @param teamname Username des gesuchten Mitglieds
+	 * @return boolean
+	 */
+	public static boolean vorhanden(String teamname){
+		
+		String sql= "SELECT * FROM teams WHERE teamname= "+teamname;
+		Team testteam= new Team();
+		try{
+			testteam=(Team)Queries.scalarQuery(sql);
+			if (testteam.getId()!= -1){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}catch (SQLException e){
+			return false;
+		}
+	}
+	
+	/**
+	 * liefert eine Liste aller Teams
+	 * @return al ArrayList mit allen Teams
+	 */
 	public static ArrayList<Team> getListe(){
-		return null;
+
+		String sql = "SELECT * FROM teams";
+		ArrayList<Team> al = new ArrayList<Team>();
+		
+		try {
+			ResultSet rs = Queries.rowQuery(sql);
+			while(rs.next()){
+				Team t= new Team(rs.getLong("teamid"), rs.getString("teamname"),
+						rs.getLong("gruendungsdatum"), rs.getString("slogan"),
+						(Mitglied)rs.getObject("gruppenfuehrer"));
+				al.add(t);
+			}
+		} catch (SQLException e) {
+			// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben werden
+			e.printStackTrace();
+			al = null;
+		}
+		return al;
 	}
 	
 	public static ArrayList<Team> getListeVonMitglied(long mitgliedID){
-		return null;
+		
+		String sql = "SELECT * FROM mitglieder JOIN aufgaben_mitglieder "
+				+"ON mitglieder.mitgliedid= aufgaben_mitglieder.mitglieder_mitgliedid "
+				+"JOIN aufgaben ON aufgaben.aufgabeid = aufgaben_mitglieder.aufgaben_aufgabeid "
+				+"WHERE aufgaben.aufgabeid= " + aufgID;
+		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
+	
+		try {
+			ResultSet rs = Queries.rowQuery(sql);	
+			while(rs.next()){
+				Mitglied a= 
+				al.add(a);
+			}
+		} catch (SQLException e) {
+			// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben werden
+			e.printStackTrace();
+			al = null;
+		}
+		return al;
 	}
 	
 	public static ArrayList<Team> getListeVonMitgliedDummy(long mitgliedID){ // TODO

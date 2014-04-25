@@ -4,6 +4,7 @@ package administration;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import database.Queries;
 import entities.Mitglied;
@@ -18,13 +19,17 @@ public class MitgliederVerwaltung {
 	 */
 	public static Mitglied neu (Mitglied mitglied){
 		
+		//aktuelles Datum beziehen
+		Calendar cal = Calendar.getInstance();
+		long regdatum= cal.getTimeInMillis();
+		
 		//Einfuegen der Werte (ohne ID)
 		String table= "mitglieder";
 		String columns= "mitgliedid, username, password, email, vorname, nachname, "
 				+"regdatum";
 		String values= "NULL, "+mitglied.getUsername()+", "+mitglied.getPassword()+", "
 				+mitglied.getEmail()+", "+mitglied.getVorname()+", "+mitglied.getNachname()
-				+", "+mitglied.getRegdatum();
+				+", "+regdatum;
 		long testID;
 		try {
 			testID = Queries.insertQuery(table, columns, values);

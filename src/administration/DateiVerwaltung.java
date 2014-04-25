@@ -9,6 +9,12 @@ import entities.Datei;
 
 public class DateiVerwaltung {
 
+	/**
+	 * Schreibt eine Datei in die DB
+	 * liefert eine Datei mit den gespeicherten Daten zurueck
+	 * @param datei mit einzuschreibenden Daten
+	 * @return testdatei mit gespeicherten Daten
+	 */
 	public static Datei neu (Datei datei){
 		
 		//Einfügen der Werte (ohne ID)
