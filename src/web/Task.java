@@ -1,6 +1,7 @@
 package web;
 
 import java.io.IOException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import entities.Aufgabe;
 import administration.AufgabenVerwaltung;
 import administration.AufgabengruppenVerwaltung;
+import administration.DateiVerwaltung;
 import administration.MitgliederVerwaltung;
 
 @WebServlet("/task")
@@ -58,7 +60,9 @@ public class Task extends HttpServlet {
 		else if(mode.equals("view")){
 			if(id != -1){
 				Aufgabe task = AufgabenVerwaltung.getDummy(id); // TODO
-				request.setAttribute("task", task);			
+				request.setAttribute("task", task);
+				request.setAttribute("files", DateiVerwaltung.getListeVonAufgabe(id));
+				request.setAttribute("users", MitgliederVerwaltung.getListeVonAufgaben(id));
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("jsp/task/taskView.jsp");
 			} else {

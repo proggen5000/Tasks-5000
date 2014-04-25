@@ -1,25 +1,29 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<jsp:include page="../header.jsp"><jsp:param name="page_title" value="${name}" /></jsp:include>
+<%-- Zugriff nicht über Servlet --%>
+<c:if test="${!valid_request}">
+	<c:redirect url="error.jsp"><c:param name="error" value="Zugriff verweigert"></c:param></c:redirect>
+</c:if>
+
+<jsp:include page="../header.jsp"><jsp:param name="page_title" value="${file.titel}" /></jsp:include>
 <jsp:include page="../menu.jsp" />
 
-			<%-- Zugriff nicht über Servlet --%>
-			<c:if test="${!valid_request}">
-				<c:redirect url="error.jsp"><c:param name="error" value="Zugriff verweigert"></c:param></c:redirect>
-			</c:if>
-
 			<ol class="breadcrumb">
-				<li><a href="index.jsp">Start</a></li>
-				<li><a href="team.jsp?mode=view&id=X">${team}</a></li>
-				<li>${group}</li>
+				<li><a href="/">Start</a></li>
+				<li><a href="team?mode=view&id=${file.team.id}">${file.team.teamname}</a></li>
+				<c:if test="${group.id != null}"><li>${group.name}</li></c:if>
 				<li class="active"></li>
 			</ol>
 			
-			<h1>Datei herunterladen</h1>
-			<p>Ihre Datei wird nun heruntergeladen.</p>
-			<p>Klicken Sie <a href="${file_path}">hier</a>, falls Sie die Datei erneut anfordern m&ouml;chten.</p>
+			<h1>${file.titel} <span class="glyphicon glyphicon-file small"></span></h1>
+			<p>${file.beschreibung}</p>
 			
-			<%--<c:redirect url="${file_path}" /> --%>
+			<form action="/file" method="post">
+				<input type="hidden" name="id" value="${task.id}" />
+				<input type="hidden" name="mode" value="download" />
+				<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-file"></span> Download <small>(XY KB)</small></button>
+			</form>
 			
+			<%-- Aktionen (bearbeiten, löschen) und Details (Version, Ersteller) in Sidebar zeigen! --%>
 			<jsp:include page="../sidebar.jsp" />
 <jsp:include page="../footer.jsp" />

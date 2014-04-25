@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import administration.AufgabenVerwaltung;
 import administration.AufgabengruppenVerwaltung;
-import administration.DateiVerwaltung;
 import administration.MitgliederVerwaltung;
 import administration.TeamVerwaltung;
 
@@ -35,7 +34,7 @@ public class Team extends HttpServlet {
 				currentUser = Long.parseLong(request.getSession().getAttribute("currentUser").toString());
 			} catch (NullPointerException e){
 				request.setAttribute("error", e);
-			} 
+			}
 		}
 		
 		long id = -1; // TeamID
