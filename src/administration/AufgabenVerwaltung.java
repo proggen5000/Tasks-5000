@@ -21,7 +21,6 @@ public class AufgabenVerwaltung {
 		try {
 			id = Queries.insertQuery("Aufgabe", "TeamID, AufgabenGruppeID, ErstellerID, Titel, Beschreibung, Status, Deadline", values);
 		} catch (SQLException e1) {
-			// TODO Hier sollte irgend etwas passieren!
 			e1.printStackTrace();
 		}
 		if (id == -1){
@@ -67,7 +66,12 @@ public class AufgabenVerwaltung {
 	public static boolean loeschen (Aufgabe aufgabe){
 		String table = "Aufgabe";
 		String where = "AufgabeID = " + aufgabe.getId();
-		return Queries.deleteQuery(table, where);
+		try {
+			return Queries.deleteQuery(table, where);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	public static boolean vorhanden (long id){
@@ -105,7 +109,7 @@ public class AufgabenVerwaltung {
 				Aufgabe a = new Aufgabe(rs.getLong("AufgabeID"), TeamVerwaltung.get(rs.getInt("TeamID")),
 						AufgabengruppenVerwaltung.get(rs.getInt("AufgabenGruppeID")),
 						MitgliederVerwaltung.get(rs.getInt("ErstellerID")), rs.getString("Titel"),
-						rs.getString("Beschreibung"), rs.getInt("Status"), rs.getLong("Titel"));
+						rs.getString("Beschreibung"), rs.getInt("Status"), rs.getLong("Date"), rs.getLong("Deadline"));
 				al.add(a);
 			}
 		} catch (SQLException e) {
@@ -128,7 +132,7 @@ public class AufgabenVerwaltung {
 				Aufgabe a = new Aufgabe(rs.getLong("AufgabeID"), TeamVerwaltung.get(rs.getInt("TeamID")),
 						AufgabengruppenVerwaltung.get(rs.getInt("AufgabenGruppeID")),
 						MitgliederVerwaltung.get(rs.getInt("ErstellerID")), rs.getString("Titel"),
-						rs.getString("Beschreibung"), rs.getInt("Status"), rs.getLong("Titel"));
+						rs.getString("Beschreibung"), rs.getInt("Status"), rs.getLong("Date"), rs.getLong("Deadline"));
 				al.add(a);
 			}
 		} catch (SQLException e) {
@@ -151,7 +155,7 @@ public class AufgabenVerwaltung {
 						Aufgabe a = new Aufgabe(rs.getLong("AufgabeID"), TeamVerwaltung.get(rs.getInt("TeamID")),
 								AufgabengruppenVerwaltung.get(rs.getInt("AufgabenGruppeID")),
 								MitgliederVerwaltung.get(rs.getInt("ErstellerID")), rs.getString("Titel"),
-								rs.getString("Beschreibung"), rs.getInt("Status"), rs.getLong("Titel"));
+								rs.getString("Beschreibung"), rs.getInt("Status"), rs.getLong("Date"), rs.getLong("Deadline"));
 						al.add(a);
 					}
 				} catch (SQLException e) {

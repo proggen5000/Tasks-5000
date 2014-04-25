@@ -10,6 +10,12 @@ import entities.Aufgabengruppe;
 
 public class AufgabengruppenVerwaltung {
 
+	/**
+	 * Ersellt eine neue AufgabenGruppe in der Datenbank
+	 * @param aufgabengruppe die Aufgabengruppe die gespeichert werden soll
+	 * @return Aufgabengruppe, so wie sie in der Datenbank gespeichert wurde
+	 */
+
 	public static Aufgabengruppe neu (Aufgabengruppe aufgabengruppe){
 		// returns null if error else returns inserted obj with ID			
 			 /*
@@ -18,7 +24,13 @@ public class AufgabengruppenVerwaltung {
 			   Beschreibung varchar(45)	
 			   */
 			String values = aufgabengruppe.getName() + ", " + aufgabengruppe.getBeschreibung();
-			long id = Queries.insertQuery("AufgabenGruppen", "Name, Beschreibung", values);
+			long id;
+			try {
+				id = Queries.insertQuery("AufgabenGruppen", "Name, Beschreibung", values);
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+				return null;
+			}
 			if (id == -1){
 				return null;
 			}
@@ -55,7 +67,12 @@ public class AufgabengruppenVerwaltung {
 	public static boolean loeschen (Aufgabengruppe aufgabengruppe){
 		String table = "AufgabenGruppen";
 		String where = "AufgabenGruppeID = " + aufgabengruppe.getId();
-		return Queries.deleteQuery(table, where);
+		try {
+			return Queries.deleteQuery(table, where);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	public static boolean vorhanden (long id){
@@ -131,7 +148,7 @@ public class AufgabengruppenVerwaltung {
 		return al;
 	}
 	
-	public static ArrayList<Aufgabengruppe> getListeVonTeamDummy(long teamID){ // TODO
+	public static ArrayList<Aufgabengruppe> getListeVonTeamDummy(long teamID){
 		ArrayList<Aufgabengruppe> al = new ArrayList<Aufgabengruppe>();
 		
 		Aufgabengruppe ag1 = new Aufgabengruppe(1, "Windows 8.1", "Alle Aufgaben, die mit Windows 8.1 zutun haben.");
