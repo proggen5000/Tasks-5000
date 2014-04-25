@@ -75,6 +75,7 @@ public class Team extends HttpServlet {
 		
 		// Team erstellen (Formular)
 		else if(mode.equals("new")){
+			request.setAttribute("usersAll", MitgliederVerwaltung.getListe());
 			request.setAttribute("mode", mode);
 			request.setAttribute("valid_request", true);
 			view = request.getRequestDispatcher("jsp/team/teamEdit.jsp");
@@ -86,6 +87,8 @@ public class Team extends HttpServlet {
 			
 			if(team.getGruppenfuehrer().getId() == currentUser){
 				request.setAttribute("team", team);
+				request.setAttribute("users", MitgliederVerwaltung.getListeVonTeam(id));
+				request.setAttribute("usersAll", MitgliederVerwaltung.getListe());
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("jsp/team/teamEdit.jsp");

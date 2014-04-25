@@ -4,13 +4,11 @@ import java.io.Serializable;
 public class Datei implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private long id;
-	private String titel;
+	private String name;
 	private String beschreibung;
 	private String pfad;
-	private String version;
 	private Team team;
 	private Mitglied ersteller;
-	// Was ist mit der Dateigröße? Wird die direkt ermittelt?
 	
 	// Konstruktor!
 	
@@ -23,12 +21,11 @@ public class Datei implements Serializable {
 		this.id = id;
 	}
 
-	public String getTitel() {
-		return titel;
+	public String getName() {
+		return name;
 	}
-
-	public void setTitel(String titel) {
-		this.titel = titel;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getBeschreibung() {
@@ -37,14 +34,6 @@ public class Datei implements Serializable {
 
 	public void setBeschreibung(String beschreibung) {
 		this.beschreibung = beschreibung;
-	}
-
-	public String getVersion() {
-		return version;
-	}
-
-	public void setVersion(String version) {
-		this.version = version;
 	}
 
 	public Team getTeam() {

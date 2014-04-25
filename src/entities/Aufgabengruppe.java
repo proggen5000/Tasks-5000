@@ -7,14 +7,15 @@ public class Aufgabengruppe implements Serializable {
 	private long id;
 	private String name;
 	private String beschreibung;
-	// Team??
+	private Team team;
 	
 	public Aufgabengruppe(){}
 	
-	public Aufgabengruppe(long id, String name, String beschreibung){
+	public Aufgabengruppe(long id, String name, String beschreibung, Team team){
 		this.id = id;
 		this.name = name;
 		this.beschreibung = beschreibung;
+		this.team = team;
 	}
 
 	//Getters & Setters
@@ -40,5 +41,13 @@ public class Aufgabengruppe implements Serializable {
 
 	public void setBeschreibung(String beschreibung) {
 		this.beschreibung = beschreibung;
+	}
+
+	public Team getTeam() {
+		return team;
+	}
+
+	public void setTeam(Team team) {
+		this.team = team;
 	}
 }

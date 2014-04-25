@@ -5,28 +5,25 @@ import java.util.Date;
 public class Aufgabe implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private long id;
-	private Team team; // vermutlich unn�tig, da Team �ber Aufgabengruppe ermittelt werden kann!! 
+	private long id; 
 	private Aufgabengruppe gruppe;
 	private Mitglied ersteller;
-	private String titel;
+	private String name;
 	private String beschreibung;
 	private int status;
-	private long date; // ergaenzt!!
+	private long erstellungsdatum;
 	private long deadline;
-	// Wem ist Aufgabe zugeteilt? Sollte das hier gespeichert werden? -> Extra Bean!
 	
 	public Aufgabe(){
 	}
-	public Aufgabe(long id, Team team, Aufgabengruppe gruppe, Mitglied ersteller, String titel, String beschreibung, int status, long date, long deadline){
+	public Aufgabe(long id, Aufgabengruppe gruppe, Mitglied ersteller, String name, String beschreibung, int status, long erstellungsdatum, long deadline){
 		this.id = id;
-		this.team = team;
 		this.gruppe = gruppe;
 		this.ersteller = ersteller;
-		this.titel = titel;
+		this.name = name;
 		this.beschreibung = beschreibung;
 		this.status = status;
-		this.date = date;
+		this.erstellungsdatum = erstellungsdatum;
 		this.deadline = deadline;
 	}
 	
@@ -37,14 +34,6 @@ public class Aufgabe implements Serializable {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public Team getTeam() {
-		return team;
-	}
-
-	public void setTeam(Team team) {
-		this.team = team;
 	}
 
 	public Aufgabengruppe getGruppe() {
@@ -59,16 +48,15 @@ public class Aufgabe implements Serializable {
 		return ersteller;
 	}
 
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public void setErsteller(Mitglied ersteller) {
 		this.ersteller = ersteller;
-	}
-
-	public String getTitel() {
-		return titel;
-	}
-
-	public void setTitel(String titel) {
-		this.titel = titel;
 	}
 
 	public String getBeschreibung() {
@@ -87,12 +75,13 @@ public class Aufgabe implements Serializable {
 		this.status = status;
 	}
 
-	public long getDate() {
-		return date;
+	public long getErstellungsdatum() {
+		return erstellungsdatum;
 	}
-	public void setDate(long date) {
-		this.date = date;
+	public void setErstellungsdatum(long erstellungsdatum) {
+		this.erstellungsdatum = erstellungsdatum;
 	}
+	
 	public long getDeadline() {
 		return deadline;
 	}
@@ -111,7 +100,7 @@ public class Aufgabe implements Serializable {
 	 * Liefert das Erstellungsdatum als Dateobjekt
 	 */
 	public Date getDateAsDate(){
-		return new java.util.Date(date);
+		return new java.util.Date(erstellungsdatum);
 	}
 	
 	/**

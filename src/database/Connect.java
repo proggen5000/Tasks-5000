@@ -1,7 +1,7 @@
  package database;
 import java.sql.*;
 
-class Connect {
+class Connect { // TODO
 	private static Connection con;
 	
 	private Connect(){}
@@ -23,7 +23,7 @@ class Connect {
 		return con;
 	}
 	/**
-	 * Schließt die Verbindung zur Datenbank
+	 * Schlieï¿½t die Verbindung zur Datenbank
 	 * @throws SQLException
 	 */
 	public static void releaseConnection() throws SQLException{

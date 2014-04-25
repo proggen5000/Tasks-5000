@@ -12,11 +12,11 @@ public class TeamVerwaltung {
 
 	public static Team neu (Team team){
 		
-		//Einfügen der Werte (ohne ID)
+		//Einfï¿½gen der Werte (ohne ID)
 		String table= "teams";
 		String columns= "teamid, teamname, gruendungsdatum, slogan, gruppenfuehrerid";
 		String values= "NULL, "+team.getTeamname()+", "+team.getGruendungsdatum()+", "
-				+team.getSlogan()+", "+team.getGruppenfuehrer().getId();
+				+team.getBeschreibung()+", "+team.getGruppenfuehrer().getId();
 		int testID;
 		try {
 			testID = Queries.insertQuery(table, columns, values);
@@ -30,7 +30,7 @@ public class TeamVerwaltung {
 			return null;
 		}
 		else{
-			//Erstellen eines Teams mit den übernommenen Werten (mit ID)
+			//Erstellen eines Teams mit den ï¿½bernommenen Werten (mit ID)
 			Team testteam= new Team();
 			String sql= "SELECT * FROM teams WHERE testid="+testID;
 			try {
@@ -46,7 +46,7 @@ public class TeamVerwaltung {
 		
 		//Aktualisieren des Teams
 		String table= "teams";
-		String updateString= "teamname="+team.getTeamname()+", slogan="+team.getSlogan()
+		String updateString= "teamname="+team.getTeamname()+", slogan="+team.getBeschreibung()
 				+", gruppenfuehrerid="+team.getGruppenfuehrer().getId();
 		String where= "teamid="+team.getId();
 		Team testteam= new Team();
@@ -70,7 +70,7 @@ public class TeamVerwaltung {
 	
 	public static boolean loeschen (Team team){
 		
-		//Team anhand der ID löschen
+		//Team anhand der ID lï¿½schen
 		String table= "teams";
 		String where= "teamid="+team.getId();
 		try {
