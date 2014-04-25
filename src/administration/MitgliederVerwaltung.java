@@ -337,24 +337,11 @@ public class MitgliederVerwaltung {
 	}
 	
 	public static boolean pruefeLoginDummy(String username, String password){ // TODO
-		if(username.equals("admin") && password.equals("123")){
+		if(username.equals("Bastart") && password.equals("kaesekuchen")){
 			return true;
 		} else {
 			return false;
 		}
-	}
-
-	public static Mitglied get(long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	/**
-	 * Liefert das Mitglied mit dem angegebenen Username 
-	 * @return Objekt des Mitglieds mit dem angegebenen Username
-	 */
-	public static Mitglied getAnhandUsername(String username){
-		return null;
 	}
 	
 	/**

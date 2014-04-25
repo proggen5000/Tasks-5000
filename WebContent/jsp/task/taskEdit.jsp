@@ -1,15 +1,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%-- Zugriff nicht über Servlet --%>
+<%-- Zugriff nicht über Servlet 
 <c:if test="${!valid_request}">
 	<c:redirect url="error.jsp"><c:param name="error" value="Zugriff verweigert"></c:param></c:redirect>
-</c:if>
+</c:if>--%>
 
 <jsp:include page="../header.jsp"><jsp:param name="page_title" value="${name}" /></jsp:include>
 <jsp:include page="../menu.jsp"><jsp:param name="menu" value="teams" /></jsp:include>
 		
-			<%-- Aufgabe bearbeiten/erstellen --%>			
+			<%-- Aufgabe erstellen --%>		
 			<c:if test="${param.mode == 'new'}">
 				<c:set var="submit_button" scope="page" value="Erstellen" />
 				<ol class="breadcrumb">
@@ -20,6 +20,7 @@
 				<h1>Aufgabe erstellen</h1>
 			</c:if>
 			
+			<%-- Aufgabe bearbeiten --%>
 			<c:if test="${param.mode == 'edit'}">
 				<c:set var="submit_button" scope="page" value="Speichern" />
 				<ol class="breadcrumb">
@@ -53,11 +54,11 @@
 				<div class="form-group col-xs row">
 				    	<div class="col-xs-4">
 				    		<label><span class="glyphicon glyphicon-calendar"></span> Erstellungsdatum</label>
-				    		<p class="form-control-static"><fmt:formatDate pattern="dd.MM.yyyy" value="${date}" /></p>
+				    		<p class="form-control-static"><fmt:formatDate pattern="dd.MM.yyyy" value="${task.erstellungsdatumAsDate}" /></p>
 				    	</div>
 				    	<div class="col-xs-4">
 				    		<label for="deadline"><span class="glyphicon glyphicon-bell"></span> Deadline</label>
-							<input id="deadline" name="deadline" type="date" class="form-control" value="<fmt:formatDate pattern="yyyy-MM-dd" value="${deadline}" />">
+							<input id="deadline" name="deadline" type="date" class="form-control" value="<fmt:formatDate pattern="yyyy-MM-dd" value="${task.deadlineAsDate}" />">
 				    	</div>
 				    	<div class="col-xs-4">
 				    		<label for="status"><span class="glyphicon glyphicon-dashboard"></span> Status</label> <small>(%)</small>
@@ -65,15 +66,12 @@
 				    	</div>
 				</div>
 				<div class="form-group col-xs">
-					<label for="members"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <small>(mehrere Mitglieder durck Gedr&uuml;ckthalten von <kbd>Strg</kbd> bzw. <kbd>Cmd</kbd> markieren)</small>
-					<select multiple name="members" id="members" size="3" class="form-control">
-						<option value="1">Felix Fichte</option>
-						<option value="34">Gunnar Lehker</option>
-						<option value="2">Manuel Taya</option>
-						<option value="74">Sebastian Herrmann</option>
-						<option value="74">x</option>
-						<option value="74">y</option>
-						<option value="74">z</option>
+					<label for="users"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <small>(mehrere Mitglieder durck Gedr&uuml;ckthalten von <kbd>Strg</kbd> bzw. <kbd>Cmd</kbd> markieren)</small>
+					<select multiple name="users" id="users" size="3" class="form-control">
+						<c:forEach var="user" items="${users}">
+							<%-- hier prüfen, welche Mitglieder schon ausgewaehlt wurden!! //TODO --%>
+							<option value="${user.id}">${user.username}</option>
+						</c:forEach>
 					</select>
 				</div>
 				
@@ -120,8 +118,11 @@
 				
 				<div class="form-group">
 					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> ${submit_button}</button>
-					<button type="reset" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Zur&uuml;cksetzen</button>
+					<c:if test="${param.mode == 'new'}">
+						<a class="btn btn-default" href="/team?mode=view&id=${task.gruppe.team.id}"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
+					</c:if>
 					<c:if test="${param.mode == 'edit'}">
+						<a class="btn btn-default" href="/task?mode=view&id=${task.id}"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
 						<a href="task?mode=remove&id=${task.id}" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Aufgabe l&ouml;schen</a>
 					</c:if>
 				</div>

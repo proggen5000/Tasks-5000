@@ -1,5 +1,8 @@
 package entities;
 import java.io.Serializable;
+import java.util.ArrayList;
+
+import administration.AufgabenVerwaltung;
 
 public class Aufgabengruppe implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -49,5 +52,11 @@ public class Aufgabengruppe implements Serializable {
 
 	public void setTeam(Team team) {
 		this.team = team;
+	}
+	
+
+	// TODO
+	public ArrayList<Aufgabe> getAufgaben(){
+		return AufgabenVerwaltung.getListeVonGruppe(id);
 	}
 }

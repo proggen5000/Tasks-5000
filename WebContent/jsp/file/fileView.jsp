@@ -10,7 +10,7 @@
 
 			<ol class="breadcrumb">
 				<li><a href="/">Start</a></li>
-				<li><a href="team?mode=view&id=${file.team.id}">${file.team.teamname}</a></li>
+				<li><a href="team?mode=view&id=${file.team.id}">${file.team.name}</a></li>
 				<c:if test="${group.id != null}"><li>${group.name}</li></c:if>
 				<li class="active"></li>
 			</ol>
@@ -21,7 +21,7 @@
 			<form action="/file" method="post">
 				<input type="hidden" name="id" value="${task.id}" />
 				<input type="hidden" name="mode" value="download" />
-				<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-file"></span> Download <small>(XY KB)</small></button>
+				<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-download"></span> Download <small>(XY KB)</small></button>
 			</form>
 			
 			<%-- Aktionen (bearbeiten, löschen) und Details (Version, Ersteller) in Sidebar zeigen! --%>

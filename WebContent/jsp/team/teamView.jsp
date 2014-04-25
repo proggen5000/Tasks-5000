@@ -3,7 +3,7 @@
 
 <%-- Zugriff nicht über Servlet --%>
 <c:if test="${!valid_request}">
-	<c:redirect url="error.jsp"><c:param name="error" value="Zugriff verweigert"></c:param></c:redirect>
+	<c:redirect url="/error.jsp"><c:param name="error" value="Zugriff verweigert"></c:param></c:redirect>
 </c:if>
 	
 <jsp:include page="../header.jsp"><jsp:param name="page_title" value="${team.name}" /></jsp:include>
@@ -16,7 +16,7 @@
 	  			<h2><a href="taskGroup?mode=edit&id=${taskGroup.id}" title="Aufgabengruppe bearbeiten">${taskGroup.name}</a></h2>
 		  		<p>${taskGroup.beschreibung}</p>
 				<div class="list-group">
-					<c:forEach var="task" items="<% AufgabenVerwaltung.getListeVonGruppe(${taskGroup.id}); %>">
+					<c:forEach var="task" items="${taskGroup.aufgaben}">
 		  				<a href="task?mode=view&id=${task.id}" class="list-group-item">
 							<div class="task-progress"><div class="progress">
 								<div class="progress-bar" role="progressbar" aria-valuenow="${task.status}" aria-valuemin="0" aria-valuemax="100" style="width: ${task.status}%;">${task.status}%</div>
@@ -45,11 +45,15 @@
 		
 			<h1>Mitglieder</h1>
 			<div class="list-group">
-				<a href="user?mode=view&id=X" class="list-group-item"><span class="glyphicon glyphicon-user"></span> Gunnar Lehker <span class="label label-default">Manager</span></a>
-				<a href="user?mode=view&id=X" class="list-group-item"><span class="glyphicon glyphicon-user"></span> Manuel Taya</a>
-				<a href="user?mode=view&id=X" class="list-group-item"><span class="glyphicon glyphicon-user"></span> Felix Fichte</a>
-				<a href="user?mode=view&id=X" class="list-group-item"><span class="glyphicon glyphicon-user"></span> Sebastian Herrmann</a>		
+				<c:forEach var="user" items="${users}">
+					<a href="user?mode=view&id=${user.id}" class="list-group-item">
+						<span class="glyphicon glyphicon-user"></span> ${user.username}
+						<c:if test="${user.id == team.gruppenfuehrer.id}">
+							<span class="label label-default">Manager</span>
+						</c:if>
+					</a>
+				</c:forEach>
 			</div>
-		</div><%-- Ende Sidebar, ggf. durch Methode ergänzen --%>
+		</div><%-- Ende Sidebar --%>
 
 <jsp:include page="../footer.jsp" />

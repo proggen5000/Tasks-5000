@@ -163,7 +163,7 @@ public class Task extends HttpServlet {
 		else if(mode.equals("new")){
 			Aufgabe task = new Aufgabe();
 			task.setId(4);
-			task.setErsteller(MitgliederVerwaltung.get(currentUser));
+			task.setErsteller(MitgliederVerwaltung.getMitgliedWithId(currentUser));
 			task.setName(request.getParameter("name"));
 			// task.setTeam(team); // hoffentlich bald unn�tig
 			task.setGruppe(AufgabengruppenVerwaltung.get(Integer.parseInt(request.getParameter("group"))));
@@ -180,7 +180,7 @@ public class Task extends HttpServlet {
 		else if(mode.equals("edit")){
 			Aufgabe task = new Aufgabe();
 			task.setId(id);
-			task.setErsteller(MitgliederVerwaltung.get(currentUser));
+			task.setErsteller(MitgliederVerwaltung.getMitgliedWithId(currentUser));
 			task.setName(request.getParameter("name"));
 			// task.setTeam(team); // hoffentlich bald unn�tig
 			task.setGruppe(AufgabengruppenVerwaltung.get(Integer.parseInt(request.getParameter("group")))); // TODO dummy weg

@@ -70,11 +70,11 @@ public class Login extends HttpServlet {
 		RequestDispatcher view = request.getRequestDispatcher("error.jsp");
 		
 		
-		// Login
+		// Login (Aktion)
 		if(mode.equals("login")){
 			if(!login){
-				if(MitgliederVerwaltung.pruefeLogin(username, password)){
-					Mitglied user =  MitgliederVerwaltung.getAnhandUsername(username);
+				if(MitgliederVerwaltung.pruefeLoginDummy(username, password)){ // TODO
+					Mitglied user =  MitgliederVerwaltung.getMitgliedWithName(username);
 					
 					HttpSession session = request.getSession(true);
 					session.setAttribute("login", true);
@@ -106,7 +106,7 @@ public class Login extends HttpServlet {
 				view = request.getRequestDispatcher("error.jsp");
 			}
 		
-		// Registrierung
+		// Registrierung (Aktion)
 		} else if(mode.equals("register")){
 			if(!login){
 				Mitglied user = new Mitglied();
@@ -121,7 +121,7 @@ public class Login extends HttpServlet {
 				MitgliederVerwaltung.neu(user);
 				request.setAttribute("valid_request", true);
 				// TODO lieber auf nette Willkommensseite weiterleiten
-				view = request.getRequestDispatcher("jsp/sites/index.jsp");
+				view = request.getRequestDispatcher("/index");
 			} else {
 				request.setAttribute("error", "Sie sind bereits registriert und eingeloggt!");
 				view = request.getRequestDispatcher("error.jsp");

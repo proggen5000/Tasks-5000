@@ -7,7 +7,8 @@
 </c:if>
 	
 <jsp:include page="../header.jsp"><jsp:param name="page_title" value="${user.username}" /></jsp:include>
-<jsp:include page="../menu.jsp" />
+<c:if test="${user.id != currentUser}"><jsp:include page="../menu.jsp" /></c:if>
+<c:if test="${user.id == currentUser}"><jsp:include page="../menu.jsp"><jsp:param name="menu" value="me" /></jsp:include></c:if>
 
 			<h1>${user.username} <span class="glyphicon glyphicon-user small"></span></h1>
 			<dl class="dl-horizontal">

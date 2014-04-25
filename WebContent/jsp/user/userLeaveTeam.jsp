@@ -9,12 +9,12 @@
 <jsp:include page="../menu.jsp" />
 
 			<h1>Team verlassen</h1>
-			<p>Sind Sie sicher, dass Sie das Team "<b>${team.teamname}</b>" endg&uuml;ltig verlassen m&ouml;chten?</p>
+			<p>Sind Sie sicher, dass Sie das Team "<b>${team.name}</b>" endg&uuml;ltig verlassen m&ouml;chten?</p>
 			<form action="/user" method="post">
-				<input type="hidden" name="id" value="${currentUser}">
-				<input type="hidden" name="teamId" value="${team.id}">
-				<input type="hidden" name="mode" value="leaveTeam">
-				<input type="hidden" name="sure" value="true">
+				<input type="hidden" name="id" value="${currentUser}" />
+				<input type="hidden" name="teamId" value="${team.id}" />
+				<input type="hidden" name="mode" value="leaveTeam" />
+				<input type="hidden" name="sure" value="true" />
 				<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-ok"></span> Ja, Team verlassen</button>
 				<a class="btn btn-default" href="team?mode=view&id=${team.id}"><span class="glyphicon glyphicon-remove"></span> Nein, abbrechen</a>
 			</form>

@@ -6,12 +6,12 @@
 </c:if>
 	
 <jsp:include page="../header.jsp"><jsp:param name="page_title" value="${user.username}" /></jsp:include>
-<jsp:include page="../menu.jsp" />
+<jsp:include page="../menu.jsp"><jsp:param name="menu" value="me" /></jsp:include>
 		
 			<h1>Profil bearbeiten</h1>
 			<form class="form" action="/user" method="post">
 		  		  <div class="form-group col-xs">
-				    <label for="username"><span class="glyphicon glyphicon-user"></span> Benutzername</label>
+				    <label for="username"><span class="glyphicon glyphicon-user"></span> Benutzername*</label>
 				    <input type="text" class="form-control input-lg" name="username" placeholder="" value="${user.username}">
 				  </div>
 				  <div class="form-group">
@@ -26,7 +26,7 @@
 				    </div>
 				  </div>
 				  <div class="form-group">
-				    <label for="email"><span class="glyphicon glyphicon-envelope"></span> E-Mail-Adresse</label>
+				    <label for="email"><span class="glyphicon glyphicon-envelope"></span> E-Mail-Adresse*</label>
 				    <input type="text" class="form-control" id="email" name="email" placeholder="" value="${user.email}">
 				  </div>
 				  <div class="form-group">

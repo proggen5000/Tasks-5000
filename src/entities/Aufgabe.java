@@ -99,7 +99,7 @@ public class Aufgabe implements Serializable {
 	/**
 	 * Liefert das Erstellungsdatum als Dateobjekt
 	 */
-	public Date getDateAsDate(){
+	public Date getErstellungsdatumAsDate(){
 		return new java.util.Date(erstellungsdatum);
 	}
 	

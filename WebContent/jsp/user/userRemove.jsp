@@ -6,7 +6,7 @@
 </c:if>
 	
 <jsp:include page="../header.jsp"><jsp:param name="page_title" value="Profil l&ouml;schen" /></jsp:include>
-<jsp:include page="../menu.jsp" />
+<jsp:include page="../menu.jsp"><jsp:param name="menu" value="me" /></jsp:include>
 
 			<h1>Profil l&ouml;schen</h1>
 			<p>Sind Sie sicher, dass Sie Ihr Benutzerprofil endg&uuml;ltig l&ouml;schen m&ouml;chten? Es kann danach nicht wiederhergestellt werden, zudem werden gewisse mit Ihnen verkn&uuml;pfte Elemente gel&ouml;scht:</p>
@@ -15,7 +15,6 @@
 				<li>alle Verkn&uuml;pfungen zu Ihren Aufgaben und Dateien</li>
 			</ul>
 			<form action="/user" method="post">
-				<input type="hidden" name="id" value="${currentUser}" />
 				<input type="hidden" name="mode" value="remove" />
 				<input type="hidden" name="sure" value="true" />
 				<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-ok"></span> Ja, mein Profil f&uuml;r immer l&ouml;schen</button>
