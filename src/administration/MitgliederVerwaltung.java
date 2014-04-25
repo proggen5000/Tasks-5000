@@ -11,14 +11,14 @@ import entities.Mitglied;
 public class MitgliederVerwaltung {
 
 	/**
-	 * F�gt Werte eines Mitglieds in die Datenbank ein,
-	 * liefert ein Mitglied mit den eben eingef�gten Werten zur�ck (inkl. ID)
-	 * @param mitglied
-	 * @return testmitglied
+	 * Fuegtgt Werte eines Mitglieds in die Datenbank ein,
+	 * liefert ein Mitglied mit den eben eingefuegten Werten zurueck (inkl. ID)
+	 * @param mitglied Werte werden ein die DB eingefuegt
+	 * @return testmitglied mit den Werten aus der Datenbank
 	 */
 	public static Mitglied neu (Mitglied mitglied){
 		
-		//Einf�gen der Werte (ohne ID)
+		//Einfuegen der Werte (ohne ID)
 		String table= "mitglieder";
 		String columns= "mitgliedid, username, password, email, vorname, nachname, "
 				+"regdatum";
@@ -38,7 +38,7 @@ public class MitgliederVerwaltung {
 			return null;
 		}
 		else{
-			//Erstellen eines Mitglieds mit den �bernommenen Werten (mit ID)
+			//Erstellen eines Mitglieds mit den uebernommenen Werten (mit ID)
 			Mitglied testmitglied= new Mitglied();
 			String sql= "SELECT * FROM mitglieder WHERE mitgliedid="+testID;
 			try {
@@ -52,10 +52,10 @@ public class MitgliederVerwaltung {
 	
 	/**
 	 * Aktualisiert Werte eines Mitglieds in der Datenbank,
-	 * liefert ein Mitglied mit allen Werten zur�ck
-	 * ID und Registrierungsdatum k�nnen nicht ge�ndert werden
-	 * @param mitglied
-	 * @return testmitglied
+	 * liefert ein Mitglied mit aktualisierten Werten zurueck
+	 * ID und Registrierungsdatum koennen nicht geaendert werden
+	 * @param mitglied mit aktualiserten Werten wird eingefuegt
+	 * @return testmitglied mit den aktualisierten Werten aus der DB
 	 */
 	public static Mitglied bearbeiten (Mitglied mitglied){
 		
@@ -85,15 +85,15 @@ public class MitgliederVerwaltung {
 	}
 	
 	/**
-	 * L�scht ein Mitglied komplett aus der Datenbank
+	 * Loescht ein Mitglied komplett aus der Datenbank
 	 * @param mitglied
 	 * @return boolean
 	 */
-	public static boolean loeschen (Mitglied mitglied){
+	public static boolean loeschen (long id){
 		
-		//Mitglied anhand der ID l�schen
+		//Mitglied anhand der ID loeschen
 		String table= "mitglieder";
-		String where= "mitgliedid="+mitglied.getId();
+		String where= "mitgliedid="+id;
 		try {
 			return Queries.deleteQuery(table, where);
 		} catch (SQLException e) {
@@ -105,11 +105,11 @@ public class MitgliederVerwaltung {
 	
 	/**
 	 * Sucht ein Mitglied anhand der ID in der Datenbank
-	 * liefert ein Mitglied mit den gefundenen Werten zur�ck
+	 * liefert ein Mitglied mit den gefundenen Werten zurueck
 	 * @param id
 	 * @return testmitglied
 	 */
-	public static Mitglied vorhanden (long id){
+	public static Mitglied getMitgliedWithId(long id){
 		
 		//Suchen des Mitglieds anhand der ID
 		String sql= "SELECT * FROM mitglieder WHERE mitgliedid="+id;
@@ -124,14 +124,14 @@ public class MitgliederVerwaltung {
 	}
 	
 	/**
-	 * Sucht ein Mitglied anhand des usernamens in der Datenbank
-	 * liefert ein Mitglied mit den gefundenen Werten zur�ck
+	 * Sucht ein Mitglied anhand des Usernamens in der Datenbank
+	 * liefert ein Mitglied mit den gefundenen Werten zurueck
 	 * @param username
 	 * @return testmitglied
 	 */
-	public static Mitglied vorhanden (String username){
+	public static Mitglied getMitgliedWithName(String username){
 		
-		//Suchen des Mitglieds anhand der ID
+		//Suchen des Mitglieds anhand des usernamens
 		String sql= "SELECT * FROM mitglieder WHERE username="+username;
 		Mitglied testmitglied= new Mitglied();
 		try {
@@ -144,8 +144,54 @@ public class MitgliederVerwaltung {
 	}
 	
 	/**
+	 * Sucht ein Mitglied anhand einer id
+	 * liefert true bei Fund, false bei Nichtexistenz zurueck
+	 * @param id ID des gesuchten Mitglieds
+	 * @return boolean
+	 */
+	public static boolean vorhanden(long id){
+		
+		String sql= "SELECT * FROM mitglieder WHERE mitgliedid= "+id;
+		Mitglied testmitglied= new Mitglied();
+		try{
+			testmitglied=(Mitglied)Queries.scalarQuery(sql);
+			if (testmitglied.getId()!= -1){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}catch (SQLException e){
+			return false;
+		}
+	}
+	
+	/**
+	 * Sucht ein Mitglied anhand eines Usernamens
+	 * liefert true bei Fund, false bei Nichtexistenz zurueck
+	 * @param username Username des gesuchten Mitglieds
+	 * @return boolean
+	 */
+	public static boolean vorhanden(String username){
+		
+		String sql= "SELECT * FROM mitglieder WHERE username= "+username;
+		Mitglied testmitglied= new Mitglied();
+		try{
+			testmitglied=(Mitglied)Queries.scalarQuery(sql);
+			if (testmitglied.getId()!= -1){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}catch (SQLException e){
+			return false;
+		}
+	}
+	
+	/**
 	 * liefert eine ArrayList aller Mitglieder
-	 * @return al
+	 * @return al ArrayList mit Mitgliedern
 	 */
 	public static ArrayList<Mitglied> getListe(){
 
@@ -172,8 +218,8 @@ public class MitgliederVerwaltung {
 	
 	/**
 	 * liefert eine ArrayList aller Mitglieder, die einer bestimmten Aufgabe zugeordnet sind
-	 * @param aufgID
-	 * @return al
+	 * @param aufgID ID der Aufgabe
+	 * @return al ArrayList mit Mitgliedern
 	 */
 	public static ArrayList<Mitglied> getListeVonAufgaben(long aufgID){
 		
