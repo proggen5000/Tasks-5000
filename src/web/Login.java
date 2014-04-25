@@ -33,7 +33,13 @@ public class Login extends HttpServlet {
 		
 		RequestDispatcher view = request.getRequestDispatcher("error.jsp");
 		
-		if(mode.equals("logout")){
+		if(mode == null){
+			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
+			view = request.getRequestDispatcher("error.jsp");
+		}
+		
+		// Logout
+		else if(mode.equals("logout")){
 			if(login){
 				HttpSession session = request.getSession(true);
 				session.removeAttribute("login");
@@ -73,7 +79,7 @@ public class Login extends HttpServlet {
 		// Login (Aktion)
 		if(mode.equals("login")){
 			if(!login){
-				if(MitgliederVerwaltung.pruefeLoginDummy(username, password)){ // TODO
+				if(MitgliederVerwaltung.pruefeLogin(username, password)){ // TODO
 					Mitglied user =  MitgliederVerwaltung.getMitgliedWithName(username);
 					
 					HttpSession session = request.getSession(true);
