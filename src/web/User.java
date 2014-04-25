@@ -69,10 +69,10 @@ public class User extends HttpServlet {
 		// Mitgliedsprofil ansehen
 		else if(mode.equals("view")){
 			if(id != -1){
-				Mitglied user = MitgliederVerwaltung.getDummy(id); // TODO
+				Mitglied user = MitgliederVerwaltung.get(id); // TODO
 				
 				request.setAttribute("user", user);
-				request.setAttribute("teams", TeamVerwaltung.getListeVonMitgliedDummy(id)); // TODO
+				request.setAttribute("teams", TeamVerwaltung.getListeVonMitglied(id)); // TODO
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("jsp/user/userView.jsp");
 			} else {
@@ -83,7 +83,7 @@ public class User extends HttpServlet {
 		
 		// Profil bearbeiten (Formular)
 		else if(mode.equals("edit")){
-			Mitglied user = MitgliederVerwaltung.getDummy(currentUser); // TODO
+			Mitglied user = MitgliederVerwaltung.get(currentUser); // TODO
 			
 			request.setAttribute("user", user);
 			request.setAttribute("valid_request", true);
@@ -92,7 +92,7 @@ public class User extends HttpServlet {
 		
 		// Profil löschen
 		else if(mode.equals("remove")){
-			Mitglied user = MitgliederVerwaltung.getDummy(currentUser); // TODO
+			Mitglied user = MitgliederVerwaltung.get(currentUser); // TODO
 			
 			request.setAttribute("user", user);			
 			request.setAttribute("valid_request", true);
@@ -102,7 +102,7 @@ public class User extends HttpServlet {
 		// Team verlassen
 		else if(mode.equals("leaveTeam")){
 			if(MitgliederVerwaltung.istMitgliedInTeam(currentUser, teamId)){
-				Mitglied user = MitgliederVerwaltung.getDummy(currentUser); // TODO
+				Mitglied user = MitgliederVerwaltung.get(currentUser); // TODO
 				request.setAttribute("user", user);
 				request.setAttribute("team", TeamVerwaltung.get(teamId));
 				request.setAttribute("valid_request", true);
@@ -173,7 +173,7 @@ public class User extends HttpServlet {
 
 		// Profil bearbeiten (Aktion)
 		if(mode.equals("edit")){
-			Mitglied user = MitgliederVerwaltung.getDummy(currentUser); // TODO
+			Mitglied user = MitgliederVerwaltung.get(currentUser); // TODO
 			
 			request.setAttribute("user", user);
 			request.setAttribute("valid_request", true);
@@ -182,7 +182,7 @@ public class User extends HttpServlet {
 		
 		// Profil loeschen (Aktion)
 		else if(mode.equals("remove")){
-			Mitglied user = MitgliederVerwaltung.getDummy(currentUser); // TODO
+			Mitglied user = MitgliederVerwaltung.get(currentUser); // TODO
 			String sure = request.getParameter("sure");
 			
 			if(!sure.equals("true")){
@@ -190,7 +190,7 @@ public class User extends HttpServlet {
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("jsp/user/userRemove.jsp");
 			} else if(sure.equals("true")){
-				MitgliederVerwaltung.loeschen(user);
+				MitgliederVerwaltung.loeschen(currentUser);
 				// TODO hier lieber auf nettes "Auf Wiedersehen"-JSP weiterleiten?
 				view = request.getRequestDispatcher("/login?mode=logout");
 			}
@@ -198,7 +198,7 @@ public class User extends HttpServlet {
 		
 		// Team verlassen (Aktion)
 		else if(mode.equals("leaveTeam")){
-			Mitglied user = MitgliederVerwaltung.getDummy(currentUser); // TODO
+			Mitglied user = MitgliederVerwaltung.get(currentUser); // TODO
 			
 			if(MitgliederVerwaltung.istMitgliedInTeam(currentUser, teamId)){
 				request.setAttribute("user", user);

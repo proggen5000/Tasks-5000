@@ -1,8 +1,6 @@
 package web;
 
 import java.io.IOException;
-import java.util.Date;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -78,8 +76,8 @@ public class Login extends HttpServlet {
 		// Login
 		if(mode.equals("login")){
 			if(!login){
-				if(MitgliederVerwaltung.pruefeLoginDummy(username, password)){ // TODO
-					Mitglied user =  MitgliederVerwaltung.getAnhandUsernameDummy(username);
+				if(MitgliederVerwaltung.pruefeLogin(username, password)){
+					Mitglied user =  MitgliederVerwaltung.getAnhandUsername(username);
 					
 					HttpSession session = request.getSession(true);
 					session.setAttribute("login", true);
@@ -115,20 +113,20 @@ public class Login extends HttpServlet {
 		} else if(mode.equals("register")){
 			if(!login){
 				Mitglied user = new Mitglied();
-				// user.setId(id); // TODO n�tig?
+				// user.setId(id); // TODO noetig?
 				user.setUsername(request.getParameter("username"));
 				user.setVorname(request.getParameter("vorname"));
 				user.setNachname(request.getParameter("nachname"));
 				user.setEmail(request.getParameter("email"));
 				user.setPassword(request.getParameter("password"));
-				user.setRegdatum(new Date().getTime());
+				// user.setRegdatum(new Date().getTime()); // TODO noetig?
 				
 				MitgliederVerwaltung.neu(user);
-				
 				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("jsp/login/logout.jsp");
+				// TODO lieber auf nette Willkommensseite weiterleiten
+				view = request.getRequestDispatcher("jsp/sites/index.jsp");
 			} else {
-				request.setAttribute("error", "Sie sind bereits ausgeloggt!");
+				request.setAttribute("error", "Sie sind bereits registriert und eingeloggt!");
 				view = request.getRequestDispatcher("error.jsp");
 			}
 		}
@@ -141,5 +139,4 @@ public class Login extends HttpServlet {
 		
 		view.forward(request, response);
 	}
-
 }

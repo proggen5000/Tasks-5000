@@ -24,7 +24,7 @@
 		  				<c:set var="currentUserID" value="${param.currentUser}" />
 		  				<c:forEach var="team" items="${teams}">
 		  					<tr>
-						        <td><a href="team?mode=view&id=${team.id}">${team.teamname}</a></td>
+						        <td><a href="team?mode=view&id=${team.id}">${team.name}</a></td>
 						        <td><%-- ${team.aufgabenAnzahl} ${team.getAufgabenAnzahlVonMitglied(currentUserID)}--%>4 (2)</td>
 						        <td><%--${team.getAnzahlMitglieder()} --%>3</td>
 						    </tr>

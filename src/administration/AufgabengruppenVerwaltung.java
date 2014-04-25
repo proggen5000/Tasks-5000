@@ -15,7 +15,6 @@ public class AufgabengruppenVerwaltung {
 	 * @param aufgabengruppe die Aufgabengruppe die gespeichert werden soll
 	 * @return Aufgabengruppe, so wie sie in der Datenbank gespeichert wurde
 	 */
-
 	public static Aufgabengruppe neu (Aufgabengruppe aufgabengruppe){
 		// returns null if error else returns inserted obj with ID			
 			 /*
@@ -91,10 +90,6 @@ public class AufgabengruppenVerwaltung {
 		return aufgabengruppe_neu;
 	}
 	
-	public static Aufgabengruppe getDummy (long id){
-		return new Aufgabengruppe(id, "Dummy-Gruppe", "Dummy-Gruppenbeschreibung");
-	}
-	
 	public static Aufgabengruppe vorhanden (String name){
 		//Suchen der Aufgabe anhand der ID
 		String sql = "SELECT * FROM AufgabenGruppen WHERE Name = " + name;
@@ -107,7 +102,7 @@ public class AufgabengruppenVerwaltung {
 		return aufgabengruppe_neu;
 	}
 	
-	// voll unnötig, oder? :P
+	// voll unnoetig, oder? :P
 	public static ArrayList<Aufgabengruppe> getListe(){
 		// returnd eine ArrayListe aller Aufgabe
 		String sql = "SELECT * FROM Aufgabe";
@@ -122,7 +117,7 @@ public class AufgabengruppenVerwaltung {
 				al.add(a);
 			}
 		} catch (SQLException e) {
-			// Falls ein Fehler auftritt soll eine lehere Liste zurŸckgegeben werden
+			// Falls ein Fehler auftritt soll eine lehere Liste zurï¿½ckgegeben werden
 			e.printStackTrace();
 			al = null;
 		}
@@ -141,23 +136,10 @@ public class AufgabengruppenVerwaltung {
 				al.add(a);
 			}
 		} catch (SQLException e) {
-			// Falls ein Fehler auftritt soll eine lehere Liste zurŸckgegeben werden
+			// Falls ein Fehler auftritt soll eine lehere Liste zurï¿½ckgegeben werden
 			e.printStackTrace();
 			al = null;
 		}
-		return al;
-	}
-	
-	public static ArrayList<Aufgabengruppe> getListeVonTeamDummy(long teamID){
-		ArrayList<Aufgabengruppe> al = new ArrayList<Aufgabengruppe>();
-		
-		Aufgabengruppe ag1 = new Aufgabengruppe(1, "Windows 8.1", "Alle Aufgaben, die mit Windows 8.1 zutun haben.");
-		Aufgabengruppe ag2 = new Aufgabengruppe(1, "Windows 9", "Alle Aufgaben, die mit Windows 9 zutun haben. Erscheinung geplant f&uuml;r Winter 2015!");
-		Aufgabengruppe ag3 = new Aufgabengruppe(1, "Windows 10", "Alle Aufgaben, die mit Windows 10 zutun haben.");
-		al.add(ag1);
-		al.add(ag2);
-		al.add(ag3);
-		
 		return al;
 	}
 }

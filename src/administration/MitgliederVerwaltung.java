@@ -349,22 +349,12 @@ public class MitgliederVerwaltung {
 		return null;
 	}
 	
-	public static Mitglied getDummy(long id) {
-		Mitglied dummyMitglied = new Mitglied(4, "Dummy-Mitglied", "qwertz", "test@mail.de", "Max", "Mustermann", 1398100350);
-		return dummyMitglied;
-	}
-	
 	/**
 	 * Liefert das Mitglied mit dem angegebenen Username 
 	 * @return Objekt des Mitglieds mit dem angegebenen Username
 	 */
 	public static Mitglied getAnhandUsername(String username){
 		return null;
-	}
-	
-	public static Mitglied getAnhandUsernameDummy(String username){
-		Mitglied dummyMitglied = new Mitglied(4, "Dummy-Mitglied", "qwertz", "test@mail.de", "Max", "Mustermann", 1398100350);
-		return dummyMitglied;
 	}
 	
 	/**

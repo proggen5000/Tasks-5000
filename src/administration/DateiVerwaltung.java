@@ -17,7 +17,7 @@ public class DateiVerwaltung {
 	 */
 	public static Datei neu (Datei datei){
 		
-		//Einfügen der Werte (ohne ID)
+		//Einfuegen der Werte (ohne ID)
 		String table= "dateien";
 		String columns= "dateiid, titel, beschreibung, pfad, version, teamid, erstellerid";
 		String values= "NULL, "+datei.getTitel()+", "+datei.getBeschreibung()+", "
@@ -36,7 +36,7 @@ public class DateiVerwaltung {
 			return null;
 		}
 		else{
-			//Erstellen einer Datei mit den übernommenen Werten (mit ID)
+			//Erstellen einer Datei mit den ï¿½bernommenen Werten (mit ID)
 			Datei testdatei= new Datei();
 			String sql= "SELECT * FROM dateien WHERE dateiid="+testID;
 			try {
@@ -46,7 +46,7 @@ public class DateiVerwaltung {
 			}
 			return testdatei;
 		}
-	} //als Parameter noch Pfad oder Dateiobjekt übergeben?
+	} //als Parameter noch Pfad oder Dateiobjekt ï¿½bergeben?
 	
 	public static Datei bearbeiten (Datei datei){
 		
@@ -77,7 +77,7 @@ public class DateiVerwaltung {
 	
 	public static boolean loeschen (Datei datei){
 		
-		//Datei anhand der ID löschen
+		//Datei anhand der ID lï¿½schen
 		String table= "dateien";
 		String where= "dateiid="+datei.getId();
 		try {
@@ -110,7 +110,7 @@ public class DateiVerwaltung {
 	public static ArrayList<Datei> getListeVonAufgabe(long aufgabenID){
 		ArrayList<Datei> al = new ArrayList<Datei>();
 		
-		// TODO bitte ergänzen
+		// TODO bitte ergï¿½nzen
 		
 		return al;
 	}
@@ -118,7 +118,7 @@ public class DateiVerwaltung {
 	public static ArrayList<Datei> getListeVonTeam(long teamID){
 		ArrayList<Datei> al = new ArrayList<Datei>();
 		
-		// TODO bitte ergänzen
+		// TODO bitte ergï¿½nzen
 		
 		return al;
 	}

@@ -37,7 +37,7 @@
 		    	</div>
 			  </div>
 			  
-			  <input type="hidden" name="mode" value="register">
+			  <input type="hidden" name="mode" value="register" />
 			  
 			  <div class="form-group">
 			    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Registrieren</button>

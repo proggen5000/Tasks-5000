@@ -61,9 +61,9 @@ public class Team extends HttpServlet {
 		// Team ansehen
 		else if(mode.equals("view")){
 			if(id != -1){
-				request.setAttribute("team", TeamVerwaltung.getDummy(id)); // TODO
+				request.setAttribute("team", TeamVerwaltung.get(id)); // TODO
 				request.setAttribute("members", MitgliederVerwaltung.getListeVonTeam(id));
-				request.setAttribute("groups", AufgabengruppenVerwaltung.getListeVonTeamDummy(id)); // TODO
+				request.setAttribute("groups", AufgabengruppenVerwaltung.getListeVonTeam(id)); // TODO
 				// request.setAttribute("files", DateiVerwaltung.getListeVonTeam(id)); // TODO
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("jsp/team/teamView.jsp");
@@ -108,7 +108,7 @@ public class Team extends HttpServlet {
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("jsp/team/teamRemove.jsp");
 			} else if (AufgabenVerwaltung.vorhanden(id) && sure.equals("true")){
-				AufgabenVerwaltung.loeschen(AufgabenVerwaltung.getDummy(id)); // TODO
+				AufgabenVerwaltung.loeschen(AufgabenVerwaltung.get(id)); // TODO
 				request.setAttribute("mode", mode);
 				request.setAttribute("sure", true);
 				request.setAttribute("valid_request", true);

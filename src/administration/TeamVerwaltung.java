@@ -25,7 +25,7 @@ public class TeamVerwaltung {
 		Calendar cal = Calendar.getInstance();
 		long gruendungsdatum= cal.getTimeInMillis();
 		
-		//Einfügen der Werte (ohne ID)
+		//Einfï¿½gen der Werte (ohne ID)
 		String table= "teams";
 		String columns= "teamid, teamname, gruendungsdatum, slogan, gruppenfuehrerid";
 		String values= "NULL, "+team.getTeamname()+", "+gruendungsdatum+", "
@@ -43,7 +43,7 @@ public class TeamVerwaltung {
 			return null;
 		}
 		else{
-			//Erstellen eines Teams mit den übernommenen Werten (mit ID)
+			//Erstellen eines Teams mit den ï¿½bernommenen Werten (mit ID)
 			Team testteam= new Team();
 			String sql= "SELECT * FROM teams WHERE testid="+testID;
 			try {
@@ -95,7 +95,7 @@ public class TeamVerwaltung {
 	 */
 	public static boolean loeschen (long teamid){
 		
-		//Team anhand der ID löschen
+		//Team anhand der ID lï¿½schen
 		String table= "teams";
 		String where= "teamid="+teamid;
 		try {
@@ -240,18 +240,6 @@ public class TeamVerwaltung {
 		return al;
 	}
 	
-	public static ArrayList<Team> getListeVonMitgliedDummy(long mitgliedID){ // TODO
-		Mitglied dummyMitglied = new Mitglied(mitgliedID, "Dummy-Mitglied", "qwertz", "test@mail.de", "Dummy", "User", 23453467);
-		Team dummyTeam1 = new Team(1337, "Dummy-Team 1", 214325, "Wir rulen.", dummyMitglied);
-		Team dummyTeam2 = new Team(12, "Dummy-Team Zwei", 214325, "Wir rulen.", dummyMitglied);
-		Team dummyTeam3 = new Team(1987, "Dummy-Team III", 214325, "Wir rulen.", dummyMitglied);
-		ArrayList<Team> liste = new ArrayList<Team>();
-		liste.add(dummyTeam1);
-		liste.add(dummyTeam2);
-		liste.add(dummyTeam3);
-		return liste;
-	}
-	
 	public static boolean neuesTeammitglied(long teamID, long mitgliedID){
 		return false;
 	}
@@ -271,11 +259,6 @@ public class TeamVerwaltung {
 			e.printStackTrace();
 		}
 		return testteam;
-	}
-	
-	public static Team getDummy(long teamID){ // TODO
-		Mitglied dummyMitglied = new Mitglied(14, "Dummy-Mitglied", "qwertz", "test@mail.de", "Dummy", "User", 23453467);
-		return new Team(teamID, "Dummy-Team", 214325, "Wir rulen. Das ist unser Slogan.", dummyMitglied);
 	}
 	
 	public static Team get(String name){

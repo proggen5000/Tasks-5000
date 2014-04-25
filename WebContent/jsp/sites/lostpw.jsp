@@ -10,6 +10,9 @@
 				    <label for="email"><span class="glyphicon glyphicon-envelope"></span> E-Mail-Adresse*</label>
 				    <input type="email" class="form-control" id="email" placeholder="you@domain.com">
 				  </div>
+				  
+				  <input type="hidden" name="mode" value="lostpw" />
+				  
 				  <div class="form-group">
 				    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Passwort zusenden lassen</button>
 				  </div>

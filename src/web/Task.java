@@ -59,7 +59,7 @@ public class Task extends HttpServlet {
 		// Aufgabe ansehen
 		else if(mode.equals("view")){
 			if(id != -1){
-				Aufgabe task = AufgabenVerwaltung.getDummy(id); // TODO
+				Aufgabe task = AufgabenVerwaltung.get(id);
 				request.setAttribute("task", task);
 				request.setAttribute("files", DateiVerwaltung.getListeVonAufgabe(id));
 				request.setAttribute("users", MitgliederVerwaltung.getListeVonAufgaben(id));
@@ -88,7 +88,7 @@ public class Task extends HttpServlet {
 		
 		// Aufgabe bearbeiten (Formular)
 		else if(mode.equals("edit")){
-			Aufgabe task = AufgabenVerwaltung.getDummy(id); // TODO
+			Aufgabe task = AufgabenVerwaltung.get(id);
 			request.setAttribute("task", task);
 			request.setAttribute("mode", mode);
 			request.setAttribute("valid_request", true);
@@ -99,13 +99,13 @@ public class Task extends HttpServlet {
 		else if(mode.equals("remove") && id != -1){
 			String sure = request.getParameter("sure");
 			if(AufgabenVerwaltung.vorhanden(id) && !sure.equals("true")){
-				Aufgabe task = AufgabenVerwaltung.getDummy(id); // TODO
+				Aufgabe task = AufgabenVerwaltung.get(id);
 				request.setAttribute("task", task);
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("jsp/task/taskRemove.jsp");
 			} else if (AufgabenVerwaltung.vorhanden(id) && sure.equals("true")){
-				AufgabenVerwaltung.loeschen(AufgabenVerwaltung.getDummy(id)); // TODO
+				AufgabenVerwaltung.loeschen(AufgabenVerwaltung.get(id));
 				request.setAttribute("mode", mode);
 				request.setAttribute("sure", true);
 				request.setAttribute("valid_request", true);
@@ -164,7 +164,7 @@ public class Task extends HttpServlet {
 			Aufgabe task = new Aufgabe();
 			task.setId(4);
 			task.setErsteller(MitgliederVerwaltung.get(currentUser));
-			task.setTitel(request.getParameter("name"));
+			task.setName(request.getParameter("name"));
 			// task.setTeam(team); // hoffentlich bald unn�tig
 			task.setGruppe(AufgabengruppenVerwaltung.get(Integer.parseInt(request.getParameter("group"))));
 			task.setBeschreibung(request.getParameter("description"));			
@@ -181,15 +181,15 @@ public class Task extends HttpServlet {
 			Aufgabe task = new Aufgabe();
 			task.setId(id);
 			task.setErsteller(MitgliederVerwaltung.get(currentUser));
-			task.setTitel(request.getParameter("name"));
+			task.setName(request.getParameter("name"));
 			// task.setTeam(team); // hoffentlich bald unn�tig
-			task.setGruppe(AufgabengruppenVerwaltung.getDummy(Integer.parseInt(request.getParameter("group")))); // TODO dummy weg
+			task.setGruppe(AufgabengruppenVerwaltung.get(Integer.parseInt(request.getParameter("group")))); // TODO dummy weg
 			task.setBeschreibung(request.getParameter("description"));			
 			// task.setDate(date);
 			// task.setDeadline(deadline);
 			task.setStatus(Integer.parseInt(request.getParameter("status")));
 
-			Aufgabe taskUpdated = AufgabenVerwaltung.neuDummy(task); // TODO zu .bearbeiten(task) �ndern
+			Aufgabe taskUpdated = AufgabenVerwaltung.neu(task); // TODO zu .bearbeiten(task) �ndern
 			response.sendRedirect("task?mode=view&id="+taskUpdated.getId());
 		}
 		
@@ -197,13 +197,13 @@ public class Task extends HttpServlet {
 		else if(mode.equals("remove")){
 			String sure = request.getParameter("sure");
 			if(AufgabenVerwaltung.vorhanden(id) && !sure.equals("true")){
-				Aufgabe task = AufgabenVerwaltung.getDummy(id); // TODO
+				Aufgabe task = AufgabenVerwaltung.get(id);
 				request.setAttribute("valid_request", true);
 				response.sendRedirect("task&mode=remove&id="+task.getId());
 				
 			} else if (AufgabenVerwaltung.vorhanden(id) && sure.equals("true")){
-				long teamId = AufgabenVerwaltung.get(id).getTeam().getId();
-				AufgabenVerwaltung.loeschen(AufgabenVerwaltung.getDummy(id)); // TODO
+				long teamId = AufgabenVerwaltung.get(id).getGruppe().getTeam().getId();
+				AufgabenVerwaltung.loeschen(AufgabenVerwaltung.get(id));
 				request.setAttribute("valid_request", true);
 				response.sendRedirect("team&mode=view&id="+teamId);
 			} else {
@@ -215,7 +215,7 @@ public class Task extends HttpServlet {
 		// Fehler - kein mode angegeben
 		else if (!mode.equals("new") && !mode.equals("edit") && !mode.equals("remove")) {
 			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
-			//view = request.getRequestDispatcher("error.jsp");
+			// view = request.getRequestDispatcher("error.jsp");
 		}
 	}
 

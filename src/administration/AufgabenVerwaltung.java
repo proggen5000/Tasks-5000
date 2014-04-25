@@ -90,13 +90,6 @@ public class AufgabenVerwaltung {
 		return aufgabe_neu;
 	}
 	
-	public static Aufgabe getDummy (long id){
-		Mitglied ersteller = new Mitglied(1337, "superadmin", "admin@email.de", "pw456", "Super", "Admin", 123);
-		Mitglied erstellerAufgabe = new Mitglied(2, "herrherrmann", "basti@email.de", "123", "Sebastian", "Herrmann", 123);
-		Aufgabe dummy = new Aufgabe(id, new Team(13, "Dummy-Team", 1231231, "Dummy-Slogan", ersteller), new Aufgabengruppe(3, "Dummy-Gruppe", "Dummy-Gruppenbeschreibung"), erstellerAufgabe, "Dummy-Aufgabe", "Dummy-Beschreibung", 45, 1398100350, 1398500350);
-		return dummy;
-	}
-	
 	public static ArrayList<Aufgabe> getListe(){
 		// returnd eine ArrayListe aller Aufgabe
 		String sql = "SELECT * FROM Aufgabe";
@@ -113,7 +106,7 @@ public class AufgabenVerwaltung {
 				al.add(a);
 			}
 		} catch (SQLException e) {
-			// Falls ein Fehler auftritt soll eine lehere Liste zurŸckgegeben werden
+			// Falls ein Fehler auftritt soll eine lehere Liste zurï¿½ckgegeben werden
 			e.printStackTrace();
 			al = null;
 		}
@@ -121,7 +114,7 @@ public class AufgabenVerwaltung {
 	}
 	
 	public static ArrayList<Aufgabe> getListeVonDatei(long dateiID){
-		// returnd eine ArrayListe aller Aufgabe die zu einer bestimmten datei gehšhren
+		// returnd eine ArrayListe aller Aufgabe die zu einer bestimmten datei gehï¿½hren
 		String sql = "SELECT * FROM aufgaben JOIN aufgaben_dateien ON aufgaben.AufgabeID = aufgaben_dateien.Aufgaben_AufgabeID JOIN dateien ON dateien.DateiID = aufgaben_dateien.Dateien_DateiID WHERE DateiID = " + dateiID;
 		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
 		try {
@@ -136,7 +129,7 @@ public class AufgabenVerwaltung {
 				al.add(a);
 			}
 		} catch (SQLException e) {
-			// Falls ein Fehler auftritt soll eine lehere Liste zurŸckgegeben werden
+			// Falls ein Fehler auftritt soll eine lehere Liste zurï¿½ckgegeben werden
 			e.printStackTrace();
 			al = null;
 		}
@@ -159,7 +152,7 @@ public class AufgabenVerwaltung {
 						al.add(a);
 					}
 				} catch (SQLException e) {
-					// Falls ein Fehler auftritt soll eine lehere Liste zurŸckgegeben werden
+					// Falls ein Fehler auftritt soll eine lehere Liste zurï¿½ckgegeben werden
 					e.printStackTrace();
 					al = null;
 				}
@@ -174,24 +167,11 @@ public class AufgabenVerwaltung {
 	public static ArrayList<Aufgabe> getListeVonMitglied(long mitgliedID){
 		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
 		
-		// TODO bitte ergänzen
+		// TODO bitte ergï¿½nzen
 		
 		return al;
 	}
-	
-	public static ArrayList<Aufgabe> getListeVonMitgliedDummy(long mitgliedID){
-		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
-		Mitglied dummyMitglied = new Mitglied(13, "Dummy-Mitglied", "qwertz", "test@mail.de", "Dummy", "User", 23453467);
-		Team dummyTeam = new Team(1337, "Dummy-Team", 214325, "Wir rulen.", dummyMitglied);
-		Aufgabengruppe dummyGruppe = new Aufgabengruppe(13, "Dummy-Gruppe", "Aufgabenbeschreibung hier.");
-		Aufgabe dummyAufgabe1 = new Aufgabe(1337, dummyTeam, dummyGruppe, dummyMitglied, "Dummy-Aufgabe 1", "Hier steht was.", 45, 98723423, 99235456);
-		Aufgabe dummyAufgabe2 = new Aufgabe(1338, dummyTeam, dummyGruppe, dummyMitglied, "Dummy-Aufgabe II", "Hier steht auch was.", 98, 942443423, 943235456);
-		Aufgabe dummyAufgabe3 = new Aufgabe(1339, dummyTeam, dummyGruppe, dummyMitglied, "Dummy-Aufgabe 5000", "Hier steht so richtig viel, sodass es gekürzt werden muss, denn es werden mehr als 50 Zeichen verwendet!", 12, 934253423, 983235456);
-		al.add(dummyAufgabe1);
-		al.add(dummyAufgabe2);
-		al.add(dummyAufgabe3);
-		return al;
-	}
+
 	
 	/**
 	 * Findet alle Aufgaben eines bestimmten Teams
@@ -201,7 +181,7 @@ public class AufgabenVerwaltung {
 	public static ArrayList<Aufgabe> getListeVonTeam(long teamID){
 		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
 		
-		// TODO bitte ergänzen
+		// TODO bitte ergï¿½nzen
 		
 		return al;
 	}
@@ -215,7 +195,7 @@ public class AufgabenVerwaltung {
 	public static ArrayList<Aufgabe> getListeVonMitgliedVonTeam(long mitgliedID, long teamID){
 		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
 		
-		// TODO bitte ergänzen
+		// TODO bitte ergï¿½nzen
 		
 		return al;
 	}
