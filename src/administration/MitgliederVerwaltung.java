@@ -318,22 +318,16 @@ public class MitgliederVerwaltung {
 	 * @return boolean
 	 */
 	public static boolean pruefeLogin(String username, String password){
-		
-		String sql= "SELECT * FROM mitglieder WHERE username="+username;
-		
-		try {
-			Mitglied testmitglied = (Mitglied)Queries.scalarQuery(sql);
-			if (testmitglied.getPassword()==password){
+		try{
+			ResultSet rs = Queries.rowQuery("*", "Mitglieder", "username = '"+username+"' AND pw = PASSWORD('"+password+"')");
+			if(rs.next()){
 				return true;
 			}
-			else{
-				return false;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		}catch (SQLException e){
 			e.printStackTrace();
 			return false;
 		}
+		return false;
 	}
 	
 	public static boolean pruefeLoginDummy(String username, String password){ // TODO
