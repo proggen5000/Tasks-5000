@@ -1,5 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<%-- Zugriff nicht über Servlet
+<c:if test="${!valid_request}">
+	<c:redirect url="error.jsp"><c:param name="error" value="Zugriff verweigert"></c:param></c:redirect>
+</c:if> --%>
+
 <jsp:include page="../header.jsp"><jsp:param name="page_title" value="${team.teamname}" /></jsp:include>
 <jsp:include page="../menu.jsp"><jsp:param name="menu" value="teams" /></jsp:include>
 		
@@ -14,13 +19,18 @@
 					<input id="name" name="name" type="text" class="form-control input-lg" placeholder="" value="${team.teamname}">
 	  			</div>
 	  			<div class="col-xs-6">
-	  				<label for="leader"><span class="glyphicon glyphicon-user"></span> Teammanager*</label>
-					<select name="leader" size="1" class="form-control input-lg">
-						<option value="1" selected>Sebastian Herrmann</option>
-						<option value="34">Felix Fichte</option>
-						<option value="2">Gunnar Lehker</option>
-						<option value="74">Manuel Taya</option>
-					</select>
+	  				<label for="manager"><span class="glyphicon glyphicon-user"></span> Teammanager*</label>
+					<c:if test="${param.mode == 'new'}">
+						<p class="form-control-static">Sie sind vorerst der Teammanager.<br />Dies k&ouml;nnen Sie sp&auml;ter &auml;ndern.</p>
+					</c:if>
+					<c:if test="${param.mode == 'edit'}">
+						<select name="manager" size="1" class="form-control input-lg">					
+							<option value="${team.gruppenfuehrer.id}" selected>${team.gruppenfuehrer.username}</option>
+							<c:forEach var="user" items="${users}">
+								<option value="${user.id}">${user.username}</option>
+							</c:forEach>
+						</select>
+					</c:if>
 	  			</div>
 			</div>
 			<div class="form-group col-xs">
@@ -32,6 +42,9 @@
 				<div class="row">
 					<div class="col-xs-4">
 						<select multiple name="members" id="members" size="8" class="form-control">
+							<c:forEach var="user" items="${users}">
+								<option value="${user.id}">${user.username}</option>
+							</c:forEach>
 						</select>
 					</div>
 					
@@ -42,13 +55,9 @@
 					
 					<div class="col-xs-4">
 						<select multiple name="membersAll" id="membersAll" size="8" class="form-control">
-							<option value="1">Felix Fichte</option>
-							<option value="34">Gunnar Lehker</option>
-							<option value="2">Manuel Taya</option>
-							<option value="74">Sebastian Herrmann</option>
-							<option value="11">Rainer Rumpel</option>
-							<option value="79">Klaus Ringhand</option>
-							<option value="102">Gert Faustmann</option>
+							<c:forEach var="userAll" items="${usersAll}">
+								<option value="${userAll.id}">${userAll.username}</option>
+							</c:forEach>
 						</select>
 					</div>
 				</div>

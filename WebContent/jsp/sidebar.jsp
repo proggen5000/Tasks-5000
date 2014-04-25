@@ -18,6 +18,6 @@
 
 	<c:if test="${login}">
 		<h1>Willkommen</h1>
-		<p>Hallo, ${currentUser}! <3</p>
+		<p>Hallo, ${currentUser}! &hearts;</p>
 	</c:if>
 </div><%-- Ende sidebar --%>
