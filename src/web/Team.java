@@ -61,7 +61,7 @@ public class Team extends HttpServlet {
 		// Team ansehen
 		else if(mode.equals("view")){
 			if(id != -1){
-				request.setAttribute("team", TeamVerwaltung.get(id)); // TODO
+				request.setAttribute("team", TeamVerwaltung.getTeamWithId(id)); // TODO
 				request.setAttribute("members", MitgliederVerwaltung.getListeVonTeam(id));
 				request.setAttribute("groups", AufgabengruppenVerwaltung.getListeVonTeam(id)); // TODO
 				// request.setAttribute("files", DateiVerwaltung.getListeVonTeam(id)); // TODO
@@ -83,7 +83,7 @@ public class Team extends HttpServlet {
 		
 		// Team bearbeiten (Formular)
 		else if(mode.equals("edit")){			
-			entities.Team team = TeamVerwaltung.get(id);
+			entities.Team team = TeamVerwaltung.getTeamWithId(id);
 			
 			if(team.getGruppenfuehrer().getId() == currentUser){
 				request.setAttribute("team", team);
@@ -102,7 +102,7 @@ public class Team extends HttpServlet {
 		else if(mode.equals("remove") && id != -1){
 			String sure = request.getParameter("sure");
 			if(TeamVerwaltung.vorhanden(id) && !sure.equals("true")){
-				entities.Team team = TeamVerwaltung.get(id);
+				entities.Team team = TeamVerwaltung.getTeamWithId(id);
 				request.setAttribute("team", team);
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);

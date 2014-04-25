@@ -104,14 +104,14 @@ public class User extends HttpServlet {
 			if(MitgliederVerwaltung.istMitgliedInTeam(currentUser, teamId)){
 				Mitglied user = MitgliederVerwaltung.get(currentUser); // TODO
 				request.setAttribute("user", user);
-				request.setAttribute("team", TeamVerwaltung.get(teamId));
+				request.setAttribute("team", TeamVerwaltung.getTeamWithId(teamId));
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("jsp/user/userLeaveTeam.jsp");
 			} else {
-				if(TeamVerwaltung.get(teamId) == null){
+				if(TeamVerwaltung.getTeamWithId(teamId) == null){
 					request.setAttribute("error", "Dieses Team existiert nicht!");
 				} else {
-					request.setAttribute("error", "Sie sind kein Mitglied des Teams " + TeamVerwaltung.get(teamId) + "!");
+					request.setAttribute("error", "Sie sind kein Mitglied des Teams " + TeamVerwaltung.getTeamWithId(teamId) + "!");
 				}
 				view = request.getRequestDispatcher("error.jsp");
 			}
@@ -202,14 +202,14 @@ public class User extends HttpServlet {
 			
 			if(MitgliederVerwaltung.istMitgliedInTeam(currentUser, teamId)){
 				request.setAttribute("user", user);
-				request.setAttribute("team", TeamVerwaltung.get(teamId));
+				request.setAttribute("team", TeamVerwaltung.getTeamWithId(teamId));
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("jsp/user/userLeaveTeam.jsp");
 			} else {
-				if(TeamVerwaltung.get(id) == null){
+				if(TeamVerwaltung.getTeamWithId(id) == null){
 					request.setAttribute("error", "Dieses Team existiert nicht!");
 				} else {
-					request.setAttribute("error", "Sie sind kein Mitglied des Teams " + TeamVerwaltung.get(teamId) + "!");
+					request.setAttribute("error", "Sie sind kein Mitglied des Teams " + TeamVerwaltung.getTeamWithId(teamId).getName() + "!");
 				}
 				view = request.getRequestDispatcher("error.jsp");
 			}

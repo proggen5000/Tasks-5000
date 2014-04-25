@@ -12,9 +12,6 @@ import javax.servlet.http.HttpSession;
 import administration.MitgliederVerwaltung;
 import entities.Mitglied;
 
-/**
- * Servlet implementation class Login
- */
 @WebServlet("/login")
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
