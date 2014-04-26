@@ -16,7 +16,7 @@
 				
 				<h1>Aufgabengruppe l&ouml;schen</h1>
 				<p>Sind Sie sicher, dass Sie die Aufgabengruppe "<b>${taskGroup.name}</b>" entfernen m&ouml;chten?</p>
-				<p>Dadurch werden auch <b>alle darin enthaltenen Aufgaben gel&ouml;scht</b>!</p>
+				<p>Warnung: Dadurch werden auch <b>alle darin enthaltenen Aufgaben gel&ouml;scht</b>!</p>
 				<form action="/taskGroup" method="post">
 					<input type="hidden" name="id" value="${taskGroup.id}" />
 					<input type="hidden" name="mode" value="remove" />

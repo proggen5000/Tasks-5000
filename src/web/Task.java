@@ -36,7 +36,7 @@ public class Task extends HttpServlet {
 		
 		long teamId = -1;
 		try {
-			id = Long.parseLong(request.getParameter("teamId"));
+			teamId = Long.parseLong(request.getParameter("teamId"));
 		} catch (NumberFormatException e){
 			request.setAttribute("error", e);
 		}
@@ -79,7 +79,7 @@ public class Task extends HttpServlet {
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/jsp/task/taskEdit.jsp");
 			} else {
-				request.setAttribute("error", "Ung&uuml;ltige Team-ID!");
+				request.setAttribute("error", "Ung&uuml;ltige Team-ID! Bitte erstellen Sie Aufgaben innerhalb von Teams.");
 				view = request.getRequestDispatcher("/error.jsp");
 			}
 		}
@@ -102,7 +102,7 @@ public class Task extends HttpServlet {
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/jsp/task/taskRemove.jsp");
 			} else {
-				request.setAttribute("error", "Ung&uuml;ltige Aufgaben-ID!");
+				request.setAttribute("error", "Ung&uuml;ltige Aufgaben-ID! Ist die Aufgabe schon gel&ouml;scht?");
 				view = request.getRequestDispatcher("/error.jsp");
 			}
 		}
@@ -136,7 +136,7 @@ public class Task extends HttpServlet {
 		long id = -1; // Aufgaben-ID
 		if(request.getSession().getAttribute("id") != null){
 			try {
-				currentUser = Long.parseLong(request.getSession().getAttribute("id").toString());
+				id = Long.parseLong(request.getSession().getAttribute("id").toString());
 			} catch (NullPointerException e){
 				request.setAttribute("error", e);
 			} 
@@ -155,8 +155,8 @@ public class Task extends HttpServlet {
 			Aufgabe task = new Aufgabe();
 			task.setErsteller(MitgliederVerwaltung.getMitgliedWithId(currentUser));
 			task.setName(request.getParameter("name"));
-			task.setGruppe(AufgabengruppenVerwaltung.get(Integer.parseInt(request.getParameter("group"))));
-			task.setBeschreibung(request.getParameter("description"));			
+			task.setBeschreibung(request.getParameter("description"));
+			task.setGruppe(AufgabengruppenVerwaltung.get(Long.parseLong(request.getParameter("group"))));
 			task.setStatus(Integer.parseInt(request.getParameter("status")));
 			// task.setDate(date); // TODO
 			// task.setDeadline(deadline); // TODO
@@ -175,7 +175,7 @@ public class Task extends HttpServlet {
 		else if(mode.equals("edit")){
 			Aufgabe task = AufgabenVerwaltung.get(id);
 			task.setName(request.getParameter("name"));
-			task.setGruppe(AufgabengruppenVerwaltung.get(Integer.parseInt(request.getParameter("group"))));
+			task.setGruppe(AufgabengruppenVerwaltung.get(Long.parseLong(request.getParameter("group"))));
 			task.setBeschreibung(request.getParameter("description"));			
 			task.setStatus(Integer.parseInt(request.getParameter("status")));
 			// task.setDeadline(deadline); // TODO

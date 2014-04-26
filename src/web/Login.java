@@ -128,10 +128,10 @@ public class Login extends HttpServlet {
 				user.setPassword(request.getParameter("password"));
 				// user.setRegdatum(new Date().getTime()); // TODO noetig?
 				
-				MitgliederVerwaltung.neu(user);
+				Mitglied userNew = MitgliederVerwaltung.neu(user);
 				request.setAttribute("valid_request", true);
 				request.setAttribute("title", "Erfolgreich registriert");
-				request.setAttribute("message", "Sie haben sich hiermit erfolgreich als \"<b>" + user.getUsername() + "</b>\" registriert.<br />Herzlich willkommen! :)");
+				request.setAttribute("message", "Sie haben sich hiermit erfolgreich als \"<b>" + userNew.getUsername() + "</b>\" registriert und k&ouml;nnen sich ab sofort mit Ihrem Passwort einloggen.<br />Herzlich willkommen! :)");
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/success.jsp");
 			} else {

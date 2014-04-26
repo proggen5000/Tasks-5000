@@ -39,9 +39,10 @@
 					<a href="/task?mode=edit&id=${task.id}" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Aufgabe bearbeiten</a>
 					<a href="/task?mode=remove&id=${task.id}" class="list-group-item"><span class="glyphicon glyphicon-remove"></span> Aufgabe l&ouml;schen</a>
 				</div>
+				<%-- // TODO spaeter implementieren fuer mehr Komfort
 				<div class="list-group">
 					<a href="/file?mode=new&taskId=${task.id}" class="list-group-item"><span class="glyphicon glyphicon-file"></span> Datei hochladen</a>
-				</div>	
+				</div> --%>	
 			
 				<h1>Details</h1>
 				<div class="list-group">

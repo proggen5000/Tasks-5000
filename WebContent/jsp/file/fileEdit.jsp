@@ -31,8 +31,8 @@
 						<input id="name" name="name" type="text" class="form-control input-lg" value="${file.name}">
 		  			</div>
 		  			<div class="col-md-6">
-		  				<label for="group"><span class="glyphicon glyphicon-tag"></span> Aufgabe (Zuordnung)</label>
-						<select name="group" size="1" class="form-control input-lg">
+		  				<label for="task"><span class="glyphicon glyphicon-tag"></span> Aufgabe (Zuordnung)</label>
+						<select name="task" size="1" class="form-control input-lg">
 							<c:forEach var="task" items="${tasks}">
 								<c:if test="${task.id == file.task.id}">
 									<option value="${task.id}" selected>${task.name}</option>

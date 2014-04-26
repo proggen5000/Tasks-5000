@@ -12,6 +12,7 @@
 				<li><a href="/">Start</a></li>
 				<li><a href="team?mode=view&id=${file.team.id}">${file.team.name}</a></li>
 				<c:if test="${group.id != null}"><li>${group.name}</li></c:if>
+				<c:if test="${task.id != null}"><li>${task.name}</li></c:if>
 				<li class="active"></li>
 			</ol>
 			
@@ -25,7 +26,6 @@
 				<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-download"></span> Download <small>(XY KB)</small></button>
 			</form>
 			
-			<%-- Aktionen (bearbeiten, löschen) und Details (Version, Ersteller) in Sidebar zeigen! --%>
 			</div><%-- Ende content --%>
 			<%-- Sidebar --%>
 			<div class="sidebar col-sm-3">

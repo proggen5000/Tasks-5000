@@ -48,7 +48,7 @@ public class User extends HttpServlet {
 		
 		long teamId = -1;
 		try {
-			id = Long.parseLong(request.getParameter("teamId"));
+			teamId = Long.parseLong(request.getParameter("teamId"));
 		} catch (NumberFormatException e){
 			request.setAttribute("error", e);
 		}
@@ -59,7 +59,6 @@ public class User extends HttpServlet {
 		}
 		
 		RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
-
 		
 		// Fehler - kein Login
 		if(!login){
@@ -69,11 +68,9 @@ public class User extends HttpServlet {
 
 		// Profil ansehen
 		else if(mode.equals("view")){
-			if(id != -1){
-				Mitglied user = MitgliederVerwaltung.getMitgliedWithId(id); // TODO
-				
-				request.setAttribute("user", user);
-				request.setAttribute("teams", TeamVerwaltung.getListeVonMitglied(id)); // TODO
+			if(MitgliederVerwaltung.vorhanden(id)){
+				request.setAttribute("user", MitgliederVerwaltung.getMitgliedWithId(id));
+				request.setAttribute("teams", TeamVerwaltung.getListeVonMitglied(id));
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/jsp/user/userView.jsp");
 			} else {
@@ -83,31 +80,35 @@ public class User extends HttpServlet {
 		}
 		
 		// Profil bearbeiten (Formular)
-		else if(mode.equals("edit")){
-			Mitglied user = MitgliederVerwaltung.getMitgliedWithId(currentUser); // TODO
-			
-			request.setAttribute("user", user);
+		else if(mode.equals("edit")){		
+			request.setAttribute("user", MitgliederVerwaltung.getMitgliedWithId(currentUser));
 			request.setAttribute("valid_request", true);
 			view = request.getRequestDispatcher("/jsp/user/userEdit.jsp");
 		}
 		
 		// Profil loeschen
 		else if(mode.equals("remove")){
-			Mitglied user = MitgliederVerwaltung.getMitgliedWithId(currentUser); // TODO
-			
-			request.setAttribute("user", user);			
+			request.setAttribute("user", MitgliederVerwaltung.getMitgliedWithId(currentUser));
+			request.setAttribute("teams", TeamVerwaltung.getListeVonMitglied(currentUser));
 			request.setAttribute("valid_request", true);
 			view = request.getRequestDispatcher("/jsp/user/userRemove.jsp");
 		}
 		
 		// Team verlassen
 		else if(mode.equals("leaveTeam")){
+			Mitglied user = MitgliederVerwaltung.getMitgliedWithId(currentUser);
+			entities.Team team = TeamVerwaltung.getTeamWithId(teamId);
+			
 			if(MitgliederVerwaltung.istMitgliedInTeam(currentUser, teamId)){
-				Mitglied user = MitgliederVerwaltung.getMitgliedWithId(currentUser); // TODO
-				request.setAttribute("user", user);
-				request.setAttribute("team", TeamVerwaltung.getTeamWithId(teamId));
-				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("/jsp/user/userLeaveTeam.jsp");
+				if(currentUser != team.getGruppenfuehrer().getId()){
+					request.setAttribute("user", user);
+					request.setAttribute("team", team);
+					request.setAttribute("valid_request", true);
+					view = request.getRequestDispatcher("/jsp/user/userLeaveTeam.jsp");
+				} else {
+					request.setAttribute("error", "Sie k&ouml;nnen das Team nicht verlassen, weil Sie noch dessen <b>Teammanager</b> sind!<br />Bitte <a href=\"/team?mode=edit&id=" + teamId + "\">bearbeiten Sie das Team</a> und stellen Sie einen anderen Teammanager ein.");
+					view = request.getRequestDispatcher("/error.jsp");
+				}
 			} else {
 				if(TeamVerwaltung.getTeamWithId(teamId) == null){
 					request.setAttribute("error", "Dieses Team existiert nicht!");
@@ -144,16 +145,11 @@ public class User extends HttpServlet {
 			} 
 		}
 		
-		long id = -1;
-		try {
-			id = Long.parseLong(request.getParameter("id"));
-		} catch (NumberFormatException e){
-			request.setAttribute("error", e);
-		}
+		// keine (separate) Benutzer-ID noetig, da sich alle Aktionen auf currentUser beziehen
 		
 		long teamId = -1;
 		try {
-			id = Long.parseLong(request.getParameter("teamId"));
+			teamId = Long.parseLong(request.getParameter("teamId"));
 		} catch (NumberFormatException e){
 			request.setAttribute("error", e);
 		}
@@ -163,10 +159,7 @@ public class User extends HttpServlet {
 			mode = (String) request.getAttribute("mode");
 		}
 		
-		String sure = request.getParameter("sure");
-		
 		RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
-
 		
 		// Fehler - kein Login
 		if(!login){
@@ -177,43 +170,38 @@ public class User extends HttpServlet {
 		// Profil bearbeiten (Aktion)
 		if(mode.equals("edit")){
 			String password = request.getParameter("password");
-			String passwordRepeat = request.getParameter("passwordRepeat");
-			
-			Mitglied user = new Mitglied();
-			// user.setId(id); // TODO noetig?
-			user.setUsername(request.getParameter("username"));
-			user.setVorname(request.getParameter("vorname"));
-			user.setNachname(request.getParameter("nachname"));
-			user.setEmail(request.getParameter("email"));
-			user.setPassword(request.getParameter("password"));
-			// user.setRegdatum(new Date().getTime()); // TODO noetig?
-			
-			Mitglied userUpdated = MitgliederVerwaltung.bearbeiten(user);
-			
-			request.setAttribute("user", userUpdated);
-			request.setAttribute("valid_request", true);
-			view = request.getRequestDispatcher("/jsp/user/userEdit.jsp");
+			if(password.equals(request.getParameter("passwordRepeat"))){
+				Mitglied user = MitgliederVerwaltung.getMitgliedWithId(currentUser);
+				user.setUsername(request.getParameter("username")); // TODO auf Duplikate checken?
+				user.setVorname(request.getParameter("vorname"));
+				user.setNachname(request.getParameter("nachname"));
+				user.setEmail(request.getParameter("email"));
+				user.setPassword(password);
+				
+				Mitglied userUpdated = MitgliederVerwaltung.bearbeiten(user);
+				
+				request.setAttribute("user", userUpdated);
+				request.setAttribute("valid_request", true);
+				view = request.getRequestDispatcher("/jsp/user/userEdit.jsp");
+			} else {
+				request.setAttribute("error", "Sie haben zwei verschiedene Passw&ouml;rter eingegeben! Bitte <a href=\"/user?mode=edit\">versuchen Sie es erneut</a>.");
+				view = request.getRequestDispatcher("/error.jsp");
+			}
 		}
 		
 		// Profil loeschen (Aktion)
 		else if(mode.equals("remove")){
-			Mitglied user = MitgliederVerwaltung.getMitgliedWithId(currentUser); // TODO
+			// TODO Check, ob Benutzer noch Mitglied/Ersteller von Elementen ist?
+			// Mitglied user = MitgliederVerwaltung.getMitgliedWithId(currentUser);
+			MitgliederVerwaltung.loeschen(currentUser);
+			HttpSession session = request.getSession(true);
+			session.removeAttribute("login");
+			session.removeAttribute("currentUser");
 			
-			if(!sure.equals("true")){
-				request.setAttribute("user", user);			
-				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("/jsp/user/userRemove.jsp");
-			} else if(sure.equals("true")){
-				MitgliederVerwaltung.loeschen(currentUser);
-				HttpSession session = request.getSession(true);
-				session.removeAttribute("login");
-				session.removeAttribute("currentUser");
-				
-				request.setAttribute("title", "Profil gel&ouml;scht");
-				request.setAttribute("message", "Sie haben Ihr Profil endg&uuml;ltig gel&ouml;scht!<br />Auf Wiedersehen. :'(");
-				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("/success.jsp");
-			}
+			request.setAttribute("title", "Profil gel&ouml;scht");
+			request.setAttribute("message", "Sie haben Ihr Profil endg&uuml;ltig gel&ouml;scht!<br />Auf Wiedersehen. :'(");
+			request.setAttribute("valid_request", true);
+			view = request.getRequestDispatcher("/success.jsp");
 		}
 		
 		// Team verlassen (Aktion)
@@ -221,7 +209,7 @@ public class User extends HttpServlet {
 			Mitglied user = MitgliederVerwaltung.getMitgliedWithId(currentUser); // TODO
 			entities.Team team = TeamVerwaltung.getTeamWithId(teamId);
 			
-			if(MitgliederVerwaltung.istMitgliedInTeam(user.getId(), team.getId()) && sure.equals("true")){
+			if(MitgliederVerwaltung.istMitgliedInTeam(user.getId(), team.getId())){
 				if(MitgliederTeams.austreten(user.getId(), team.getId())){
 					request.setAttribute("user", user);
 					request.setAttribute("team", TeamVerwaltung.getTeamWithId(teamId));
@@ -235,11 +223,7 @@ public class User extends HttpServlet {
 					view = request.getRequestDispatcher("/error.jsp");
 				}
 			} else {
-				if(TeamVerwaltung.getTeamWithId(id) != null){
-					request.setAttribute("error", "Sie sind kein Mitglied des Teams \"<b>" + TeamVerwaltung.getTeamWithId(teamId).getName() + "</b>\"!");
-				} else {
-					request.setAttribute("error", "Dieses Team existiert nicht!");
-				}
+				request.setAttribute("error", "Dieses Team existiert nicht oder sie sind kein Mitglied des Teams \"<b>" + team.getName() + "</b>\"!");
 				view = request.getRequestDispatcher("/error.jsp");
 			}
 		}

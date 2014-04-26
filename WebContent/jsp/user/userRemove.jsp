@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%-- Zugriff nicht über Servlet --%>
 <c:if test="${!valid_request}">
@@ -12,6 +13,13 @@
 			<p>Sind Sie sicher, dass Sie Ihr Benutzerprofil endg&uuml;ltig l&ouml;schen m&ouml;chten? Es kann danach nicht wiederhergestellt werden, zudem werden gewisse mit Ihnen verkn&uuml;pfte Elemente gel&ouml;scht:</p>
 			<ul>
 				<li>alle Teams, in denen Sie Teammanager sind</li>
+				<c:if test="${fn:length(teams) > 0}">
+					<ul>
+						<c:forEach var="team" items="${teams}">
+							<li><a href="/team?mode=view&id=${team.id}">${team.name}</a></li>
+						</c:forEach>
+					</ul>
+				</c:if>
 				<li>alle Verkn&uuml;pfungen zu Ihren Aufgaben und Dateien</li>
 			</ul>
 			<form action="/user" method="post">

@@ -48,7 +48,7 @@ public class TaskGroup extends HttpServlet {
 		
 		long teamId = -1;
 		try {
-			id = Long.parseLong(request.getParameter("teamId"));
+			teamId = Long.parseLong(request.getParameter("teamId"));
 		} catch (NumberFormatException e){
 			request.setAttribute("error", e);
 		}
@@ -121,19 +121,10 @@ public class TaskGroup extends HttpServlet {
 			login = Boolean.parseBoolean(request.getSession().getAttribute("login").toString());
 		}
 		
-		long currentUser = -1; // TODO unnoetig?
-		if(request.getSession().getAttribute("currentUser") != null){
-			try {
-				currentUser = Long.parseLong(request.getSession().getAttribute("currentUser").toString());
-			} catch (NullPointerException e){
-				request.setAttribute("error", e);
-			} 
-		}
-		
 		long id = -1; // Aufgabengruppen-ID
 		if(request.getSession().getAttribute("id") != null){
 			try {
-				currentUser = Long.parseLong(request.getSession().getAttribute("id").toString());
+				id = Long.parseLong(request.getSession().getAttribute("id").toString());
 			} catch (NullPointerException e){
 				request.setAttribute("error", e);
 			} 
