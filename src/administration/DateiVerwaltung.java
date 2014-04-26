@@ -1,6 +1,5 @@
 package administration;
 
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -120,8 +119,8 @@ public class DateiVerwaltung {
 		return testdatei;
 	}
 	
-	public ArrayList<Datei> getListe(){
-		return null;
+	public static boolean vorhanden (long id){
+		return get(id) != null;
 	}
 	
 	public static ArrayList<Datei> getListeVonAufgabe(long aufgabenID){

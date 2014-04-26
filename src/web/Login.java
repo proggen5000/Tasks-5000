@@ -82,6 +82,8 @@ public class Login extends HttpServlet {
 			if(!login){
 				if(MitgliederVerwaltung.pruefeLogin(username, password)){
 					Mitglied user =  MitgliederVerwaltung.get(username);
+					System.out.println("Benutzer: " + user.getId() + " -> " + user.getUsername());
+					System.out.println("PW: " + user.getPw());
 					
 					HttpSession session = request.getSession(true);
 					session.setAttribute("login", true);

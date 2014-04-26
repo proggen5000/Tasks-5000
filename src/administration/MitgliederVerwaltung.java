@@ -340,12 +340,4 @@ public class MitgliederVerwaltung {
 		}
 		return false;
 	}
-	
-	public static boolean pruefeLoginDummy(String username, String password){ // TODO
-		if(username.equals("Bastart") && password.equals("kaesekuchen")){
-			return true;
-		} else {
-			return false;
-		}
-	}
 }

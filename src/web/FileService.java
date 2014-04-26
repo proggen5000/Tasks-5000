@@ -19,11 +19,9 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import administration.AufgabenVerwaltung;
-import administration.AufgabengruppenVerwaltung;
 import administration.DateiVerwaltung;
 import administration.MitgliederVerwaltung;
 import administration.TeamVerwaltung;
-import entities.Aufgabe;
 import entities.Datei;
 
 @WebServlet("/file")
@@ -77,7 +75,7 @@ public class FileService extends HttpServlet {
 		// Datei ansehen
 		else if(mode.equals("view")){
 			if(id != -1){
-				Datei file = DateiVerwaltung.vorhanden(id); // TODO zu .get aendern
+				Datei file = DateiVerwaltung.get(id);
 				request.setAttribute("file", file);
 				// request.setAttribute("group", ); // TODO
 				// request.setAttribute("task", ); // TODO
@@ -105,7 +103,7 @@ public class FileService extends HttpServlet {
 		
 		// Datei bearbeiten (Formular)
 		else if(mode.equals("edit")){
-			request.setAttribute("file", DateiVerwaltung.vorhanden(id)); // TODO zu .get aendern
+			request.setAttribute("file", DateiVerwaltung.get(id));
 			request.setAttribute("team", TeamVerwaltung.get(teamId));
 			request.setAttribute("tasks", AufgabenVerwaltung.getListeVonTeam(teamId));
 			request.setAttribute("mode", mode);
@@ -116,7 +114,7 @@ public class FileService extends HttpServlet {
 		// Datei loeschen (Rueckfrage)
 		else if(mode.equals("remove")){
 			if(DateiVerwaltung.vorhanden(id)){ // TODO funktioniert erst mit richtiger vorhanden-Methode
-				request.setAttribute("file", DateiVerwaltung.vorhanden(id)); // TODO zu .get aendern
+				request.setAttribute("file", DateiVerwaltung.get(id));
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/jsp/file/fileRemove.jsp");
@@ -278,11 +276,12 @@ public class FileService extends HttpServlet {
 		}
 		
 		// Datei loeschen (Aktion)
-		else if(mode.equals("remove")){ // TODO
+		else if(mode.equals("remove")){
 			Datei file = DateiVerwaltung.get(id);
 			if(DateiVerwaltung.vorhanden(id)){
 				long teamId = file.getTeam().getId();
 				if(DateiVerwaltung.loeschen(file)){
+					// TODO auch phys. Datei loeschen! 
 					request.setAttribute("valid_request", true);
 					response.sendRedirect("/team?mode=view&id="+teamId);
 				} else {
