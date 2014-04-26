@@ -11,6 +11,19 @@ public class Datei implements Serializable {
 	private Mitglied ersteller;
 	
 	// Konstruktor!
+	public Datei(){
+	}
+	
+	public Datei(long id, String name, String beschreibung, String pfad, Team team,
+			Mitglied ersteller){
+		super();
+		this.id= id;
+		this.name= name;
+		this.beschreibung= beschreibung;
+		this.pfad= pfad;
+		this.team= team;
+		this.ersteller= ersteller;
+	}
 	
 	//Getters & Setters
 	public long getId() {

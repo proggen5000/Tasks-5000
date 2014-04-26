@@ -19,9 +19,9 @@ public class DateiVerwaltung {
 		
 		//Einfuegen der Werte (ohne ID)
 		String table= "dateien";
-		String columns= "dateiid, titel, beschreibung, pfad, version, teamid, erstellerid";
-		String values= "NULL, "+datei.getTitel()+", "+datei.getBeschreibung()+", "
-				+datei.getPfad()+", "+datei.getVersion()+", "+datei.getTeam().getId()
+		String columns= "dateiid, name, beschreibung, pfad, teamid, erstellerid";
+		String values= "NULL, "+datei.getName()+", "+datei.getBeschreibung()+", "
+				+datei.getPfad()+", "+datei.getTeam().getId()
 				+", "+datei.getErsteller().getId();
 		int testID;
 		try {
@@ -52,9 +52,9 @@ public class DateiVerwaltung {
 		
 		//Aktualisieren der Dateibeschreibung
 		String table= "dateien";
-		String updateString= "titel="+datei.getTitel()+", beschreibung="
-				+datei.getBeschreibung()+", pfad="+datei.getPfad()+", version="
-				+datei.getVersion()+", teamid="+datei.getTeam().getId();
+		String updateString= "name="+datei.getName()+", beschreibung="
+				+datei.getBeschreibung()+", pfad="+datei.getPfad()
+				+", teamid="+datei.getTeam().getId();
 		String where= "dateiid="+datei.getId();
 		Datei testdatei= new Datei();
 		
@@ -89,7 +89,7 @@ public class DateiVerwaltung {
 		}
 	}
 	
-	public static Datei vorhanden (long id){
+	public static Datei get(long id){
 
 		//Suchen der Datei anhand der ID
 		String sql= "SELECT * FROM dateien WHERE dateiid="+id;
