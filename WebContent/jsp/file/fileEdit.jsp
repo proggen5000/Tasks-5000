@@ -51,8 +51,8 @@
 				
 				<div class="form-group col-xs">
 					<label for="fileUpload"><span class="glyphicon glyphicon-file"></span> Datei</label>
-					<input type="file" id="fileUpload" name="fileUpload" />
-					<p class="help-block">Die Datei wird mit dem Speichern &uuml;bernommen.</p>
+					<input type="file" id="fileUpload" name="fileUpload" accept=".png,.jpg,.gif,.txt,.pdf,.doc,.docx,.zip,.rar" />
+					<p class="help-block">Erlaubte Dateitypen: .png, .jpg, .gif, .txt, .pdf, .doc, .docx, .zip und .rar.</p>
 				</div>
 				
 				<c:if test="${param.mode == 'new'}"><input type="hidden" name="mode" value="new" /></c:if>
