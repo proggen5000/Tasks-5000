@@ -1,9 +1,9 @@
 package administration;
 
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import database.Queries;
 import entities.Mitglied;
@@ -18,13 +18,17 @@ public class MitgliederVerwaltung {
 	 */
 	public static Mitglied neu (Mitglied mitglied){
 		
+		//aktuelles Datum beziehen
+		Calendar cal = Calendar.getInstance();
+		long regdatum= cal.getTimeInMillis();
+		
 		//Einfuegen der Werte (ohne ID)
 		String table= "mitglieder";
 		String columns= "mitgliedid, username, password, email, vorname, nachname, "
 				+"regdatum";
 		String values= "NULL, "+mitglied.getUsername()+", "+mitglied.getPassword()+", "
 				+mitglied.getEmail()+", "+mitglied.getVorname()+", "+mitglied.getNachname()
-				+", "+mitglied.getRegdatum();
+				+", "+regdatum;
 		long testID;
 		try {
 			testID = Queries.insertQuery(table, columns, values);
@@ -307,59 +311,30 @@ public class MitgliederVerwaltung {
 	}
 	
 	/**
-	 * Pr�ft ob Username und Password �bereinstimmen
+	 * Prueft, ob Username und Password uebereinstimmen
 	 * @param username
 	 * @param password
 	 * @return boolean
 	 */
 	public static boolean pruefeLogin(String username, String password){
-		
-		String sql= "SELECT * FROM mitglieder WHERE username="+username;
-		
-		try {
-			Mitglied testmitglied = (Mitglied)Queries.scalarQuery(sql);
-			if (testmitglied.getPassword()==password){
+		try{
+			ResultSet rs = Queries.rowQuery("*", "Mitglieder", "username = '"+username+"' AND pw = PASSWORD('"+password+"')");
+			if(rs.next()){
 				return true;
 			}
-			else{
-				return false;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		}catch (SQLException e){
 			e.printStackTrace();
 			return false;
 		}
+		return false;
 	}
 	
 	public static boolean pruefeLoginDummy(String username, String password){ // TODO
-		if(username.equals("admin") && password.equals("123")){
+		if(username.equals("Bastart") && password.equals("kaesekuchen")){
 			return true;
 		} else {
 			return false;
 		}
-	}
-
-	public static Mitglied get(long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public static Mitglied getDummy(long id) {
-		Mitglied dummyMitglied = new Mitglied(4, "Dummy-Mitglied", "qwertz", "test@mail.de", "Max", "Mustermann", 1398100350);
-		return dummyMitglied;
-	}
-	
-	/**
-	 * Liefert das Mitglied mit dem angegebenen Username 
-	 * @return Objekt des Mitglieds mit dem angegebenen Username
-	 */
-	public static Mitglied getAnhandUsername(String username){
-		return null;
-	}
-	
-	public static Mitglied getAnhandUsernameDummy(String username){
-		Mitglied dummyMitglied = new Mitglied(4, "Dummy-Mitglied", "qwertz", "test@mail.de", "Max", "Mustermann", 1398100350);
-		return dummyMitglied;
 	}
 	
 	/**

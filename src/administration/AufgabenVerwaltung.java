@@ -51,7 +51,7 @@ public class AufgabenVerwaltung {
 
 	/**
 	 * Dummy
-	 * @param aufgabe die zurückgegeben wird
+	 * @param aufgabe die zur√ºckgegeben wird
 	 * @return Aufgabe
 	 */
 	public static Aufgabe neuDummy (Aufgabe aufgabe){
@@ -59,7 +59,7 @@ public class AufgabenVerwaltung {
 	}
 
 	/**
-	 * Die Daten werden auf die des übergebenen Objekts geupdated.
+	 * Die Daten werden auf die des √ºbergebenen Objekts geupdated.
 	 * @param aufgabe die aktualisiert werden soll. 
 	 * @return Aufgabe so wie sie in der Datenbank steht
 	 */
@@ -86,9 +86,9 @@ public class AufgabenVerwaltung {
 	}
 
 	/**
-	 * Löscht die übergebene Aufgabe aus der Datenbank
-	 * @param aufgabe die gelöscht werden soll
-	 * @return boolean ob gelöscht oder nicht
+	 * L√∂scht die √ºbergebene Aufgabe aus der Datenbank
+	 * @param aufgabe die gel√∂scht werden soll
+	 * @return boolean ob gel√∂scht oder nicht
 	 */
 	public static boolean loeschen (Aufgabe aufgabe){
 		String table = "Aufgabe";
@@ -102,8 +102,8 @@ public class AufgabenVerwaltung {
 	}
 
 	/**
-	 * Überprüft, ob eine Aufgabe-ID in der Datenbank vorhanden ist
-	 * @param id die auf vorhandensein geprüft werden soll
+	 * √úberpr√ºft, ob eine Aufgabe-ID in der Datenbank vorhanden ist
+	 * @param id die auf vorhandensein gepr√ºft werden soll
 	 * @return boolean ob sie vorhanden ist oder nicht
 	 */
 	public static boolean vorhanden (long id){
@@ -111,7 +111,7 @@ public class AufgabenVerwaltung {
 	}	
 
 	/**
-	 * Gibt die Aufgabe mit der angegebenen Aufgabe-ID aus der Datenbank zurück
+	 * Gibt die Aufgabe mit der angegebenen Aufgabe-ID aus der Datenbank zur√ºck
 	 * @param id der Aufgabe nach der gesucht werden soll 
 	 * @return Aufgabe, nach der gesucht wurde
 	 */
@@ -126,23 +126,7 @@ public class AufgabenVerwaltung {
 		}
 		return aufgabe_neu;
 	}
-
-	/**
-	 * Dummy
-	 * @param id Dummy
-	 * @return Dummy
-	 */
-	public static Aufgabe getDummy (long id){
-		Mitglied ersteller = new Mitglied(1337, "superadmin", "admin@email.de", "pw456", "Super", "Admin", 123);
-		Mitglied erstellerAufgabe = new Mitglied(2, "herrherrmann", "basti@email.de", "123", "Sebastian", "Herrmann", 123);
-		Aufgabe dummy = new Aufgabe(id, new Aufgabengruppe(3, "Dummy-Gruppe", "Dummy-Gruppenbeschreibung", new Team(13, "Dummy-Team", 1231231, "Dummy-Slogan", ersteller)), erstellerAufgabe, "Dummy-Aufgabe", "Dummy-Beschreibung", 45, 1398100350, 1398500350);
-		return dummy;
-	}
-
-	/**
-	 * Gibt alle Aufgabe die in der Datenbank existieren zurück
-	 * @return Alle Aufgabe die in der Datenbank existieren
-	 */
+	
 	public static ArrayList<Aufgabe> getListe(){
 		// returnd eine ArrayListe aller Aufgabe
 		String sql = "SELECT * FROM Aufgabe";
@@ -160,7 +144,7 @@ public class AufgabenVerwaltung {
 				al.add(a);
 			}
 		} catch (SQLException e) {
-			// Falls ein Fehler auftritt soll eine lehere Liste zurückgegeben werden
+			// Falls ein Fehler auftritt soll eine lehere Liste zurÔøΩckgegeben werden
 			e.printStackTrace();
 			al = null;
 		}
@@ -168,12 +152,12 @@ public class AufgabenVerwaltung {
 	}
 
 	/**
-	 * Gibt alle Aufgaben einer Datei zurück
+	 * Gibt alle Aufgaben einer Datei zur√ºck
 	 * @param dateiID nach welcher gesucht werden muss
-	 * @return ArrayList alle Aufgaben für die gesuchte ID
+	 * @return ArrayList alle Aufgaben f√ºr die gesuchte ID
 	 */
 	public static ArrayList<Aufgabe> getListeVonDatei(long dateiID){
-		// returnd eine ArrayListe aller Aufgabe die zu einer bestimmten datei gehöhren
+		// returnd eine ArrayListe aller Aufgabe die zu einer bestimmten datei gehÔøΩhren
 		String sql = "SELECT * FROM aufgaben JOIN aufgaben_dateien ON aufgaben.AufgabeID = aufgaben_dateien.Aufgaben_AufgabeID JOIN dateien ON dateien.DateiID = aufgaben_dateien.Dateien_DateiID WHERE DateiID = " + dateiID;
 		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
 		try {
@@ -189,7 +173,7 @@ public class AufgabenVerwaltung {
 				al.add(a);
 			}
 		} catch (SQLException e) {
-			// Falls ein Fehler auftritt soll eine lehere Liste zurückgegeben werden
+			// Falls ein Fehler auftritt soll eine lehere Liste zurÔøΩckgegeben werden
 			e.printStackTrace();
 			al = null;
 		}
@@ -197,9 +181,9 @@ public class AufgabenVerwaltung {
 	}
 
 	/**
-	 * Gibt alle Aufgaben einer Gruppe zurück
+	 * Gibt alle Aufgaben einer Gruppe zur√ºck
 	 * @param gruppenID nach welcher gesucht werden muss
-	 * @return ArrayList alle Aufgaben für die gesuchte ID
+	 * @return ArrayList alle Aufgaben f√ºr die gesuchte ID
 	 */
 	public static ArrayList<Aufgabe> getListeVonGruppe(long gruppenID){
 		// returnd eine ArrayListe aller Aufgabe
@@ -217,7 +201,7 @@ public class AufgabenVerwaltung {
 				al.add(a);
 			}
 		} catch (SQLException e) {
-			// Falls ein Fehler auftritt soll eine leere Liste zurückgegeben werden
+			// Falls ein Fehler auftritt soll eine leere Liste zur√ºckgegeben werden
 			e.printStackTrace();
 			al = null;
 		}
@@ -244,7 +228,7 @@ public class AufgabenVerwaltung {
 				al.add(a);
 			}
 		} catch (SQLException e) {
-			// Falls ein Fehler auftritt soll eine leere Liste zurückgegeben werden
+			// Falls ein Fehler auftritt soll eine leere Liste zur√ºckgegeben werden
 			e.printStackTrace();
 			al = null;
 		}
@@ -262,7 +246,7 @@ public class AufgabenVerwaltung {
 		Aufgabengruppe dummyGruppe = new Aufgabengruppe(13, "Dummy-Gruppe", "Aufgabenbeschreibung hier.", dummyTeam);
 		Aufgabe dummyAufgabe1 = new Aufgabe(1337, dummyGruppe, dummyMitglied, "Dummy-Aufgabe 1", "Hier steht was.", 45, 98723423, 99235456);
 		Aufgabe dummyAufgabe2 = new Aufgabe(1338, dummyGruppe, dummyMitglied, "Dummy-Aufgabe II", "Hier steht auch was.", 98, 942443423, 943235456);
-		Aufgabe dummyAufgabe3 = new Aufgabe(1339, dummyGruppe, dummyMitglied, "Dummy-Aufgabe 5000", "Hier steht so richtig viel, sodass es gek¸rzt werden muss, denn es werden mehr als 50 Zeichen verwendet!", 12, 934253423, 983235456);
+		Aufgabe dummyAufgabe3 = new Aufgabe(1339, dummyGruppe, dummyMitglied, "Dummy-Aufgabe 5000", "Hier steht so richtig viel, sodass es gek¬∏rzt werden muss, denn es werden mehr als 50 Zeichen verwendet!", 12, 934253423, 983235456);
 		al.add(dummyAufgabe1);
 		al.add(dummyAufgabe2);
 		al.add(dummyAufgabe3);
@@ -290,7 +274,7 @@ public class AufgabenVerwaltung {
 				al.add(a);
 			}
 		} catch (SQLException e) {
-			// Falls ein Fehler auftritt soll eine leere Liste zurückgegeben werden
+			// Falls ein Fehler auftritt soll eine leere Liste zur√ºckgegeben werden
 			e.printStackTrace();
 			al = null;
 		}
@@ -319,7 +303,7 @@ public class AufgabenVerwaltung {
 						al.add(a);
 					}
 				} catch (SQLException e) {
-					// Falls ein Fehler auftritt soll eine leere Liste zurückgegeben werden
+					// Falls ein Fehler auftritt soll eine leere Liste zur√ºckgegeben werden
 					e.printStackTrace();
 					al = null;
 				}

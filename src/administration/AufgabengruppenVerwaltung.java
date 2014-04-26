@@ -42,7 +42,7 @@ public class AufgabengruppenVerwaltung {
 	}
 
 	/**
-	 * Die Daten werden auf die des übergebenen Objekts geupdated.
+	 * Die Daten werden auf die des √ºbergebenen Objekts geupdated.
 	 * @param aufgabengruppe die aktualisiert werden soll. 
 	 * @return Aufgabengruppe so wie sie in der Datenbank steht
 	 */
@@ -65,9 +65,9 @@ public class AufgabengruppenVerwaltung {
 	}
 
 	/**
-	 * Löscht die übergebene Aufgabengruppe aus der Datenbank
-	 * @param aufgabengruppe die gelöscht werden soll
-	 * @return boolean ob gelöscht oder nicht
+	 * L√∂scht die √ºbergebene Aufgabengruppe aus der Datenbank
+	 * @param aufgabengruppe die gel√∂scht werden soll
+	 * @return boolean ob gel√∂scht oder nicht
 	 */
 	public static boolean loeschen (Aufgabengruppe aufgabengruppe){
 		String table = "AufgabenGruppen";
@@ -81,8 +81,8 @@ public class AufgabengruppenVerwaltung {
 	}
 
 	/**
-	 * Überprüft, ob eine AufgabenGruppen-ID in der Datenbank vorhanden ist
-	 * @param id die auf vorhandensein geprüft werden soll
+	 * √úberpr√ºft, ob eine AufgabenGruppen-ID in der Datenbank vorhanden ist
+	 * @param id die auf vorhandensein gepr√ºft werden soll
 	 * @return boolean ob sie vorhanden ist oder nicht
 	 */
 	public static boolean vorhanden (long id){
@@ -90,7 +90,7 @@ public class AufgabengruppenVerwaltung {
 	}	
 
 	/**
-	 * Gibt die AufgabenGruppen mit der angegebenen AufgabenGruppen-ID aus der Datenbank zurück
+	 * Gibt die AufgabenGruppen mit der angegebenen AufgabenGruppen-ID aus der Datenbank zur√ºck
 	 * @param id der Aufgabengruppe nach der gesucht werden soll 
 	 * @return Aufgabengruppe, nach der gesucht wurde
 	 */
@@ -116,8 +116,8 @@ public class AufgabengruppenVerwaltung {
 	}
 
 	/**
-	 * Überprüft, ob ein AufgabenGruppen-Name in der Datenbank vorhanden ist
-	 * @param name der auf vorhandensein geprüft werden soll
+	 * √úberpr√ºft, ob ein AufgabenGruppen-Name in der Datenbank vorhanden ist
+	 * @param name der auf vorhandensein gepr√ºft werden soll
 	 * @return boolean ob er vorhanden ist oder nicht
 	 */
 	public static boolean vorhanden (String name){
@@ -125,7 +125,7 @@ public class AufgabengruppenVerwaltung {
 	}
 
 	/**
-	 * Gibt die AufgabenGruppen mit dem angegebenen AufgabenGruppen-Name aus der Datenbank zurück
+	 * Gibt die AufgabenGruppen mit dem angegebenen AufgabenGruppen-Name aus der Datenbank zur√ºck
 	 * @param name der Aufgabengruppe nach der gesucht werden soll
 	 * @return Aufgabengruppe, nach der gesucht wurde
 	 */
@@ -142,7 +142,7 @@ public class AufgabengruppenVerwaltung {
 	}
 
 	/**
-	 * Gibt alle AufgabeGruppen die in der Datenbank existieren zurück
+	 * Gibt alle AufgabeGruppen die in der Datenbank existieren zur√ºck
 	 * @return Alle AufgabeGruppen die in der Datenbank existieren
 	 */
 	public static ArrayList<Aufgabengruppe> getListe(){
@@ -159,7 +159,7 @@ public class AufgabengruppenVerwaltung {
 				al.add(a);
 			}
 		} catch (SQLException e) {
-			// Falls ein Fehler auftritt soll eine lehere Liste zurückgegeben werden
+			// Falls ein Fehler auftritt soll eine lehere Liste zurÔøΩckgegeben werden
 			e.printStackTrace();
 			al = null;
 		}
@@ -167,9 +167,9 @@ public class AufgabengruppenVerwaltung {
 	}
 
 	/**
-	 * Gibt alle Aufgabengruppen eines Teams zurück
+	 * Gibt alle Aufgabengruppen eines Teams zur√ºck
 	 * @param teamID nach welcher gesucht werden muss
-	 * @return ArrayList alle Aufgabengruppe für die gesuchte ID
+	 * @return ArrayList alle Aufgabengruppe f√ºr die gesuchte ID
 	 */
 	public static ArrayList<Aufgabengruppe> getListeVonTeam(long teamID){
 		String sql = "SELECT * FROM `aufgaben` WHERE `TeamID` = "+ teamID +" group by `AufgabenGruppeID`";
@@ -183,29 +183,10 @@ public class AufgabengruppenVerwaltung {
 				al.add(a);
 			}
 		} catch (SQLException e) {
-			// Falls ein Fehler auftritt soll eine lehere Liste zurückgegeben werden
+			// Falls ein Fehler auftritt soll eine lehere Liste zurÔøΩckgegeben werden
 			e.printStackTrace();
 			al = null;
 		}
-		return al;
-	}
-
-	/**
-	 * Dummy
-	 * @param teamID Dummy
-	 * @return ArrayList aller Dummy-Einträge
-	 */
-	public static ArrayList<Aufgabengruppe> getListeVonTeamDummy(long teamID){
-		ArrayList<Aufgabengruppe> al = new ArrayList<Aufgabengruppe>();
-
-		Team dummyTeam = TeamVerwaltung.getDummy(teamID);
-		Aufgabengruppe ag1 = new Aufgabengruppe(1, "Windows 8.1", "Alle Aufgaben, die mit Windows 8.1 zutun haben.", dummyTeam);
-		Aufgabengruppe ag2 = new Aufgabengruppe(1, "Windows 9", "Alle Aufgaben, die mit Windows 9 zutun haben. Erscheinung geplant f&uuml;r Winter 2015!", dummyTeam);
-		Aufgabengruppe ag3 = new Aufgabengruppe(1, "Windows 10", "Alle Aufgaben, die mit Windows 10 zutun haben.", dummyTeam);
-		al.add(ag1);
-		al.add(ag2);
-		al.add(ag3);
-
 		return al;
 	}
 }

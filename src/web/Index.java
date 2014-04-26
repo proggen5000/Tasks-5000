@@ -38,8 +38,8 @@ public class Index extends HttpServlet {
 			HttpSession session = request.getSession(true);
 			long currentUser = (long) session.getAttribute("currentUser");
 			
-			request.setAttribute("teams", TeamVerwaltung.getListeVonMitgliedDummy(currentUser)); // TODO
-			request.setAttribute("tasks", AufgabenVerwaltung.getListeVonMitgliedDummy(currentUser)); // TODO
+			request.setAttribute("teams", TeamVerwaltung.getListeVonMitglied(currentUser)); 
+			request.setAttribute("tasks", AufgabenVerwaltung.getListeVonMitglied(currentUser));
 			request.setAttribute("valid_request", true);
 			view = request.getRequestDispatcher("/jsp/sites/indexUser.jsp");
 		}
@@ -48,7 +48,6 @@ public class Index extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 }
