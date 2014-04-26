@@ -1,11 +1,14 @@
 package administration;
 
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import database.Queries;
 import entities.Datei;
+import entities.Mitglied;
+import entities.Team;
 
 public class DateiVerwaltung {
 
@@ -37,16 +40,21 @@ public class DateiVerwaltung {
 		}
 		else{
 			//Erstellen einer Datei mit den �bernommenen Werten (mit ID)
-			Datei testdatei= new Datei();
 			String sql= "SELECT * FROM dateien WHERE dateiid="+testID;
 			try {
-				testdatei= (Datei)Queries.scalarQuery(sql);
+				ResultSet rs= Queries.rowQuery(sql);
+				Team team= TeamVerwaltung.get(rs.getLong("teamid"));
+				Mitglied ersteller= MitgliederVerwaltung.get(rs.getLong("erstellerid"));
+				Datei testdatei= new Datei(rs.getLong("dateiid"), rs.getString("name"),
+						rs.getString("beschreibung"), rs.getString("pfad"), team,
+						ersteller);
+				return testdatei;
 			} catch (SQLException e) {
 				e.printStackTrace();
+				return null;
 			}
-			return testdatei;
 		}
-	} //als Parameter noch Pfad oder Dateiobjekt �bergeben?
+	}
 	
 	public static Datei bearbeiten (Datei datei){
 		
@@ -56,23 +64,32 @@ public class DateiVerwaltung {
 				+datei.getBeschreibung()+", pfad="+datei.getPfad()
 				+", teamid="+datei.getTeam().getId();
 		String where= "dateiid="+datei.getId();
-		Datei testdatei= new Datei();
 		
 		try {
 			if (Queries.updateQuery(table, updateString, where)==true) {
 				//erstellen einer Datei mit aktualisierten Daten
 				String sql= "SELECT * FROM dateien WHERE dateiid="+datei.getId();
 				try {
-					testdatei= (Datei)Queries.scalarQuery(sql);
+					ResultSet rs= Queries.rowQuery(sql);
+					Team team= TeamVerwaltung.get(rs.getLong("teamid"));
+					Mitglied ersteller= MitgliederVerwaltung.get(rs.getLong("erstellerid"));
+					Datei testdatei= new Datei(rs.getLong("dateiid"), rs.getString("name"),
+							rs.getString("beschreibung"), rs.getString("pfad"), team,
+							ersteller);
+					return testdatei;
 				} catch (SQLException e) {
 					e.printStackTrace();
+					return null;
 				}
+			}
+			else{
+				return null;
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		};
-		return testdatei;
+			return null;
+		}
 	}
 	
 	public static boolean loeschen (Datei datei){
@@ -108,18 +125,51 @@ public class DateiVerwaltung {
 	}
 	
 	public static ArrayList<Datei> getListeVonAufgabe(long aufgabenID){
+		
+		String sql = "SELECT * FROM dateien JOIN aufgaben_dateien "
+					+"ON dateien.dateiid= aufgaben_dateien.dateiid "
+					+"JOIN aufgaben ON aufgaben.aufgabeid = aufgaben_dateien.aufgabeid "
+					+"WHERE aufgaben.aufgabeid= " + aufgabenID;
 		ArrayList<Datei> al = new ArrayList<Datei>();
-		
-		// TODO bitte erg�nzen
-		
+	
+		try {
+			ResultSet rs = Queries.rowQuery(sql);	
+			while(rs.next()){
+				Team team= TeamVerwaltung.get(rs.getLong("teamid"));
+				Mitglied ersteller= MitgliederVerwaltung.get(rs.getLong("erstellerid"));
+				Datei d= new Datei(rs.getLong("dateiid"), rs.getString("name"),
+						rs.getString("beschreibung"), rs.getString("pfad"), team,
+						ersteller);
+				al.add(d);
+			}
+		} catch (SQLException e) {
+			// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben werden
+			e.printStackTrace();
+			al = null;
+		}
 		return al;
 	}
 	
 	public static ArrayList<Datei> getListeVonTeam(long teamID){
-		ArrayList<Datei> al = new ArrayList<Datei>();
-		
-		// TODO bitte erg�nzen
-		
-		return al;
+
+		String sql = "SELECT * FROM dateien WHERE teamid= "+teamID;
+	ArrayList<Datei> al = new ArrayList<Datei>();
+
+	try {
+		ResultSet rs = Queries.rowQuery(sql);	
+		while(rs.next()){
+			Team team= TeamVerwaltung.get(rs.getLong("teamid"));
+			Mitglied ersteller= MitgliederVerwaltung.get(rs.getLong("erstellerid"));
+			Datei d= new Datei(rs.getLong("dateiid"), rs.getString("name"),
+					rs.getString("beschreibung"), rs.getString("pfad"), team,
+					ersteller);
+			al.add(d);
+		}
+	} catch (SQLException e) {
+		// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben werden
+		e.printStackTrace();
+		al = null;
+	}
+	return al;
 	}
 }
