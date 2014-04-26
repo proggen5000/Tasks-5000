@@ -139,7 +139,7 @@ public class AufgabenVerwaltung {
 				// AufgabenGruppeID, ErstellerID, Name, Beschreibung, Status, Erstellungsdatum, Deadline
 				Aufgabe a = new Aufgabe(rs.getLong("AufgabeID"),
 						AufgabengruppenVerwaltung.get(rs.getLong("AufgabenGruppeID")),
-						MitgliederVerwaltung.get(rs.getLong("ErstellerID")), rs.getString("Name"),
+						MitgliederVerwaltung.getMitgliedWithId(rs.getLong("ErstellerID")), rs.getString("Name"),
 						rs.getString("Beschreibung"), rs.getInt("Status"), rs.getLong("Erstellungsdatum"), rs.getLong("Deadline"));
 				al.add(a);
 			}
@@ -168,7 +168,7 @@ public class AufgabenVerwaltung {
 				// AufgabenGruppeID, ErstellerID, Name, Beschreibung, Status, Erstellungsdatum, Deadline
 				Aufgabe a = new Aufgabe(rs.getLong("AufgabeID"),
 						AufgabengruppenVerwaltung.get(rs.getLong("AufgabenGruppeID")),
-						MitgliederVerwaltung.get(rs.getLong("ErstellerID")), rs.getString("Name"),
+						MitgliederVerwaltung.getMitgliedWithId(rs.getLong("ErstellerID")), rs.getString("Name"),
 						rs.getString("Beschreibung"), rs.getInt("Status"), rs.getLong("Erstellungsdatum"), rs.getLong("Deadline"));
 				al.add(a);
 			}
@@ -196,7 +196,7 @@ public class AufgabenVerwaltung {
 				//add every result in resultset to ArrayList
 				Aufgabe a = new Aufgabe(rs.getLong("AufgabeID"),
 						AufgabengruppenVerwaltung.get(rs.getLong("AufgabenGruppeID")),
-						MitgliederVerwaltung.get(rs.getLong("ErstellerID")), rs.getString("Name"),
+						MitgliederVerwaltung.getMitgliedWithId(rs.getLong("ErstellerID")), rs.getString("Name"),
 						rs.getString("Beschreibung"), rs.getInt("Status"), rs.getLong("Erstellungsdatum"), rs.getLong("Deadline"));
 				al.add(a);
 			}
@@ -223,7 +223,7 @@ public class AufgabenVerwaltung {
 				//add every result in resultset to ArrayList
 				Aufgabe a = new Aufgabe(rs.getLong("AufgabeID"),
 						AufgabengruppenVerwaltung.get(rs.getLong("AufgabenGruppeID")),
-						MitgliederVerwaltung.get(rs.getLong("ErstellerID")), rs.getString("Name"),
+						MitgliederVerwaltung.getMitgliedWithId(rs.getLong("ErstellerID")), rs.getString("Name"),
 						rs.getString("Beschreibung"), rs.getInt("Status"), rs.getLong("Erstellungsdatum"), rs.getLong("Deadline"));
 				al.add(a);
 			}
@@ -269,7 +269,7 @@ public class AufgabenVerwaltung {
 				
 				Aufgabe a = new Aufgabe(rs.getLong("AufgabeID"),
 						AufgabengruppenVerwaltung.get(rs.getLong("AufgabenGruppeID")),
-						MitgliederVerwaltung.get(rs.getLong("ErstellerID")), rs.getString("Name"),
+						MitgliederVerwaltung.getMitgliedWithId(rs.getLong("ErstellerID")), rs.getString("Name"),
 						rs.getString("Beschreibung"), rs.getInt("Status"), rs.getLong("Erstellungsdatum"), rs.getLong("Deadline"));
 				al.add(a);
 			}
@@ -298,7 +298,7 @@ public class AufgabenVerwaltung {
 						//add every result in resultset to ArrayList
 						Aufgabe a = new Aufgabe(rs.getLong("AufgabeID"),
 								AufgabengruppenVerwaltung.get(rs.getLong("AufgabenGruppeID")),
-								MitgliederVerwaltung.get(rs.getLong("ErstellerID")), rs.getString("Name"),
+								MitgliederVerwaltung.getMitgliedWithId(rs.getLong("ErstellerID")), rs.getString("Name"),
 								rs.getString("Beschreibung"), rs.getInt("Status"), rs.getLong("Erstellungsdatum"), rs.getLong("Deadline"));
 						al.add(a);
 					}

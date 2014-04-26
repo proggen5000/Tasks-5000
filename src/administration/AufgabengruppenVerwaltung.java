@@ -5,7 +5,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import database.Queries;
+import entities.Aufgabe;
 import entities.Aufgabengruppe;
+import entities.Mitglied;
 import entities.Team;
 
 
@@ -70,6 +72,13 @@ public class AufgabengruppenVerwaltung {
 	 * @return boolean ob gel√∂scht oder nicht
 	 */
 	public static boolean loeschen (Aufgabengruppe aufgabengruppe){
+		// erst müssen alle untergeordneten Aufgaben gelöscht werden
+		ArrayList<Aufgabe> a = AufgabenVerwaltung.getListeVonGruppe(aufgabengruppe.getId());
+		int l = a.size();
+		for(int i = 0; i < l; i++){
+			AufgabenVerwaltung.loeschen(a.get(i));
+		}
+		
 		String table = "AufgabenGruppen";
 		String where = "AufgabenGruppeID = " + aufgabengruppe.getId();
 		try {
@@ -112,7 +121,7 @@ public class AufgabengruppenVerwaltung {
 	 * @return Aufgabengruppe, nach der gesucht wurde
 	 */
 	public static Aufgabengruppe getDummy (long id){
-		return new Aufgabengruppe(id, "Dummy-Gruppe", "Dummy-Gruppenbeschreibung", TeamVerwaltung.getDummy(1));
+		return new Aufgabengruppe(id, "Dummy-Gruppe", "Dummy-Gruppenbeschreibung", new Team(1l, "toll", 0l, "Testgruppe", new Mitglied(1, "testi", "bla", "test@test.de", "tester", "Typ", 0)));
 	}
 
 	/**
@@ -155,7 +164,7 @@ public class AufgabengruppenVerwaltung {
 			while(rs.next()){
 				//add every result in resultset to ArrayList
 				Aufgabengruppe a = new Aufgabengruppe(rs.getLong("AufgabenGruppeID"), rs.getString("Name"), 
-						rs.getString("Beschreibung"), TeamVerwaltung.get(rs.getLong("Team")));
+						rs.getString("Beschreibung"), TeamVerwaltung.getTeamWithId(rs.getLong("Team")));
 				al.add(a);
 			}
 		} catch (SQLException e) {
