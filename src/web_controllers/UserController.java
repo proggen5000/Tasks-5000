@@ -1,4 +1,4 @@
-package web;
+package web_controllers;
 
 import java.io.IOException;
 
@@ -16,10 +16,10 @@ import administration.TeamVerwaltung;
 import entities.Mitglied;
 
 @WebServlet("/user")
-public class User extends HttpServlet {
+public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public User() {
+    public UserController() {
         super();
     }
 

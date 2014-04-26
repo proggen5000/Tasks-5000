@@ -1,4 +1,4 @@
-package web;
+package web_controllers;
 
 import java.io.IOException;
 import java.io.File;
@@ -26,14 +26,14 @@ import entities.Datei;
 
 @WebServlet("/file")
 @MultipartConfig
-public class FileService extends HttpServlet {
+public class FileController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private static final String DATA_DIRECTORY = "data";
     private static final int MAX_MEMORY_SIZE = 1024 * 1024 * 2;
     private static final int MAX_REQUEST_SIZE = 1024 * 1024;
 
-    public FileService() {
+    public FileController() {
         super();
     }
 

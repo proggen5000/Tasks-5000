@@ -1,4 +1,4 @@
-package web;
+package web_controllers;
 
 import java.io.IOException;
 
@@ -14,10 +14,10 @@ import administration.AufgabenVerwaltung;
 import administration.TeamVerwaltung;
 
 @WebServlet("/index")
-public class Index extends HttpServlet {
+public class IndexController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public Index() {
+    public IndexController() {
         super();
     }
 

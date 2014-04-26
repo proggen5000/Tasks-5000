@@ -1,4 +1,4 @@
-package web;
+package web_controllers;
 
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -13,10 +13,10 @@ import administration.MitgliederVerwaltung;
 import entities.Mitglied;
 
 @WebServlet("/login")
-public class Login extends HttpServlet {
+public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public Login() {
+    public LoginController() {
         super();
     }
 
@@ -82,6 +82,7 @@ public class Login extends HttpServlet {
 			if(!login){
 				if(MitgliederVerwaltung.pruefeLogin(username, password)){
 					Mitglied user =  MitgliederVerwaltung.get(username);
+					// TODO Debugging:
 					System.out.println("Benutzer: " + user.getId() + " -> " + user.getUsername());
 					System.out.println("PW: " + user.getPw());
 					

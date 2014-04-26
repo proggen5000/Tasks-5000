@@ -1,4 +1,4 @@
-package web;
+package web_controllers;
 
 import java.io.IOException;
 import java.util.Date;
@@ -16,10 +16,10 @@ import administration.MitgliederVerwaltung;
 import administration.TeamVerwaltung;
 
 @WebServlet("/team")
-public class Team extends HttpServlet {
+public class TeamController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public Team() {
+    public TeamController() {
         super();
     }
 

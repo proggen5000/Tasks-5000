@@ -1,4 +1,4 @@
-package web;
+package web_controllers;
 
 import java.io.IOException;
 
@@ -16,10 +16,10 @@ import entities.Aufgabengruppe;
 import entities.Team;
 
 @WebServlet("/taskGroup")
-public class TaskGroup extends HttpServlet {
+public class TaskGroupController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public TaskGroup() {
+    public TaskGroupController() {
         super();
     }
 

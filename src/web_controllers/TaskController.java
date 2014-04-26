@@ -1,4 +1,4 @@
-package web;
+package web_controllers;
 
 import java.io.IOException;
 import java.util.Date;
@@ -18,7 +18,7 @@ import administration.MitgliederVerwaltung;
 import administration.TeamVerwaltung;
 
 @WebServlet("/task")
-public class Task extends HttpServlet {
+public class TaskController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
