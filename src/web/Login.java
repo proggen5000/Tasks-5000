@@ -80,7 +80,7 @@ public class Login extends HttpServlet {
 		// Login (Aktion)
 		if(mode.equals("login")){
 			if(!login){
-				if(MitgliederVerwaltung.pruefeLogin(username, password)){ // TODO
+				if(MitgliederVerwaltung.pruefeLogin(username, password)){
 					Mitglied user =  MitgliederVerwaltung.getMitgliedWithName(username);
 					
 					HttpSession session = request.getSession(true);
@@ -94,7 +94,7 @@ public class Login extends HttpServlet {
 					request.setAttribute("valid_request", true);
 					view = request.getRequestDispatcher("/success.jsp");
 				} else {
-					request.setAttribute("error", "Benutzername und Password stimmen nicht &uuml;berein!");
+					request.setAttribute("error", "Benutzername und Password stimmen nicht &uuml;berein!<br />Bitte versuchen Sie es erneut oder <a href=\"/?page=register\">registrieren</a> Sie sich.");
 					view = request.getRequestDispatcher("/error.jsp");
 				}
 			} else {

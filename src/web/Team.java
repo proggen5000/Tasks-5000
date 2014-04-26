@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import administration.AufgabenVerwaltung;
 import administration.AufgabengruppenVerwaltung;
 import administration.MitgliederVerwaltung;
 import administration.TeamVerwaltung;
@@ -49,27 +48,27 @@ public class Team extends HttpServlet {
 			mode = (String) request.getAttribute("mode");
 		}
 		
-		RequestDispatcher view = request.getRequestDispatcher("error.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
 
 		
 		// Fehler - kein Login
 		if(!login){
 			request.setAttribute("error", "Sie sind nicht eingeloggt!");
-			view = request.getRequestDispatcher("error.jsp");
+			view = request.getRequestDispatcher("/error.jsp");
 		}
 
 		// Team ansehen
 		else if(mode.equals("view")){
-			if(id != -1){
-				request.setAttribute("team", TeamVerwaltung.getTeamWithId(id)); // TODO
+			if(TeamVerwaltung.vorhanden(id)){
+				request.setAttribute("team", TeamVerwaltung.getTeamWithId(id));
 				request.setAttribute("users", MitgliederVerwaltung.getListeVonTeam(id));
-				request.setAttribute("groups", AufgabengruppenVerwaltung.getListeVonTeam(id)); // TODO
+				request.setAttribute("groups", AufgabengruppenVerwaltung.getListeVonTeam(id));
 				// request.setAttribute("files", DateiVerwaltung.getListeVonTeam(id)); // TODO
 				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("jsp/team/teamView.jsp");
+				view = request.getRequestDispatcher("/jsp/team/teamView.jsp");
 			} else {
-				request.setAttribute("error", "Ung&uuml;ltige Team-ID!");
-				view = request.getRequestDispatcher("error.jsp");
+				request.setAttribute("error", "Team nicht gefunden!");
+				view = request.getRequestDispatcher("/error.jsp");
 			}
 		}
 		
@@ -78,51 +77,43 @@ public class Team extends HttpServlet {
 			request.setAttribute("usersAll", MitgliederVerwaltung.getListe());
 			request.setAttribute("mode", mode);
 			request.setAttribute("valid_request", true);
-			view = request.getRequestDispatcher("jsp/team/teamEdit.jsp");
+			view = request.getRequestDispatcher("/jsp/team/teamEdit.jsp");
 		}
 		
 		// Team bearbeiten (Formular)
 		else if(mode.equals("edit")){			
 			entities.Team team = TeamVerwaltung.getTeamWithId(id);
 			
-			if(team.getGruppenfuehrer().getId() == currentUser){
+			if(currentUser == team.getGruppenfuehrer().getId()){
 				request.setAttribute("team", team);
 				request.setAttribute("users", MitgliederVerwaltung.getListeVonTeam(id));
 				request.setAttribute("usersAll", MitgliederVerwaltung.getListe());
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("jsp/team/teamEdit.jsp");
+				view = request.getRequestDispatcher("/jsp/team/teamEdit.jsp");
 			} else {
 				request.setAttribute("error", "Nur Teammanager d&uuml;rfen die Teamdetails bearbeiten!");
-				view = request.getRequestDispatcher("error.jsp");
+				view = request.getRequestDispatcher("/error.jsp");
 			}
 		}
 		
 		// Team loeschen
 		else if(mode.equals("remove")){
-			String sure = request.getParameter("sure");
-			if(TeamVerwaltung.vorhanden(id) && !sure.equals("true")){
-				entities.Team team = TeamVerwaltung.getTeamWithId(id);
+			entities.Team team = TeamVerwaltung.getTeamWithId(id);
+			if(TeamVerwaltung.vorhanden(team.getId())){
 				request.setAttribute("team", team);
-				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("jsp/team/teamRemove.jsp");
-			} else if (AufgabenVerwaltung.vorhanden(id) && sure.equals("true")){
-				AufgabenVerwaltung.loeschen(AufgabenVerwaltung.get(id)); // TODO
-				request.setAttribute("mode", mode);
-				request.setAttribute("sure", true);
-				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("jsp/team/teamRemove.jsp");
+				view = request.getRequestDispatcher("/jsp/team/teamRemove.jsp");
 			} else {
-				request.setAttribute("error", "Ung&uuml;ltige Team-ID!");
-				view = request.getRequestDispatcher("error.jsp");
+				request.setAttribute("error", "Team nicht gefunden!");
+				view = request.getRequestDispatcher("/error.jsp");
 			}
 		}
 		
 		// Fehler - kein mode angegeben
 		else {
 			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
-			view = request.getRequestDispatcher("error.jsp");
+			view = request.getRequestDispatcher("/error.jsp");
 		}
 		
 		view.forward(request, response);
@@ -144,7 +135,7 @@ public class Team extends HttpServlet {
 			}
 		}
 		
-		long id = -1; // TeamID
+		long id = -1; // Team-ID
 		try {
 			id = Long.parseLong(request.getParameter("id"));
 		} catch (NumberFormatException e){
@@ -156,15 +147,13 @@ public class Team extends HttpServlet {
 			mode = (String) request.getAttribute("mode");
 		}
 		
-		String sure = request.getParameter("sure");
-		
-		RequestDispatcher view = request.getRequestDispatcher("error.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
 
 		
 		// Fehler - kein Login
 		if(!login){
 			request.setAttribute("error", "Sie sind nicht eingeloggt!");
-			view = request.getRequestDispatcher("error.jsp");
+			view = request.getRequestDispatcher("/error.jsp");
 		}
 	
 		// Team erstellen (Aktion)
@@ -181,11 +170,11 @@ public class Team extends HttpServlet {
 			view = request.getRequestDispatcher("/team?mode=view&id="+teamNew.getId());
 		}
 		
-		// Team bearbeiten (Formular)
+		// Team bearbeiten (Aktion)
 		else if(mode.equals("edit")){			
 			entities.Team team = TeamVerwaltung.getTeamWithId(id);
 			
-			if(team.getGruppenfuehrer().getId() == currentUser){
+			if(currentUser == team.getGruppenfuehrer().getId()){
 				team.setName(request.getParameter("name"));
 				team.setBeschreibung(request.getParameter("description"));
 				team.setGruppenfuehrer(MitgliederVerwaltung.getMitgliedWithId(Long.parseLong(request.getParameter("manager"))));
@@ -195,22 +184,34 @@ public class Team extends HttpServlet {
 				view = request.getRequestDispatcher("/team?mode=view&id="+teamUpdated.getId());
 			} else {
 				request.setAttribute("error", "Nur Teammanager d&uuml;rfen die Teamdetails bearbeiten!");
-				view = request.getRequestDispatcher("error.jsp");
+				view = request.getRequestDispatcher("/error.jsp");
 			}
 		}
 		
 		// Team loeschen (Aktion)
-		else if(mode.equals("remove") && sure.equals("true")){
-			AufgabenVerwaltung.loeschen(AufgabenVerwaltung.get(id));
-			request.setAttribute("valid_request", true);
-			// TODO lieber auf Bestätigungsseite weiterleiten
-			view = request.getRequestDispatcher("/index");
+		else if(mode.equals("remove")){
+			entities.Team team = TeamVerwaltung.getTeamWithId(id);
+			
+			if(currentUser == team.getGruppenfuehrer().getId()){
+				if(TeamVerwaltung.loeschen(team.getId())){
+					request.setAttribute("title", "Team gel&ouml;scht");
+					request.setAttribute("message", "Sie haben das Team erfolgreich gel&ouml;scht!");
+					request.setAttribute("valid_request", true);
+					view = request.getRequestDispatcher("/success.jsp");
+				} else {
+					request.setAttribute("error", "Fehler beim L&ouml;schen!");
+					view = request.getRequestDispatcher("/error.jsp");
+				}
+			} else {
+				request.setAttribute("error", "Nur Teammanager d&uuml;rfen das Team l&ouml;schen!");
+				view = request.getRequestDispatcher("/error.jsp");
+			}
 		}
 		
 		// Fehler - kein mode angegeben
 		else {
 			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
-			view = request.getRequestDispatcher("error.jsp");
+			view = request.getRequestDispatcher("/error.jsp");
 		}
 		
 		view.forward(request, response);

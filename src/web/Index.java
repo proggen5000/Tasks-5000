@@ -22,15 +22,15 @@ public class Index extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		boolean login = false;
 		if(request.getSession().getAttribute("login") != null){
 			login = (boolean) request.getSession().getAttribute("login");
 		}
 		
-		String page = request.getParameter("page");
-		
 		RequestDispatcher view = request.getRequestDispatcher("/jsp/sites/index.jsp");
 		
+		String page = request.getParameter("page");
 		if(page != null){
 			view = request.getRequestDispatcher("/jsp/sites/" + page + ".jsp");
 		}
@@ -48,6 +48,7 @@ public class Index extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.sendRedirect("/jsp/sites/index.jsp");
 	}
 
 }

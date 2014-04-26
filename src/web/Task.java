@@ -1,6 +1,7 @@
 package web;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -154,12 +155,12 @@ public class Task extends HttpServlet {
 		else if(mode.equals("new")){
 			Aufgabe task = new Aufgabe();
 			task.setErsteller(MitgliederVerwaltung.getMitgliedWithId(currentUser));
+			task.setErstellungsdatum(new Date().getTime()); // TODO ggf. unnoetig?
 			task.setName(request.getParameter("name"));
 			task.setBeschreibung(request.getParameter("description"));
 			task.setGruppe(AufgabengruppenVerwaltung.get(Long.parseLong(request.getParameter("group"))));
 			task.setStatus(Integer.parseInt(request.getParameter("status")));
-			// task.setDate(date); // TODO
-			// task.setDeadline(deadline); // TODO
+			// task.setDeadline(request.getParameter("deadline")); // TODO
 			// TODO Mitgliederzuordnungen!
 
 			Aufgabe taskNew = AufgabenVerwaltung.neu(task);
@@ -178,7 +179,7 @@ public class Task extends HttpServlet {
 			task.setGruppe(AufgabengruppenVerwaltung.get(Long.parseLong(request.getParameter("group"))));
 			task.setBeschreibung(request.getParameter("description"));			
 			task.setStatus(Integer.parseInt(request.getParameter("status")));
-			// task.setDeadline(deadline); // TODO
+			// task.setDeadline(request.getParameter("deadline")); // TODO
 			// TODO Mitgliederzuordnungen!
 
 			Aufgabe taskUpdated = AufgabenVerwaltung.bearbeiten(task);

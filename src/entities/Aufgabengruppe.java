@@ -54,8 +54,7 @@ public class Aufgabengruppe implements Serializable {
 		this.team = team;
 	}
 	
-
-	// TODO
+	
 	public ArrayList<Aufgabe> getAufgaben(){
 		return AufgabenVerwaltung.getListeVonGruppe(id);
 	}
