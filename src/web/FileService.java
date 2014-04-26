@@ -92,7 +92,7 @@ public class FileService extends HttpServlet {
 		// Datei hochladen (Formular)
 		else if(mode.equals("new")){
 			if(TeamVerwaltung.vorhanden(teamId)){
-				request.setAttribute("team", TeamVerwaltung.getTeamWithId(teamId));
+				request.setAttribute("team", TeamVerwaltung.get(teamId));
 				request.setAttribute("tasks", AufgabenVerwaltung.getListeVonTeam(teamId));
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
@@ -106,7 +106,7 @@ public class FileService extends HttpServlet {
 		// Datei bearbeiten (Formular)
 		else if(mode.equals("edit")){
 			request.setAttribute("file", DateiVerwaltung.vorhanden(id)); // TODO zu .get aendern
-			request.setAttribute("team", TeamVerwaltung.getTeamWithId(teamId));
+			request.setAttribute("team", TeamVerwaltung.get(teamId));
 			request.setAttribute("tasks", AufgabenVerwaltung.getListeVonTeam(teamId));
 			request.setAttribute("mode", mode);
 			request.setAttribute("valid_request", true);
@@ -219,10 +219,10 @@ public class FileService extends HttpServlet {
 		// Datei hochladen (Aktion)
 		else if(mode.equals("new")){
 			Datei file = new Datei();
-			file.setErsteller(MitgliederVerwaltung.getMitgliedWithId(currentUser));
+			file.setErsteller(MitgliederVerwaltung.get(currentUser));
 			file.setName(request.getParameter("name"));
 			file.setBeschreibung(request.getParameter("description"));
-			file.setTeam(TeamVerwaltung.getTeamWithId(Long.parseLong(request.getParameter("team"))));
+			file.setTeam(TeamVerwaltung.get(Long.parseLong(request.getParameter("team"))));
 			
 			// Check that we have a file upload request // TODO vermutlich unnoetig
 	        if(!ServletFileUpload.isMultipartContent(request)){

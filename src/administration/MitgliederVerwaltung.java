@@ -113,7 +113,7 @@ public class MitgliederVerwaltung {
 	 * @param id
 	 * @return testmitglied
 	 */
-	public static Mitglied getMitgliedWithId(long id){
+	public static Mitglied get(long id){
 		
 		//Suchen des Mitglieds anhand der ID
 		String sql= "SELECT * FROM mitglieder WHERE mitgliedid="+id;
@@ -133,7 +133,7 @@ public class MitgliederVerwaltung {
 	 * @param username
 	 * @return testmitglied
 	 */
-	public static Mitglied getMitgliedWithName(String username){
+	public static Mitglied get(String username){
 		
 		//Suchen des Mitglieds anhand des usernamens
 		String sql= "SELECT * FROM mitglieder WHERE username="+username;

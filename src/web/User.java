@@ -69,7 +69,7 @@ public class User extends HttpServlet {
 		// Profil ansehen
 		else if(mode.equals("view")){
 			if(MitgliederVerwaltung.vorhanden(id)){
-				request.setAttribute("user", MitgliederVerwaltung.getMitgliedWithId(id));
+				request.setAttribute("user", MitgliederVerwaltung.get(id));
 				request.setAttribute("teams", TeamVerwaltung.getListeVonMitglied(id));
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/jsp/user/userView.jsp");
@@ -81,14 +81,14 @@ public class User extends HttpServlet {
 		
 		// Profil bearbeiten (Formular)
 		else if(mode.equals("edit")){		
-			request.setAttribute("user", MitgliederVerwaltung.getMitgliedWithId(currentUser));
+			request.setAttribute("user", MitgliederVerwaltung.get(currentUser));
 			request.setAttribute("valid_request", true);
 			view = request.getRequestDispatcher("/jsp/user/userEdit.jsp");
 		}
 		
 		// Profil loeschen
 		else if(mode.equals("remove")){
-			request.setAttribute("user", MitgliederVerwaltung.getMitgliedWithId(currentUser));
+			request.setAttribute("user", MitgliederVerwaltung.get(currentUser));
 			request.setAttribute("teams", TeamVerwaltung.getListeVonMitglied(currentUser));
 			request.setAttribute("valid_request", true);
 			view = request.getRequestDispatcher("/jsp/user/userRemove.jsp");
@@ -96,8 +96,8 @@ public class User extends HttpServlet {
 		
 		// Team verlassen
 		else if(mode.equals("leaveTeam")){
-			Mitglied user = MitgliederVerwaltung.getMitgliedWithId(currentUser);
-			entities.Team team = TeamVerwaltung.getTeamWithId(teamId);
+			Mitglied user = MitgliederVerwaltung.get(currentUser);
+			entities.Team team = TeamVerwaltung.get(teamId);
 			
 			if(MitgliederVerwaltung.istMitgliedInTeam(currentUser, teamId)){
 				if(currentUser != team.getGruppenfuehrer().getId()){
@@ -110,10 +110,10 @@ public class User extends HttpServlet {
 					view = request.getRequestDispatcher("/error.jsp");
 				}
 			} else {
-				if(TeamVerwaltung.getTeamWithId(teamId) == null){
+				if(TeamVerwaltung.get(teamId) == null){
 					request.setAttribute("error", "Dieses Team existiert nicht!");
 				} else {
-					request.setAttribute("error", "Sie sind kein Mitglied des Teams " + TeamVerwaltung.getTeamWithId(teamId) + "!");
+					request.setAttribute("error", "Sie sind kein Mitglied des Teams " + TeamVerwaltung.get(teamId) + "!");
 				}
 				view = request.getRequestDispatcher("/error.jsp");
 			}
@@ -173,7 +173,7 @@ public class User extends HttpServlet {
 			String username = request.getParameter("username");
 			if(password.equals(request.getParameter("passwordRepeat"))){
 				if(!MitgliederVerwaltung.vorhanden(username)){
-					Mitglied user = MitgliederVerwaltung.getMitgliedWithId(currentUser);
+					Mitglied user = MitgliederVerwaltung.get(currentUser);
 					user.setUsername(username);
 					user.setPassword(password);
 					user.setVorname(request.getParameter("vorname"));
@@ -211,13 +211,13 @@ public class User extends HttpServlet {
 		
 		// Team verlassen (Aktion)
 		else if(mode.equals("leaveTeam")){
-			Mitglied user = MitgliederVerwaltung.getMitgliedWithId(currentUser);
-			entities.Team team = TeamVerwaltung.getTeamWithId(teamId);
+			Mitglied user = MitgliederVerwaltung.get(currentUser);
+			entities.Team team = TeamVerwaltung.get(teamId);
 			
 			if(MitgliederVerwaltung.istMitgliedInTeam(user.getId(), team.getId())){
 				if(MitgliederTeams.austreten(user.getId(), team.getId())){
 					request.setAttribute("user", user);
-					request.setAttribute("team", TeamVerwaltung.getTeamWithId(teamId));
+					request.setAttribute("team", TeamVerwaltung.get(teamId));
 					
 					request.setAttribute("title", "Team verlassen");
 					request.setAttribute("message", "Sie haben das Team \"<b>" + team.getName() + "</b>\" verlassen.");

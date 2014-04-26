@@ -70,7 +70,7 @@ public class TaskGroup extends HttpServlet {
 		// Aufgabengruppe erstellen (Formular)
 		else if(mode.equals("new")){
 			if(MitgliederVerwaltung.istMitgliedInTeam(currentUser, teamId)){
-				Team team = TeamVerwaltung.getTeamWithId(teamId);
+				Team team = TeamVerwaltung.get(teamId);
 				request.setAttribute("team", team);
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
@@ -141,7 +141,7 @@ public class TaskGroup extends HttpServlet {
 		// Aufgabengruppe erstellen (Aktion)
 		else if(mode.equals("new")){
 			Aufgabengruppe taskGroup = new Aufgabengruppe();
-			Team team = TeamVerwaltung.getTeamWithId(Integer.parseInt(request.getParameter("teamId")));
+			Team team = TeamVerwaltung.get(Integer.parseInt(request.getParameter("teamId")));
 			taskGroup.setName(request.getParameter("name"));
 			taskGroup.setBeschreibung(request.getParameter("description"));			
 			taskGroup.setTeam(team);

@@ -74,7 +74,7 @@ public class Task extends HttpServlet {
 		// Aufgabe erstellen (Formular)
 		else if(mode.equals("new")){
 			if(TeamVerwaltung.vorhanden(teamId)){
-				entities.Team team = TeamVerwaltung.getTeamWithId(teamId);
+				entities.Team team = TeamVerwaltung.get(teamId);
 				request.setAttribute("team", team);
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
@@ -154,7 +154,7 @@ public class Task extends HttpServlet {
 		// Aufgabe erstellen (Aktion)
 		else if(mode.equals("new")){
 			Aufgabe task = new Aufgabe();
-			task.setErsteller(MitgliederVerwaltung.getMitgliedWithId(currentUser));
+			task.setErsteller(MitgliederVerwaltung.get(currentUser));
 			task.setErstellungsdatum(new Date().getTime()); // TODO ggf. unnoetig?
 			task.setName(request.getParameter("name"));
 			task.setBeschreibung(request.getParameter("description"));

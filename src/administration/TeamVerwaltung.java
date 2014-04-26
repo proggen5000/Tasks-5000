@@ -113,7 +113,7 @@ public class TeamVerwaltung {
 	 * @param teamid
 	 * @return testteam
 	 */
-	public static Team getTeamWithId(long teamid){
+	public static Team get(long teamid){
 		
 		//Suchen des Teams anhand der ID
 		String sql= "SELECT * FROM teams WHERE teamid="+teamid;
@@ -133,7 +133,7 @@ public class TeamVerwaltung {
 	 * @param teamname
 	 * @return testteam
 	 */
-	public static Team getTeamWithName(String teamname){
+	public static Team get(String teamname){
 		
 		//Suchen des Mitglieds anhand des usernamens
 		String sql= "SELECT * FROM mitglieder WHERE username="+teamname;

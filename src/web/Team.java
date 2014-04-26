@@ -62,7 +62,7 @@ public class Team extends HttpServlet {
 		// Team ansehen
 		else if(mode.equals("view")){
 			if(TeamVerwaltung.vorhanden(id)){
-				request.setAttribute("team", TeamVerwaltung.getTeamWithId(id));
+				request.setAttribute("team", TeamVerwaltung.get(id));
 				request.setAttribute("groups", AufgabengruppenVerwaltung.getListeVonTeam(id));
 				request.setAttribute("files", DateiVerwaltung.getListeVonTeam(id));
 				request.setAttribute("users", MitgliederVerwaltung.getListeVonTeam(id));
@@ -84,7 +84,7 @@ public class Team extends HttpServlet {
 		
 		// Team bearbeiten (Formular)
 		else if(mode.equals("edit")){			
-			entities.Team team = TeamVerwaltung.getTeamWithId(id);
+			entities.Team team = TeamVerwaltung.get(id);
 			
 			if(currentUser == team.getGruppenfuehrer().getId()){
 				request.setAttribute("team", team);
@@ -101,7 +101,7 @@ public class Team extends HttpServlet {
 		
 		// Team loeschen
 		else if(mode.equals("remove")){
-			entities.Team team = TeamVerwaltung.getTeamWithId(id);
+			entities.Team team = TeamVerwaltung.get(id);
 			if(TeamVerwaltung.vorhanden(team.getId())){
 				request.setAttribute("team", team);
 				request.setAttribute("valid_request", true);
@@ -161,7 +161,7 @@ public class Team extends HttpServlet {
 		// Team erstellen (Aktion)
 		else if(mode.equals("new")){
 			entities.Team team = new entities.Team();
-			team.setGruppenfuehrer(MitgliederVerwaltung.getMitgliedWithId(currentUser));
+			team.setGruppenfuehrer(MitgliederVerwaltung.get(currentUser));
 			team.setGruendungsdatum(new Date().getTime()); // TODO noetig?
 			team.setName(request.getParameter("name"));
 			team.setBeschreibung(request.getParameter("description"));
@@ -173,10 +173,10 @@ public class Team extends HttpServlet {
 		
 		// Team bearbeiten (Aktion)
 		else if(mode.equals("edit")){			
-			entities.Team team = TeamVerwaltung.getTeamWithId(id);
+			entities.Team team = TeamVerwaltung.get(id);
 			
 			if(currentUser == team.getGruppenfuehrer().getId()){
-				team.setGruppenfuehrer(MitgliederVerwaltung.getMitgliedWithId(Long.parseLong(request.getParameter("manager"))));
+				team.setGruppenfuehrer(MitgliederVerwaltung.get(Long.parseLong(request.getParameter("manager"))));
 				team.setName(request.getParameter("name"));
 				team.setBeschreibung(request.getParameter("description"));
 				entities.Team teamUpdated = TeamVerwaltung.bearbeiten(team);
@@ -191,7 +191,7 @@ public class Team extends HttpServlet {
 		
 		// Team loeschen (Aktion)
 		else if(mode.equals("remove")){
-			entities.Team team = TeamVerwaltung.getTeamWithId(id);
+			entities.Team team = TeamVerwaltung.get(id);
 			
 			if(currentUser == team.getGruppenfuehrer().getId()){
 				if(TeamVerwaltung.loeschen(team.getId())){

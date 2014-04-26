@@ -164,7 +164,7 @@ public class AufgabengruppenVerwaltung {
 			while(rs.next()){
 				//add every result in resultset to ArrayList
 				Aufgabengruppe a = new Aufgabengruppe(rs.getLong("AufgabenGruppeID"), rs.getString("Name"), 
-						rs.getString("Beschreibung"), TeamVerwaltung.getTeamWithId(rs.getLong("Team")));
+						rs.getString("Beschreibung"), TeamVerwaltung.get(rs.getLong("Team")));
 				al.add(a);
 			}
 		} catch (SQLException e) {
