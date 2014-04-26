@@ -25,9 +25,9 @@ public class TeamVerwaltung {
 		Calendar cal = Calendar.getInstance();
 		long gruendungsdatum= cal.getTimeInMillis();
 		
-		//Einf�gen der Werte (ohne ID)
+		//Einfuegen der Werte (ohne ID)
 		String table= "teams";
-		String columns= "teamid, teamname, gruendungsdatum, slogan, gruppenfuehrerid";
+		String columns= "teamid, teamname, gruendungsdatum, beschreibung, gruppenfuehrerid";
 		String values= "NULL, "+team.getName()+", "+gruendungsdatum+", "
 				+team.getBeschreibung()+", "+team.getGruppenfuehrer().getId();
 		int testID;
@@ -43,15 +43,19 @@ public class TeamVerwaltung {
 			return null;
 		}
 		else{
-			//Erstellen eines Teams mit den �bernommenen Werten (mit ID)
-			Team testteam= new Team();
+			//Erstellen eines Teams mit den uebernommenen Werten (mit ID)
 			String sql= "SELECT * FROM teams WHERE testid="+testID;
 			try {
-				testteam= (Team)Queries.scalarQuery(sql);
+				ResultSet rs= Queries.rowQuery(sql);
+				Mitglied gruppenfuehrer= MitgliederVerwaltung.get(rs.getLong("gruppenfuehrerid"));
+				Team testteam= new Team(rs.getLong("teamid"), rs.getString("name"),
+						rs.getLong("gruendungsdatum"), rs.getString("beschreibung"),
+						gruppenfuehrer);
+				return testteam;
 			} catch (SQLException e) {
 				e.printStackTrace();
+				return null;
 			}
-			return testteam;
 		}
 	}
 	
@@ -66,26 +70,34 @@ public class TeamVerwaltung {
 		
 		//Aktualisieren des Teams
 		String table= "teams";
-		String updateString= "teamname="+team.getName()+", slogan="+team.getBeschreibung()
+		String updateString= "name="+team.getName()+", beschreibung="+team.getBeschreibung()
 				+", gruppenfuehrerid="+team.getGruppenfuehrer().getId();
 		String where= "teamid="+team.getId();
-		Team testteam= new Team();
 		
 		try {
 			if (Queries.updateQuery(table, updateString, where)==true) {
 				//erstellen eines Teams mit aktualisierten Daten
 				String sql= "SELECT * FROM teams WHERE teamid="+team.getId();
 				try {
-					testteam= (Team)Queries.scalarQuery(sql);
+					ResultSet rs= Queries.rowQuery(sql);
+					Mitglied gruppenfuehrer= MitgliederVerwaltung.get(rs.getLong("gruppenfuehrerid"));
+					Team testteam= new Team(rs.getLong("teamid"), rs.getString("name"),
+							rs.getLong("gruendungsdatum"), rs.getString("beschreibung"),
+							gruppenfuehrer);
+					return testteam;
 				} catch (SQLException e) {
 					e.printStackTrace();
+					return null;
 				}
+			}
+			else{
+				return null;
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		};
-		return testteam;
+			return null;
+		}
 	}
 	
 	/**
@@ -205,9 +217,10 @@ public class TeamVerwaltung {
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
 			while(rs.next()){
-				Team t= new Team(rs.getLong("teamid"), rs.getString("teamname"),
-						rs.getLong("gruendungsdatum"), rs.getString("slogan"),
-						(Mitglied)rs.getObject("gruppenfuehrer"));
+				Mitglied gruppenfuehrer= MitgliederVerwaltung.get(rs.getLong("gruppenfuehrerid"));
+				Team t= new Team(rs.getLong("teamid"), rs.getString("name"),
+						rs.getLong("gruendungsdatum"), rs.getString("beschreibung"),
+						gruppenfuehrer);
 				al.add(t);
 			}
 		} catch (SQLException e) {
@@ -226,17 +239,18 @@ public class TeamVerwaltung {
 	public static ArrayList<Team> getListeVonMitglied(long mitgliedID){
 		
 		String sql = "SELECT * FROM teams JOIN mitglieder_teams "
-				+"ON teams.teamid= mitglieder_teams.teams_teamid "
-				+"JOIN mitglieder ON mitglieder.mitgliederid = mitglieder_teams.mitglieder_mitgliedid "
+				+"ON teams.teamid= mitglieder_teams.teamid "
+				+"JOIN mitglieder ON mitglieder.mitgliederid = mitglieder_teams.mitgliedid "
 				+"WHERE mitglieder.mitgliedid= " + mitgliedID;
 		ArrayList<Team> al = new ArrayList<Team>();
 	
 		try {
 			ResultSet rs = Queries.rowQuery(sql);	
 			while(rs.next()){
+				Mitglied gruppenfuehrer= MitgliederVerwaltung.get(rs.getLong("gruppenfuehrerid"));
 				Team t= new Team(rs.getLong("id"), rs.getString("name"),
 						rs.getLong("gruendungsdatum"), rs.getString("beschreibung"),
-						(Mitglied)rs.getObject("gruppenfuehrer"));
+						gruppenfuehrer);
 				al.add(t);
 			}
 		} catch (SQLException e) {
