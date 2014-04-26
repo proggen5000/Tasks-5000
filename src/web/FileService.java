@@ -1,6 +1,9 @@
 package web;
 
 import java.io.IOException;
+import java.io.File;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,6 +12,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import administration.AufgabenVerwaltung;
 import administration.AufgabengruppenVerwaltung;
@@ -20,10 +28,14 @@ import entities.Datei;
 
 @WebServlet("/file")
 @MultipartConfig
-public class File extends HttpServlet {
+public class FileService extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private static final String DATA_DIRECTORY = "data";
+    private static final int MAX_MEMORY_SIZE = 1024 * 1024 * 2;
+    private static final int MAX_REQUEST_SIZE = 1024 * 1024;
 
-    public File() {
+    public FileService() {
         super();
     }
 
@@ -124,6 +136,7 @@ public class File extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		boolean login = false;
 		if(request.getSession().getAttribute("login") != null){
 			login = Boolean.parseBoolean(request.getSession().getAttribute("login").toString());
@@ -157,23 +170,90 @@ public class File extends HttpServlet {
 		
 		// Datei herunterladen (Aktion)
 		else if(mode.equals("download")){
-			if(DateiVerwaltung.vorhanden(id)){ // TODO funktioniert erst mit richtiger vorhanden-Methode
-				Datei file = DateiVerwaltung.vorhanden(id); // TODO zu .get aendern
+			if(DateiVerwaltung.vorhanden(id)){
+				Datei file = DateiVerwaltung.get(id);
 				response.sendRedirect("/"+file.getPfad()); // TODO funktioniert der Download so?
 			} else {
 				request.setAttribute("error", "Datei nicht gefunden!");
 				response.sendRedirect("/error.jsp");
 			}
 		}
+		
+		// Datei hochladen TEST (Aktion)
+		else if(mode.equals("newTest")){
+			Datei file = new Datei();
+			file.setName(request.getParameter("name"));
+			file.setBeschreibung(request.getParameter("description"));
+			
+			// Check that we have a file upload request // TODO vermutlich unnoetig
+	        if(!ServletFileUpload.isMultipartContent(request)){
+	        	request.setAttribute("error", "Fehler bei der Speicherung!");
+				response.sendRedirect("/error.jsp");
+	        }
+	        DiskFileItemFactory factory = new DiskFileItemFactory();
+	        factory.setSizeThreshold(MAX_MEMORY_SIZE);
+	        factory.setRepository(new File(System.getProperty("java.io.tmpdir")));
+	        String uploadFolder = getServletContext().getRealPath("") + File.separator + DATA_DIRECTORY; // TODO hier noch Team-Ordnerstruktur realisieren
+	        ServletFileUpload upload = new ServletFileUpload(factory);
+	        upload.setSizeMax(MAX_REQUEST_SIZE);
+			
+	        try {
+	            List items = upload.parseRequest(request);
+	            Iterator iter = items.iterator();
+	            while (iter.hasNext()) {
+	                FileItem item = (FileItem) iter.next();
+	                if(!item.isFormField()) {
+	                    String fileName = new File(item.getName()).getName();
+	                    String filePath = uploadFolder + File.separator + fileName;
+	                    File uploadedFile = new File(filePath);
+	                    System.out.println(filePath);
+	                    file.setPfad(filePath);
+	                    item.write(uploadedFile);
+	                }
+	            }	
+	        }
+	        catch (FileUploadException ex) { throw new ServletException(ex); }
+	        catch (Exception ex) { throw new ServletException(ex); }
+		}
 
 		// Datei hochladen (Aktion)
-		else if(mode.equals("new")){ // TODO
+		else if(mode.equals("new")){
 			Datei file = new Datei();
 			file.setErsteller(MitgliederVerwaltung.getMitgliedWithId(currentUser));
 			file.setName(request.getParameter("name"));
 			file.setBeschreibung(request.getParameter("description"));
 			file.setTeam(TeamVerwaltung.getTeamWithId(Long.parseLong(request.getParameter("team"))));
-			// file.setPfad(pfad); // TODO Datei hochladen!
+			
+			// Check that we have a file upload request // TODO vermutlich unnoetig
+	        if(!ServletFileUpload.isMultipartContent(request)){
+	        	request.setAttribute("error", "Fehler bei der Speicherung!");
+				response.sendRedirect("/error.jsp");
+	        }
+	        DiskFileItemFactory factory = new DiskFileItemFactory();
+	        factory.setSizeThreshold(MAX_MEMORY_SIZE);
+	        factory.setRepository(new File(System.getProperty("java.io.tmpdir")));
+	        String uploadFolder = getServletContext().getRealPath("") + File.separator + DATA_DIRECTORY; // TODO hier noch Team-Ordnerstruktur realisieren
+	        ServletFileUpload upload = new ServletFileUpload(factory);
+	        upload.setSizeMax(MAX_REQUEST_SIZE);
+			
+	        try {
+	            List items = upload.parseRequest(request);
+	            Iterator iter = items.iterator();
+	            while (iter.hasNext()) {
+	                FileItem item = (FileItem) iter.next();
+	                if(!item.isFormField()) {
+	                    String fileName = new File(item.getName()).getName();
+	                    String filePath = uploadFolder + File.separator + fileName;
+	                    File uploadedFile = new File(filePath);
+	                    System.out.println(filePath);
+	                    file.setPfad(filePath);
+	                    item.write(uploadedFile);
+	                }
+	            }	
+	        }
+	        catch (FileUploadException ex) { throw new ServletException(ex); }
+	        catch (Exception ex) { throw new ServletException(ex); }			
+			
 			// TODO Aufgabenzuordnung via request.getParameter("task")
 
 			Datei fileNew = DateiVerwaltung.neu(file);
@@ -187,7 +267,7 @@ public class File extends HttpServlet {
 		
 		// Datei bearbeiten (Aktion)
 		else if(mode.equals("edit")){
-			Datei file = DateiVerwaltung.vorhanden(id); // TODO zu .get aendern
+			Datei file = DateiVerwaltung.get(id);
 			file.setName(request.getParameter("name"));
 			file.setBeschreibung(request.getParameter("description"));
 			// file.setPfad(pfad); // TODO Datei hochladen bzw. aendern (+alte Datei loeschen)!
@@ -199,8 +279,8 @@ public class File extends HttpServlet {
 		
 		// Datei loeschen (Aktion)
 		else if(mode.equals("remove")){ // TODO
-			Datei file = DateiVerwaltung.vorhanden(id); // TODO zu .get aendern
-			if(DateiVerwaltung.vorhanden(id)){ // TODO funktioniert erst mit richtiger vorhanden-Methode
+			Datei file = DateiVerwaltung.get(id);
+			if(DateiVerwaltung.vorhanden(id)){
 				long teamId = file.getTeam().getId();
 				if(DateiVerwaltung.loeschen(file)){
 					request.setAttribute("valid_request", true);
@@ -216,7 +296,7 @@ public class File extends HttpServlet {
 		}
 		
 		// Fehler - kein mode angegeben
-		else /*if (!mode.equals("new") && !mode.equals("edit") && !mode.equals("remove") )*/ {
+		else {
 			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
 			response.sendRedirect("/error.jsp");
 		}

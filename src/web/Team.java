@@ -1,6 +1,7 @@
 package web;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import administration.AufgabengruppenVerwaltung;
+import administration.DateiVerwaltung;
 import administration.MitgliederVerwaltung;
 import administration.TeamVerwaltung;
 
@@ -61,9 +63,9 @@ public class Team extends HttpServlet {
 		else if(mode.equals("view")){
 			if(TeamVerwaltung.vorhanden(id)){
 				request.setAttribute("team", TeamVerwaltung.getTeamWithId(id));
-				request.setAttribute("users", MitgliederVerwaltung.getListeVonTeam(id));
 				request.setAttribute("groups", AufgabengruppenVerwaltung.getListeVonTeam(id));
-				// request.setAttribute("files", DateiVerwaltung.getListeVonTeam(id)); // TODO
+				request.setAttribute("files", DateiVerwaltung.getListeVonTeam(id));
+				request.setAttribute("users", MitgliederVerwaltung.getListeVonTeam(id));
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/jsp/team/teamView.jsp");
 			} else {
@@ -159,11 +161,10 @@ public class Team extends HttpServlet {
 		// Team erstellen (Aktion)
 		else if(mode.equals("new")){
 			entities.Team team = new entities.Team();
-			// team.setId(id); // noetig?
-			// team.setGruendungsdatum(gruendungsdatum); // noetig?
+			team.setGruppenfuehrer(MitgliederVerwaltung.getMitgliedWithId(currentUser));
+			team.setGruendungsdatum(new Date().getTime()); // TODO noetig?
 			team.setName(request.getParameter("name"));
 			team.setBeschreibung(request.getParameter("description"));
-			team.setGruppenfuehrer(MitgliederVerwaltung.getMitgliedWithId(currentUser));
 			entities.Team teamNew = TeamVerwaltung.neu(team);
 			
 			request.setAttribute("valid_request", true);
@@ -175,9 +176,9 @@ public class Team extends HttpServlet {
 			entities.Team team = TeamVerwaltung.getTeamWithId(id);
 			
 			if(currentUser == team.getGruppenfuehrer().getId()){
+				team.setGruppenfuehrer(MitgliederVerwaltung.getMitgliedWithId(Long.parseLong(request.getParameter("manager"))));
 				team.setName(request.getParameter("name"));
 				team.setBeschreibung(request.getParameter("description"));
-				team.setGruppenfuehrer(MitgliederVerwaltung.getMitgliedWithId(Long.parseLong(request.getParameter("manager"))));
 				entities.Team teamUpdated = TeamVerwaltung.bearbeiten(team);
 				
 				request.setAttribute("valid_request", true);

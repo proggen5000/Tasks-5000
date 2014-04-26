@@ -60,5 +60,11 @@ public class Datei implements Serializable {
 		this.pfad = pfad;
 	}
 	
-
+	/**
+	 * Liefert die Groesse der Datei in KB
+	 * @return Dateigroesse in KB
+	 */
+	public int getSize(){
+		return 4; // TODO !
+	}
 }

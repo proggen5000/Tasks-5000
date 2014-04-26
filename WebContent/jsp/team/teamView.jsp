@@ -1,5 +1,5 @@
-<%@page import="administration.AufgabenVerwaltung"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%-- Zugriff nicht über Servlet --%>
 <c:if test="${!valid_request}">
@@ -12,6 +12,10 @@
 			<h1>${team.name} <span class="glyphicon glyphicon-briefcase small"></span></h1>
 	  		<p>${team.beschreibung}</p>
 	  		
+	  		<h2>Aufgaben</h2>
+	  		<c:if test="${fn:length(taskGroups) == 0}">
+	  			<p>Erstellen Sie zuerst Aufgabengruppen, danach k&ouml;nnen Sie Aufgaben erstellen und den Gruppen zuordnen.</p>
+	  		</c:if>
 	  		<c:forEach var="taskGroup" items="${taskGroups}">
 	  			<h2><a href="/taskGroup?mode=edit&id=${taskGroup.id}" title="Aufgabengruppe bearbeiten">${taskGroup.name}</a></h2>
 		  		<p>${taskGroup.beschreibung}</p>
@@ -28,6 +32,21 @@
 		  			</c:forEach>
 	  			</div>
 	  		</c:forEach>
+	  		
+	  		<h2>Dateien</h2>
+	  		<c:if test="${fn:length(files) == 0}">
+	  			<p><a href="/file?mode=new&teamId=${team.id}">Laden Sie Dateien hoch</a>, um diese hier f&uuml;r Ihr Team aufzulisten.</p>
+	  		</c:if>
+	  		<c:if test="${fn:length(files) > 0}">
+				<div class="panel panel-default">
+					<div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-paperclip"></span> Dateien</h3></div>
+					<div class="panel-body">
+						<c:forEach var="file" items="${files}">
+							<p><span class="glyphicon glyphicon-file"></span> <a href="/file?mode=view&id=${file.id}">${file.name}</a> (${file.size} KB)</p>
+						</c:forEach>
+					</div>
+				</div>
+			</c:if>
 
 		</div><%-- Ende content --%>
 		<%-- Sidebar --%>
