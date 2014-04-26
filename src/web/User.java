@@ -175,7 +175,7 @@ public class User extends HttpServlet {
 				if(!MitgliederVerwaltung.vorhanden(username)){
 					Mitglied user = MitgliederVerwaltung.get(currentUser);
 					user.setUsername(username);
-					user.setPassword(password);
+					user.setPw(password);
 					user.setVorname(request.getParameter("vorname"));
 					user.setNachname(request.getParameter("nachname"));
 					user.setEmail(request.getParameter("email"));

@@ -24,9 +24,9 @@ public class MitgliederVerwaltung {
 		
 		//Einfuegen der Werte (ohne ID)
 		String table= "mitglieder";
-		String columns= "mitgliedid, username, password, email, vorname, nachname, "
+		String columns= "mitgliedid, username, pw, email, vorname, nachname, "
 				+"regdatum";
-		String values= "NULL, "+mitglied.getUsername()+", "+mitglied.getPassword()+", "
+		String values= "NULL, "+mitglied.getUsername()+", "+mitglied.getPw()+", "
 				+mitglied.getEmail()+", "+mitglied.getVorname()+", "+mitglied.getNachname()
 				+", "+regdatum;
 		long testID;
@@ -43,14 +43,18 @@ public class MitgliederVerwaltung {
 		}
 		else{
 			//Erstellen eines Mitglieds mit den uebernommenen Werten (mit ID)
-			Mitglied testmitglied= new Mitglied();
 			String sql= "SELECT * FROM mitglieder WHERE mitgliedid="+testID;
 			try {
-				testmitglied= (Mitglied)Queries.scalarQuery(sql);
+				ResultSet rs= Queries.rowQuery(sql);
+				Mitglied testmitglied= new Mitglied(rs.getLong("mitgliedid"),
+						rs.getString("username"), rs.getString("pw"), rs.getString("email"),
+						rs.getString("vorname"), rs.getString("nachname"),
+						rs.getLong("regdatum"));
+				return testmitglied;
 			} catch (SQLException e) {
 				e.printStackTrace();
+				return null;
 			}
-			return testmitglied;
 		}
 	}
 	
@@ -65,27 +69,35 @@ public class MitgliederVerwaltung {
 		
 		//Aktualisieren des Mitglieds
 		String table= "mitglieder";
-		String updateString= "username="+mitglied.getUsername()+", password="
-				+mitglied.getPassword()+", email="+mitglied.getEmail()+", vorname="
+		String updateString= "username="+mitglied.getUsername()+", pw="
+				+mitglied.getPw()+", email="+mitglied.getEmail()+", vorname="
 				+mitglied.getVorname()+", nachname="+mitglied.getNachname();
 		String where= "mitgliedid="+mitglied.getId();
-		Mitglied testmitglied= new Mitglied();
 		
 		try {
 			if (Queries.updateQuery(table, updateString, where)==true) {
 				//erstellen eines Mitglieds mit aktualisierten Daten
 				String sql= "SELECT * FROM mitglieder WHERE mitgliedid="+mitglied.getId();
 				try {
-					testmitglied= (Mitglied)Queries.scalarQuery(sql);
+					ResultSet rs= Queries.rowQuery(sql);
+					Mitglied testmitglied= new Mitglied(rs.getLong("mitgliedid"),
+							rs.getString("username"), rs.getString("pw"), rs.getString("email"),
+							rs.getString("vorname"), rs.getString("nachname"),
+							rs.getLong("regdatum"));
+					return testmitglied;
 				} catch (SQLException e) {
 					e.printStackTrace();
+					return null;
 				}
+			}
+			else{
+				return null;
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		};
-		return testmitglied;
+			return null;
+		}
 	}
 	
 	/**
@@ -228,8 +240,8 @@ public class MitgliederVerwaltung {
 	public static ArrayList<Mitglied> getListeVonAufgaben(long aufgID){
 		
 		String sql = "SELECT * FROM mitglieder JOIN aufgaben_mitglieder "
-					+"ON mitglieder.mitgliedid= aufgaben_mitglieder.mitglieder_mitgliedid "
-					+"JOIN aufgaben ON aufgaben.aufgabeid = aufgaben_mitglieder.aufgaben_aufgabeid "
+					+"ON mitglieder.mitgliedid= aufgaben_mitglieder.mitgliedid "
+					+"JOIN aufgaben ON aufgaben.aufgabeid = aufgaben_mitglieder.aufgabeid "
 					+"WHERE aufgaben.aufgabeid= " + aufgID;
 		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
 		
@@ -258,8 +270,8 @@ public class MitgliederVerwaltung {
 	public static ArrayList<Mitglied> getListeVonTeam(long teamID){
 		
 		String sql = "SELECT * FROM mitglieder JOIN mitglieder_teams "
-					+"ON mitglieder.mitgliedid= mitglieder_teams.mitglieder_mitgliedid "
-					+"JOIN teams ON teams.teamid = mitglieder_teams.teams_teamid "
+					+"ON mitglieder.mitgliedid= mitglieder_teams.mitgliedid "
+					+"JOIN teams ON teams.teamid = mitglieder_teams.teamid "
 					+"WHERE teams.teamid= " + teamID;
 		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
 		
@@ -289,8 +301,8 @@ public class MitgliederVerwaltung {
 	public static boolean istMitgliedInTeam(long mitgliedID, long teamID){
 		
 		String sql= "SELECT * FROM mitglieder JOIN mitglieder_teams "
-					+"ON "+mitgliedID+"= mitglieder_teams.mitglieder_mitgliedid "
-					+"JOIN teams ON teams.teamid= mitglieder_teams.teams_teamid "
+					+"ON "+mitgliedID+"= mitglieder_teams.mitgliedid "
+					+"JOIN teams ON teams.teamid= mitglieder_teams.teamid "
 					+"WHERE teams.teamid= " + teamID;
 		long testID;
 		
@@ -335,14 +347,5 @@ public class MitgliederVerwaltung {
 		} else {
 			return false;
 		}
-	}
-	
-	/**
-	 * Entfernt das Mitglied aus dem angegebenen Team.
-	 * @param teamID
-	 * @return true bei Misserfolg, false bei Misserfolg
-	 */
-	public static boolean verlasseTeam(long teamID){
-		return false;
 	}
 }

@@ -125,7 +125,7 @@ public class Login extends HttpServlet {
 				user.setVorname(request.getParameter("vorname"));
 				user.setNachname(request.getParameter("nachname"));
 				user.setEmail(request.getParameter("email"));
-				user.setPassword(request.getParameter("password"));
+				user.setPw(request.getParameter("password"));
 				// user.setRegdatum(new Date().getTime()); // TODO noetig?
 				
 				Mitglied userNew = MitgliederVerwaltung.neu(user);

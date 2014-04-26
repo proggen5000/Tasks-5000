@@ -6,7 +6,7 @@ public class Mitglied implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private long id;
 	private String username;
-	private String password;
+	private String pw;
 	private String email;
 	private String vorname;
 	private String nachname;
@@ -16,12 +16,12 @@ public class Mitglied implements Serializable{
 	public Mitglied(){
 	}
 	
-	public Mitglied(long id, String username, String password, String email, 
+	public Mitglied(long id, String username, String pw, String email, 
 			String vorname, String nachname, long regdatum) {
 		super();
 		this.id = id;
 		this.username = username;
-		this.password = password;
+		this.pw = pw;
 		this.email = email;
 		this.vorname = vorname;
 		this.nachname = nachname;
@@ -47,11 +47,11 @@ public class Mitglied implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getPassword() {
-		return password;
+	public String getPw() {
+		return pw;
 	}
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPw(String password) {
+		this.pw = password;
 	}
 	public String getVorname() {
 		return vorname;
