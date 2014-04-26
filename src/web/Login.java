@@ -31,11 +31,11 @@ public class Login extends HttpServlet {
 			mode = (String) request.getAttribute("mode");
 		}
 		
-		RequestDispatcher view = request.getRequestDispatcher("error.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
 		
 		if(mode == null){
 			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
-			view = request.getRequestDispatcher("error.jsp");
+			view = request.getRequestDispatcher("/error.jsp");
 		}
 		
 		// Logout
@@ -45,15 +45,17 @@ public class Login extends HttpServlet {
 				session.removeAttribute("login");
 				session.removeAttribute("currentUser");
 				
+				request.setAttribute("title", "Logout erfolgreich");
+				request.setAttribute("message", "Sie haben sich erfolgreich ausgeloggt!<br />Auf Wiedersehen. :)");
 				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("jsp/login/logout.jsp");
+				view = request.getRequestDispatcher("/success.jsp");
 			} else {
 				request.setAttribute("error", "Sie sind bereits ausgeloggt!");
-				view = request.getRequestDispatcher("error.jsp");
+				view = request.getRequestDispatcher("/error.jsp");
 			}
 		} else {
 			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
-			view = request.getRequestDispatcher("error.jsp");
+			view = request.getRequestDispatcher("/error.jsp");
 		}
 			
 		view.forward(request, response);
@@ -73,8 +75,7 @@ public class Login extends HttpServlet {
 			mode = (String) request.getAttribute("mode");
 		}
 		
-		RequestDispatcher view = request.getRequestDispatcher("error.jsp");
-		
+		RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
 		
 		// Login (Aktion)
 		if(mode.equals("login")){
@@ -86,16 +87,19 @@ public class Login extends HttpServlet {
 					session.setAttribute("login", true);
 					session.setAttribute("currentUser", user.getId());
 					
-					request.setAttribute("user", user);
+					request.setAttribute("title", "Login erfolgreich");
+					request.setAttribute("message", "Sie haben sich erfolgreich eingeloggt!<br />Hallo, " + user.getUsername() + ". :)");
+					request.setAttribute("link_url", "/");
+					request.setAttribute("link_text", "Weiter zur pers&ouml;nlichen Startseite");
 					request.setAttribute("valid_request", true);
-					view = request.getRequestDispatcher("jsp/login/login.jsp");
+					view = request.getRequestDispatcher("/success.jsp");
 				} else {
 					request.setAttribute("error", "Benutzername und Password stimmen nicht &uuml;berein!");
-					view = request.getRequestDispatcher("error.jsp");
+					view = request.getRequestDispatcher("/error.jsp");
 				}
 			} else {
 				request.setAttribute("error", "Sie sind bereits eingeloggt!");
-				view = request.getRequestDispatcher("error.jsp");
+				view = request.getRequestDispatcher("/error.jsp");
 			}
 			
 		// Logout
@@ -106,10 +110,10 @@ public class Login extends HttpServlet {
 				session.removeAttribute("currentUser");
 				
 				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("jsp/login/logout.jsp");
+				view = request.getRequestDispatcher("/jsp/login/logout.jsp");
 			} else {
 				request.setAttribute("error", "Sie sind bereits ausgeloggt!");
-				view = request.getRequestDispatcher("error.jsp");
+				view = request.getRequestDispatcher("/error.jsp");
 			}
 		
 		// Registrierung (Aktion)
@@ -126,18 +130,20 @@ public class Login extends HttpServlet {
 				
 				MitgliederVerwaltung.neu(user);
 				request.setAttribute("valid_request", true);
-				// TODO lieber auf nette Willkommensseite weiterleiten
-				view = request.getRequestDispatcher("/index");
+				request.setAttribute("title", "Erfolgreich registriert");
+				request.setAttribute("message", "Sie haben sich hiermit erfolgreich als \"<b>" + user.getUsername() + "</b>\" registriert.<br />Herzlich willkommen! :)");
+				request.setAttribute("valid_request", true);
+				view = request.getRequestDispatcher("/success.jsp");
 			} else {
 				request.setAttribute("error", "Sie sind bereits registriert und eingeloggt!");
-				view = request.getRequestDispatcher("error.jsp");
+				view = request.getRequestDispatcher("/error.jsp");
 			}
 		}
 		
 		// Fehler - kein mode angegeben
 		else {
 			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
-			view = request.getRequestDispatcher("error.jsp");
+			view = request.getRequestDispatcher("/error.jsp");
 		}
 		
 		view.forward(request, response);

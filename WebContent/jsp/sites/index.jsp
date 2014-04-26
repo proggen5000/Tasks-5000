@@ -3,13 +3,13 @@
 
 			<h1>Willkommen bei Tasks 5000!</h1>
 			<p><b>Tasks 5000</b> ist unser Studienprojekt f&uuml;r das Fach Client-Server-Programmierung.</p>
-			<p>Wir stellen Ihnen mit dieser Webanwendung unglaubliche Funktionen zur Verwaltung von Aufgaben und Dateien innerhalb von Teams zur Verf&uuml;gung. Weitere Informationen zum Projekt finden Sie unter <a href="about.jsp">Impressum</a>.</p>
+			<p>Wir stellen Ihnen mit dieser Webanwendung unglaubliche Funktionen zur Verwaltung von Aufgaben und Dateien innerhalb von Teams zur Verf&uuml;gung. Weitere Informationen zum Projekt finden Sie unter <a href="/?page=about">Impressum</a>.</p>
 			<p>Registrieren Sie sich oder loggen Sie sich in Ihren bestehenden Tasks 5000-Account ein, um die Anwendung zu nutzen.</p>
 			
 			<h1>Features</h1>
 			<div class="row">
-				<div class="col-xs-4"><h3><span class="glyphicon glyphicon-time"></span> Aufgaben</h3>Erstellen Sie Aufgaben und teilen Sie diese Ihren Kollegen oder Mitsch&uuml;lern zu. <b>Wow!</b></div>
-				<div class="col-xs-4"><h3><span class="glyphicon glyphicon-briefcase"></span> Teams</h3>Erstellen Sie Teams bzw. Gruppen, in denen Sie kooperativ Ihre Aufgaben organisieren. <b>Unglaublich!</b></div>
+				<div class="col-xs-4"><h3><span class="glyphicon glyphicon-time"></span> Aufgaben</h3>Erstellen Sie Aufgaben und weisen Sie diese Ihren Kollegen, Mitsch&uuml;lern, Freunden oder Haustieren zu. <b>Wow!</b></div>
+				<div class="col-xs-4"><h3><span class="glyphicon glyphicon-briefcase"></span> Teams</h3>Erstellen Sie Teams bzw. Gruppen, in denen Sie kooperativ Ihre Aufgaben und Dokumente organisieren. <b>Unglaublich!</b></div>
 				<div class="col-xs-4"><h3><span class="glyphicon glyphicon-file"></span> Dateien</h3>Laden Sie Dateianh&auml;nge hoch, um Dokumente, Darstellungen und andere Dinge zu teilen. <b>Verr&uuml;ckt!</b></div>
 			</div>
 			

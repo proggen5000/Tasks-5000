@@ -2,7 +2,7 @@
 
 <%-- Zugriff nicht über Servlet --%>
 <c:if test="${!valid_request}">
-	<c:redirect url="error.jsp"><c:param name="error" value="Zugriff verweigert"></c:param></c:redirect>
+	<c:redirect url="/error.jsp"><c:param name="error" value="Zugriff verweigert" /></c:redirect>
 </c:if>
 	
 <jsp:include page="../header.jsp"><jsp:param name="page_title" value="Team verlassen" /></jsp:include>
@@ -16,7 +16,7 @@
 				<input type="hidden" name="mode" value="leaveTeam" />
 				<input type="hidden" name="sure" value="true" />
 				<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-ok"></span> Ja, Team verlassen</button>
-				<a class="btn btn-default" href="team?mode=view&id=${team.id}"><span class="glyphicon glyphicon-remove"></span> Nein, abbrechen</a>
+				<a href="/team?mode=view&id=${team.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Nein, abbrechen</a>
 			</form>
 			
 			<jsp:include page="../sidebar.jsp" />

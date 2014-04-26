@@ -58,13 +58,13 @@ public class User extends HttpServlet {
 			mode = (String) request.getAttribute("mode");
 		}
 		
-		RequestDispatcher view = request.getRequestDispatcher("error.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
 
 		
 		// Fehler - kein Login
 		if(!login){
 			request.setAttribute("error", "Sie sind nicht eingeloggt!");
-			view = request.getRequestDispatcher("error.jsp");
+			view = request.getRequestDispatcher("/error.jsp");
 		}
 
 		// Profil ansehen
@@ -75,10 +75,10 @@ public class User extends HttpServlet {
 				request.setAttribute("user", user);
 				request.setAttribute("teams", TeamVerwaltung.getListeVonMitglied(id)); // TODO
 				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("jsp/user/userView.jsp");
+				view = request.getRequestDispatcher("/jsp/user/userView.jsp");
 			} else {
 				request.setAttribute("error", "Ung&uuml;ltige Benutzer-ID!");
-				view = request.getRequestDispatcher("error.jsp");
+				view = request.getRequestDispatcher("/error.jsp");
 			}
 		}
 		
@@ -88,7 +88,7 @@ public class User extends HttpServlet {
 			
 			request.setAttribute("user", user);
 			request.setAttribute("valid_request", true);
-			view = request.getRequestDispatcher("jsp/user/userEdit.jsp");
+			view = request.getRequestDispatcher("/jsp/user/userEdit.jsp");
 		}
 		
 		// Profil loeschen
@@ -97,7 +97,7 @@ public class User extends HttpServlet {
 			
 			request.setAttribute("user", user);			
 			request.setAttribute("valid_request", true);
-			view = request.getRequestDispatcher("jsp/user/userRemove.jsp");
+			view = request.getRequestDispatcher("/jsp/user/userRemove.jsp");
 		}
 		
 		// Team verlassen
@@ -107,21 +107,21 @@ public class User extends HttpServlet {
 				request.setAttribute("user", user);
 				request.setAttribute("team", TeamVerwaltung.getTeamWithId(teamId));
 				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("jsp/user/userLeaveTeam.jsp");
+				view = request.getRequestDispatcher("/jsp/user/userLeaveTeam.jsp");
 			} else {
 				if(TeamVerwaltung.getTeamWithId(teamId) == null){
 					request.setAttribute("error", "Dieses Team existiert nicht!");
 				} else {
 					request.setAttribute("error", "Sie sind kein Mitglied des Teams " + TeamVerwaltung.getTeamWithId(teamId) + "!");
 				}
-				view = request.getRequestDispatcher("error.jsp");
+				view = request.getRequestDispatcher("/error.jsp");
 			}
 		}
 		
 		// Fehler - kein mode angegeben
 		else {
 			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
-			view = request.getRequestDispatcher("error.jsp");
+			view = request.getRequestDispatcher("/error.jsp");
 		}
 		
 		view.forward(request, response);
@@ -165,20 +165,19 @@ public class User extends HttpServlet {
 		
 		String sure = request.getParameter("sure");
 		
-		RequestDispatcher view = request.getRequestDispatcher("error.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
 
 		
 		// Fehler - kein Login
 		if(!login){
 			request.setAttribute("error", "Sie sind nicht eingeloggt!");
-			view = request.getRequestDispatcher("error.jsp");
+			view = request.getRequestDispatcher("/error.jsp");
 		}
 
 		// Profil bearbeiten (Aktion)
 		if(mode.equals("edit")){
 			String password = request.getParameter("password");
 			String passwordRepeat = request.getParameter("passwordRepeat");
-			
 			
 			Mitglied user = new Mitglied();
 			// user.setId(id); // TODO noetig?
@@ -193,7 +192,7 @@ public class User extends HttpServlet {
 			
 			request.setAttribute("user", userUpdated);
 			request.setAttribute("valid_request", true);
-			view = request.getRequestDispatcher("jsp/user/userEdit.jsp");
+			view = request.getRequestDispatcher("/jsp/user/userEdit.jsp");
 		}
 		
 		// Profil loeschen (Aktion)
@@ -203,7 +202,7 @@ public class User extends HttpServlet {
 			if(!sure.equals("true")){
 				request.setAttribute("user", user);			
 				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("jsp/user/userRemove.jsp");
+				view = request.getRequestDispatcher("/jsp/user/userRemove.jsp");
 			} else if(sure.equals("true")){
 				MitgliederVerwaltung.loeschen(currentUser);
 				HttpSession session = request.getSession(true);
@@ -213,7 +212,7 @@ public class User extends HttpServlet {
 				request.setAttribute("title", "Profil gel&ouml;scht");
 				request.setAttribute("message", "Sie haben Ihr Profil endg&uuml;ltig gel&ouml;scht!<br />Auf Wiedersehen. :'(");
 				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("success.jsp");
+				view = request.getRequestDispatcher("/success.jsp");
 			}
 		}
 		
@@ -228,27 +227,27 @@ public class User extends HttpServlet {
 					request.setAttribute("team", TeamVerwaltung.getTeamWithId(teamId));
 					
 					request.setAttribute("title", "Team verlassen");
-					request.setAttribute("message", "Sie haben das Team <b>" + team.getName() + "</b> verlassen.");
+					request.setAttribute("message", "Sie haben das Team \"<b>" + team.getName() + "</b>\" verlassen.");
 					request.setAttribute("valid_request", true);
-					view = request.getRequestDispatcher("success.jsp");
+					view = request.getRequestDispatcher("/success.jsp");
 				} else {
 					request.setAttribute("error", "Sie konnten nicht aus dem Team entfernt werden! :(");
-					view = request.getRequestDispatcher("error.jsp");
+					view = request.getRequestDispatcher("/error.jsp");
 				}
 			} else {
 				if(TeamVerwaltung.getTeamWithId(id) != null){
-					request.setAttribute("error", "Sie sind kein Mitglied des Teams " + TeamVerwaltung.getTeamWithId(teamId).getName() + "!");
+					request.setAttribute("error", "Sie sind kein Mitglied des Teams \"<b>" + TeamVerwaltung.getTeamWithId(teamId).getName() + "</b>\"!");
 				} else {
 					request.setAttribute("error", "Dieses Team existiert nicht!");
 				}
-				view = request.getRequestDispatcher("error.jsp");
+				view = request.getRequestDispatcher("/error.jsp");
 			}
 		}
 		
 		// Fehler - kein mode angegeben
 		else {
 			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
-			view = request.getRequestDispatcher("error.jsp");
+			view = request.getRequestDispatcher("/error.jsp");
 		}
 		
 		view.forward(request, response);

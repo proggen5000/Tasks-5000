@@ -5,12 +5,18 @@
 
 	<c:if test="${!login}">
 		<h1>Login</h1>
-		<form class="form" action="login" method="POST">
-			<input type="text" class="form-control" id="username" name="username" placeholder="Benutzername">
-			<input type="password" class="form-control" style="margin-top: 5px;" id="password" name="password" placeholder="Passwort">
-			<input type="hidden" name="mode" value="login">
-			<button type="submit" class="btn btn-primary" style="margin-top: 5px;"><span class="glyphicon glyphicon-ok"></span> Login</button><br />
-			<label><input type="checkbox" name="cookie" style="margin-top: 5px;"> Login merken</label>
+		<form class="form" action="/login" method="POST">
+			<input type="text" class="form-control" id="username" name="username" placeholder="Benutzername" />
+			<input type="password" class="form-control" style="margin-top: 5px;" id="password" name="password" placeholder="Passwort" />
+			<input type="hidden" name="mode" value="login" />
+			<div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+				<div class="col-md-4">
+					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Login</button>
+				</div>
+				<div class="col-md-8">
+					<label><input type="checkbox" name="cookie" /> Login merken</label>
+				</div>
+			</div>
 		</form>	
 		<a href="/?page=lostpw"><span class="glyphicon glyphicon-lock"></span> Passwort vergessen?</a><br />
 		<a href="/?page=register"><span class="glyphicon glyphicon-pencil"></span> Registrieren</a>
@@ -18,6 +24,9 @@
 
 	<c:if test="${login}">
 		<h1>Willkommen</h1>
-		<p>Hallo, ${currentUser}! &hearts;</p>
+		<p>
+			Hallo! <span class="glyphicon glyphicon-heart"></span><br />
+			Sie sind eingeloggt.
+		</p>
 	</c:if>
 </div><%-- Ende sidebar --%>

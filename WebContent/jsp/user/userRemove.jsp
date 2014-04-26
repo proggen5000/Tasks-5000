@@ -2,7 +2,7 @@
 
 <%-- Zugriff nicht über Servlet --%>
 <c:if test="${!valid_request}">
-	<c:redirect url="error.jsp"><c:param name="error" value="Zugriff verweigert"></c:param></c:redirect>
+	<c:redirect url="/error.jsp"><c:param name="error" value="Zugriff verweigert" /></c:redirect>
 </c:if>
 	
 <jsp:include page="../header.jsp"><jsp:param name="page_title" value="Profil l&ouml;schen" /></jsp:include>
@@ -18,7 +18,7 @@
 				<input type="hidden" name="mode" value="remove" />
 				<input type="hidden" name="sure" value="true" />
 				<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-ok"></span> Ja, mein Profil f&uuml;r immer l&ouml;schen</button>
-				<a class="btn btn-default" href="user?mode=edit"><span class="glyphicon glyphicon-remove"></span> Nein, abbrechen</a>
+				<a href="/user?mode=edit" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Nein, abbrechen</a>
 			</form>
 			
 			<jsp:include page="../sidebar.jsp" />

@@ -12,11 +12,11 @@
 		  		<c:if test="${requestScope.message != null}">
 		  			<p>${requestScope.message}</p>
 		  		</c:if>
-		  		<c:if test="${requestScope.link_url != null and requestScope.link != null}">
-		  			<a class="btn btn-default" href="/${requestScope.link_url}">${requestScope.link}</a>
+		  		<c:if test="${requestScope.link_url != null and requestScope.link_text != null}">
+		  			<a class="btn btn-primary" href="${requestScope.link_url}">${requestScope.link_text}</a>
 		  		</c:if>
 		  		<c:if test="${requestScope.link_url == null and requestScope.link == null}">
-		  			<a class="btn btn-default" href="/">Zur Startseite</a>
+		  			<a class="btn btn-primary" href="/">Zur Startseite</a>
 		  		</c:if>
 			  	
 				<jsp:include page="jsp/sidebar.jsp" />
