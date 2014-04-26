@@ -9,11 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import administration.AufgabenVerwaltung;
 import administration.AufgabengruppenVerwaltung;
 import administration.MitgliederVerwaltung;
 import administration.TeamVerwaltung;
-import entities.Aufgabe;
 import entities.Aufgabengruppe;
 import entities.Team;
 
