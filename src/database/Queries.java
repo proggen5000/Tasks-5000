@@ -17,7 +17,8 @@ public class Queries {
 		PreparedStatement query;
 		query = Connect.getConnection().prepareStatement("SELECT "+column+" FROM "+table+" WHERE "+where);
 		ResultSet rs = query.executeQuery();
-		return rs.getObject(0);	
+		rs.next();
+		return rs.getObject(1);
 	}
 	
 	/**
