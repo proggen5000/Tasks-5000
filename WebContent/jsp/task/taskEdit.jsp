@@ -17,7 +17,7 @@
 		
 			<ol class="breadcrumb">
 				<li><a href="/">Start</a></li>
-				<li><a href="team?mode=view&id=${team.id}">${team.name}</a></li>
+				<li><a href="/team?mode=view&id=${team.id}">${team.name}</a></li>
 				<li class="active"></li>
 			</ol>
 		

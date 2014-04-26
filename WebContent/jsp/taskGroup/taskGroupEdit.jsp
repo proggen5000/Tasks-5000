@@ -15,7 +15,7 @@
 		
 				<ol class="breadcrumb">
 					<li><a href="/">Start</a></li>
-					<li><a href="/team?mode=view&id=${taskGroup.team.id}">${taskGroup.team.name}</a></li>
+					<li><a href="/team?mode=view&id=${team.id}">${team.name}</a></li>
 					<li class="active"></li>
 				</ol>
 				
@@ -40,8 +40,8 @@
 						</c:if>
 						<c:if test="${param.mode == 'edit'}">
 							<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Speichern</button>
-							<a href="/team?mode=view&id=${taskGroup.team.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
-							<a href="/taskGroup?mode=remove&id=${task.id}" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Aufgabe l&ouml;schen</a>
+							<a href="/team?mode=view&id=${team.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
+							<a href="/taskGroup?mode=remove&id=${taskGroup.id}" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Aufgabengruppe l&ouml;schen</a>
 						</c:if>
 					</div>
 				</form>

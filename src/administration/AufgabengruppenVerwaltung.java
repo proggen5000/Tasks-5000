@@ -90,7 +90,7 @@ public class AufgabengruppenVerwaltung {
 		return aufgabengruppe_neu;
 	}
 	
-	public static Aufgabengruppe vorhanden (String name){
+	public static Aufgabengruppe get (String name){
 		//Suchen der Aufgabe anhand der ID
 		String sql = "SELECT * FROM AufgabenGruppen WHERE Name = " + name;
 		Aufgabengruppe aufgabengruppe_neu = null;

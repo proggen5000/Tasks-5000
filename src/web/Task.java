@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,9 +14,9 @@ import administration.AufgabenVerwaltung;
 import administration.AufgabengruppenVerwaltung;
 import administration.DateiVerwaltung;
 import administration.MitgliederVerwaltung;
+import administration.TeamVerwaltung;
 
 @WebServlet("/task")
-@MultipartConfig
 public class Task extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -47,13 +46,13 @@ public class Task extends HttpServlet {
 			mode = (String) request.getAttribute("mode");
 		}
 		
-		RequestDispatcher view = request.getRequestDispatcher("error.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
 
 		
 		// Fehler - kein Login
 		if(!login){
 			request.setAttribute("error", "Sie sind nicht eingeloggt!");
-			view = request.getRequestDispatcher("error.jsp");
+			view = request.getRequestDispatcher("/error.jsp");
 		}
 
 		// Aufgabe ansehen
@@ -64,25 +63,24 @@ public class Task extends HttpServlet {
 				request.setAttribute("files", DateiVerwaltung.getListeVonAufgabe(id));
 				request.setAttribute("users", MitgliederVerwaltung.getListeVonAufgaben(id));
 				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("jsp/task/taskView.jsp");
+				view = request.getRequestDispatcher("/jsp/task/taskView.jsp");
 			} else {
 				request.setAttribute("error", "Ung&uuml;ltige Aufgaben-ID!");
-				view = request.getRequestDispatcher("error.jsp");
+				view = request.getRequestDispatcher("/error.jsp");
 			}
 		}
 		
 		// Aufgabe erstellen (Formular)
 		else if(mode.equals("new")){
-			if(teamId != -1){
-				// TODO Team setzen
-				// String team = AufgabengruppenVerwaltung.get(groupId).getTeam();
-				// request.setAttribute("team", team);
+			if(TeamVerwaltung.vorhanden(teamId)){
+				entities.Team team = TeamVerwaltung.getTeamWithId(teamId);
+				request.setAttribute("team", team);
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("jsp/task/taskEdit.jsp");
+				view = request.getRequestDispatcher("/jsp/task/taskEdit.jsp");
 			} else {
 				request.setAttribute("error", "Ung&uuml;ltige Team-ID!");
-				view = request.getRequestDispatcher("error.jsp");
+				view = request.getRequestDispatcher("/error.jsp");
 			}
 		}
 		
@@ -92,34 +90,27 @@ public class Task extends HttpServlet {
 			request.setAttribute("task", task);
 			request.setAttribute("mode", mode);
 			request.setAttribute("valid_request", true);
-			view = request.getRequestDispatcher("jsp/task/taskEdit.jsp");
+			view = request.getRequestDispatcher("/jsp/task/taskEdit.jsp");
 		}
 		
 		// Aufgabe loeschen
-		else if(mode.equals("remove") && id != -1){
-			String sure = request.getParameter("sure");
-			if(AufgabenVerwaltung.vorhanden(id) && !sure.equals("true")){
+		else if(mode.equals("remove")){
+			if(AufgabenVerwaltung.vorhanden(id)){
 				Aufgabe task = AufgabenVerwaltung.get(id);
 				request.setAttribute("task", task);
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("jsp/task/taskRemove.jsp");
-			} else if (AufgabenVerwaltung.vorhanden(id) && sure.equals("true")){
-				AufgabenVerwaltung.loeschen(AufgabenVerwaltung.get(id));
-				request.setAttribute("mode", mode);
-				request.setAttribute("sure", true);
-				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("jsp/task/taskRemove.jsp");
+				view = request.getRequestDispatcher("/jsp/task/taskRemove.jsp");
 			} else {
 				request.setAttribute("error", "Ung&uuml;ltige Aufgaben-ID!");
-				view = request.getRequestDispatcher("error.jsp");
+				view = request.getRequestDispatcher("/error.jsp");
 			}
 		}
 		
 		// Fehler - kein mode angegeben
 		else {
 			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
-			view = request.getRequestDispatcher("error.jsp");
+			view = request.getRequestDispatcher("/error.jsp");
 		}
 		
 		view.forward(request, response);
@@ -142,7 +133,7 @@ public class Task extends HttpServlet {
 			} 
 		}
 		
-		long id = -1;
+		long id = -1; // Aufgaben-ID
 		if(request.getSession().getAttribute("id") != null){
 			try {
 				currentUser = Long.parseLong(request.getSession().getAttribute("id").toString());
@@ -156,67 +147,66 @@ public class Task extends HttpServlet {
 		// Fehler - kein Login
 		if(!login){
 			request.setAttribute("error", "Sie sind nicht eingeloggt!");
-			response.sendRedirect("error.jsp");
+			response.sendRedirect("/error.jsp");
 		}
 
 		// Aufgabe erstellen (Aktion)
 		else if(mode.equals("new")){
 			Aufgabe task = new Aufgabe();
-			task.setId(4);
 			task.setErsteller(MitgliederVerwaltung.getMitgliedWithId(currentUser));
 			task.setName(request.getParameter("name"));
-			// task.setTeam(team); // hoffentlich bald unn�tig
 			task.setGruppe(AufgabengruppenVerwaltung.get(Integer.parseInt(request.getParameter("group"))));
 			task.setBeschreibung(request.getParameter("description"));			
-			// task.setDate(date);
-			// task.setDeadline(deadline);
 			task.setStatus(Integer.parseInt(request.getParameter("status")));
+			// task.setDate(date); // TODO
+			// task.setDeadline(deadline); // TODO
+			// TODO Mitgliederzuordnungen!
 
 			Aufgabe taskNew = AufgabenVerwaltung.neu(task);
-			response.sendRedirect("task?mode=view&id="+taskNew.getId());
+			if(taskNew != null){
+				response.sendRedirect("/task?mode=view&id="+taskNew.getId());
+			} else {
+				request.setAttribute("error", "Fehler bei der Speicherung!");
+				response.sendRedirect("/error.jsp");
+			}
 		}
 		
 		// Aufgabe bearbeiten (Aktion)
 		else if(mode.equals("edit")){
-			Aufgabe task = new Aufgabe();
-			task.setId(id);
-			task.setErsteller(MitgliederVerwaltung.getMitgliedWithId(currentUser));
+			Aufgabe task = AufgabenVerwaltung.get(id);
 			task.setName(request.getParameter("name"));
-			// task.setTeam(team); // hoffentlich bald unn�tig
-			task.setGruppe(AufgabengruppenVerwaltung.get(Integer.parseInt(request.getParameter("group")))); // TODO dummy weg
+			task.setGruppe(AufgabengruppenVerwaltung.get(Integer.parseInt(request.getParameter("group"))));
 			task.setBeschreibung(request.getParameter("description"));			
-			// task.setDate(date);
-			// task.setDeadline(deadline);
 			task.setStatus(Integer.parseInt(request.getParameter("status")));
+			// task.setDeadline(deadline); // TODO
+			// TODO Mitgliederzuordnungen!
 
-			Aufgabe taskUpdated = AufgabenVerwaltung.neu(task); // TODO zu .bearbeiten(task) �ndern
-			response.sendRedirect("task?mode=view&id="+taskUpdated.getId());
+			Aufgabe taskUpdated = AufgabenVerwaltung.bearbeiten(task);
+			response.sendRedirect("/task?mode=view&id="+taskUpdated.getId());
 		}
 		
 		// Aufgabe loeschen (Aktion)
 		else if(mode.equals("remove")){
-			String sure = request.getParameter("sure");
-			if(AufgabenVerwaltung.vorhanden(id) && !sure.equals("true")){
-				Aufgabe task = AufgabenVerwaltung.get(id);
-				request.setAttribute("valid_request", true);
-				response.sendRedirect("task&mode=remove&id="+task.getId());
-				
-			} else if (AufgabenVerwaltung.vorhanden(id) && sure.equals("true")){
+			if (AufgabenVerwaltung.vorhanden(id)){
 				long teamId = AufgabenVerwaltung.get(id).getGruppe().getTeam().getId();
-				AufgabenVerwaltung.loeschen(AufgabenVerwaltung.get(id));
-				request.setAttribute("valid_request", true);
-				response.sendRedirect("team&mode=view&id="+teamId);
+				if(AufgabenVerwaltung.loeschen(AufgabenVerwaltung.get(id))){
+					request.setAttribute("valid_request", true);
+					response.sendRedirect("/team?mode=view&id="+teamId);
+				} else {
+					request.setAttribute("error", "Aufgabe konnte nicht gel&ouml;scht werden!");
+					response.sendRedirect("/error.jsp");
+				}
+				
 			} else {
-				request.setAttribute("error", "Ung&uuml;ltige Aufgaben-ID!");
-				response.sendRedirect("error.jsp");
+				request.setAttribute("error", "Aufgabe nicht gefunden!");
+				response.sendRedirect("/error.jsp");
 			}
 		}
 		
 		// Fehler - kein mode angegeben
-		else if (!mode.equals("new") && !mode.equals("edit") && !mode.equals("remove")) {
+		else /*if (!mode.equals("new") && !mode.equals("edit") && !mode.equals("remove") )*/ {
 			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
-			// view = request.getRequestDispatcher("error.jsp");
+			response.sendRedirect("/error.jsp");
 		}
 	}
-
 }
