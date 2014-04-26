@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import database.Queries;
 import entities.Aufgabengruppe;
+import entities.Team;
 
 
 public class AufgabengruppenVerwaltung {
@@ -15,43 +16,42 @@ public class AufgabengruppenVerwaltung {
 	 * @param aufgabengruppe die Aufgabengruppe die gespeichert werden soll
 	 * @return Aufgabengruppe, so wie sie in der Datenbank gespeichert wurde
 	 */
-
-	public static Aufgabengruppe neu (Aufgabengruppe aufgabengruppe){
-		// returns null if error else returns inserted obj with ID			
-			 /*
-			   AufgabenGruppeID	int(11) 
-			   Name	varchar(45)
-			   Beschreibung varchar(45)	
-			   */
-			String values = aufgabengruppe.getName() + ", " + aufgabengruppe.getBeschreibung();
-			long id;
-			try {
-				id = Queries.insertQuery("AufgabenGruppen", "Name, Beschreibung", values);
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-				return null;
-			}
-			if (id == -1){
-				return null;
-			}
-			else{
-				Aufgabengruppe aufgabengruppe_neu = null;
-				String sql = "SELECT * FROM AufgabenGruppen WHERE AufgabenGruppeID = " + id;
-				try {
-					aufgabengruppe_neu = (Aufgabengruppe)Queries.scalarQuery(sql);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-				return aufgabengruppe_neu;
-			}
+	public static Aufgabengruppe neu (Aufgabengruppe aufgabengruppe){		
+		
+		String values = aufgabengruppe.getName() + ", " + aufgabengruppe.getBeschreibung() + ", " + aufgabengruppe.getTeam().getId();
+		long id;
+		try {
+			id = Queries.insertQuery("AufgabenGruppen", "Name, Beschreibung, Team", values);
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			return null;
 		}
-	
+		if (id == -1){
+			return null;
+		}
+		else{
+			Aufgabengruppe aufgabengruppe_neu = null;
+			String sql = "SELECT * FROM AufgabenGruppen WHERE AufgabenGruppeID = " + id;
+			try {
+				aufgabengruppe_neu = (Aufgabengruppe)Queries.scalarQuery(sql);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return aufgabengruppe_neu;
+		}
+	}
+
+	/**
+	 * Die Daten werden auf die des übergebenen Objekts geupdated.
+	 * @param aufgabengruppe die aktualisiert werden soll. 
+	 * @return Aufgabengruppe so wie sie in der Datenbank steht
+	 */
 	public static Aufgabengruppe bearbeiten (Aufgabengruppe aufgabengruppe){
 		//Aktualisieren des Aufgabengruppe
 		String table = "AufgabenGruppen";
-		String updateString = "Name = " + aufgabengruppe.getName() + ", Beschreibung = " + aufgabengruppe.getBeschreibung();
+		String updateString = "Name = " + aufgabengruppe.getName() + ", Beschreibung = " + aufgabengruppe.getBeschreibung()  + ", Name = " + aufgabengruppe.getName();
 		String where = "AufgabenGruppeID = " + aufgabengruppe.getId();
-		
+
 		Aufgabengruppe aufgabengruppe_neu = null;
 		try {
 			if (Queries.updateQuery(table, updateString, where) == true) {
@@ -63,7 +63,12 @@ public class AufgabengruppenVerwaltung {
 		};
 		return aufgabengruppe_neu;
 	}
-	
+
+	/**
+	 * Löscht die übergebene Aufgabengruppe aus der Datenbank
+	 * @param aufgabengruppe die gelöscht werden soll
+	 * @return boolean ob gelöscht oder nicht
+	 */
 	public static boolean loeschen (Aufgabengruppe aufgabengruppe){
 		String table = "AufgabenGruppen";
 		String where = "AufgabenGruppeID = " + aufgabengruppe.getId();
@@ -74,11 +79,21 @@ public class AufgabengruppenVerwaltung {
 			return false;
 		}
 	}
-	
+
+	/**
+	 * Überprüft, ob eine AufgabenGruppen-ID in der Datenbank vorhanden ist
+	 * @param id die auf vorhandensein geprüft werden soll
+	 * @return boolean ob sie vorhanden ist oder nicht
+	 */
 	public static boolean vorhanden (long id){
 		return AufgabengruppenVerwaltung.get(id) != null;
 	}	
-	
+
+	/**
+	 * Gibt die AufgabenGruppen mit der angegebenen AufgabenGruppen-ID aus der Datenbank zurück
+	 * @param id der Aufgabengruppe nach der gesucht werden soll 
+	 * @return Aufgabengruppe, nach der gesucht wurde
+	 */
 	public static Aufgabengruppe get (long id){
 		//Suchen der Aufgabe anhand der ID
 		String sql = "SELECT * FROM AufgabenGruppen WHERE AufgabenGruppeID = " + id;
@@ -90,12 +105,31 @@ public class AufgabengruppenVerwaltung {
 		}
 		return aufgabengruppe_neu;
 	}
-	
+
+	/**
+	 * Dummy
+	 * @param id der Aufgabengruppe nach der gesucht werden soll
+	 * @return Aufgabengruppe, nach der gesucht wurde
+	 */
 	public static Aufgabengruppe getDummy (long id){
-		return new Aufgabengruppe(id, "Dummy-Gruppe", "Dummy-Gruppenbeschreibung");
+		return new Aufgabengruppe(id, "Dummy-Gruppe", "Dummy-Gruppenbeschreibung", TeamVerwaltung.getDummy(1));
 	}
-	
-	public static Aufgabengruppe vorhanden (String name){
+
+	/**
+	 * Überprüft, ob ein AufgabenGruppen-Name in der Datenbank vorhanden ist
+	 * @param name der auf vorhandensein geprüft werden soll
+	 * @return boolean ob er vorhanden ist oder nicht
+	 */
+	public static boolean vorhanden (String name){
+		return AufgabengruppenVerwaltung.get(name) != null;
+	}
+
+	/**
+	 * Gibt die AufgabenGruppen mit dem angegebenen AufgabenGruppen-Name aus der Datenbank zurück
+	 * @param name der Aufgabengruppe nach der gesucht werden soll
+	 * @return Aufgabengruppe, nach der gesucht wurde
+	 */
+	public static Aufgabengruppe get(String name){
 		//Suchen der Aufgabe anhand der ID
 		String sql = "SELECT * FROM AufgabenGruppen WHERE Name = " + name;
 		Aufgabengruppe aufgabengruppe_neu = null;
@@ -106,19 +140,22 @@ public class AufgabengruppenVerwaltung {
 		}
 		return aufgabengruppe_neu;
 	}
-	
-	// voll unnˆtig, oder? :P
+
+	/**
+	 * Gibt alle AufgabeGruppen die in der Datenbank existieren zurück
+	 * @return Alle AufgabeGruppen die in der Datenbank existieren
+	 */
 	public static ArrayList<Aufgabengruppe> getListe(){
 		// returnd eine ArrayListe aller Aufgabe
 		String sql = "SELECT * FROM Aufgabe";
 		ArrayList<Aufgabengruppe> al = new ArrayList<Aufgabengruppe>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
-			
+
 			while(rs.next()){
 				//add every result in resultset to ArrayList
 				Aufgabengruppe a = new Aufgabengruppe(rs.getLong("AufgabenGruppeID"), rs.getString("Name"), 
-						rs.getString("Beschreibung"));
+						rs.getString("Beschreibung"), TeamVerwaltung.get(rs.getLong("Team")));
 				al.add(a);
 			}
 		} catch (SQLException e) {
@@ -128,16 +165,21 @@ public class AufgabengruppenVerwaltung {
 		}
 		return al;
 	}
-	
+
+	/**
+	 * Gibt alle Aufgabengruppen eines Teams zurück
+	 * @param teamID nach welcher gesucht werden muss
+	 * @return ArrayList alle Aufgabengruppe für die gesuchte ID
+	 */
 	public static ArrayList<Aufgabengruppe> getListeVonTeam(long teamID){
-		String sql = "SELECT * FROM `aufgaben` WHERE `TeamID` = 1 group by `AufgabenGruppeID`";
+		String sql = "SELECT * FROM `aufgaben` WHERE `TeamID` = "+ teamID +" group by `AufgabenGruppeID`";
 		ArrayList<Aufgabengruppe> al = new ArrayList<Aufgabengruppe>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
-			
+
 			while(rs.next()){
 				//add every result in resultset to ArrayList
-				Aufgabengruppe a = AufgabengruppenVerwaltung.get(rs.getInt("AufgabenGruppeID"));
+				Aufgabengruppe a = AufgabengruppenVerwaltung.get(rs.getLong("AufgabenGruppeID"));
 				al.add(a);
 			}
 		} catch (SQLException e) {
@@ -147,17 +189,23 @@ public class AufgabengruppenVerwaltung {
 		}
 		return al;
 	}
-	
+
+	/**
+	 * Dummy
+	 * @param teamID Dummy
+	 * @return ArrayList aller Dummy-Einträge
+	 */
 	public static ArrayList<Aufgabengruppe> getListeVonTeamDummy(long teamID){
 		ArrayList<Aufgabengruppe> al = new ArrayList<Aufgabengruppe>();
-		
-		Aufgabengruppe ag1 = new Aufgabengruppe(1, "Windows 8.1", "Alle Aufgaben, die mit Windows 8.1 zutun haben.");
-		Aufgabengruppe ag2 = new Aufgabengruppe(1, "Windows 9", "Alle Aufgaben, die mit Windows 9 zutun haben. Erscheinung geplant f&uuml;r Winter 2015!");
-		Aufgabengruppe ag3 = new Aufgabengruppe(1, "Windows 10", "Alle Aufgaben, die mit Windows 10 zutun haben.");
+
+		Team dummyTeam = TeamVerwaltung.getDummy(teamID);
+		Aufgabengruppe ag1 = new Aufgabengruppe(1, "Windows 8.1", "Alle Aufgaben, die mit Windows 8.1 zutun haben.", dummyTeam);
+		Aufgabengruppe ag2 = new Aufgabengruppe(1, "Windows 9", "Alle Aufgaben, die mit Windows 9 zutun haben. Erscheinung geplant f&uuml;r Winter 2015!", dummyTeam);
+		Aufgabengruppe ag3 = new Aufgabengruppe(1, "Windows 10", "Alle Aufgaben, die mit Windows 10 zutun haben.", dummyTeam);
 		al.add(ag1);
 		al.add(ag2);
 		al.add(ag3);
-		
+
 		return al;
 	}
 }
