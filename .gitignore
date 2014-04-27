@@ -4,5 +4,5 @@
 .project
 /src/database/ConnectionData.java
 /src/database/test.java
-.idea/
+.idea/*
 Aufgaben-Verwaltung-5000.iml
