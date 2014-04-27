@@ -110,13 +110,23 @@ public class MitgliederVerwaltung {
 		//Mitglied anhand der ID loeschen
 		String table= "mitglieder";
 		String where= "mitgliedid="+id;
+		String sql= "SELECT teamid FROM teams WHERE erstellerid= "+id;
+				
+		
 		try {
+			ResultSet rs= Queries.rowQuery(sql); 
+			if (rs!= null){
+				while (rs.next()){
+					TeamVerwaltung.loeschen(rs.getLong("teamid"));
+				}
+			}
 			return Queries.deleteQuery(table, where);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
+
 	}
 	
 	/**

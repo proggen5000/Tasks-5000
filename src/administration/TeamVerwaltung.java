@@ -102,15 +102,34 @@ public class TeamVerwaltung {
 	
 	/**
 	 * Loescht ein Team komplett aus der DB
-	 * @param team
+	 * Loescht außerdem: Dateien des Teams, Verbindungen zu Mitgliedern
+	 * @param teamid
 	 * @return boolean
 	 */
 	public static boolean loeschen (long teamid){
 		
-		//Team anhand der ID lï¿½schen
+		//Team anhand der ID loeschen
 		String table= "teams";
 		String where= "teamid="+teamid;
+		String dateisql= "SELECT dateiid FROM dateien WHERE teamid= "+teamid;
+		String mitgliederteamsql= "SELECT mitgliedid FROM "
+								+"mitglieder_teams WHERE teamid= "+teamid;
+				
 		try {
+			ResultSet rs= Queries.rowQuery(dateisql); 
+			if (rs!= null){
+				while (rs.next()){
+					DateiVerwaltung.loeschen(rs.getLong("dateiid"));
+				}
+			}
+			
+			rs= Queries.rowQuery(mitgliederteamsql); 
+			if (rs!= null){
+				while (rs.next()){
+					MitgliederTeams.austreten(rs.getLong("mitgliedid"), teamid);
+				}
+			}
+			
 			return Queries.deleteQuery(table, where);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

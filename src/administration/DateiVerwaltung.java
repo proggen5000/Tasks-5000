@@ -91,11 +91,11 @@ public class DateiVerwaltung {
 		}
 	}
 	
-	public static boolean loeschen (Datei datei){
+	public static boolean loeschen (long dateiid){
 		
 		//Datei anhand der ID l�schen
 		String table= "dateien";
-		String where= "dateiid="+datei.getId();
+		String where= "dateiid="+dateiid;
 		try {
 			return Queries.deleteQuery(table, where);
 		} catch (SQLException e) {
