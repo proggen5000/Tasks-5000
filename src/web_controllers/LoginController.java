@@ -81,6 +81,7 @@ public class LoginController extends HttpServlet {
 		if(mode.equals("login")){
 			if(!login){
 				if(MitgliederVerwaltung.pruefeLogin(username, password)){
+					
 					Mitglied user =  MitgliederVerwaltung.get(username);
 					// TODO Debugging:
 					System.out.println("Benutzer: " + user.getId() + " -> " + user.getUsername());
