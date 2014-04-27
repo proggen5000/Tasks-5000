@@ -23,7 +23,7 @@ class Connect { // TODO
 		return con;
 	}
 	/**
-	 * Schlie�t die Verbindung zur Datenbank
+	 * Schließt die Verbindung zur Datenbank
 	 * @throws SQLException
 	 */
 	public static void releaseConnection() throws SQLException{
