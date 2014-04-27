@@ -102,7 +102,7 @@ public class TeamVerwaltung {
 	
 	/**
 	 * Loescht ein Team komplett aus der DB
-	 * Loescht auﬂerdem: Dateien des Teams, Verbindungen zu Mitgliedern
+	 * Loescht auﬂerdem: Dateien und Aufgabengruppen des Teams, Verbindungen zu Mitgliedern,
 	 * @param teamid
 	 * @return boolean
 	 */
@@ -114,6 +114,8 @@ public class TeamVerwaltung {
 		String dateisql= "SELECT dateiid FROM dateien WHERE teamid= "+teamid;
 		String mitgliederteamsql= "SELECT mitgliedid FROM "
 								+"mitglieder_teams WHERE teamid= "+teamid;
+		String aufgabengruppensql= "SELECT aufgabengruppeid FROM aufgabengruppen "
+								+"WHERE teamid= "+teamid;
 				
 		try {
 			ResultSet rs= Queries.rowQuery(dateisql); 
@@ -127,6 +129,13 @@ public class TeamVerwaltung {
 			if (rs!= null){
 				while (rs.next()){
 					MitgliederTeams.austreten(rs.getLong("mitgliedid"), teamid);
+				}
+			}
+			
+			rs= Queries.rowQuery(aufgabengruppensql); 
+			if (rs!= null){
+				while (rs.next()){
+					AufgabengruppenVerwaltung.loeschen(AufgabengruppenVerwaltung.get(rs.getLong("aufgabengruppeid")));
 				}
 			}
 			
