@@ -86,6 +86,8 @@ public class AufgabenVerwaltung {
 		String table = "Aufgabe";
 		String where = "AufgabeID = " + aufgabe.getId();
 		try {
+			Queries.deleteQuery("aufgaben_dateien", "AufgabeID = " + aufgabe.getId());
+			Queries.deleteQuery("aufgaben_mitglieder", "AufgabeID = " + aufgabe.getId());
 			return Queries.deleteQuery(table, where);
 		} catch (SQLException e) {
 			e.printStackTrace();
