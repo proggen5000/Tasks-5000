@@ -111,7 +111,7 @@ public class AufgabenVerwaltung {
 		//Suchen der Aufgabe anhand der ID
 		Aufgabe aufgabe_neu = null;
 		try {
-			ResultSet rs = Queries.rowQuery("*", "Aufgabe", "AufgabeID = " + id);
+			ResultSet rs = Queries.rowQuery("*", "Aufgaben", "AufgabeID = " + id);
 			rs.next();
 			aufgabe_neu = createAufgabeByRow(rs);
 		} catch (SQLException e) {
@@ -122,7 +122,7 @@ public class AufgabenVerwaltung {
 	
 	public static ArrayList<Aufgabe> getListe(){
 		// returnd eine ArrayListe aller Aufgabe
-		String sql = "SELECT * FROM Aufgabe";
+		String sql = "SELECT * FROM Aufgaben";
 		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
@@ -174,7 +174,7 @@ public class AufgabenVerwaltung {
 	 */
 	public static ArrayList<Aufgabe> getListeVonGruppe(long gruppenID){
 		// returnd eine ArrayListe aller Aufgabe
-		String sql = "SELECT * FROM Aufgabe WHERE AufgabenGruppeID = " + gruppenID;
+		String sql = "SELECT * FROM Aufgaben WHERE AufgabenGruppeID = " + gruppenID;
 		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
