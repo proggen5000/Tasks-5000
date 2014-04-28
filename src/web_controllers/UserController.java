@@ -113,7 +113,7 @@ public class UserController extends HttpServlet {
 				if(TeamVerwaltung.get(teamId) == null){
 					request.setAttribute("error", "Dieses Team existiert nicht!");
 				} else {
-					request.setAttribute("error", "Sie sind kein Mitglied des Teams " + TeamVerwaltung.get(teamId) + "!");
+					request.setAttribute("error", "Sie sind kein Mitglied des Teams " + TeamVerwaltung.get(teamId).getName() + "!");
 				}
 				view = request.getRequestDispatcher("/error.jsp");
 			}

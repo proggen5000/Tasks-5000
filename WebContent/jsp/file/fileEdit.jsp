@@ -27,7 +27,7 @@
 			<form class="form" action="/file" method="post" enctype="multipart/form-data">
 		  		<div class="form-group col-xs row">
 		  			<div class="col-md-6">
-		  				<label for="name"><span class="glyphicon glyphicon-file"></span> Name</label>
+		  				<label for="name"><span class="glyphicon glyphicon-file"></span> Name*</label>
 						<input id="name" name="name" type="text" class="form-control input-lg" value="${file.name}" />
 		  			</div>
 		  			<div class="col-md-6">
@@ -45,7 +45,7 @@
 		  			</div>
 				</div>
 				<div class="form-group col-xs">
-					<label for="description"><span class="glyphicon glyphicon-align-left"></span> Beschreibung</label>
+					<label for="description"><span class="glyphicon glyphicon-align-left"></span> Beschreibung*</label>
 					<textarea id="description" name="description" class="form-control" rows="5">${file.beschreibung}</textarea>
 				</div>
 				

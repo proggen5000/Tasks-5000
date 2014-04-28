@@ -14,7 +14,7 @@
 	  		
 	  		<h2>Aufgaben</h2>
 	  		<c:if test="${fn:length(taskGroups) == 0}">
-	  			<p>Erstellen Sie zuerst Aufgabengruppen, danach k&ouml;nnen Sie Aufgaben erstellen und den Gruppen zuordnen.</p>
+	  			<p>Erstellen Sie zuerst <a href="/taskGroup?mode=new&teamId=${team.id}">Aufgabengruppen</a>, danach k&ouml;nnen Sie Aufgaben erstellen und den Gruppen zuordnen.</p>
 	  		</c:if>
 	  		<c:forEach var="taskGroup" items="${taskGroups}">
 	  			<h2><a href="/taskGroup?mode=edit&id=${taskGroup.id}" title="Aufgabengruppe bearbeiten">${taskGroup.name}</a></h2>
@@ -25,7 +25,7 @@
 							<div class="task-progress"><div class="progress">
 								<div class="progress-bar" role="progressbar" aria-valuenow="${task.status}" aria-valuemin="0" aria-valuemax="100" style="width: ${task.status}%;">${task.status}%</div>
 							</div></div>
-							<div class="task-details"><span class="glyphicon glyphicon-user"></span> ${task.ersteller}<br /><span class="glyphicon glyphicon-file"></span> ${task.AnzahlDateien}</div>
+							<div class="task-details"><span class="glyphicon glyphicon-user"></span> ${task.ersteller.username}<br /><span class="glyphicon glyphicon-file"></span> ${task.getAnzahlDateien()}</div>
 							<h4 class="list-group-item-heading">${task.name}</h4>
 							<p class="list-group-item-text">${task.beschreibung}</p>
 						</a>
@@ -58,8 +58,10 @@
 					<a href="/file?mode=new&teamId=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-file"></span> Datei hochladen</a>
 				</div>
 				<div class="list-group">
-					<a href="/team?mode=edit&id=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Team bearbeiten</a>
-					<a href="/team?mode=remove&id=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-remove"></span> Team l&ouml;schen</a>
+					<c:if test="${user.id == task.ersteller.id}">
+						<a href="/team?mode=edit&id=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Team bearbeiten</a>
+						<a href="/team?mode=remove&id=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-remove"></span> Team l&ouml;schen</a>
+					</c:if>
 					<a href="/user?mode=leaveTeam&teamId=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-log-out"></span> Team verlassen</a>
 				</div>	
 		

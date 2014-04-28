@@ -63,7 +63,7 @@ public class TeamController extends HttpServlet {
 		else if(mode.equals("view")){
 			if(TeamVerwaltung.vorhanden(id)){
 				request.setAttribute("team", TeamVerwaltung.get(id));
-				request.setAttribute("groups", AufgabengruppenVerwaltung.getListeVonTeam(id));
+				request.setAttribute("taskGroups", AufgabengruppenVerwaltung.getListeVonTeam(id));				
 				request.setAttribute("files", DateiVerwaltung.getListeVonTeam(id));
 				request.setAttribute("users", MitgliederVerwaltung.getListeVonTeam(id));
 				request.setAttribute("valid_request", true);
