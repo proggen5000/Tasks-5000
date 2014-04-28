@@ -11,7 +11,7 @@ public class AufgabenDateien{
 
 	public static boolean zuweisen (Datei d, Aufgabe a){
 		try{
-			return Queries.insertQuery("aufgaben_dateien", "AufgabeID, DateiID", a.getId()+", "+d.getId())>0;
+			return Queries.insertQuery("aufgaben_dateien", "AufgabeID, DateiID", a.getId()+", "+d.getId())>=0;
 		}catch(SQLException e){
 			return false;
 		}
