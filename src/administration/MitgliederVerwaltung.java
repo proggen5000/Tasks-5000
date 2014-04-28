@@ -149,7 +149,7 @@ public class MitgliederVerwaltung {
 	public static Mitglied get(String username){
 		
 		try{
-			ResultSet rs = Queries.rowQuery("*", "Mitglieder", "Username = "+username);
+			ResultSet rs = Queries.rowQuery("*", "Mitglieder", "username = '"+username+"'");
 			rs.next();
 			return createMitgliedbyRow(rs);
 		}catch(SQLException e){
