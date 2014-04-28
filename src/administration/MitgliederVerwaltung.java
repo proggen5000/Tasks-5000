@@ -260,26 +260,15 @@ public class MitgliederVerwaltung {
 	 * @return boolean
 	 */
 	public static boolean istMitgliedInTeam(long mitgliedID, long teamID){
-		
-		String sql= "SELECT Mitglied FROM mitglieder JOIN mitglieder_teams "
-					+"ON "+mitgliedID+"= mitglieder_teams.mitgliedid "
-					+"JOIN teams ON teams.teamid= mitglieder_teams.teamid "
-					+"WHERE teams.teamid= " + teamID;
-		long testID;
-		
 		try {
-			testID= (Long) Queries.scalarQuery(sql);
-			if (testID!= -1){
+			ResultSet rs = Queries.rowQuery("*", "mitglieder_teams", "MitgliedID = " + mitgliedID + " AND TeamID = " + teamID);
+			if (rs.isBeforeFirst()){
 				return true;
 			}
-			else{
-				return false;
-			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
+			System.err.println("istMitgliedInTeam - SQLERROR");
 		}
+		return false;
 	}
 	
 	/**
