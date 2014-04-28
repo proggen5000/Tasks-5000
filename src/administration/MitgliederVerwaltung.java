@@ -215,26 +215,18 @@ public class MitgliederVerwaltung {
 	 * @return al ArrayList mit Mitgliedern
 	 */
 	public static ArrayList<Mitglied> getListe(){
-
-		String sql = "SELECT * FROM mitglieder";
 		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
-		
 		try {
-			ResultSet rs = Queries.rowQuery(sql);
-			
-			while(rs.next()){
-				Mitglied a= new Mitglied(rs.getLong("MitgliedID"), rs.getString("username"),
-						rs.getString("password"), rs.getString("email"),
-						rs.getString("vorname"), rs.getString("nachname"),
-						rs.getLong("regdatum"));
-				al.add(a);
-			}
+			ResultSet rs = Queries.rowQuery("*", "Mitglieder", "true");
+			do{
+				al.add(createMitgliedbyRow(rs));				
+			}while(!rs.isLast());
+			return al;
 		} catch (SQLException e) {
 			// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben werden
 			e.printStackTrace();
-			al = null;
+			return null;
 		}
-		return al;
 	}
 	
 	/**
