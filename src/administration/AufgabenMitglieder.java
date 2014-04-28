@@ -24,5 +24,14 @@ public class AufgabenMitglieder {
 			return false;
 		}	
 	}
+	
+	public static boolean entfernenAlle(Aufgabe a){
+		try{
+			return Queries.deleteQuery("aufgaben_mitglieder", "AufgabeID="+a.getId());
+		}catch(SQLException e){
+			e.printStackTrace();
+			return false;
+		}
+	}
 
 }

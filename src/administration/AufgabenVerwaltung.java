@@ -43,15 +43,6 @@ public class AufgabenVerwaltung {
 	}
 
 	/**
-	 * Dummy
-	 * @param aufgabe die zurückgegeben wird
-	 * @return Aufgabe
-	 */
-	public static Aufgabe neuDummy (Aufgabe aufgabe){
-		return aufgabe;
-	}
-
-	/**
 	 * Die Daten werden auf die des übergebenen Objekts geupdated.
 	 * @param aufgabe die aktualisiert werden soll. 
 	 * @return Aufgabe so wie sie in der Datenbank steht
@@ -216,23 +207,6 @@ public class AufgabenVerwaltung {
 		return al;
 	}
 
-	/** Dummy
-	 * @param mitgliedID Dummy
-	 * @return DUmmy
-	 */
-	public static ArrayList<Aufgabe> getListeVonMitgliedDummy(long mitgliedID){
-		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
-		Mitglied dummyMitglied = new Mitglied(13, "Dummy-Mitglied", "qwertz", "test@mail.de", "Dummy", "User", 23453467);
-		Team dummyTeam = new Team(1337, "Dummy-Team", 214325, "Wir rulen.", dummyMitglied);
-		Aufgabengruppe dummyGruppe = new Aufgabengruppe(13, "Dummy-Gruppe", "Aufgabenbeschreibung hier.", dummyTeam);
-		Aufgabe dummyAufgabe1 = new Aufgabe(1337, dummyGruppe, dummyMitglied, "Dummy-Aufgabe 1", "Hier steht was.", 45, 98723423, 99235456);
-		Aufgabe dummyAufgabe2 = new Aufgabe(1338, dummyGruppe, dummyMitglied, "Dummy-Aufgabe II", "Hier steht auch was.", 98, 942443423, 943235456);
-		Aufgabe dummyAufgabe3 = new Aufgabe(1339, dummyGruppe, dummyMitglied, "Dummy-Aufgabe 5000", "Hier steht so richtig viel, sodass es gek¸rzt werden muss, denn es werden mehr als 50 Zeichen verwendet!", 12, 934253423, 983235456);
-		al.add(dummyAufgabe1);
-		al.add(dummyAufgabe2);
-		al.add(dummyAufgabe3);
-		return al;
-	}
 
 	/**
 	 * Findet alle Aufgaben eines bestimmten Teams
