@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import javax.management.Query;
+
 import database.Queries;
 import entities.Mitglied;
 import entities.Team;
@@ -187,21 +189,8 @@ public class TeamVerwaltung {
 	 * @param teamid ID des gesuchten Teams
 	 * @return boolean
 	 */
-	public static boolean vorhanden(long teamid){
-		
-		String sql= "SELECT * FROM teams WHERE teamid= "+teamid;
-		Team testteam= new Team();
-		try{
-			testteam=(Team)Queries.scalarQuery(sql);
-			if (testteam.getId()!= -1){
-				return true;
-			}
-			else{
-				return false;
-			}
-		}catch (SQLException e){
-			return false;
-		}
+	public static boolean vorhanden(long id){
+		return get(id) != null;
 	}
 	
 	/**
@@ -210,21 +199,8 @@ public class TeamVerwaltung {
 	 * @param teamname Username des gesuchten Mitglieds
 	 * @return boolean
 	 */
-	public static boolean vorhanden(String teamname){
-		
-		String sql= "SELECT * FROM teams WHERE teamname= "+teamname;
-		Team testteam= new Team();
-		try{
-			testteam=(Team)Queries.scalarQuery(sql);
-			if (testteam.getId()!= -1){
-				return true;
-			}
-			else{
-				return false;
-			}
-		}catch (SQLException e){
-			return false;
-		}
+	public static boolean vorhanden(String name){
+		return get(name) != null;
 	}
 	
 	/**
@@ -232,25 +208,17 @@ public class TeamVerwaltung {
 	 * @return al ArrayList mit allen Teams
 	 */
 	public static ArrayList<Team> getListe(){
-
-		String sql = "SELECT * FROM teams";
 		ArrayList<Team> al = new ArrayList<Team>();
-		
-		try {
-			ResultSet rs = Queries.rowQuery(sql);
-			while(rs.next()){
-				Mitglied gruppenfuehrer= MitgliederVerwaltung.get(rs.getLong("gruppenfuehrerid"));
-				Team t= new Team(rs.getLong("teamid"), rs.getString("name"),
-						rs.getLong("gruendungsdatum"), rs.getString("beschreibung"),
-						gruppenfuehrer);
-				al.add(t);
-			}
-		} catch (SQLException e) {
-			// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben werden
+		try{
+			ResultSet rs = Queries.rowQuery("*", "teams", "true");
+			do{
+				al.add(createTeambyRow(rs));
+			}while(!rs.isLast());
+			return al;
+		}catch(SQLException e){
 			e.printStackTrace();
-			al = null;
+			return null;
 		}
-		return al;
 	}
 	
 	/**
@@ -259,28 +227,21 @@ public class TeamVerwaltung {
 	 * @return al ArrayList mit allen Teams
 	 */
 	public static ArrayList<Team> getListeVonMitglied(long mitgliedID){
-		
-		String sql = "SELECT * FROM teams JOIN mitglieder_teams "
+		ArrayList<Team> al = new ArrayList<Team>();
+		try{
+			String sql = "SELECT * FROM teams JOIN mitglieder_teams "
 				+"ON teams.teamid= mitglieder_teams.teamid "
 				+"JOIN mitglieder ON mitglieder.mitgliederid = mitglieder_teams.mitgliedid "
 				+"WHERE mitglieder.mitgliedid= " + mitgliedID;
-		ArrayList<Team> al = new ArrayList<Team>();
-	
-		try {
-			ResultSet rs = Queries.rowQuery(sql);	
-			while(rs.next()){
-				Mitglied gruppenfuehrer= MitgliederVerwaltung.get(rs.getLong("gruppenfuehrerid"));
-				Team t= new Team(rs.getLong("id"), rs.getString("name"),
-						rs.getLong("gruendungsdatum"), rs.getString("beschreibung"),
-						gruppenfuehrer);
-				al.add(t);
-			}
-		} catch (SQLException e) {
-			// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben werden
+			ResultSet rs = Queries.rowQuery(sql);
+			do{
+				al.add(createTeambyRow(rs));
+			}while(!rs.isLast());
+			return al;
+		}catch(SQLException e){
 			e.printStackTrace();
-			al = null;
+			return null;
 		}
-		return al;
 	}
 	
 	private static Team createTeambyRow(ResultSet rs){
