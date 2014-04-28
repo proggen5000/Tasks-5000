@@ -149,6 +149,8 @@ public class TaskController extends HttpServlet {
 		
 		String mode = request.getParameter("mode");
 		
+		// RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
+		
 		// Fehler - kein Login
 		if(!login){
 			request.setAttribute("error", "Sie sind nicht eingeloggt!");
@@ -195,6 +197,7 @@ public class TaskController extends HttpServlet {
 			}
 
 			Aufgabe taskUpdated = AufgabenVerwaltung.bearbeiten(task);
+			request.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!"); // TODO wird das angezeigt?
 			response.sendRedirect("/task?mode=view&id="+taskUpdated.getId());
 		}
 		

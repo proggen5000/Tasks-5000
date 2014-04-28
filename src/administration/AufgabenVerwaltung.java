@@ -174,7 +174,7 @@ public class AufgabenVerwaltung {
 	 */
 	public static ArrayList<Aufgabe> getListeVonGruppe(long gruppenID){
 		// returnd eine ArrayListe aller Aufgabe
-		String sql = "SELECT * FROM Aufgabe WHERE AufgabenGruppeID = " + gruppenID;
+		String sql = "SELECT * FROM Aufgaben WHERE AufgabenGruppeID = " + gruppenID;
 		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);

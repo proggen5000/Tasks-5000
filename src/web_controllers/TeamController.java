@@ -181,6 +181,7 @@ public class TeamController extends HttpServlet {
 				team.setBeschreibung(request.getParameter("description"));
 				entities.Team teamUpdated = TeamVerwaltung.bearbeiten(team);
 				
+				request.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!");
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/team?mode=view&id="+teamUpdated.getId());
 			} else {
