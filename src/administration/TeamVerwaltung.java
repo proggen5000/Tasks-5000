@@ -7,10 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import javax.management.Query;
-
 import database.Queries;
-import entities.Mitglied;
 import entities.Team;
 
 public class TeamVerwaltung {
@@ -33,6 +30,7 @@ public class TeamVerwaltung {
 		String values= "NULL, "+team.getName()+", "+gruendungsdatum+", "
 				+team.getBeschreibung()+", "+team.getGruppenfuehrer().getId();
 		int testID;
+		
 		try {
 			testID = Queries.insertQuery(table, columns, values);
 		} catch (SQLException e1) {
@@ -45,19 +43,8 @@ public class TeamVerwaltung {
 			return null;
 		}
 		else{
-			//Erstellen eines Teams mit den uebernommenen Werten (mit ID)
-			String sql= "SELECT * FROM teams WHERE testid="+testID;
-			try {
-				ResultSet rs= Queries.rowQuery(sql);
-				Mitglied gruppenfuehrer= MitgliederVerwaltung.get(rs.getLong("gruppenfuehrerid"));
-				Team testteam= new Team(rs.getLong("teamid"), rs.getString("name"),
-						rs.getLong("gruendungsdatum"), rs.getString("beschreibung"),
-						gruppenfuehrer);
+				Team testteam= get(testID);
 				return testteam;
-			} catch (SQLException e) {
-				e.printStackTrace();
-				return null;
-			}
 		}
 	}
 	
@@ -78,19 +65,8 @@ public class TeamVerwaltung {
 		
 		try {
 			if (Queries.updateQuery(table, updateString, where)==true) {
-				//erstellen eines Teams mit aktualisierten Daten
-				String sql= "SELECT * FROM teams WHERE teamid="+team.getId();
-				try {
-					ResultSet rs= Queries.rowQuery(sql);
-					Mitglied gruppenfuehrer= MitgliederVerwaltung.get(rs.getLong("gruppenfuehrerid"));
-					Team testteam= new Team(rs.getLong("teamid"), rs.getString("name"),
-							rs.getLong("gruendungsdatum"), rs.getString("beschreibung"),
-							gruppenfuehrer);
-					return testteam;
-				} catch (SQLException e) {
-					e.printStackTrace();
-					return null;
-				}
+				Team testteam= get(team.getId());
+				return testteam;
 			}
 			else{
 				return null;
@@ -120,6 +96,7 @@ public class TeamVerwaltung {
 								+"WHERE teamid= "+teamid;
 				
 		try {
+			//löschen der dazugehörenden Dateien
 			ResultSet rs= Queries.rowQuery(dateisql); 
 			if (rs!= null){
 				while (rs.next()){
@@ -127,6 +104,7 @@ public class TeamVerwaltung {
 				}
 			}
 			
+			//löschen aller Verbindungen zu weiteren Mitgliedern
 			rs= Queries.rowQuery(mitgliederteamsql); 
 			if (rs!= null){
 				while (rs.next()){
@@ -134,6 +112,7 @@ public class TeamVerwaltung {
 				}
 			}
 			
+			//löschen der dazugehörenden Aufgabengruppen
 			rs= Queries.rowQuery(aufgabengruppensql); 
 			if (rs!= null){
 				while (rs.next()){
