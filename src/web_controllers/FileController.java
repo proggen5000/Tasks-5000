@@ -280,7 +280,7 @@ public class FileController extends HttpServlet {
 			Datei file = DateiVerwaltung.get(id);
 			if(DateiVerwaltung.vorhanden(id)){
 				long teamId = file.getTeam().getId();
-				if(DateiVerwaltung.loeschen(file)){
+				if(DateiVerwaltung.loeschen(file.getId())){
 					// TODO auch phys. Datei loeschen! 
 					request.setAttribute("valid_request", true);
 					response.sendRedirect("/team?mode=view&id="+teamId);

@@ -48,7 +48,7 @@ public class IndexController extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("/jsp/sites/index.jsp");
+		response.sendRedirect("/index");
 	}
 
 }

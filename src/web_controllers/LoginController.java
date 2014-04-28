@@ -21,6 +21,7 @@ public class LoginController extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		boolean login = false;
 		if(request.getSession().getAttribute("login") != null){
 			login = (boolean) request.getSession().getAttribute("login");
@@ -62,6 +63,7 @@ public class LoginController extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		boolean login = false;
 		if(request.getSession().getAttribute("login") != null){
 			login = (boolean) request.getSession().getAttribute("login");
