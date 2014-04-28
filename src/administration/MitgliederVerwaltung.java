@@ -11,7 +11,7 @@ import entities.Mitglied;
 public class MitgliederVerwaltung {
 
 	/**
-	 * Fuegtgt Werte eines Mitglieds in die Datenbank ein,
+	 * Fuegt Werte eines Mitglieds in die Datenbank ein,
 	 * liefert ein Mitglied mit den eben eingefuegten Werten zurueck (inkl. ID)
 	 * @param mitglied Werte werden ein die DB eingefuegt
 	 * @return testmitglied mit den Werten aus der Datenbank
@@ -234,7 +234,7 @@ public class MitgliederVerwaltung {
 	 * @param aufgID ID der Aufgabe
 	 * @return al ArrayList mit Mitgliedern
 	 */
-	public static ArrayList<Mitglied> getListeVonAufgaben(long aufgID){
+	public static ArrayList<Mitglied> getListeVonAufgabe(long aufgID){
 		
 		String sql = "SELECT * FROM mitglieder JOIN aufgaben_mitglieder "
 					+"ON mitglieder.mitgliedid= aufgaben_mitglieder.mitgliedid "
@@ -290,7 +290,7 @@ public class MitgliederVerwaltung {
 	}
 	
 	/**
-	 * Pr�ft ob ein bestimmtes Mitglied einem bestimmten Team zugeordnet ist
+	 * Prüft, ob ein bestimmtes Mitglied einem bestimmten Team zugeordnet ist
 	 * @param mitgliedID
 	 * @param teamID
 	 * @return boolean
@@ -338,6 +338,24 @@ public class MitgliederVerwaltung {
 		return false;
 	}
 	
+	/**
+	 * Liefert alle Mitglieder eines Teams, die der Aufgabe noch nicht zugeordnet sind
+	 * @param aufgabenID
+	 * @return
+	 */
+	public static ArrayList<Mitglied> getListeVonAufgabeRest(long aufgabenID){
+		ArrayList<Mitglied> usersTask = getListeVonAufgabe(aufgabenID);
+		ArrayList<Mitglied> usersRest = new ArrayList<Mitglied>();
+		
+		for(Mitglied m : usersRest){
+			if(!usersTask.contains(m)){
+				usersRest.add(m);
+			}
+		}
+		
+		return usersRest;
+	}
+
 	private static Mitglied createMitgliedbyRow(ResultSet rs){
 		try {
 			rs.next();

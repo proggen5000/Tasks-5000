@@ -162,7 +162,7 @@ public class TeamController extends HttpServlet {
 		else if(mode.equals("new")){
 			entities.Team team = new entities.Team();
 			team.setGruppenfuehrer(MitgliederVerwaltung.get(currentUser));
-			team.setGruendungsdatum(new Date().getTime()); // TODO noetig?
+			team.setGruendungsdatum(new Date().getTime()); // TODO ggf. unnoetig?
 			team.setName(request.getParameter("name"));
 			team.setBeschreibung(request.getParameter("description"));
 			entities.Team teamNew = TeamVerwaltung.neu(team);

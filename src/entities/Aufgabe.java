@@ -94,7 +94,7 @@ public class Aufgabe implements Serializable {
 	
 	public int getAnzahlDateien(){
 		return 3;
-		//TODO return DateiVerwaltung.getListeVonAufgabe(this.getId()).size();
+		//TODO return DateiVerwaltung.getListeVonAufgabe(id).size();
 	}
 	
 	/**
