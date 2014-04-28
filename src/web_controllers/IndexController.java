@@ -36,7 +36,10 @@ public class IndexController extends HttpServlet {
 		}
 		else if(login){
 			HttpSession session = request.getSession(true);
-			long currentUser = (long) session.getAttribute("currentUser");
+			long currentUser = -1;
+			if(session.getAttribute("currentUser") != null){
+				currentUser = (long) session.getAttribute("currentUser");
+			}
 			
 			request.setAttribute("teams", TeamVerwaltung.getListeVonMitglied(currentUser));
 			request.setAttribute("tasks", AufgabenVerwaltung.getListeVonMitglied(currentUser));
