@@ -1,6 +1,5 @@
 <jsp:include page="../header.jsp"><jsp:param name="page_title" value="Registrierung" /></jsp:include>
 <jsp:include page="../menu.jsp" />
-	  		<script>$(function () { $("[data-toggle='tooltip']").tooltip(); });</script>
 
 			<h1>Registrierung</h1>
 			<p>Registrieren Sie sich mit einem einzigartigen Benutzernamen und Ihrer E-Mail-Adresse, um Tasks 5000 zu benutzen.<br />

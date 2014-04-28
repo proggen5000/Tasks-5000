@@ -18,7 +18,6 @@
 			
 			<h1>${file.name} <span class="glyphicon glyphicon-file small"></span></h1>
 			<p>${file.beschreibung}</p>
-			<p>Hochgeladen von ${file.ersteller}</p>
 			
 			<form action="/file" method="post">
 				<input type="hidden" name="id" value="${task.id}" />

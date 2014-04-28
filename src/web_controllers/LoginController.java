@@ -107,7 +107,7 @@ public class LoginController extends HttpServlet {
 						cookie_forward = (boolean) request.getAttribute("cookie_forward");
 					}
 					
-					if(cookie_forward){
+					if(!cookie_forward){
 						request.setAttribute("title", "Login erfolgreich");
 						request.setAttribute("message", "Sie haben sich erfolgreich eingeloggt!<br />Herzlich willkommen, " + user.getUsername() + ".");
 						request.setAttribute("link_url", "/");
