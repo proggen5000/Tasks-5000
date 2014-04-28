@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%-- Zugriff nicht über Servlet --%>
 <c:if test="${!valid_request}">
@@ -15,11 +16,22 @@
 
 <jsp:include page="../menu.jsp"><jsp:param name="menu" value="teams" /></jsp:include>
 		
-			<ol class="breadcrumb">
-				<li><a href="/">Start</a></li>
-				<li><a href="/team?mode=view&id=${team.id}">${team.name}</a></li>
-				<li class="active"></li>
-			</ol>
+			<c:if test="${param.mode == 'new'}">
+				<ol class="breadcrumb">
+					<li><a href="/">Start</a></li>
+					<li><a href="/team?mode=view&id=${team.id}">${team.name}</a></li>
+					<li class="active"></li>
+				</ol>
+			</c:if>
+			
+			<c:if test="${param.mode == 'edit'}">
+				<ol class="breadcrumb">
+					<li><a href="/">Start</a></li>
+					<li><a href="/team?mode=view&id=${task.gruppe.team.id}">${task.gruppe.team.name}</a></li>
+					<li class="active"></li>
+				</ol>
+			</c:if>
+			
 			
 			<%-- Alerts, falls übergeben --%>
 			<c:if test="${requestScope.alert != null}">
@@ -43,7 +55,7 @@
 		  			<div class="col-md-6">
 		  				<label for="group"><span class="glyphicon glyphicon-tag"></span> Aufgabengruppe</label>
 						<select name="group" size="1" class="form-control input-lg">
-							<c:forEach var="group" items="${groups}">
+							<c:forEach var="group" items="${taskGroups}">
 								<c:if test="${group.id == task.gruppe.id}">
 									<option value="${group.id}" selected>${group.name}</option>
 								</c:if>
@@ -76,11 +88,9 @@
 					<label for="users"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="Mehrere Mitglieder durck Gedr&uuml;ckthalten von <kbd>Strg</kbd> bzw. <kbd>Cmd</kbd> markieren">?</span>
 					<select multiple name="users" id="users" size="3" class="form-control">
 						<c:forEach var="userSelected" items="${usersSelected}">
-							<%-- hier bzw. im Servlet prüfen, welche Mitglieder schon ausgewaehlt wurden!! //TODO --%>
-							<option value="${userSelected.id}">${userSelected.username}</option>
+							<option value="${userSelected.id}" selected>${userSelected.username}</option>
 						</c:forEach>
 						<c:forEach var="user" items="${users}">
-							<%-- hier bzw. im Servlet prüfen, welche Mitglieder schon ausgewaehlt wurden!! //TODO --%>
 							<option value="${user.id}">${user.username}</option>
 						</c:forEach>
 					</select>
@@ -95,13 +105,18 @@
 				    </tr>
 				    </thead>
 		  			<tbody>
-		  				<c:forEach var="file" items="${files}">
-		  					<tr>
-						        <td><a href="file?mode=view&id=${file.id}"><span class="glyphicon glyphicon-file"></span> ${file.name}</a></td>
-						        <td>XY KB</td><%-- // TODO --%>
-						        <td><input type="checkbox" name="delete" value="${file.id}"></td>
-						    </tr>
-		  				</c:forEach>
+		  				<c:if test="${fn:length(files) > 0}">
+		  					<c:forEach var="file" items="${files}">
+			  					<tr>
+							        <td><a href="file?mode=view&id=${file.id}"><span class="glyphicon glyphicon-file"></span> ${file.name}</a></td>
+							        <td>XY KB</td><%-- // TODO --%>
+							        <td><input type="checkbox" name="delete" value="${file.id}"></td>
+							    </tr>
+			  				</c:forEach>
+		  				</c:if>
+		  				<c:if test="${fn:length(files) == 0}">
+		  					<tr><td colspan="3">Sie haben noch keine Dateien zu dieser Aufgabe zugeordnet. Dies k&ouml;nnen Sie in den jeweiligen Dateieigenschaften tun.</td></tr>
+		  				</c:if>
 					</tbody>
 				</table>
 				

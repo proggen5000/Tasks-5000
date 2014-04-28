@@ -12,7 +12,7 @@
 			<h1>${team.name} <span class="glyphicon glyphicon-briefcase small"></span></h1>
 	  		<p>${team.beschreibung}</p>
 	  		
-	  		<h2>Aufgaben</h2>
+	  		<h1>Aufgaben</h1>
 	  		<c:if test="${fn:length(taskGroups) == 0}">
 	  			<p>Erstellen Sie zuerst <a href="/taskGroup?mode=new&teamId=${team.id}">Aufgabengruppen</a>, danach k&ouml;nnen Sie Aufgaben erstellen und den Gruppen zuordnen.</p>
 	  		</c:if>
@@ -33,7 +33,7 @@
 	  			</div>
 	  		</c:forEach>
 	  		
-	  		<h2>Dateien</h2>
+	  		<h1>Dateien</h1>
 	  		<c:if test="${fn:length(files) == 0}">
 	  			<p><a href="/file?mode=new&teamId=${team.id}">Laden Sie Dateien hoch</a>, um diese hier f&uuml;r Ihr Team aufzulisten.</p>
 	  		</c:if>

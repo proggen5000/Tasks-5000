@@ -299,11 +299,11 @@ public class MitgliederVerwaltung {
 	 */
 	public static ArrayList<Mitglied> getListeVonAufgabeRest(long aufgabenID){
 		ArrayList<Mitglied> usersTask = getListeVonAufgabe(aufgabenID);
-		ArrayList<Mitglied> usersRest = new ArrayList<Mitglied>();
+		ArrayList<Mitglied> usersRest = getListe();
 		
 		for(Mitglied m : usersRest){
-			if(!usersTask.contains(m)){
-				usersRest.add(m);
+			if(usersTask.contains(m)){
+				usersRest.remove(m);
 			}
 		}
 		

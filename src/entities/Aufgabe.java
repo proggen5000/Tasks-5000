@@ -2,6 +2,8 @@ package entities;
 import java.io.Serializable;
 import java.util.Date;
 
+import administration.DateiVerwaltung;
+
 public class Aufgabe implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -93,8 +95,7 @@ public class Aufgabe implements Serializable {
 	
 	
 	public int getAnzahlDateien(){
-		return 3;
-		//TODO return DateiVerwaltung.getListeVonAufgabe(id).size();
+		return DateiVerwaltung.getListeVonAufgabe(id).size();
 	}
 	
 	/**

@@ -103,9 +103,10 @@ public class FileController extends HttpServlet {
 		
 		// Datei bearbeiten (Formular)
 		else if(mode.equals("edit")){
-			request.setAttribute("file", DateiVerwaltung.get(id));
-			request.setAttribute("team", TeamVerwaltung.get(teamId));
-			request.setAttribute("tasks", AufgabenVerwaltung.getListeVonTeam(teamId));
+			Datei file = DateiVerwaltung.get(id);
+			request.setAttribute("file", file);
+			request.setAttribute("team", file.getTeam());
+			request.setAttribute("tasks", AufgabenVerwaltung.getListeVonTeam(file.getTeam().getId()));
 			request.setAttribute("mode", mode);
 			request.setAttribute("valid_request", true);
 			view = request.getRequestDispatcher("/jsp/file/fileEdit.jsp");

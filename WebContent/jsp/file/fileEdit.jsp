@@ -34,10 +34,10 @@
 		  				<label for="task"><span class="glyphicon glyphicon-tag"></span> Aufgabe (Zuordnung)</label>
 						<select name="task" size="1" class="form-control input-lg">
 							<c:forEach var="task" items="${tasks}">
-								<c:if test="${task.id == file.task.id}">
+								<c:if test="${task.id == file.aufgabe.id}">
 									<option value="${task.id}" selected>${task.name}</option>
 								</c:if>
-								<c:if test="${task.id != file.task.id}">
+								<c:if test="${task.id != file.aufgabe.id}">
 									<option value="${task.id}">${task.name}</option>
 								</c:if>
 							</c:forEach>

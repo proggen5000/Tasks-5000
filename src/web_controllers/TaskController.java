@@ -78,6 +78,8 @@ public class TaskController extends HttpServlet {
 			if(TeamVerwaltung.vorhanden(teamId)){
 				entities.Team team = TeamVerwaltung.get(teamId);
 				request.setAttribute("team", team);
+				request.setAttribute("taskGroups", AufgabengruppenVerwaltung.getListeVonTeam(team.getId()));
+				request.setAttribute("users", MitgliederVerwaltung.getListeVonAufgabe(teamId));
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/jsp/task/taskEdit.jsp");
@@ -91,6 +93,7 @@ public class TaskController extends HttpServlet {
 		else if(mode.equals("edit")){
 			Aufgabe task = AufgabenVerwaltung.get(id);
 			request.setAttribute("task", task);
+			request.setAttribute("taskGroups", AufgabengruppenVerwaltung.getListeVonTeam(task.getGruppe().getTeam().getId()));
 			// Ausgewählte Mitglieder:
 			request.setAttribute("usersSelected", MitgliederVerwaltung.getListeVonAufgabe(id));
 			// Restliche Mitglieder:

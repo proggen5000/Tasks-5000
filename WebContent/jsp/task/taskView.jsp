@@ -13,7 +13,7 @@
 				<ol class="breadcrumb">
 					<li><a href="/">Start</a></li>
 					<li><a href="team?mode=view&id=${task.gruppe.team.id}">${task.gruppe.team.name}</a></li>
-					<li>${task.gruppe.name}</li>
+					<li><a href="taskGroup?mode=edit&id=${task.gruppe.id}">${task.gruppe.name}</a></li>
 					<li class="active"></li>
 				</ol>
 				
