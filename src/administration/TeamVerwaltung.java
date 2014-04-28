@@ -154,17 +154,14 @@ public class TeamVerwaltung {
 	 * @return testteam
 	 */
 	public static Team get(long teamid){
-		
-		//Suchen des Teams anhand der ID
-		String sql= "SELECT * FROM teams WHERE teamid="+teamid;
-		Team testteam= new Team();
 		try {
-			testteam=(Team)Queries.scalarQuery(sql);
+			ResultSet rs = Queries.rowQuery("*", "teams", "teamid = "+teamid);
+			return createTeambyRow(rs);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return testteam;
 	}
 	
 	/**
@@ -174,17 +171,14 @@ public class TeamVerwaltung {
 	 * @return testteam
 	 */
 	public static Team get(String teamname){
-		
-		//Suchen des Mitglieds anhand des usernamens
-		String sql= "SELECT * FROM mitglieder WHERE username="+teamname;
-		Team testteam= new Team();
 		try {
-			testteam=(Team)Queries.scalarQuery(sql);
+			ResultSet rs = Queries.rowQuery("*", "teams", "teamname = '"+teamname+"'");
+			return createTeambyRow(rs);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return testteam;
 	}
 	
 	/**
@@ -287,5 +281,19 @@ public class TeamVerwaltung {
 			al = null;
 		}
 		return al;
+	}
+	
+	private static Team createTeambyRow(ResultSet rs){
+		try {
+			rs.next();
+			Team t= new Team(rs.getLong("id"), rs.getString("name"),
+					rs.getLong("gruendungsdatum"), rs.getString("beschreibung"),
+					MitgliederVerwaltung.get(rs.getLong("gruppenfuehrer")));
+			return t;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
