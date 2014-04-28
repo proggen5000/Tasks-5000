@@ -117,6 +117,7 @@ public class DateiVerwaltung {
 		
 		try {
 			ResultSet rs= Queries.rowQuery(sql);
+			rs.next();
 			Datei testdatei= createDateibyRow(rs);
 			return testdatei;
 		} catch (SQLException e) {
