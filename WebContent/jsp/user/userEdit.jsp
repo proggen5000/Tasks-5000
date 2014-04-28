@@ -7,6 +7,7 @@
 	
 <jsp:include page="../header.jsp"><jsp:param name="page_title" value="${user.username}" /></jsp:include>
 <jsp:include page="../menu.jsp"><jsp:param name="menu" value="me" /></jsp:include>
+			<%-- Alerts, falls übergeben --%>
 			<c:if test="${requestScope.alert != null}">
 	  			<c:if test="${requestScope.alert_mode == null}">
 	  				<div class="alert alert-success">${requestScope.alert}</div>
@@ -20,7 +21,7 @@
 			<form class="form" action="/user" method="post">
 				<div class="form-group col-xs">
 					<label for="username"><span class="glyphicon glyphicon-user"></span> Benutzername*</label>
-					<input type="text" class="form-control input-lg" name="username" placeholder="" value="${user.username}" />
+					<input type="text" class="form-control input-lg" name="username" value="${user.username}" />
 				</div>
 				  <div class="form-group">
 				    <label for="vorname"><span class="glyphicon glyphicon-user"></span> Echter Name</label>

@@ -185,7 +185,7 @@ public class UserController extends HttpServlet {
 					Mitglied userUpdated = MitgliederVerwaltung.bearbeiten(user);
 					request.setAttribute("user", userUpdated);
 					request.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!");
-					// request.setAttribute("alter_mode", "success");
+					// request.setAttribute("alert_mode", "success");
 					request.setAttribute("valid_request", true);
 					view = request.getRequestDispatcher("/jsp/user/userEdit.jsp");
 				} else {
