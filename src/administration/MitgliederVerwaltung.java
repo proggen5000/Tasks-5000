@@ -136,17 +136,13 @@ public class MitgliederVerwaltung {
 	 * @return testmitglied
 	 */
 	public static Mitglied get(long id){
-		
-		//Suchen des Mitglieds anhand der ID
-		String sql= "SELECT * FROM mitglieder WHERE mitgliedid="+id;
-		Mitglied testmitglied= new Mitglied();
-		try {
-			testmitglied=(Mitglied)Queries.scalarQuery(sql);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		try{
+			ResultSet rs = Queries.rowQuery("*", "Mitglieder", "MitgliedId = "+id);
+			return createMitgliedbyRow(rs);
+		}catch(SQLException e){
 			e.printStackTrace();
+			return null;
 		}
-		return testmitglied;
 	}
 	
 	/**
@@ -158,15 +154,14 @@ public class MitgliederVerwaltung {
 	public static Mitglied get(String username){
 		
 		//Suchen des Mitglieds anhand des usernamens
-		String sql= "SELECT * FROM mitglieder WHERE username="+username;
-		Mitglied testmitglied= new Mitglied();
-		try {
-			testmitglied=(Mitglied)Queries.scalarQuery(sql);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		try{
+			long id = (Long) Queries.scalarQuery("Mitglieder", "MitgliedID", "username = '"+username+"'");
+			
+			return get(id);
+		}catch(SQLException e){
 			e.printStackTrace();
+			return null;
 		}
-		return testmitglied;
 	}
 	
 	/**
@@ -349,5 +344,20 @@ public class MitgliederVerwaltung {
 			return false;
 		}
 		return false;
+	}
+	
+	private static Mitglied createMitgliedbyRow(ResultSet rs){
+		try {
+			rs.next();
+			Mitglied m = new Mitglied(rs.getLong("MitgliedID"), rs.getString("username"),
+					rs.getString("PW"), rs.getString("email"),
+					rs.getString("vorname"), rs.getString("nachname"),
+					rs.getLong("regdatum"));
+			return m;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
