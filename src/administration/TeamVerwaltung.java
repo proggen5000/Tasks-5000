@@ -249,7 +249,7 @@ public class TeamVerwaltung {
 			rs.next();
 			Team t= new Team(rs.getLong("teamid"), rs.getString("name"),
 					rs.getLong("gruendungsdatum"), rs.getString("beschreibung"),
-					MitgliederVerwaltung.get(rs.getLong("gruppenfuehrer")));
+					MitgliederVerwaltung.get(rs.getLong("gruppenführerid")));
 			return t;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
