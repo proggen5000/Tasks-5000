@@ -28,7 +28,7 @@
 		  		<div class="form-group col-xs row">
 		  			<div class="col-md-6">
 		  				<label for="name"><span class="glyphicon glyphicon-file"></span> Name</label>
-						<input id="name" name="name" type="text" class="form-control input-lg" value="${file.name}">
+						<input id="name" name="name" type="text" class="form-control input-lg" value="${file.name}" />
 		  			</div>
 		  			<div class="col-md-6">
 		  				<label for="task"><span class="glyphicon glyphicon-tag"></span> Aufgabe (Zuordnung)</label>
@@ -50,9 +50,10 @@
 				</div>
 				
 				<div class="form-group col-xs">
-					<label for="fileUpload"><span class="glyphicon glyphicon-file"></span> Datei</label>
+					<label for="fileUpload"><span class="glyphicon glyphicon-file"></span> Datei
+						<span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="Maximal erlaubte Dateigr&ouml;&szlig;e: 5 MB, erlaubte Dateitypen: .png, .jpg, .gif, .txt, .pdf, .doc, .docx, .zip, .rar">?</span>
+					</label>
 					<input type="file" id="fileUpload" name="fileUpload" accept=".png,.jpg,.gif,.txt,.pdf,.doc,.docx,.zip,.rar" />
-					<p class="help-block">Erlaubte Dateitypen: .png, .jpg, .gif, .txt, .pdf, .doc, .docx, .zip und .rar.</p>
 				</div>
 				
 				<c:if test="${param.mode == 'new'}"><input type="hidden" name="mode" value="new" /></c:if>

@@ -13,7 +13,6 @@
 </c:if>
 
 <jsp:include page="../menu.jsp"><jsp:param name="menu" value="teams" /></jsp:include>
-			<script src="js/selector.js"></script>
 			
 			<%-- Alerts, falls übergeben --%>
 			<c:if test="${requestScope.alert != null}">

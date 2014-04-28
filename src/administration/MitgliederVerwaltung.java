@@ -190,7 +190,7 @@ public class MitgliederVerwaltung {
 	public static ArrayList<Mitglied> getListe(){
 		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
 		try {
-			ResultSet rs = Queries.rowQuery("*", "Mitglieder", "true ORDER BY username DSC");
+			ResultSet rs = Queries.rowQuery("*", "Mitglieder", "true ORDER BY username DESC");
 			while(rs.next()){
 				al.add(createMitgliedbyRow(rs));
 			}
@@ -211,7 +211,7 @@ public class MitgliederVerwaltung {
 		String sql = "SELECT * FROM mitglieder JOIN aufgaben_mitglieder "
 					+"ON mitglieder.mitgliedid= aufgaben_mitglieder.mitgliedid "
 					+"JOIN aufgaben ON aufgaben.aufgabeid = aufgaben_mitglieder.aufgabeid "
-					+"WHERE aufgaben.aufgabeid= " + aufgID +" ORDER BY username DSC";
+					+"WHERE aufgaben.aufgabeid= " + aufgID +" ORDER BY username DESC";
 		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
 		
 		try {
@@ -236,7 +236,7 @@ public class MitgliederVerwaltung {
 		String sql = "SELECT * FROM mitglieder JOIN mitglieder_teams "
 					+"ON mitglieder.mitgliedid= mitglieder_teams.mitgliedid "
 					+"JOIN teams ON teams.teamid = mitglieder_teams.teamid "
-					+"WHERE teams.teamid= " + teamID + " ORDER BY username DSC";
+					+"WHERE teams.teamid= " + teamID + " ORDER BY username DESC";
 		
 		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
 		

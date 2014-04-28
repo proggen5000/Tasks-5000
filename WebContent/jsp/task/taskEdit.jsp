@@ -73,7 +73,7 @@
 				    	</div>
 				</div>
 				<div class="form-group col-xs">
-					<label for="users"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <small>(mehrere Mitglieder durck Gedr&uuml;ckthalten von <kbd>Strg</kbd> bzw. <kbd>Cmd</kbd> markieren)</small>
+					<label for="users"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="Mehrere Mitglieder durck Gedr&uuml;ckthalten von <kbd>Strg</kbd> bzw. <kbd>Cmd</kbd> markieren">?</span>
 					<select multiple name="users" id="users" size="3" class="form-control">
 						<c:forEach var="userSelected" items="${usersSelected}">
 							<%-- hier bzw. im Servlet prüfen, welche Mitglieder schon ausgewaehlt wurden!! //TODO --%>

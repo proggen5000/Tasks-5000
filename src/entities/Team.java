@@ -84,7 +84,11 @@ public class Team implements Serializable {
 	}
 	
 	public int getAnzahlMitglieder(){
-		return MitgliederVerwaltung.getListeVonTeam(id).size();
+		int anzahl = 0;
+		if(MitgliederVerwaltung.getListeVonTeam(id) != null){
+			anzahl = MitgliederVerwaltung.getListeVonTeam(id).size();
+		}
+		return anzahl;
 	}
 
 }
