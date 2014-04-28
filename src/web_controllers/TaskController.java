@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import entities.Aufgabe;
+import entities.Mitglied;
+import administration.AufgabenMitglieder;
 import administration.AufgabenVerwaltung;
 import administration.AufgabengruppenVerwaltung;
 import administration.DateiVerwaltung;
@@ -167,10 +169,10 @@ public class TaskController extends HttpServlet {
 			task.setGruppe(AufgabengruppenVerwaltung.get(Long.parseLong(request.getParameter("group"))));
 			task.setStatus(Integer.parseInt(request.getParameter("status")));
 			// task.setDeadline(request.getParameter("deadline")); // TODO
-			// TODO Mitgliederzuordnungen!
-			String[] users = request.getParameterValues("users");
-			for(String u : users){
-				// TODO Methode zum Hinzufügen von Mitglied zu Aufgabe!
+			String[] userIDs = request.getParameterValues("users");
+			for(String userId : userIDs){
+				Mitglied user = MitgliederVerwaltung.get(Long.parseLong(userId));
+				AufgabenMitglieder.zuweisen(user, task);
 			}
 
 			Aufgabe taskNew = AufgabenVerwaltung.neu(task);
@@ -190,10 +192,11 @@ public class TaskController extends HttpServlet {
 			task.setBeschreibung(request.getParameter("description"));			
 			task.setStatus(Integer.parseInt(request.getParameter("status")));
 			// task.setDeadline(request.getParameter("deadline")); // TODO
-			String[] users = request.getParameterValues("users");
-			// TODO erst einmal alle Mitglieder von Aufgabe entfernen
-			for(String u : users){
-				// TODO Methode zum Hinzufügen von Mitglied zu Aufgabe!
+			String[] userIDs = request.getParameterValues("users");
+			AufgabenMitglieder.entfernenAlle(task);
+			for(String userId : userIDs){
+				Mitglied user = MitgliederVerwaltung.get(Long.parseLong(userId));
+				AufgabenMitglieder.zuweisen(user, task);
 			}
 
 			Aufgabe taskUpdated = AufgabenVerwaltung.bearbeiten(task);

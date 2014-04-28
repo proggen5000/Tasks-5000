@@ -109,15 +109,6 @@ public class AufgabengruppenVerwaltung {
 	}
 
 	/**
-	 * Dummy
-	 * @param id der Aufgabengruppe nach der gesucht werden soll
-	 * @return Aufgabengruppe, nach der gesucht wurde
-	 */
-	public static Aufgabengruppe getDummy (long id){
-		return new Aufgabengruppe(id, "Dummy-Gruppe", "Dummy-Gruppenbeschreibung", new Team(1l, "toll", 0l, "Testgruppe", new Mitglied(1, "testi", "bla", "test@test.de", "tester", "Typ", 0)));
-	}
-
-	/**
 	 * Überprüft, ob ein AufgabenGruppen-Name in der Datenbank vorhanden ist
 	 * @param name der auf vorhandensein geprüft werden soll
 	 * @return boolean ob er vorhanden ist oder nicht
