@@ -138,6 +138,7 @@ public class MitgliederVerwaltung {
 	public static Mitglied get(long id){
 		try{
 			ResultSet rs = Queries.rowQuery("*", "Mitglieder", "MitgliedId = "+id);
+			rs.next();
 			return createMitgliedbyRow(rs);
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -171,20 +172,7 @@ public class MitgliederVerwaltung {
 	 * @return boolean
 	 */
 	public static boolean vorhanden(long id){
-		
-		String sql= "SELECT * FROM mitglieder WHERE mitgliedid= "+id;
-		Mitglied testmitglied= new Mitglied();
-		try{
-			testmitglied=(Mitglied)Queries.scalarQuery(sql);
-			if (testmitglied.getId()!= -1){
-				return true;
-			}
-			else{
-				return false;
-			}
-		}catch (SQLException e){
-			return false;
-		}
+		return get(id) != null;
 	}
 	
 	/**
@@ -194,20 +182,7 @@ public class MitgliederVerwaltung {
 	 * @return boolean
 	 */
 	public static boolean vorhanden(String username){
-		
-		String sql= "SELECT * FROM mitglieder WHERE username= "+username;
-		Mitglied testmitglied= new Mitglied();
-		try{
-			testmitglied=(Mitglied)Queries.scalarQuery(sql);
-			if (testmitglied.getId()!= -1){
-				return true;
-			}
-			else{
-				return false;
-			}
-		}catch (SQLException e){
-			return false;
-		}
+		return get(username) != null;
 	}
 	
 	/**
@@ -218,9 +193,9 @@ public class MitgliederVerwaltung {
 		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
 		try {
 			ResultSet rs = Queries.rowQuery("*", "Mitglieder", "true");
-			do{
-				al.add(createMitgliedbyRow(rs));				
-			}while(!rs.isLast());
+			while(rs.next()){
+				al.add(createMitgliedbyRow(rs));
+			}
 			return al;
 		} catch (SQLException e) {
 			// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben werden
@@ -243,9 +218,9 @@ public class MitgliederVerwaltung {
 		
 		try {
 			ResultSet rs = Queries.rowQuery(sql);	
-			do{
+			while(rs.next()){
 				al.add(createMitgliedbyRow(rs));
-			}while(!rs.isLast());
+			}
 			return al;
 		} catch (SQLException e) {
 			// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben werden
@@ -269,9 +244,9 @@ public class MitgliederVerwaltung {
 		
 		try {
 			ResultSet rs = Queries.rowQuery(sql);	
-			do{
+			while(rs.next()){
 				al.add(createMitgliedbyRow(rs));
-			}while(!rs.isLast());
+			}
 			return al;
 		} catch (SQLException e) {
 			// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben werden
@@ -281,7 +256,7 @@ public class MitgliederVerwaltung {
 	}
 	
 	/**
-	 * Prüft, ob ein bestimmtes Mitglied einem bestimmten Team zugeordnet ist
+	 * Prï¿½ft, ob ein bestimmtes Mitglied einem bestimmten Team zugeordnet ist
 	 * @param mitgliedID
 	 * @param teamID
 	 * @return boolean
@@ -348,7 +323,6 @@ public class MitgliederVerwaltung {
 
 	private static Mitglied createMitgliedbyRow(ResultSet rs){
 		try {
-			rs.next();
 			Mitglied m = new Mitglied(rs.getLong("MitgliedID"), rs.getString("username"),
 					rs.getString("PW"), rs.getString("email"),
 					rs.getString("vorname"), rs.getString("nachname"),
