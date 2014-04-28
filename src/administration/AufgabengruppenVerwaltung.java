@@ -72,7 +72,7 @@ public class AufgabengruppenVerwaltung {
 	 * @return boolean ob gel√∂scht oder nicht
 	 */
 	public static boolean loeschen (Aufgabengruppe aufgabengruppe){
-		// erst müssen alle untergeordneten Aufgaben gelöscht werden
+		// erst m√ºssen alle untergeordneten Aufgaben gel√∂scht werden
 		ArrayList<Aufgabe> a = AufgabenVerwaltung.getListeVonGruppe(aufgabengruppe.getId());
 		int l = a.size();
 		for(int i = 0; i < l; i++){

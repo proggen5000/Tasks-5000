@@ -15,7 +15,6 @@
 <jsp:include page="../menu.jsp"><jsp:param name="menu" value="teams" /></jsp:include>
 		<script src="js/selector.js"></script>
 		
-		
 		<%-- Team bearbeiten/erstellen --%>
 		<c:if test="${param.mode == 'edit'}"><h1>Team bearbeiten</h1></c:if>
 		<c:if test="${param.mode == 'new'}"><h1>Team erstellen</h1></c:if>

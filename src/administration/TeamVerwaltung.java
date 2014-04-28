@@ -233,7 +233,7 @@ public class TeamVerwaltung {
 		try{
 			String sql = "SELECT * FROM teams JOIN mitglieder_teams "
 				+"ON teams.teamid= mitglieder_teams.teamid "
-				+"JOIN mitglieder ON mitglieder.mitgliederid = mitglieder_teams.mitgliedid "
+				+"JOIN mitglieder ON mitglieder.mitgliedid = mitglieder_teams.mitgliedid "
 				+"WHERE mitglieder.mitgliedid= " + mitgliedID;
 			ResultSet rs = Queries.rowQuery(sql);
 			while(rs.next()){
@@ -250,7 +250,7 @@ public class TeamVerwaltung {
 		try {
 			Team t= new Team(rs.getLong("id"), rs.getString("name"),
 					rs.getLong("gruendungsdatum"), rs.getString("beschreibung"),
-					MitgliederVerwaltung.get(rs.getLong("gruppenfuehrer")));
+					MitgliederVerwaltung.get(rs.getLong("gruppenführerid")));
 			return t;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

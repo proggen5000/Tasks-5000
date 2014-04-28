@@ -13,7 +13,7 @@
 		    </a>
 		    <ul class="dropdown-menu">
 		    	<c:forEach var="team" items="${teams}">
-		    		<li><a href="team?mode=view&id=${team.id}"><span class="glyphicon glyphicon-briefcase"></span> ${team.teamname}</a></li>
+		    		<li><a href="team?mode=view&id=${team.id}"><span class="glyphicon glyphicon-briefcase"></span> ${team.name}</a></li>
 		    	</c:forEach>
 				<li class="divider"></li>
 				<li><a href="team?mode=new"><span class="glyphicon glyphicon-pencil"></span> Team erstellen</a></li>
