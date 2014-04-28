@@ -62,7 +62,7 @@ public class TaskController extends HttpServlet {
 				Aufgabe task = AufgabenVerwaltung.get(id);
 				request.setAttribute("task", task);
 				request.setAttribute("files", DateiVerwaltung.getListeVonAufgabe(id));
-				request.setAttribute("users", MitgliederVerwaltung.getListeVonAufgaben(id));
+				request.setAttribute("users", MitgliederVerwaltung.getListeVonAufgabe(id));
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/jsp/task/taskView.jsp");
 			} else {
@@ -89,6 +89,10 @@ public class TaskController extends HttpServlet {
 		else if(mode.equals("edit")){
 			Aufgabe task = AufgabenVerwaltung.get(id);
 			request.setAttribute("task", task);
+			// Ausgewählte Mitglieder:
+			request.setAttribute("usersSelected", MitgliederVerwaltung.getListeVonAufgabe(id));
+			// Restliche Mitglieder:
+			request.setAttribute("users", MitgliederVerwaltung.getListeVonAufgabeRest(id));
 			request.setAttribute("mode", mode);
 			request.setAttribute("valid_request", true);
 			view = request.getRequestDispatcher("/jsp/task/taskEdit.jsp");
@@ -155,13 +159,17 @@ public class TaskController extends HttpServlet {
 		else if(mode.equals("new")){
 			Aufgabe task = new Aufgabe();
 			task.setErsteller(MitgliederVerwaltung.get(currentUser));
-			task.setErstellungsdatum(new Date().getTime()); // TODO ggf. unnoetig?
+			task.setErstellungsdatum(new Date().getTime()); // TODO unnoetig?
 			task.setName(request.getParameter("name"));
 			task.setBeschreibung(request.getParameter("description"));
 			task.setGruppe(AufgabengruppenVerwaltung.get(Long.parseLong(request.getParameter("group"))));
 			task.setStatus(Integer.parseInt(request.getParameter("status")));
 			// task.setDeadline(request.getParameter("deadline")); // TODO
 			// TODO Mitgliederzuordnungen!
+			String[] users = request.getParameterValues("users");
+			for(String u : users){
+				// TODO Methode zum Hinzufügen von Mitglied zu Aufgabe!
+			}
 
 			Aufgabe taskNew = AufgabenVerwaltung.neu(task);
 			if(taskNew != null){
@@ -180,7 +188,11 @@ public class TaskController extends HttpServlet {
 			task.setBeschreibung(request.getParameter("description"));			
 			task.setStatus(Integer.parseInt(request.getParameter("status")));
 			// task.setDeadline(request.getParameter("deadline")); // TODO
-			// TODO Mitgliederzuordnungen!
+			String[] users = request.getParameterValues("users");
+			// TODO erst einmal alle Mitglieder von Aufgabe entfernen
+			for(String u : users){
+				// TODO Methode zum Hinzufügen von Mitglied zu Aufgabe!
+			}
 
 			Aufgabe taskUpdated = AufgabenVerwaltung.bearbeiten(task);
 			response.sendRedirect("/task?mode=view&id="+taskUpdated.getId());

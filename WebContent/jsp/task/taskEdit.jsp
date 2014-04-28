@@ -65,8 +65,12 @@
 				<div class="form-group col-xs">
 					<label for="users"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <small>(mehrere Mitglieder durck Gedr&uuml;ckthalten von <kbd>Strg</kbd> bzw. <kbd>Cmd</kbd> markieren)</small>
 					<select multiple name="users" id="users" size="3" class="form-control">
+						<c:forEach var="userSelected" items="${usersSelected}">
+							<%-- hier bzw. im Servlet prüfen, welche Mitglieder schon ausgewaehlt wurden!! //TODO --%>
+							<option value="${userSelected.id}">${userSelected.username}</option>
+						</c:forEach>
 						<c:forEach var="user" items="${users}">
-							<%-- hier prüfen, welche Mitglieder schon ausgewaehlt wurden!! //TODO --%>
+							<%-- hier bzw. im Servlet prüfen, welche Mitglieder schon ausgewaehlt wurden!! //TODO --%>
 							<option value="${user.id}">${user.username}</option>
 						</c:forEach>
 					</select>
