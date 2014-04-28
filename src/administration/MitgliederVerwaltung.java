@@ -42,19 +42,8 @@ public class MitgliederVerwaltung {
 			return null;
 		}
 		else{
-			//Erstellen eines Mitglieds mit den uebernommenen Werten (mit ID)
-			String sql= "SELECT * FROM mitglieder WHERE mitgliedid="+testID;
-			try {
-				ResultSet rs= Queries.rowQuery(sql);
-				Mitglied testmitglied= new Mitglied(rs.getLong("mitgliedid"),
-						rs.getString("username"), rs.getString("pw"), rs.getString("email"),
-						rs.getString("vorname"), rs.getString("nachname"),
-						rs.getLong("regdatum"));
+			Mitglied testmitglied= get(testID);
 				return testmitglied;
-			} catch (SQLException e) {
-				e.printStackTrace();
-				return null;
-			}
 		}
 	}
 	
@@ -76,19 +65,8 @@ public class MitgliederVerwaltung {
 		
 		try {
 			if (Queries.updateQuery(table, updateString, where)==true) {
-				//erstellen eines Mitglieds mit aktualisierten Daten
-				String sql= "SELECT * FROM mitglieder WHERE mitgliedid="+mitglied.getId();
-				try {
-					ResultSet rs= Queries.rowQuery(sql);
-					Mitglied testmitglied= new Mitglied(rs.getLong("mitgliedid"),
-							rs.getString("username"), rs.getString("pw"), rs.getString("email"),
-							rs.getString("vorname"), rs.getString("nachname"),
-							rs.getLong("regdatum"));
+				Mitglied testmitglied= get(mitglied.getId());
 					return testmitglied;
-				} catch (SQLException e) {
-					e.printStackTrace();
-					return null;
-				}
 			}
 			else{
 				return null;
@@ -110,16 +88,32 @@ public class MitgliederVerwaltung {
 		//Mitglied anhand der ID loeschen
 		String table= "mitglieder";
 		String where= "mitgliedid="+id;
-		String sql= "SELECT teamid FROM teams WHERE erstellerid= "+id;
+		String gruppenfuehrersql= "SELECT teamid FROM teams WHERE gruppenfuehrerid= "+id;
+		String teamsql="SELECT teamid FROM mitglieder_teams WHERE mitgliedid= "+id;
+		String aufgabensql= "SELECT aufgabenid FROM aufgaben_mitglieder WHERE mitgliedid= "+id;
 				
-		
 		try {
-			ResultSet rs= Queries.rowQuery(sql); 
+			ResultSet rs= Queries.rowQuery(gruppenfuehrersql); 
 			if (rs!= null){
 				while (rs.next()){
 					TeamVerwaltung.loeschen(rs.getLong("teamid"));
 				}
 			}
+			
+			rs= Queries.rowQuery(teamsql); 
+			if (rs!= null){
+				while (rs.next()){
+					MitgliederTeams.austreten(id, rs.getLong("teamid"));
+				}
+			}
+			
+			rs= Queries.rowQuery(aufgabensql); 
+			if (rs!= null){
+				while (rs.next()){
+					AufgabenMitglieder.entfernen(MitgliederVerwaltung.get(id), AufgabenVerwaltung.get(rs.getLong("aufgabenid")));
+				}
+			}
+			
 			return Queries.deleteQuery(table, where);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -154,11 +148,10 @@ public class MitgliederVerwaltung {
 	 */
 	public static Mitglied get(String username){
 		
-		//Suchen des Mitglieds anhand des usernamens
 		try{
-			long id = (Long) Queries.scalarQuery("Mitglieder", "MitgliedID", "username = '"+username+"'");
-			
-			return get(id);
+			ResultSet rs = Queries.rowQuery("*", "Mitglieder", "Username = "+username);
+			rs.next();
+			return createMitgliedbyRow(rs);
 		}catch(SQLException e){
 			e.printStackTrace();
 			return null;
@@ -192,7 +185,7 @@ public class MitgliederVerwaltung {
 	public static ArrayList<Mitglied> getListe(){
 		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
 		try {
-			ResultSet rs = Queries.rowQuery("*", "Mitglieder", "true");
+			ResultSet rs = Queries.rowQuery("*", "Mitglieder", "true ORDER BY username DSC");
 			while(rs.next()){
 				al.add(createMitgliedbyRow(rs));
 			}
@@ -213,7 +206,7 @@ public class MitgliederVerwaltung {
 		String sql = "SELECT * FROM mitglieder JOIN aufgaben_mitglieder "
 					+"ON mitglieder.mitgliedid= aufgaben_mitglieder.mitgliedid "
 					+"JOIN aufgaben ON aufgaben.aufgabeid = aufgaben_mitglieder.aufgabeid "
-					+"WHERE aufgaben.aufgabeid= " + aufgID;
+					+"WHERE aufgaben.aufgabeid= " + aufgID +" ORDER BY username DSC";
 		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
 		
 		try {
@@ -238,7 +231,7 @@ public class MitgliederVerwaltung {
 		String sql = "SELECT * FROM mitglieder JOIN mitglieder_teams "
 					+"ON mitglieder.mitgliedid= mitglieder_teams.mitgliedid "
 					+"JOIN teams ON teams.teamid = mitglieder_teams.teamid "
-					+"WHERE teams.teamid= " + teamID;
+					+"WHERE teams.teamid= " + teamID + " ORDER BY username DSC";
 		
 		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
 		
