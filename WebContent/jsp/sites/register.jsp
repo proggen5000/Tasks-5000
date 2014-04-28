@@ -1,38 +1,45 @@
-<jsp:include page="../header.jsp"><jsp:param name="page_title" value="Registrieren" /></jsp:include>
+<jsp:include page="../header.jsp"><jsp:param name="page_title" value="Registrierung" /></jsp:include>
 <jsp:include page="../menu.jsp" />
-		  		
+	  		<script>$(function () { $("[data-toggle='tooltip']").tooltip(); });</script>
+
 			<h1>Registrierung</h1>
 			<p>Registrieren Sie sich mit einem einzigartigen Benutzernamen und Ihrer E-Mail-Adresse, um Tasks 5000 zu benutzen.<br />
 	  		Falls Sie bereits ein Benutzerprofil angelegt haben, k&ouml;nnen Sie sich auf der rechten Seite unter "Login" anmelden.</p>
 	  		
 	  		<form class="form" action="/login" method="post">
 	  		  <div class="form-group">
-			    <label for="username"><span class="glyphicon glyphicon-user"></span> Benutzername*</label>
-			    <input type="text" class="form-control input-lg" id="username" placeholder="">
+			    <label for="username" data-toggle="tooltip" data-placement="right" data-original-title="Bitte w&auml;hlen Sie einen einzigartigen Benutzernamen.">
+			    	<span class="glyphicon glyphicon-user"></span> Benutzername*
+		    	</label>
+			    <input type="text" class="form-control input-lg" id="username" />
 			  </div>
 			  <div class="form-group">
 			    <label for="vorname"><span class="glyphicon glyphicon-user"></span> Echter Name</label>
 			    <div class="row">
 			    	<div class="col-xs-6">
-			    		<input type="text" class="form-control" id="vorname" placeholder="Vorname">
+			    		<input type="text" class="form-control" id="vorname" placeholder="Vorname" />
 			    	</div>
 			    	<div class="col-xs-6">
-			    		<input type="text" class="form-control" id="Nachname" placeholder="Nachname">
+			    		<input type="text" class="form-control" id="Nachname" placeholder="Nachname" />
 			    	</div>
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="email"><span class="glyphicon glyphicon-envelope"></span> E-Mail-Adresse*</label>
-			    <input type="email" class="form-control" id="email" placeholder="ich@email.de">
+			    <label for="email" data-toggle="tooltip" data-placement="right" data-original-title="Ihre E-Mail-Adresse dient zum Zusenden Ihrer Registrierungsbest&auml;tigung und ggf. zum Zur&uuml;cksetzen Ihres Passworts.">
+			    	<span class="glyphicon glyphicon-envelope"></span> E-Mail-Adresse*
+		    	</label>
+			    <input type="email" class="form-control" id="email" placeholder="benutzer@email.de" />
 			  </div>
 			  <div class="form-group">
-			    <label for="password"><span class="glyphicon glyphicon-lock"></span> Passwort*</label>
+			    <label for="password" data-toggle="tooltip" data-placement="right" data-original-title="Ihr Passwort wird verschl&uuml;sselt gespeichert.">
+			    	<span class="glyphicon glyphicon-lock"></span> Passwort*
+		    	</label>
 			    <div class="row">
 			    	<div class="col-xs-6">
-			    		<input type="password" class="form-control" id="password" placeholder="Passwort">
+			    		<input type="password" class="form-control" id="password" placeholder="Passwort" />
 			    	</div>
 			    	<div class="col-xs-6">
-			    		<input type="password" class="form-control" id="passwordRepeat" placeholder="Passwort wiederholen">
+			    		<input type="password" class="form-control" id="passwordRepeat" placeholder="Passwort wiederholen" />
 			    	</div>
 		    	</div>
 			  </div>

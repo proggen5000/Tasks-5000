@@ -21,12 +21,11 @@
 						    </tr>
 					    </thead>
 			  			<tbody>
-			  				<c:set var="currentUserID" value="${param.currentUser}" />
 			  				<c:forEach var="team" items="${teams}">
 			  					<tr>
 							        <td><a href="team?mode=view&id=${team.id}">${team.name}</a></td>
-							        <td><%-- ${team.aufgabenAnzahl} ${team.getAufgabenAnzahlVonMitglied(currentUserID)}--%>4 (2)</td>
-							        <td><%--${team.getAnzahlMitglieder()} --%>3</td>
+							        <td>${team.aufgabenAnzahl} (${team.getAufgabenAnzahlVonMitglied(currentUser)})</td>
+							        <td>${team.getAnzahlMitglieder()} </td>
 							    </tr>
 			  				</c:forEach>
 						</tbody>
@@ -48,7 +47,7 @@
 									<span class="glyphicon glyphicon-user"></span> ${task.ersteller.username}<br />
 									<span class="glyphicon glyphicon-file"></span> ${task.getAnzahlDateien()}
 								</div>
-								<h4 class="list-group-item-heading">${task.titel}</h4>
+								<h4 class="list-group-item-heading">${task.name}</h4>
 								<p class="list-group-item-text">
 									<c:if test="${fn:length(task.beschreibung) <= 50}">
 										${task.beschreibung}

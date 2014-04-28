@@ -76,7 +76,7 @@ public class TeamController extends HttpServlet {
 		
 		// Team erstellen (Formular)
 		else if(mode.equals("new")){
-			request.setAttribute("usersAll", MitgliederVerwaltung.getListe());
+			request.setAttribute("usersRest", MitgliederVerwaltung.getListe());
 			request.setAttribute("mode", mode);
 			request.setAttribute("valid_request", true);
 			view = request.getRequestDispatcher("/jsp/team/teamEdit.jsp");
@@ -89,7 +89,7 @@ public class TeamController extends HttpServlet {
 			if(currentUser == team.getGruppenfuehrer().getId()){
 				request.setAttribute("team", team);
 				request.setAttribute("users", MitgliederVerwaltung.getListeVonTeam(id));
-				request.setAttribute("usersAll", MitgliederVerwaltung.getListe());
+				request.setAttribute("usersRest", MitgliederVerwaltung.getListeVonAufgabeRest(id));
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/jsp/team/teamEdit.jsp");
@@ -162,7 +162,7 @@ public class TeamController extends HttpServlet {
 		else if(mode.equals("new")){
 			entities.Team team = new entities.Team();
 			team.setGruppenfuehrer(MitgliederVerwaltung.get(currentUser));
-			team.setGruendungsdatum(new Date().getTime()); // TODO noetig?
+			team.setGruendungsdatum(new Date().getTime()); // TODO ggf. unnoetig?
 			team.setName(request.getParameter("name"));
 			team.setBeschreibung(request.getParameter("description"));
 			entities.Team teamNew = TeamVerwaltung.neu(team);
@@ -181,6 +181,7 @@ public class TeamController extends HttpServlet {
 				team.setBeschreibung(request.getParameter("description"));
 				entities.Team teamUpdated = TeamVerwaltung.bearbeiten(team);
 				
+				request.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!");
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/team?mode=view&id="+teamUpdated.getId());
 			} else {

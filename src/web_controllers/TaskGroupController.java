@@ -162,7 +162,8 @@ public class TaskGroupController extends HttpServlet {
 			taskGroup.setBeschreibung(request.getParameter("description"));
 
 			Aufgabengruppe taskGroupUpdated = AufgabengruppenVerwaltung.bearbeiten(taskGroup);
-			response.sendRedirect("/team?mode=view&id="+taskGroupUpdated.getTeam().getId());
+			request.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!");
+			response.sendRedirect("/team?mode=view&id="+taskGroupUpdated.getTeam().getId()); // TODO ändern zu normaler Weiterleitung?
 		}
 		
 		// Aufgabengruppe loeschen (Aktion)

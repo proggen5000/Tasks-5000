@@ -19,7 +19,7 @@ public class AufgabengruppenVerwaltung {
 	 * @return Aufgabengruppe, so wie sie in der Datenbank gespeichert wurde
 	 */
 	public static Aufgabengruppe neu (Aufgabengruppe aufgabengruppe){		
-		
+
 		String values = aufgabengruppe.getName() + ", " + aufgabengruppe.getBeschreibung() + ", " + aufgabengruppe.getTeam().getId();
 		long id;
 		try {
@@ -32,14 +32,7 @@ public class AufgabengruppenVerwaltung {
 			return null;
 		}
 		else{
-			Aufgabengruppe aufgabengruppe_neu = null;
-			String sql = "SELECT * FROM AufgabenGruppen WHERE AufgabenGruppeID = " + id;
-			try {
-				aufgabengruppe_neu = (Aufgabengruppe)Queries.scalarQuery(sql);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			return aufgabengruppe_neu;
+			return get(id);
 		}
 	}
 
@@ -51,14 +44,13 @@ public class AufgabengruppenVerwaltung {
 	public static Aufgabengruppe bearbeiten (Aufgabengruppe aufgabengruppe){
 		//Aktualisieren des Aufgabengruppe
 		String table = "AufgabenGruppen";
-		String updateString = "Name = " + aufgabengruppe.getName() + ", Beschreibung = " + aufgabengruppe.getBeschreibung()  + ", Name = " + aufgabengruppe.getName();
+		String updateString = "Name = " + aufgabengruppe.getName() + ", Beschreibung = " + aufgabengruppe.getBeschreibung()  + ", Team = " + aufgabengruppe.getTeam().getId();
 		String where = "AufgabenGruppeID = " + aufgabengruppe.getId();
 
 		Aufgabengruppe aufgabengruppe_neu = null;
 		try {
 			if (Queries.updateQuery(table, updateString, where) == true) {
-				String sql= "SELECT * FROM AufgabenGruppen WHERE AufgabenGruppeID = " + aufgabengruppe.getId();
-				aufgabengruppe_neu= (Aufgabengruppe) Queries.scalarQuery(sql);
+				return get(aufgabengruppe.getId());
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -72,13 +64,13 @@ public class AufgabengruppenVerwaltung {
 	 * @return boolean ob gelöscht oder nicht
 	 */
 	public static boolean loeschen (Aufgabengruppe aufgabengruppe){
-		// erst m�ssen alle untergeordneten Aufgaben gel�scht werden
+		// erst müssen alle untergeordneten Aufgaben gelöscht werden
 		ArrayList<Aufgabe> a = AufgabenVerwaltung.getListeVonGruppe(aufgabengruppe.getId());
 		int l = a.size();
 		for(int i = 0; i < l; i++){
 			AufgabenVerwaltung.loeschen(a.get(i));
 		}
-		
+
 		String table = "AufgabenGruppen";
 		String where = "AufgabenGruppeID = " + aufgabengruppe.getId();
 		try {
@@ -105,23 +97,15 @@ public class AufgabengruppenVerwaltung {
 	 */
 	public static Aufgabengruppe get (long id){
 		//Suchen der Aufgabe anhand der ID
-		String sql = "SELECT * FROM AufgabenGruppen WHERE AufgabenGruppeID = " + id;
-		Aufgabengruppe aufgabengruppe_neu = null;
+		Aufgabengruppe aufgabengruppe = null;
 		try {
-			aufgabengruppe_neu = (Aufgabengruppe) Queries.scalarQuery(sql);
+			ResultSet rs = Queries.rowQuery("*", "AufgabenGruppen", "AufgabenGruppeID = " + id);
+			rs.next();
+			aufgabengruppe = createAufgabegruppeByRow(rs);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return aufgabengruppe_neu;
-	}
-
-	/**
-	 * Dummy
-	 * @param id der Aufgabengruppe nach der gesucht werden soll
-	 * @return Aufgabengruppe, nach der gesucht wurde
-	 */
-	public static Aufgabengruppe getDummy (long id){
-		return new Aufgabengruppe(id, "Dummy-Gruppe", "Dummy-Gruppenbeschreibung", new Team(1l, "toll", 0l, "Testgruppe", new Mitglied(1, "testi", "bla", "test@test.de", "tester", "Typ", 0)));
+		return aufgabengruppe;
 	}
 
 	/**
@@ -139,15 +123,16 @@ public class AufgabengruppenVerwaltung {
 	 * @return Aufgabengruppe, nach der gesucht wurde
 	 */
 	public static Aufgabengruppe get(String name){
-		//Suchen der Aufgabe anhand der ID
-		String sql = "SELECT * FROM AufgabenGruppen WHERE Name = " + name;
-		Aufgabengruppe aufgabengruppe_neu = null;
+		//Suchen der Aufgabe anhand der Name
+		Aufgabengruppe aufgabengruppe = null;
 		try {
-			aufgabengruppe_neu = (Aufgabengruppe) Queries.scalarQuery(sql);
+			ResultSet rs = Queries.rowQuery("*", "AufgabenGruppen", "Name = " + name);
+			rs.next();
+			aufgabengruppe = createAufgabegruppeByRow(rs);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return aufgabengruppe_neu;
+		return aufgabengruppe;
 	}
 
 	/**
@@ -156,7 +141,7 @@ public class AufgabengruppenVerwaltung {
 	 */
 	public static ArrayList<Aufgabengruppe> getListe(){
 		// returnd eine ArrayListe aller Aufgabe
-		String sql = "SELECT * FROM Aufgabe";
+		String sql = "SELECT * FROM Aufgaben";
 		ArrayList<Aufgabengruppe> al = new ArrayList<Aufgabengruppe>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
@@ -181,7 +166,7 @@ public class AufgabengruppenVerwaltung {
 	 * @return ArrayList alle Aufgabengruppe für die gesuchte ID
 	 */
 	public static ArrayList<Aufgabengruppe> getListeVonTeam(long teamID){
-		String sql = "SELECT * FROM `aufgaben` WHERE `TeamID` = "+ teamID +" group by `AufgabenGruppeID`";
+		String sql = "SELECT * FROM `aufgabengruppen` WHERE `Team` = "+ teamID +" group by `AufgabenGruppeID`";
 		ArrayList<Aufgabengruppe> al = new ArrayList<Aufgabengruppe>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
@@ -197,5 +182,20 @@ public class AufgabengruppenVerwaltung {
 			al = null;
 		}
 		return al;
+	}
+	/**
+	 * Hilfsfunktion zum einfach erstellen einer AufgabenGruppe aus einem ResultSet
+	 * @param rs aus dem die AufgabenGruppe erstellt werden soll
+	 * @return Aufgabe
+	 */
+	private static Aufgabengruppe createAufgabegruppeByRow(ResultSet rs){
+		try {
+			Aufgabengruppe a = new Aufgabengruppe(rs.getLong("AufgabenGruppeID"), rs.getString("Name"), 
+					rs.getString("Beschreibung"), TeamVerwaltung.get(rs.getLong("Team")));
+			return a;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

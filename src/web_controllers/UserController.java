@@ -175,13 +175,17 @@ public class UserController extends HttpServlet {
 				if(!MitgliederVerwaltung.vorhanden(username)){
 					Mitglied user = MitgliederVerwaltung.get(currentUser);
 					user.setUsername(username);
-					user.setPw(password);
+					if(password != null){
+						user.setPw(password);
+					}
 					user.setVorname(request.getParameter("vorname"));
 					user.setNachname(request.getParameter("nachname"));
 					user.setEmail(request.getParameter("email"));
-					
+
 					Mitglied userUpdated = MitgliederVerwaltung.bearbeiten(user);
 					request.setAttribute("user", userUpdated);
+					request.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!");
+					// request.setAttribute("alert_mode", "success");
 					request.setAttribute("valid_request", true);
 					view = request.getRequestDispatcher("/jsp/user/userEdit.jsp");
 				} else {

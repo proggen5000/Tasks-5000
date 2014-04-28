@@ -26,10 +26,10 @@ public class DateiVerwaltung {
 				+datei.getPfad()+", "+datei.getTeam().getId()
 				+", "+datei.getErsteller().getId();
 		int testID;
+		
 		try {
 			testID = Queries.insertQuery(table, columns, values);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 			testID= -1;
 		}
@@ -38,23 +38,16 @@ public class DateiVerwaltung {
 			return null;
 		}
 		else{
-			//Erstellen einer Datei mit den �bernommenen Werten (mit ID)
-			String sql= "SELECT * FROM dateien WHERE dateiid="+testID;
-			try {
-				ResultSet rs= Queries.rowQuery(sql);
-				Team team= TeamVerwaltung.get(rs.getLong("teamid"));
-				Mitglied ersteller= MitgliederVerwaltung.get(rs.getLong("erstellerid"));
-				Datei testdatei= new Datei(rs.getLong("dateiid"), rs.getString("name"),
-						rs.getString("beschreibung"), rs.getString("pfad"), team,
-						ersteller);
-				return testdatei;
-			} catch (SQLException e) {
-				e.printStackTrace();
-				return null;
-			}
+			Datei testdatei= get(testID);
+			return testdatei;
 		}
 	}
 	
+	/**
+	 * aktualisiert Werte einer Datei in der DB
+	 * @param datei mit zu aktualisierenden Werten
+	 * @return testdatei aus der DB mit den aktualisierten Werten
+	 */
 	public static Datei bearbeiten (Datei datei){
 		
 		//Aktualisieren der Dateibeschreibung
@@ -66,38 +59,43 @@ public class DateiVerwaltung {
 		
 		try {
 			if (Queries.updateQuery(table, updateString, where)==true) {
-				//erstellen einer Datei mit aktualisierten Daten
-				String sql= "SELECT * FROM dateien WHERE dateiid="+datei.getId();
-				try {
-					ResultSet rs= Queries.rowQuery(sql);
-					Team team= TeamVerwaltung.get(rs.getLong("teamid"));
-					Mitglied ersteller= MitgliederVerwaltung.get(rs.getLong("erstellerid"));
-					Datei testdatei= new Datei(rs.getLong("dateiid"), rs.getString("name"),
-							rs.getString("beschreibung"), rs.getString("pfad"), team,
-							ersteller);
-					return testdatei;
-				} catch (SQLException e) {
-					e.printStackTrace();
-					return null;
-				}
+				Datei testdatei= get(datei.getId());
+				return testdatei;
 			}
 			else{
 				return null;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
 	}
 	
-	public static boolean loeschen (Datei datei){
+	/**
+	 * löscht Datei anhand der ID
+	 * löscht außerdem alle Verbindungen zu Aufgaben
+	 * @param dateiid der zu löschenden Datei
+	 * @return boolean
+	 */
+	public static boolean loeschen (long dateiid){
 		
-		//Datei anhand der ID l�schen
+		//Datei anhand der ID löschen
 		String table= "dateien";
-		String where= "dateiid="+datei.getId();
+		String where= "dateiid="+dateiid;
+		String aufgabensql= "SELECT aufgabenid FROM aufgaben_dateien WHERE dateiid= "+dateiid;
+		
 		try {
+			//löschen aller Verbindungen zu Aufgaben
+			ResultSet rs= Queries.rowQuery(aufgabensql);
+			if (rs!= null){
+				while (rs.next()){
+					AufgabenDateien.entfernen(get(dateiid), AufgabenVerwaltung.get(rs.getLong("aufgabenid")));
+				}
+			}
+			
+			//löschen der Datei
 			return Queries.deleteQuery(table, where);
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -105,27 +103,40 @@ public class DateiVerwaltung {
 		}
 	}
 	
+	/**
+	 * liefert eine Datei aus der DB anhand einer Dateiid
+	 * @param id der zurückzugebenden Datei
+	 * @return testdatei mit Werten der Datei
+	 */
 	public static Datei get(long id){
 
 		//Suchen der Datei anhand der ID
 		String sql= "SELECT * FROM dateien WHERE dateiid="+id;
-		Datei testdatei= new Datei();
+		
 		try {
-			testdatei=(Datei)Queries.scalarQuery(sql);
+			ResultSet rs= Queries.rowQuery(sql);
+			rs.next();
+			Datei testdatei= createDateibyRow(rs);
+			return testdatei;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return testdatei;
 	}
 	
+	/**
+	 * prüft ob eine Datei in der DB vorhanden ist
+	 * @param id der zu suchenden Datei
+	 * @return boolean
+	 */
 	public static boolean vorhanden (long id){
 		return get(id) != null;
 	}
 	
 	public static ArrayList<Datei> getListeVonAufgabe(long aufgabenID){
 		
-		String sql = "SELECT * FROM dateien JOIN aufgaben_dateien "
+		String sql = "SELECT dateien.dateiid FROM dateien JOIN aufgaben_dateien "
 					+"ON dateien.dateiid= aufgaben_dateien.dateiid "
 					+"JOIN aufgaben ON aufgaben.aufgabeid = aufgaben_dateien.aufgabeid "
 					+"WHERE aufgaben.aufgabeid= " + aufgabenID;
@@ -134,11 +145,7 @@ public class DateiVerwaltung {
 		try {
 			ResultSet rs = Queries.rowQuery(sql);	
 			while(rs.next()){
-				Team team= TeamVerwaltung.get(rs.getLong("teamid"));
-				Mitglied ersteller= MitgliederVerwaltung.get(rs.getLong("erstellerid"));
-				Datei d= new Datei(rs.getLong("dateiid"), rs.getString("name"),
-						rs.getString("beschreibung"), rs.getString("pfad"), team,
-						ersteller);
+				Datei d= get(rs.getLong("dateiid"));
 				al.add(d);
 			}
 		} catch (SQLException e) {
@@ -149,26 +156,42 @@ public class DateiVerwaltung {
 		return al;
 	}
 	
+	/**
+	 * liefert eine ArrayList mit allen Dateien eines Teams
+	 * @param teamID des Teams
+	 * @return al ArrayList mit Dateien
+	 */
 	public static ArrayList<Datei> getListeVonTeam(long teamID){
 
-		String sql = "SELECT * FROM dateien WHERE teamid= "+teamID;
-	ArrayList<Datei> al = new ArrayList<Datei>();
+		String sql = "SELECT dateiid FROM dateien WHERE teamid= "+teamID;
+		ArrayList<Datei> al = new ArrayList<Datei>();
 
-	try {
-		ResultSet rs = Queries.rowQuery(sql);	
-		while(rs.next()){
+		try {
+			ResultSet rs = Queries.rowQuery(sql);	
+			while(rs.next()){
+				Datei d= get(rs.getLong("dateiid"));
+				al.add(d);
+			}
+			return al;
+		} catch (SQLException e) {
+			// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben werden
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private static Datei createDateibyRow(ResultSet rs){
+		try {
 			Team team= TeamVerwaltung.get(rs.getLong("teamid"));
 			Mitglied ersteller= MitgliederVerwaltung.get(rs.getLong("erstellerid"));
 			Datei d= new Datei(rs.getLong("dateiid"), rs.getString("name"),
 					rs.getString("beschreibung"), rs.getString("pfad"), team,
 					ersteller);
-			al.add(d);
+			return d;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
 		}
-	} catch (SQLException e) {
-		// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben werden
-		e.printStackTrace();
-		al = null;
 	}
-	return al;
-	}
+	
 }

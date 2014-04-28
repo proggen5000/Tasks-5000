@@ -20,6 +20,16 @@
 				<li><a href="/team?mode=view&id=${team.id}">${team.name}</a></li>
 				<li class="active"></li>
 			</ol>
+			
+			<%-- Alerts, falls übergeben --%>
+			<c:if test="${requestScope.alert != null}">
+	  			<c:if test="${requestScope.alert_mode == null}">
+	  				<div class="alert alert-success">${requestScope.alert}</div>
+	  			</c:if>
+	  			<c:if test="${requestScope.alert_mode != null}">
+	  				<div class="alert alert-${requestScope.alert_mode}">${requestScope.alert}</div>
+	  			</c:if>
+	  		</c:if>
 		
 			<c:if test="${param.mode == 'new'}"><h1>Aufgabe erstellen</h1></c:if>
 			<c:if test="${param.mode == 'edit'}"><h1>Aufgabe bearbeiten</h1></c:if>
@@ -63,10 +73,14 @@
 				    	</div>
 				</div>
 				<div class="form-group col-xs">
-					<label for="users"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <small>(mehrere Mitglieder durck Gedr&uuml;ckthalten von <kbd>Strg</kbd> bzw. <kbd>Cmd</kbd> markieren)</small>
+					<label for="users"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="Mehrere Mitglieder durck Gedr&uuml;ckthalten von <kbd>Strg</kbd> bzw. <kbd>Cmd</kbd> markieren">?</span>
 					<select multiple name="users" id="users" size="3" class="form-control">
+						<c:forEach var="userSelected" items="${usersSelected}">
+							<%-- hier bzw. im Servlet prüfen, welche Mitglieder schon ausgewaehlt wurden!! //TODO --%>
+							<option value="${userSelected.id}">${userSelected.username}</option>
+						</c:forEach>
 						<c:forEach var="user" items="${users}">
-							<%-- hier prüfen, welche Mitglieder schon ausgewaehlt wurden!! //TODO --%>
+							<%-- hier bzw. im Servlet prüfen, welche Mitglieder schon ausgewaehlt wurden!! //TODO --%>
 							<option value="${user.id}">${user.username}</option>
 						</c:forEach>
 					</select>

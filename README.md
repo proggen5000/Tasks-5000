@@ -1,4 +1,4 @@
-Aufgaben-Verwaltung-5000
-========================
+# Tasks 5000
 
-Repository für unser Projekt in Client-Server-Programmierung
+Repository for our school project **Tasks 5000**.  
+More information and documentation to follow soon!

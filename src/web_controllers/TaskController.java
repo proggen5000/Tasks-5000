@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import entities.Aufgabe;
+import entities.Mitglied;
+import administration.AufgabenMitglieder;
 import administration.AufgabenVerwaltung;
 import administration.AufgabengruppenVerwaltung;
 import administration.DateiVerwaltung;
@@ -62,7 +64,7 @@ public class TaskController extends HttpServlet {
 				Aufgabe task = AufgabenVerwaltung.get(id);
 				request.setAttribute("task", task);
 				request.setAttribute("files", DateiVerwaltung.getListeVonAufgabe(id));
-				request.setAttribute("users", MitgliederVerwaltung.getListeVonAufgaben(id));
+				request.setAttribute("users", MitgliederVerwaltung.getListeVonAufgabe(id));
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/jsp/task/taskView.jsp");
 			} else {
@@ -89,6 +91,10 @@ public class TaskController extends HttpServlet {
 		else if(mode.equals("edit")){
 			Aufgabe task = AufgabenVerwaltung.get(id);
 			request.setAttribute("task", task);
+			// Ausgewählte Mitglieder:
+			request.setAttribute("usersSelected", MitgliederVerwaltung.getListeVonAufgabe(id));
+			// Restliche Mitglieder:
+			request.setAttribute("users", MitgliederVerwaltung.getListeVonAufgabeRest(id));
 			request.setAttribute("mode", mode);
 			request.setAttribute("valid_request", true);
 			view = request.getRequestDispatcher("/jsp/task/taskEdit.jsp");
@@ -145,6 +151,8 @@ public class TaskController extends HttpServlet {
 		
 		String mode = request.getParameter("mode");
 		
+		// RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
+		
 		// Fehler - kein Login
 		if(!login){
 			request.setAttribute("error", "Sie sind nicht eingeloggt!");
@@ -155,13 +163,17 @@ public class TaskController extends HttpServlet {
 		else if(mode.equals("new")){
 			Aufgabe task = new Aufgabe();
 			task.setErsteller(MitgliederVerwaltung.get(currentUser));
-			task.setErstellungsdatum(new Date().getTime()); // TODO ggf. unnoetig?
+			task.setErstellungsdatum(new Date().getTime()); // TODO unnoetig?
 			task.setName(request.getParameter("name"));
 			task.setBeschreibung(request.getParameter("description"));
 			task.setGruppe(AufgabengruppenVerwaltung.get(Long.parseLong(request.getParameter("group"))));
 			task.setStatus(Integer.parseInt(request.getParameter("status")));
 			// task.setDeadline(request.getParameter("deadline")); // TODO
-			// TODO Mitgliederzuordnungen!
+			String[] userIDs = request.getParameterValues("users");
+			for(String userId : userIDs){
+				Mitglied user = MitgliederVerwaltung.get(Long.parseLong(userId));
+				AufgabenMitglieder.zuweisen(user, task);
+			}
 
 			Aufgabe taskNew = AufgabenVerwaltung.neu(task);
 			if(taskNew != null){
@@ -180,9 +192,15 @@ public class TaskController extends HttpServlet {
 			task.setBeschreibung(request.getParameter("description"));			
 			task.setStatus(Integer.parseInt(request.getParameter("status")));
 			// task.setDeadline(request.getParameter("deadline")); // TODO
-			// TODO Mitgliederzuordnungen!
+			String[] userIDs = request.getParameterValues("users");
+			AufgabenMitglieder.entfernenAlle(task);
+			for(String userId : userIDs){
+				Mitglied user = MitgliederVerwaltung.get(Long.parseLong(userId));
+				AufgabenMitglieder.zuweisen(user, task);
+			}
 
 			Aufgabe taskUpdated = AufgabenVerwaltung.bearbeiten(task);
+			request.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!"); // TODO wird das angezeigt?
 			response.sendRedirect("/task?mode=view&id="+taskUpdated.getId());
 		}
 		

@@ -11,7 +11,7 @@ import entities.Mitglied;
 public class MitgliederVerwaltung {
 
 	/**
-	 * Fuegtgt Werte eines Mitglieds in die Datenbank ein,
+	 * Fuegt Werte eines Mitglieds in die Datenbank ein,
 	 * liefert ein Mitglied mit den eben eingefuegten Werten zurueck (inkl. ID)
 	 * @param mitglied Werte werden ein die DB eingefuegt
 	 * @return testmitglied mit den Werten aus der Datenbank
@@ -42,19 +42,8 @@ public class MitgliederVerwaltung {
 			return null;
 		}
 		else{
-			//Erstellen eines Mitglieds mit den uebernommenen Werten (mit ID)
-			String sql= "SELECT * FROM mitglieder WHERE mitgliedid="+testID;
-			try {
-				ResultSet rs= Queries.rowQuery(sql);
-				Mitglied testmitglied= new Mitglied(rs.getLong("mitgliedid"),
-						rs.getString("username"), rs.getString("pw"), rs.getString("email"),
-						rs.getString("vorname"), rs.getString("nachname"),
-						rs.getLong("regdatum"));
+			Mitglied testmitglied= get(testID);
 				return testmitglied;
-			} catch (SQLException e) {
-				e.printStackTrace();
-				return null;
-			}
 		}
 	}
 	
@@ -76,19 +65,8 @@ public class MitgliederVerwaltung {
 		
 		try {
 			if (Queries.updateQuery(table, updateString, where)==true) {
-				//erstellen eines Mitglieds mit aktualisierten Daten
-				String sql= "SELECT * FROM mitglieder WHERE mitgliedid="+mitglied.getId();
-				try {
-					ResultSet rs= Queries.rowQuery(sql);
-					Mitglied testmitglied= new Mitglied(rs.getLong("mitgliedid"),
-							rs.getString("username"), rs.getString("pw"), rs.getString("email"),
-							rs.getString("vorname"), rs.getString("nachname"),
-							rs.getLong("regdatum"));
+				Mitglied testmitglied= get(mitglied.getId());
 					return testmitglied;
-				} catch (SQLException e) {
-					e.printStackTrace();
-					return null;
-				}
 			}
 			else{
 				return null;
@@ -110,13 +88,44 @@ public class MitgliederVerwaltung {
 		//Mitglied anhand der ID loeschen
 		String table= "mitglieder";
 		String where= "mitgliedid="+id;
+		String gruppenfuehrersql= "SELECT teamid FROM teams WHERE gruppenfuehrerid= "+id;
+		String teamsql="SELECT teamid FROM mitglieder_teams WHERE mitgliedid= "+id;
+		String aufgabensql= "SELECT aufgabenid FROM aufgaben_mitglieder WHERE mitgliedid= "+id;
+				
 		try {
+			//löscht Teams wo das Mitglied gruppenfuehrer war
+			ResultSet rs= Queries.rowQuery(gruppenfuehrersql); 
+			if (rs!= null){
+				while (rs.next()){
+					TeamVerwaltung.loeschen(rs.getLong("teamid"));
+				}
+			}
+			
+			//löscht Verbindungen zu bestehenden Teams
+			rs= Queries.rowQuery(teamsql); 
+			if (rs!= null){
+				while (rs.next()){
+					MitgliederTeams.austreten(id, rs.getLong("teamid"));
+				}
+			}
+			
+			//löscht zugeordnete Aufgaben
+			rs= Queries.rowQuery(aufgabensql); 
+			if (rs!= null){
+				while (rs.next()){
+					AufgabenMitglieder.entfernen(MitgliederVerwaltung.get(id), AufgabenVerwaltung.get(rs.getLong("aufgabenid")));
+				}
+			}
+			
+			//löscht das Mitglied
 			return Queries.deleteQuery(table, where);
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
+
 	}
 	
 	/**
@@ -126,17 +135,14 @@ public class MitgliederVerwaltung {
 	 * @return testmitglied
 	 */
 	public static Mitglied get(long id){
-		
-		//Suchen des Mitglieds anhand der ID
-		String sql= "SELECT * FROM mitglieder WHERE mitgliedid="+id;
-		Mitglied testmitglied= new Mitglied();
-		try {
-			testmitglied=(Mitglied)Queries.scalarQuery(sql);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		try{
+			ResultSet rs = Queries.rowQuery("*", "Mitglieder", "MitgliedId = "+id);
+			rs.next();
+			return createMitgliedbyRow(rs);
+		}catch(SQLException e){
 			e.printStackTrace();
+			return null;
 		}
-		return testmitglied;
 	}
 	
 	/**
@@ -147,16 +153,14 @@ public class MitgliederVerwaltung {
 	 */
 	public static Mitglied get(String username){
 		
-		//Suchen des Mitglieds anhand des usernamens
-		String sql= "SELECT * FROM mitglieder WHERE username="+username;
-		Mitglied testmitglied= new Mitglied();
-		try {
-			testmitglied=(Mitglied)Queries.scalarQuery(sql);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		try{
+			ResultSet rs = Queries.rowQuery("*", "Mitglieder", "username = '"+username+"'");
+			rs.next();
+			return createMitgliedbyRow(rs);
+		}catch(SQLException e){
 			e.printStackTrace();
+			return null;
 		}
-		return testmitglied;
 	}
 	
 	/**
@@ -166,20 +170,7 @@ public class MitgliederVerwaltung {
 	 * @return boolean
 	 */
 	public static boolean vorhanden(long id){
-		
-		String sql= "SELECT * FROM mitglieder WHERE mitgliedid= "+id;
-		Mitglied testmitglied= new Mitglied();
-		try{
-			testmitglied=(Mitglied)Queries.scalarQuery(sql);
-			if (testmitglied.getId()!= -1){
-				return true;
-			}
-			else{
-				return false;
-			}
-		}catch (SQLException e){
-			return false;
-		}
+		return get(id) != null;
 	}
 	
 	/**
@@ -189,20 +180,7 @@ public class MitgliederVerwaltung {
 	 * @return boolean
 	 */
 	public static boolean vorhanden(String username){
-		
-		String sql= "SELECT * FROM mitglieder WHERE username= "+username;
-		Mitglied testmitglied= new Mitglied();
-		try{
-			testmitglied=(Mitglied)Queries.scalarQuery(sql);
-			if (testmitglied.getId()!= -1){
-				return true;
-			}
-			else{
-				return false;
-			}
-		}catch (SQLException e){
-			return false;
-		}
+		return get(username) != null;
 	}
 	
 	/**
@@ -210,26 +188,18 @@ public class MitgliederVerwaltung {
 	 * @return al ArrayList mit Mitgliedern
 	 */
 	public static ArrayList<Mitglied> getListe(){
-
-		String sql = "SELECT * FROM mitglieder";
 		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
-		
 		try {
-			ResultSet rs = Queries.rowQuery(sql);
-			
+			ResultSet rs = Queries.rowQuery("*", "Mitglieder", "true ORDER BY username DESC");
 			while(rs.next()){
-				Mitglied a= new Mitglied(rs.getLong("MitgliedID"), rs.getString("username"),
-						rs.getString("password"), rs.getString("email"),
-						rs.getString("vorname"), rs.getString("nachname"),
-						rs.getLong("regdatum"));
-				al.add(a);
+				al.add(createMitgliedbyRow(rs));
 			}
+			return al;
 		} catch (SQLException e) {
 			// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben werden
 			e.printStackTrace();
-			al = null;
+			return null;
 		}
-		return al;
 	}
 	
 	/**
@@ -237,29 +207,24 @@ public class MitgliederVerwaltung {
 	 * @param aufgID ID der Aufgabe
 	 * @return al ArrayList mit Mitgliedern
 	 */
-	public static ArrayList<Mitglied> getListeVonAufgaben(long aufgID){
-		
+	public static ArrayList<Mitglied> getListeVonAufgabe(long aufgID){
 		String sql = "SELECT * FROM mitglieder JOIN aufgaben_mitglieder "
 					+"ON mitglieder.mitgliedid= aufgaben_mitglieder.mitgliedid "
 					+"JOIN aufgaben ON aufgaben.aufgabeid = aufgaben_mitglieder.aufgabeid "
-					+"WHERE aufgaben.aufgabeid= " + aufgID;
+					+"WHERE aufgaben.aufgabeid= " + aufgID +" ORDER BY username DESC";
 		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
 		
 		try {
 			ResultSet rs = Queries.rowQuery(sql);	
 			while(rs.next()){
-				Mitglied a= new Mitglied(rs.getLong("MitgliedID"), rs.getString("username"),
-						rs.getString("password"), rs.getString("email"),
-						rs.getString("vorname"), rs.getString("nachname"),
-						rs.getLong("regdatum"));
-				al.add(a);
+				al.add(createMitgliedbyRow(rs));
 			}
+			return al;
 		} catch (SQLException e) {
 			// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben werden
 			e.printStackTrace();
-			al = null;
+			return null;
 		}
-		return al;
 	}
 	
 	/**
@@ -268,47 +233,42 @@ public class MitgliederVerwaltung {
 	 * @return al
 	 */
 	public static ArrayList<Mitglied> getListeVonTeam(long teamID){
-		
 		String sql = "SELECT * FROM mitglieder JOIN mitglieder_teams "
 					+"ON mitglieder.mitgliedid= mitglieder_teams.mitgliedid "
 					+"JOIN teams ON teams.teamid = mitglieder_teams.teamid "
-					+"WHERE teams.teamid= " + teamID;
+					+"WHERE teams.teamid= " + teamID + " ORDER BY username DESC";
+		
 		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
 		
 		try {
 			ResultSet rs = Queries.rowQuery(sql);	
 			while(rs.next()){
-				Mitglied a= new Mitglied(rs.getLong("MitgliedID"), rs.getString("username"),
-						rs.getString("password"), rs.getString("email"),
-						rs.getString("vorname"), rs.getString("nachname"),
-						rs.getLong("regdatum"));
-				al.add(a);
+				al.add(createMitgliedbyRow(rs));
 			}
+			return al;
 		} catch (SQLException e) {
 			// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben werden
 			e.printStackTrace();
-			al = null;
+			return null;
 		}
-		return al;
 	}
 	
 	/**
-	 * Pr�ft ob ein bestimmtes Mitglied einem bestimmten Team zugeordnet ist
+	 * Pr�ft, ob ein bestimmtes Mitglied einem bestimmten Team zugeordnet ist
 	 * @param mitgliedID
 	 * @param teamID
 	 * @return boolean
 	 */
 	public static boolean istMitgliedInTeam(long mitgliedID, long teamID){
 		
-		String sql= "SELECT * FROM mitglieder JOIN mitglieder_teams "
+		String sql= "SELECT Mitglied FROM mitglieder JOIN mitglieder_teams "
 					+"ON "+mitgliedID+"= mitglieder_teams.mitgliedid "
 					+"JOIN teams ON teams.teamid= mitglieder_teams.teamid "
 					+"WHERE teams.teamid= " + teamID;
 		long testID;
 		
 		try {
-			ResultSet rs= Queries.rowQuery(sql);
-			testID=rs.getLong("MitgliedID");
+			testID= (Long) Queries.scalarQuery(sql);
 			if (testID!= -1){
 				return true;
 			}
@@ -339,5 +299,36 @@ public class MitgliederVerwaltung {
 			return false;
 		}
 		return false;
+	}
+	
+	/**
+	 * Liefert alle Mitglieder eines Teams, die der Aufgabe noch nicht zugeordnet sind
+	 * @param aufgabenID
+	 * @return
+	 */
+	public static ArrayList<Mitglied> getListeVonAufgabeRest(long aufgabenID){
+		ArrayList<Mitglied> usersTask = getListeVonAufgabe(aufgabenID);
+		ArrayList<Mitglied> usersRest = new ArrayList<Mitglied>();
+		
+		for(Mitglied m : usersRest){
+			if(!usersTask.contains(m)){
+				usersRest.add(m);
+			}
+		}
+		
+		return usersRest;
+	}
+
+	private static Mitglied createMitgliedbyRow(ResultSet rs){
+		try {
+			Mitglied m = new Mitglied(rs.getLong("MitgliedID"), rs.getString("username"),
+					rs.getString("PW"), rs.getString("email"),
+					rs.getString("vorname"), rs.getString("nachname"),
+					rs.getLong("regdatum"));
+			return m;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

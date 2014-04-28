@@ -176,43 +176,6 @@ public class FileController extends HttpServlet {
 				response.sendRedirect("/error.jsp");
 			}
 		}
-		
-		// Datei hochladen TEST (Aktion)
-		else if(mode.equals("newTest")){
-			Datei file = new Datei();
-			file.setName(request.getParameter("name"));
-			file.setBeschreibung(request.getParameter("description"));
-			
-			// Check that we have a file upload request // TODO vermutlich unnoetig
-	        if(!ServletFileUpload.isMultipartContent(request)){
-	        	request.setAttribute("error", "Fehler bei der Speicherung!");
-				response.sendRedirect("/error.jsp");
-	        }
-	        DiskFileItemFactory factory = new DiskFileItemFactory();
-	        factory.setSizeThreshold(MAX_MEMORY_SIZE);
-	        factory.setRepository(new File(System.getProperty("java.io.tmpdir")));
-	        String uploadFolder = getServletContext().getRealPath("") + File.separator + DATA_DIRECTORY; // TODO hier noch Team-Ordnerstruktur realisieren
-	        ServletFileUpload upload = new ServletFileUpload(factory);
-	        upload.setSizeMax(MAX_REQUEST_SIZE);
-			
-	        try {
-	            List items = upload.parseRequest(request);
-	            Iterator iter = items.iterator();
-	            while (iter.hasNext()) {
-	                FileItem item = (FileItem) iter.next();
-	                if(!item.isFormField()) {
-	                    String fileName = new File(item.getName()).getName();
-	                    String filePath = uploadFolder + File.separator + fileName;
-	                    File uploadedFile = new File(filePath);
-	                    System.out.println(filePath);
-	                    file.setPfad(filePath);
-	                    item.write(uploadedFile);
-	                }
-	            }	
-	        }
-	        catch (FileUploadException ex) { throw new ServletException(ex); }
-	        catch (Exception ex) { throw new ServletException(ex); }
-		}
 
 		// Datei hochladen (Aktion)
 		else if(mode.equals("new")){
@@ -268,10 +231,12 @@ public class FileController extends HttpServlet {
 			Datei file = DateiVerwaltung.get(id);
 			file.setName(request.getParameter("name"));
 			file.setBeschreibung(request.getParameter("description"));
-			// file.setPfad(pfad); // TODO Datei hochladen bzw. aendern (+alte Datei loeschen)!
+			// file.setPfad(pfad);
+			// TODO Datei hochladen bzw. aendern (+alte Datei loeschen)
 			// TODO Aufgabenzuordnung via request.getParameter("task")
 
 			Datei fileUpdated = DateiVerwaltung.bearbeiten(file);
+			request.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!"); // TODO wird das angezeigt?
 			response.sendRedirect("/file?mode=view&id="+fileUpdated.getId());
 		}
 		
@@ -280,7 +245,7 @@ public class FileController extends HttpServlet {
 			Datei file = DateiVerwaltung.get(id);
 			if(DateiVerwaltung.vorhanden(id)){
 				long teamId = file.getTeam().getId();
-				if(DateiVerwaltung.loeschen(file)){
+				if(DateiVerwaltung.loeschen(file.getId())){
 					// TODO auch phys. Datei loeschen! 
 					request.setAttribute("valid_request", true);
 					response.sendRedirect("/team?mode=view&id="+teamId);
