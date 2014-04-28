@@ -52,14 +52,17 @@ public class IndexController extends HttpServlet {
 		
 		// ausgeloggt, aber Cookie vorhanden
 		else if(!login && currentUserCookie != null){
-			// TODO Debug
-			System.out.println("Cookiewert: " + currentUserCookie);
-			Mitglied user = MitgliederVerwaltung.get(currentUserCookie);
-			request.setAttribute("username", user.getUsername());
-			request.setAttribute("password", user.getPw());
-			request.setAttribute("cookie_forward", true);
-			request.setAttribute("valid_request", true);
-			view = request.getRequestDispatcher("/login?mode=login");
+			if(MitgliederVerwaltung.vorhanden(currentUserCookie)){
+				Mitglied user = MitgliederVerwaltung.get(currentUserCookie);
+				request.setAttribute("username", user.getUsername());
+				request.setAttribute("password", user.getPw());
+				request.setAttribute("cookie_forward", true);
+				request.setAttribute("valid_request", true);
+				view = request.getRequestDispatcher("/login?mode=login");
+			} else {
+				// TODO Benutzer nicht vorhanden! (Fehlermeldung)
+			}
+			
 		}
 		
 		// eingeloggt
