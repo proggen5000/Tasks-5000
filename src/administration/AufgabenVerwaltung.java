@@ -38,14 +38,7 @@ public class AufgabenVerwaltung {
 			return null; 
 		}
 		else{
-			Aufgabe aufgabe_neu = null; // TODO
-			String sql = "SELECT * FROM Aufgabe WHERE AufgabeID = " + id;
-			try {
-				aufgabe_neu = (Aufgabe)Queries.scalarQuery(sql);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			return aufgabe_neu;
+			return get(id);
 		}
 	}
 
