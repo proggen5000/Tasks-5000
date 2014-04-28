@@ -247,7 +247,7 @@ public class TeamVerwaltung {
 	private static Team createTeambyRow(ResultSet rs){
 		try {
 			rs.next();
-			Team t= new Team(rs.getLong("id"), rs.getString("name"),
+			Team t= new Team(rs.getLong("teamid"), rs.getString("name"),
 					rs.getLong("gruendungsdatum"), rs.getString("beschreibung"),
 					MitgliederVerwaltung.get(rs.getLong("gruppenfuehrer")));
 			return t;
