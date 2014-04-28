@@ -104,7 +104,7 @@ public class TeamVerwaltung {
 	
 	/**
 	 * Loescht ein Team komplett aus der DB
-	 * Loescht außerdem: Dateien und Aufgabengruppen des Teams, Verbindungen zu Mitgliedern,
+	 * Loescht auï¿½erdem: Dateien und Aufgabengruppen des Teams, Verbindungen zu Mitgliedern,
 	 * @param teamid
 	 * @return boolean
 	 */
@@ -158,6 +158,7 @@ public class TeamVerwaltung {
 	public static Team get(long teamid){
 		try {
 			ResultSet rs = Queries.rowQuery("*", "teams", "teamid = "+teamid);
+			rs.next();
 			return createTeambyRow(rs);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -175,6 +176,7 @@ public class TeamVerwaltung {
 	public static Team get(String teamname){
 		try {
 			ResultSet rs = Queries.rowQuery("*", "teams", "teamname = '"+teamname+"'");
+			rs.next();
 			return createTeambyRow(rs);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -211,9 +213,9 @@ public class TeamVerwaltung {
 		ArrayList<Team> al = new ArrayList<Team>();
 		try{
 			ResultSet rs = Queries.rowQuery("*", "teams", "true");
-			do{
+			while(rs.next()){
 				al.add(createTeambyRow(rs));
-			}while(!rs.isLast());
+			}
 			return al;
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -234,9 +236,9 @@ public class TeamVerwaltung {
 				+"JOIN mitglieder ON mitglieder.mitgliederid = mitglieder_teams.mitgliedid "
 				+"WHERE mitglieder.mitgliedid= " + mitgliedID;
 			ResultSet rs = Queries.rowQuery(sql);
-			do{
+			while(rs.next()){
 				al.add(createTeambyRow(rs));
-			}while(!rs.isLast());
+			}
 			return al;
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -246,7 +248,6 @@ public class TeamVerwaltung {
 	
 	private static Team createTeambyRow(ResultSet rs){
 		try {
-			rs.next();
 			Team t= new Team(rs.getLong("id"), rs.getString("name"),
 					rs.getLong("gruendungsdatum"), rs.getString("beschreibung"),
 					MitgliederVerwaltung.get(rs.getLong("gruppenfuehrer")));
