@@ -12,7 +12,7 @@
 			
 				<ol class="breadcrumb">
 					<li><a href="/">Start</a></li>
-					<li><a href="team?mode=view&id=${task.team.id}">${task.team.name}</a></li>
+					<li><a href="team?mode=view&id=${task.gruppe.team.id}">${task.gruppe.team.name}</a></li>
 					<li>${task.gruppe.name}</li>
 					<li class="active"></li>
 				</ol>
@@ -52,12 +52,12 @@
 					<div class="list-group-item"><span class="glyphicon glyphicon-dashboard"></span> Status: ${task.status}%</div>
 				</div>
 				<div class="list-group">
-					<a href="/user?mode=view&id=${task.ersteller.id}" class="list-group-item">
-						<span class="glyphicon glyphicon-user"></span> ${task.ersteller.username} <span class="label label-default">Ersteller</span>
-					</a>
 					<c:forEach var="user" items="${users}">
 						<a href="/user?mode=view&id=${user.id}" class="list-group-item">
 							<span class="glyphicon glyphicon-user"></span> ${user.username}
+							<c:if test="${user.id == task.ersteller.id}">
+								<span class="label label-default">Ersteller</span>
+							</c:if>
 						</a>
 					</c:forEach>						
 				</div>

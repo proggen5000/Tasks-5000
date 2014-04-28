@@ -120,7 +120,9 @@ public class TeamVerwaltung {
 				}
 			}
 			
+			//löschen des Teams
 			return Queries.deleteQuery(table, where);
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

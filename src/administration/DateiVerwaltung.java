@@ -26,6 +26,7 @@ public class DateiVerwaltung {
 				+datei.getPfad()+", "+datei.getTeam().getId()
 				+", "+datei.getErsteller().getId();
 		int testID;
+		
 		try {
 			testID = Queries.insertQuery(table, columns, values);
 		} catch (SQLException e1) {
@@ -74,6 +75,7 @@ public class DateiVerwaltung {
 	
 	/**
 	 * löscht Datei anhand der ID
+	 * löscht außerdem alle Verbindungen zu Aufgaben
 	 * @param dateiid der zu löschenden Datei
 	 * @return boolean
 	 */
@@ -82,8 +84,20 @@ public class DateiVerwaltung {
 		//Datei anhand der ID löschen
 		String table= "dateien";
 		String where= "dateiid="+dateiid;
+		String aufgabensql= "SELECT aufgabenid FROM aufgaben_dateien WHERE dateiid= "+dateiid;
+		
 		try {
+			//löschen aller Verbindungen zu Aufgaben
+			ResultSet rs= Queries.rowQuery(aufgabensql);
+			if (rs!= null){
+				while (rs.next()){
+					AufgabenDateien.entfernen(get(dateiid), AufgabenVerwaltung.get(rs.getLong("aufgabenid")));
+				}
+			}
+			
+			//löschen der Datei
 			return Queries.deleteQuery(table, where);
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -103,11 +117,7 @@ public class DateiVerwaltung {
 		
 		try {
 			ResultSet rs= Queries.rowQuery(sql);
-			Team team= TeamVerwaltung.get(rs.getLong("teamid"));
-			Mitglied ersteller= MitgliederVerwaltung.get(rs.getLong("erstellerid"));
-			Datei testdatei= new Datei(rs.getLong("dateiid"), rs.getString("name"),
-					rs.getString("beschreibung"), rs.getString("pfad"), team,
-					ersteller);
+			Datei testdatei= createDateibyRow(rs);
 			return testdatei;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -127,7 +137,7 @@ public class DateiVerwaltung {
 	
 	public static ArrayList<Datei> getListeVonAufgabe(long aufgabenID){
 		
-		String sql = "SELECT * FROM dateien JOIN aufgaben_dateien "
+		String sql = "SELECT dateiid FROM dateien JOIN aufgaben_dateien "
 					+"ON dateien.dateiid= aufgaben_dateien.dateiid "
 					+"JOIN aufgaben ON aufgaben.aufgabeid = aufgaben_dateien.aufgabeid "
 					+"WHERE aufgaben.aufgabeid= " + aufgabenID;
@@ -136,11 +146,7 @@ public class DateiVerwaltung {
 		try {
 			ResultSet rs = Queries.rowQuery(sql);	
 			while(rs.next()){
-				Team team= TeamVerwaltung.get(rs.getLong("teamid"));
-				Mitglied ersteller= MitgliederVerwaltung.get(rs.getLong("erstellerid"));
-				Datei d= new Datei(rs.getLong("dateiid"), rs.getString("name"),
-						rs.getString("beschreibung"), rs.getString("pfad"), team,
-						ersteller);
+				Datei d= get(rs.getLong("dateiid"));
 				al.add(d);
 			}
 		} catch (SQLException e) {
@@ -170,6 +176,21 @@ public class DateiVerwaltung {
 			return al;
 		} catch (SQLException e) {
 			// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben werden
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private static Datei createDateibyRow(ResultSet rs){
+		try {
+			Team team= TeamVerwaltung.get(rs.getLong("teamid"));
+			Mitglied ersteller= MitgliederVerwaltung.get(rs.getLong("erstellerid"));
+			Datei d= new Datei(rs.getLong("dateiid"), rs.getString("name"),
+					rs.getString("beschreibung"), rs.getString("pfad"), team,
+					ersteller);
+			return d;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}

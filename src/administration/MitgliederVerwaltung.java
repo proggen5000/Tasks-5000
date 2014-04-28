@@ -93,6 +93,7 @@ public class MitgliederVerwaltung {
 		String aufgabensql= "SELECT aufgabenid FROM aufgaben_mitglieder WHERE mitgliedid= "+id;
 				
 		try {
+			//löscht Teams wo das Mitglied gruppenfuehrer war
 			ResultSet rs= Queries.rowQuery(gruppenfuehrersql); 
 			if (rs!= null){
 				while (rs.next()){
@@ -100,6 +101,7 @@ public class MitgliederVerwaltung {
 				}
 			}
 			
+			//löscht Verbindungen zu bestehenden Teams
 			rs= Queries.rowQuery(teamsql); 
 			if (rs!= null){
 				while (rs.next()){
@@ -107,6 +109,7 @@ public class MitgliederVerwaltung {
 				}
 			}
 			
+			//löscht zugeordnete Aufgaben
 			rs= Queries.rowQuery(aufgabensql); 
 			if (rs!= null){
 				while (rs.next()){
@@ -114,7 +117,9 @@ public class MitgliederVerwaltung {
 				}
 			}
 			
+			//löscht das Mitglied
 			return Queries.deleteQuery(table, where);
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
