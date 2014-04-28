@@ -87,6 +87,7 @@ public class DateiVerwaltung {
 		
 		try {
 			
+			//löschen aller Verbindungen zu Aufgaben
 			ResultSet rs= Queries.rowQuery(aufgabensql);
 			if (rs!= null){
 				while (rs.next()){
