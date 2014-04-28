@@ -104,7 +104,7 @@ public class TeamVerwaltung {
 	
 	/**
 	 * Loescht ein Team komplett aus der DB
-	 * Loescht außerdem: Dateien und Aufgabengruppen des Teams, Verbindungen zu Mitgliedern,
+	 * Loescht auï¿½erdem: Dateien und Aufgabengruppen des Teams, Verbindungen zu Mitgliedern,
 	 * @param teamid
 	 * @return boolean
 	 */
@@ -231,7 +231,7 @@ public class TeamVerwaltung {
 		try{
 			String sql = "SELECT * FROM teams JOIN mitglieder_teams "
 				+"ON teams.teamid= mitglieder_teams.teamid "
-				+"JOIN mitglieder ON mitglieder.mitgliederid = mitglieder_teams.mitgliedid "
+				+"JOIN mitglieder ON mitglieder.mitgliedid = mitglieder_teams.mitgliedid "
 				+"WHERE mitglieder.mitgliedid= " + mitgliedID;
 			ResultSet rs = Queries.rowQuery(sql);
 			do{
