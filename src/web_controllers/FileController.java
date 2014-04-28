@@ -204,9 +204,10 @@ public class FileController extends HttpServlet {
 	                    String fileName = new File(item.getName()).getName();
 	                    String filePath = uploadFolder + File.separator + fileName;
 	                    File uploadedFile = new File(filePath);
+	                    item.write(uploadedFile);
+	                    // TODO Debug:
 	                    System.out.println(filePath);
 	                    file.setPfad(filePath);
-	                    item.write(uploadedFile);
 	                }
 	            }	
 	        }

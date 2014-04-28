@@ -78,6 +78,7 @@ public class Datei implements Serializable {
 	 * @return Dateigroesse in KB
 	 */
 	public int getSize(){
-		return 4; // TODO !
+		return 4; // TODO
+		// fileItem.getSize();
 	}
 }

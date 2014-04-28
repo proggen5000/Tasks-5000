@@ -48,7 +48,7 @@
 									<span class="glyphicon glyphicon-user"></span> ${task.ersteller.username}<br />
 									<span class="glyphicon glyphicon-file"></span> ${task.getAnzahlDateien()}
 								</div>
-								<h4 class="list-group-item-heading">${task.titel}</h4>
+								<h4 class="list-group-item-heading">${task.name}</h4>
 								<p class="list-group-item-text">
 									<c:if test="${fn:length(task.beschreibung) <= 50}">
 										${task.beschreibung}

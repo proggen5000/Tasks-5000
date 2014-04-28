@@ -17,7 +17,7 @@
 					<li class="active"></li>
 				</ol>
 				
-				<h1>${task.titel} <span class="glyphicon glyphicon-time small"></span></h1>
+				<h1>${task.name} <span class="glyphicon glyphicon-time small"></span></h1>
 				<p>${task.beschreibung}</p>
 				
 				<c:if test="${fn:length(files) > 0}">

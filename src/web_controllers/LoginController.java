@@ -1,6 +1,8 @@
 package web_controllers;
 
 import java.io.IOException;
+import java.util.Date;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -83,11 +85,7 @@ public class LoginController extends HttpServlet {
 		if(mode.equals("login")){
 			if(!login){
 				if(MitgliederVerwaltung.pruefeLogin(username, password)){
-					
 					Mitglied user =  MitgliederVerwaltung.get(username);
-					// TODO Debugging:
-					System.out.println("Benutzer: " + user.getId() + " -> " + user.getUsername());
-					System.out.println("PW: " + user.getPw());
 					
 					HttpSession session = request.getSession(true);
 					session.setAttribute("login", true);
@@ -132,7 +130,7 @@ public class LoginController extends HttpServlet {
 				user.setNachname(request.getParameter("nachname"));
 				user.setEmail(request.getParameter("email"));
 				user.setPw(request.getParameter("password"));
-				// user.setRegdatum(new Date().getTime()); // TODO noetig?
+				user.setRegdatum(new Date().getTime()); // TODO noetig?
 				
 				Mitglied userNew = MitgliederVerwaltung.neu(user);
 				request.setAttribute("valid_request", true);
