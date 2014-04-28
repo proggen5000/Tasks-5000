@@ -235,7 +235,6 @@ public class MitgliederVerwaltung {
 	 * @return al ArrayList mit Mitgliedern
 	 */
 	public static ArrayList<Mitglied> getListeVonAufgabe(long aufgID){
-		
 		String sql = "SELECT * FROM mitglieder JOIN aufgaben_mitglieder "
 					+"ON mitglieder.mitgliedid= aufgaben_mitglieder.mitgliedid "
 					+"JOIN aufgaben ON aufgaben.aufgabeid = aufgaben_mitglieder.aufgabeid "
@@ -244,19 +243,15 @@ public class MitgliederVerwaltung {
 		
 		try {
 			ResultSet rs = Queries.rowQuery(sql);	
-			while(rs.next()){
-				Mitglied a= new Mitglied(rs.getLong("MitgliedID"), rs.getString("username"),
-						rs.getString("password"), rs.getString("email"),
-						rs.getString("vorname"), rs.getString("nachname"),
-						rs.getLong("regdatum"));
-				al.add(a);
-			}
+			do{
+				al.add(createMitgliedbyRow(rs));
+			}while(!rs.isLast());
+			return al;
 		} catch (SQLException e) {
 			// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben werden
 			e.printStackTrace();
-			al = null;
+			return null;
 		}
-		return al;
 	}
 	
 	/**
@@ -265,47 +260,42 @@ public class MitgliederVerwaltung {
 	 * @return al
 	 */
 	public static ArrayList<Mitglied> getListeVonTeam(long teamID){
-		
 		String sql = "SELECT * FROM mitglieder JOIN mitglieder_teams "
 					+"ON mitglieder.mitgliedid= mitglieder_teams.mitgliedid "
 					+"JOIN teams ON teams.teamid = mitglieder_teams.teamid "
 					+"WHERE teams.teamid= " + teamID;
+		
 		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
 		
 		try {
 			ResultSet rs = Queries.rowQuery(sql);	
-			while(rs.next()){
-				Mitglied a= new Mitglied(rs.getLong("MitgliedID"), rs.getString("username"),
-						rs.getString("password"), rs.getString("email"),
-						rs.getString("vorname"), rs.getString("nachname"),
-						rs.getLong("regdatum"));
-				al.add(a);
-			}
+			do{
+				al.add(createMitgliedbyRow(rs));
+			}while(!rs.isLast());
+			return al;
 		} catch (SQLException e) {
 			// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben werden
 			e.printStackTrace();
-			al = null;
+			return null;
 		}
-		return al;
 	}
 	
 	/**
-	 * PrÃ¼ft, ob ein bestimmtes Mitglied einem bestimmten Team zugeordnet ist
+	 * Prüft, ob ein bestimmtes Mitglied einem bestimmten Team zugeordnet ist
 	 * @param mitgliedID
 	 * @param teamID
 	 * @return boolean
 	 */
 	public static boolean istMitgliedInTeam(long mitgliedID, long teamID){
 		
-		String sql= "SELECT * FROM mitglieder JOIN mitglieder_teams "
+		String sql= "SELECT Mitglied FROM mitglieder JOIN mitglieder_teams "
 					+"ON "+mitgliedID+"= mitglieder_teams.mitgliedid "
 					+"JOIN teams ON teams.teamid= mitglieder_teams.teamid "
 					+"WHERE teams.teamid= " + teamID;
 		long testID;
 		
 		try {
-			ResultSet rs= Queries.rowQuery(sql);
-			testID=rs.getLong("MitgliedID");
+			testID= (Long) Queries.scalarQuery(sql);
 			if (testID!= -1){
 				return true;
 			}
