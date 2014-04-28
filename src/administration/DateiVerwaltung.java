@@ -30,7 +30,6 @@ public class DateiVerwaltung {
 		try {
 			testID = Queries.insertQuery(table, columns, values);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 			testID= -1;
 		}
@@ -67,7 +66,6 @@ public class DateiVerwaltung {
 				return null;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -137,7 +135,7 @@ public class DateiVerwaltung {
 	
 	public static ArrayList<Datei> getListeVonAufgabe(long aufgabenID){
 		
-		String sql = "SELECT dateiid FROM dateien JOIN aufgaben_dateien "
+		String sql = "SELECT dateien.dateiid FROM dateien JOIN aufgaben_dateien "
 					+"ON dateien.dateiid= aufgaben_dateien.dateiid "
 					+"JOIN aufgaben ON aufgaben.aufgabeid = aufgaben_dateien.aufgabeid "
 					+"WHERE aufgaben.aufgabeid= " + aufgabenID;
@@ -190,7 +188,6 @@ public class DateiVerwaltung {
 					ersteller);
 			return d;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}

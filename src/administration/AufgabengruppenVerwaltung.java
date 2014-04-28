@@ -166,7 +166,7 @@ public class AufgabengruppenVerwaltung {
 	 * @return ArrayList alle Aufgabengruppe für die gesuchte ID
 	 */
 	public static ArrayList<Aufgabengruppe> getListeVonTeam(long teamID){
-		String sql = "SELECT * FROM `aufgaben` WHERE `TeamID` = "+ teamID +" group by `AufgabenGruppeID`";
+		String sql = "SELECT * FROM `aufgabengruppen` WHERE `Team` = "+ teamID +" group by `AufgabenGruppeID`";
 		ArrayList<Aufgabengruppe> al = new ArrayList<Aufgabengruppe>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
