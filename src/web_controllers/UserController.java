@@ -198,15 +198,20 @@ public class UserController extends HttpServlet {
 		else if(mode.equals("remove")){
 			// TODO Check, ob Benutzer noch Mitglied/Ersteller von Elementen ist?
 			// Mitglied user = MitgliederVerwaltung.getMitgliedWithId(currentUser);
-			MitgliederVerwaltung.loeschen(currentUser);
-			HttpSession session = request.getSession(true);
-			session.removeAttribute("login");
-			session.removeAttribute("currentUser");
+			if(MitgliederVerwaltung.loeschen(currentUser)){
+				HttpSession session = request.getSession(true);
+				session.removeAttribute("login");
+				session.removeAttribute("currentUser");
+				
+				request.setAttribute("title", "Profil gel&ouml;scht");
+				request.setAttribute("message", "Sie haben Ihr Profil endg&uuml;ltig gel&ouml;scht!<br />Auf Wiedersehen. :'(");
+				request.setAttribute("valid_request", true);
+				view = request.getRequestDispatcher("/success.jsp");
+			} else {
+				request.setAttribute("error", "Ihr Profil konnte nicht gel&ouml;scht werden!");
+				view = request.getRequestDispatcher("/error.jsp");
+			}
 			
-			request.setAttribute("title", "Profil gel&ouml;scht");
-			request.setAttribute("message", "Sie haben Ihr Profil endg&uuml;ltig gel&ouml;scht!<br />Auf Wiedersehen. :'(");
-			request.setAttribute("valid_request", true);
-			view = request.getRequestDispatcher("/success.jsp");
 		}
 		
 		// Team verlassen (Aktion)
