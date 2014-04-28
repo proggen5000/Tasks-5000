@@ -60,7 +60,7 @@ public class AufgabenVerwaltung {
 		try {
 			if (Queries.updateQuery(table, updateString, where) == true) {
 				return get(aufgabe.getId());
-				
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -112,7 +112,7 @@ public class AufgabenVerwaltung {
 		}
 		return aufgabe_neu;
 	}
-	
+
 	public static ArrayList<Aufgabe> getListe(){
 		// returnd eine ArrayListe aller Aufgabe
 		String sql = "SELECT * FROM Aufgaben";
@@ -239,27 +239,28 @@ public class AufgabenVerwaltung {
 	 */
 	public static ArrayList<Aufgabe> getListeVonMitgliedVonTeam(long mitgliedID, long teamID){
 		// returnd eine ArrayListe aller Aufgabe
-				String sql = "SELECT * FROM  `aufgaben_mitglieder` INNER JOIN  `aufgaben` USING ( AufgabeID ) INNER JOIN aufgabengruppen USING(AufgabenGruppeID) WHERE (MitgliedID = " + mitgliedID + " OR ErstellerID = " + mitgliedID + ") AND TEAM = " + teamID + " GROUP BY AufgabeID";
-				ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
-				try {
-					ResultSet rs = Queries.rowQuery(sql);
-					while(rs.next()){
-						//add every result in resultset to ArrayList
-						al.add(createAufgabeByRow(rs));
-					}
-				} catch (SQLException e) {
-					// Falls ein Fehler auftritt soll eine leere Liste zurückgegeben werden
-					e.printStackTrace();
-					al = null;
-				}
-				return al;
+		String sql = "SELECT * FROM  `aufgaben_mitglieder` INNER JOIN  `aufgaben` USING ( AufgabeID ) INNER JOIN aufgabengruppen USING(AufgabenGruppeID) WHERE (MitgliedID = " + mitgliedID + " OR ErstellerID = " + mitgliedID + ") AND TEAM = " + teamID + " GROUP BY AufgabeID";
+		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
+		try {
+			ResultSet rs = Queries.rowQuery(sql);
+			while(rs.next()){
+				//add every result in resultset to ArrayList
+				al.add(createAufgabeByRow(rs));
+			}
+		} catch (SQLException e) {
+			// Falls ein Fehler auftritt soll eine leere Liste zurückgegeben werden
+			e.printStackTrace();
+			al = null;
+		}
+		return al;
 	}
 	/**
 	 * Hilfsfunktion zum einfach erstellen einer Aufgabe aus einem ResultSet
+	 * kann innerhalb des gesamten Packages verwendet werden
 	 * @param rs aus dem die Aufgabe erstellt werden soll
 	 * @return Aufgabe
 	 */
-	private static Aufgabe createAufgabeByRow(ResultSet rs){
+	static Aufgabe createAufgabeByRow(ResultSet rs){
 		try {
 			Aufgabe a= new Aufgabe(rs.getLong("AufgabeID"),
 					AufgabengruppenVerwaltung.get(rs.getLong("AufgabenGruppeID")),
