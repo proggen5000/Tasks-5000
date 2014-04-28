@@ -137,12 +137,14 @@ public class MitgliederVerwaltung {
 	public static Mitglied get(long id){
 		try{
 			ResultSet rs = Queries.rowQuery("*", "Mitglieder", "MitgliedId = "+id);
-			rs.next();
-			return createMitgliedbyRow(rs);
+			if(rs.isBeforeFirst()){
+				rs.next();
+				return createMitgliedbyRow(rs);
+			}
 		}catch(SQLException e){
-			e.printStackTrace();
-			return null;
+			System.err.println("Mitgliederverwaltung.get(long) - SQL ERROR");
 		}
+		return null;
 	}
 	
 	/**
@@ -310,13 +312,17 @@ public class MitgliederVerwaltung {
 
 	private static Mitglied createMitgliedbyRow(ResultSet rs){
 		try {
-			Mitglied m = new Mitglied(rs.getLong("MitgliedID"), rs.getString("username"),
-					rs.getString("PW"), rs.getString("email"),
-					rs.getString("vorname"), rs.getString("nachname"),
-					rs.getLong("regdatum"));
-			return m;
+			if(!rs.isBeforeFirst() && !rs.isAfterLast()){
+				Mitglied m = new Mitglied(rs.getLong("MitgliedID"), rs.getString("username"),
+						rs.getString("PW"), rs.getString("email"),
+						rs.getString("vorname"), rs.getString("nachname"),
+						rs.getLong("regdatum"));
+				return m;
+			}else{
+				return null;
+			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.err.println("Mitgliederverwaltung.createMitgliedbyRow - SQL ERROR");
 			return null;
 		}
 	}
