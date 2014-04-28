@@ -79,8 +79,8 @@ public class TeamVerwaltung {
 	}
 	
 	/**
-	 * Loescht ein Team komplett aus der DB
-	 * Loescht au�erdem: Dateien und Aufgabengruppen des Teams, Verbindungen zu Mitgliedern,
+	 * Löscht ein Team komplett aus der DB
+	 * Löscht außerdem: Dateien und Aufgabengruppen des Teams, Verbindungen zu Mitgliedern,
 	 * @param teamid
 	 * @return boolean
 	 */
@@ -227,9 +227,9 @@ public class TeamVerwaltung {
 	
 	private static Team createTeambyRow(ResultSet rs){
 		try {
-			Team t= new Team(rs.getLong("id"), rs.getString("name"),
+			Team t= new Team(rs.getLong("teamid"), rs.getString("name"),
 					rs.getLong("gruendungsdatum"), rs.getString("beschreibung"),
-					MitgliederVerwaltung.get(rs.getLong("gruppenführerid")));
+					MitgliederVerwaltung.get(rs.getLong("gruppenfuehrerid")));
 			return t;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
