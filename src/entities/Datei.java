@@ -1,8 +1,6 @@
 package entities;
 import java.io.Serializable;
 
-import administration.AufgabenVerwaltung;
-
 public class Datei implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private long id;

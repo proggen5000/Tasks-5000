@@ -11,8 +11,7 @@
 			<ol class="breadcrumb">
 				<li><a href="/">Start</a></li>
 				<li><a href="team?mode=view&id=${file.team.id}">${file.team.name}</a></li>
-				<c:if test="${group.id != null}"><li>${group.name}</li></c:if>
-				<c:if test="${task.id != null}"><li>${task.name}</li></c:if>
+				<c:if test="${task.id != null}"><li>${task.name}</li></c:if><%-- für mehrere Tasks optimieren! --%>
 				<li class="active"></li>
 			</ol>
 			

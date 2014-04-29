@@ -12,7 +12,6 @@
 			<ol class="breadcrumb">
 				<li><a href="/">Start</a></li>
 				<li><a href="/team?mode=view&id=${file.team.id}">${file.team.name}</a></li>
-				<li>${file.task.name}</li>
 				<li class="active"></li>
 			</ol>
 			

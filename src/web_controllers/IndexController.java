@@ -61,8 +61,7 @@ public class IndexController extends HttpServlet {
 				view = request.getRequestDispatcher("/login?mode=login");
 			} else {
 				// TODO Benutzer nicht vorhanden! (Fehlermeldung)
-			}
-			
+			}	
 		}
 		
 		// eingeloggt
