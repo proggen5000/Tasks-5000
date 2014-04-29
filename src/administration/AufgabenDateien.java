@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import entities.Aufgabe;
 import entities.Datei;
-import entities.Mitglied;
 import database.Queries;
 
 public class AufgabenDateien{
