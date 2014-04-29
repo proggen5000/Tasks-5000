@@ -6,9 +6,6 @@ import java.util.ArrayList;
 
 import database.Queries;
 import entities.Aufgabe;
-import entities.Aufgabengruppe;
-import entities.Mitglied;
-import entities.Team;
 
 
 
