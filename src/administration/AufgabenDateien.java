@@ -43,8 +43,5 @@ public class AufgabenDateien{
 			al = null;
 		}
 		return al;
-
-
 	}
-
 }
