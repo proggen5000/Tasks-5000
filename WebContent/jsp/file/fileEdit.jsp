@@ -30,19 +30,6 @@
 		  				<label for="name"><span class="glyphicon glyphicon-file"></span> Name*</label>
 						<input id="name" name="name" type="text" class="form-control input-lg" value="${file.name}" />
 		  			</div>
-		  			<div class="col-md-6">
-		  				<label for="task"><span class="glyphicon glyphicon-tag"></span> Aufgabe (Zuordnung)</label>
-						<select multiple name="task" size="1" class="form-control input-lg"> <%-- // TODO noch in tollere Auswahlliste umwandeln --%>
-							<c:forEach var="task" items="${tasks}">
-								<c:if test="${task.id == file.aufgabe.id}">
-									<option value="${task.id}" selected>${task.name}</option>
-								</c:if>
-								<c:if test="${task.id != file.aufgabe.id}">
-									<option value="${task.id}">${task.name}</option>
-								</c:if>
-							</c:forEach>
-						</select>
-		  			</div>
 				</div>
 				<div class="form-group col-xs">
 					<label for="description"><span class="glyphicon glyphicon-align-left"></span> Beschreibung*</label>
@@ -50,13 +37,26 @@
 				</div>
 				
 				<div class="form-group col-xs">
-					<label for="fileUpload"><span class="glyphicon glyphicon-file"></span> Datei
+					<label for="fileUpload"><span class="glyphicon glyphicon-file"></span> Datei*
 						<span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="Maximal erlaubte Dateigr&ouml;&szlig;e: 5 MB, erlaubte Dateitypen: .png, .jpg, .gif, .txt, .pdf, .doc, .docx, .zip, .rar">?</span>
 					</label>
 					<input type="file" id="fileUpload" name="fileUpload" accept=".png,.jpg,.gif,.txt,.pdf,.doc,.docx,.zip,.rar" />
 				</div>
 				
-				<%-- // TODO Zuordnung zu Aufgaben! --%>
+				<%-- // TODO noch in tollere Auswahlliste umwandeln --%>
+				<div class="form-group col-xs">
+	  				<label for="task"><span class="glyphicon glyphicon-tag"></span> Aufgabe (Zuordnung)</label>
+					<select multiple name="task" size="1" class="form-control">
+						<c:forEach var="task" items="${tasks}">
+							<c:if test="${task.id == file.aufgabe.id}">
+								<option value="${task.id}" selected>${task.name}</option>
+							</c:if>
+							<c:if test="${task.id != file.aufgabe.id}">
+								<option value="${task.id}">${task.name}</option>
+							</c:if>
+						</c:forEach>
+					</select>
+	  			</div>
 				
 				<c:if test="${param.mode == 'new'}"><input type="hidden" name="mode" value="new" /></c:if>
 				<c:if test="${param.mode == 'edit'}"><input type="hidden" name="mode" value="edit" /></c:if>

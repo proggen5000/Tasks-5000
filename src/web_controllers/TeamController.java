@@ -89,7 +89,7 @@ public class TeamController extends HttpServlet {
 			if(currentUser == team.getGruppenfuehrer().getId()){
 				request.setAttribute("team", team);
 				request.setAttribute("users", MitgliederVerwaltung.getListeVonTeam(id));
-				request.setAttribute("usersRest", MitgliederVerwaltung.getListeVonAufgabeRest(id));
+				request.setAttribute("usersRest", MitgliederVerwaltung.getListeVonTeamRest(id));
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/jsp/team/teamEdit.jsp");
