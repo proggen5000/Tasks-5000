@@ -53,7 +53,7 @@ public class FileController extends HttpServlet {
 		
 		long teamId = -1;
 		try {
-			id = Long.parseLong(request.getParameter("teamId"));
+			teamId = Long.parseLong(request.getParameter("teamId"));
 		} catch (NumberFormatException e){
 			request.setAttribute("error", e);
 		}
@@ -114,7 +114,7 @@ public class FileController extends HttpServlet {
 		
 		// Datei loeschen (Rueckfrage)
 		else if(mode.equals("remove")){
-			if(DateiVerwaltung.vorhanden(id)){ // TODO funktioniert erst mit richtiger vorhanden-Methode
+			if(DateiVerwaltung.vorhanden(id)){
 				request.setAttribute("file", DateiVerwaltung.get(id));
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
@@ -216,7 +216,7 @@ public class FileController extends HttpServlet {
 	        catch (FileUploadException ex) { throw new ServletException(ex); }
 	        catch (Exception ex) { throw new ServletException(ex); }			
 			
-			// TODO Aufgabenzuordnung via request.getParameter("task")
+			// TODO Aufgabenzuordnung via request.getParameter("tasks")
 
 			Datei fileNew = DateiVerwaltung.neu(file);
 			if(fileNew != null){
@@ -234,7 +234,7 @@ public class FileController extends HttpServlet {
 			file.setBeschreibung(request.getParameter("description"));
 			// file.setPfad(pfad);
 			// TODO Datei hochladen bzw. aendern (+alte Datei loeschen)
-			// TODO Aufgabenzuordnung via request.getParameter("task")
+			// TODO Aufgabenzuordnung via request.getParameter("tasks")
 
 			Datei fileUpdated = DateiVerwaltung.bearbeiten(file);
 			request.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!"); // TODO wird das angezeigt?

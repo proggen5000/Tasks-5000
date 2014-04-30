@@ -6,7 +6,7 @@ public class Queries {
 	private Queries(){}
 
 	/**
-	 * F�hrt eine SQL-Abfrage mit eindeutigem R�ckgabewert aus.
+	 * Führt eine SQL-Abfrage mit eindeutigem R�ckgabewert aus.
 	 * @param table Tabelle, in der gesucht werden soll.
 	 * @param column Spalte(n), in der gesucht werden soll.
 	 * @param where Bedingung, mit der gefiltert werden soll.
@@ -70,8 +70,19 @@ public class Queries {
 	 */
 	public static boolean updateQuery(String table, String updateString, String where) throws SQLException{
 		PreparedStatement query = Connect.getConnection().prepareStatement("UPDATE "+table+" SET "+updateString+" WHERE "+where);
-		query.executeQuery();
-		return(query.getUpdateCount()>0);
+		if(query.executeUpdate() == 1){
+			// Statement erfolgreich ausgeführt
+			try{
+				//Es wurde automatisch ein Schlüssel genereiert
+				ResultSet generatedKeys = query.getGeneratedKeys();
+				generatedKeys.next();
+				return generatedKeys.getInt(1)>0;
+			}catch(SQLException e){
+				//Es wurde kein Schlüssel generiert
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -82,8 +93,19 @@ public class Queries {
 	 */
 	public static boolean updateQuery(String sql) throws SQLException{
 		Statement query = Connect.getConnection().createStatement();
-		query.executeUpdate(sql);
-		return (query.getUpdateCount()>0);
+		if(query.executeUpdate(sql) == 1){
+			// Statement erfolgreich ausgeführt
+			try{
+				//Es wurde automatisch ein Schlüssel genereiert
+				ResultSet generatedKeys = query.getGeneratedKeys();
+				generatedKeys.next();
+				return generatedKeys.getInt(1)>0;
+			}catch(SQLException e){
+				//Es wurde kein Schlüssel generiert
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**

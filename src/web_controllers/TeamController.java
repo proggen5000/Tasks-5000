@@ -89,7 +89,7 @@ public class TeamController extends HttpServlet {
 			if(currentUser == team.getGruppenfuehrer().getId()){
 				request.setAttribute("team", team);
 				request.setAttribute("users", MitgliederVerwaltung.getListeVonTeam(id));
-				request.setAttribute("usersRest", MitgliederVerwaltung.getListeVonTeamRest(id));
+				request.setAttribute("usersRest", MitgliederVerwaltung.getListeVonAufgabeRest(id));
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/jsp/team/teamEdit.jsp");
@@ -99,13 +99,18 @@ public class TeamController extends HttpServlet {
 			}
 		}
 		
-		// Team loeschen
+		// Team löschen (Formular)
 		else if(mode.equals("remove")){
 			entities.Team team = TeamVerwaltung.get(id);
 			if(currentUser == team.getGruppenfuehrer().getId()){
-				request.setAttribute("team", team);
-				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("/jsp/team/teamRemove.jsp");
+				if(TeamVerwaltung.vorhanden(team.getId())){
+					request.setAttribute("team", team);
+					request.setAttribute("valid_request", true);
+					view = request.getRequestDispatcher("/jsp/team/teamRemove.jsp");
+				} else {
+					request.setAttribute("error", "Team nicht gefunden!");
+					view = request.getRequestDispatcher("/error.jsp");
+				}
 			} else {
 				request.setAttribute("error", "Nur Teammanager d&uuml;rfen das Team l&ouml;schen!");
 				view = request.getRequestDispatcher("/error.jsp");
@@ -162,7 +167,7 @@ public class TeamController extends HttpServlet {
 		else if(mode.equals("new")){
 			entities.Team team = new entities.Team();
 			team.setGruppenfuehrer(MitgliederVerwaltung.get(currentUser));
-			team.setGruendungsdatum(new Date().getTime()); // TODO ggf. unnoetig?
+			team.setGruendungsdatum(new Date().getTime()); // TODO ggf. unnötig?
 			team.setName(request.getParameter("name"));
 			team.setBeschreibung(request.getParameter("description"));
 			entities.Team teamNew = TeamVerwaltung.neu(team);
@@ -190,7 +195,7 @@ public class TeamController extends HttpServlet {
 			}
 		}
 		
-		// Team loeschen (Aktion)
+		// Team löschen (Aktion)
 		else if(mode.equals("remove")){
 			entities.Team team = TeamVerwaltung.get(id);
 			

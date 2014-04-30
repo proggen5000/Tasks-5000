@@ -19,9 +19,9 @@ public class AufgabenVerwaltung {
 		// returns null if error else returns inserted obj with ID			
 
 		String values = aufgabe.getGruppe().getId() + ", " 
-				+ aufgabe.getErsteller().getId() + ", "
-				+ aufgabe.getName() + ", " 
-				+ aufgabe.getBeschreibung() + ", " 
+				+ aufgabe.getErsteller().getId() + ", '"
+				+ aufgabe.getName() + "', '" 
+				+ aufgabe.getBeschreibung() + "', " 
 				+ aufgabe.getStatus() + ", "
 				+ aufgabe.getErstellungsdatum() + ", "
 				+ aufgabe.getDeadline();
@@ -46,11 +46,11 @@ public class AufgabenVerwaltung {
 	 */
 	public static Aufgabe bearbeiten (Aufgabe aufgabe){
 		//Aktualisieren der Aufgabe
-		String table = "Aufgabe";
+		String table = "Aufgaben";
 		// AufgabenGruppeID, ErstellerID, Name, Beschreibung, Status, Erstellungsdatum, Deadline
 		String updateString = "AufgabenGruppeID = " + aufgabe.getGruppe().getId()
-				+ ", ErstellerID = " + aufgabe.getErsteller().getId() + ", Name = " + aufgabe.getName()
-				+ ", Beschreibung = " + aufgabe.getBeschreibung() + ", Status = " + aufgabe.getStatus()
+				+ ", ErstellerID = " + aufgabe.getErsteller().getId() + ", Name = '" + aufgabe.getName()
+				+ "', Beschreibung = '" + aufgabe.getBeschreibung() + "', Status = " + aufgabe.getStatus()
 				+ ", Erstellungsdatum = " + aufgabe.getDeadline() + ", Deadline = " + aufgabe.getDeadline();
 		String where = "AufgabeID = " + aufgabe.getId();
 

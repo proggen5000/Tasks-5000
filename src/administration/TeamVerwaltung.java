@@ -26,9 +26,9 @@ public class TeamVerwaltung {
 		
 		//Einfuegen der Werte (ohne ID)
 		String table= "teams";
-		String columns= "teamid, teamname, gruendungsdatum, beschreibung, gruppenfuehrerid";
-		String values= "NULL, "+team.getName()+", "+gruendungsdatum+", "
-				+team.getBeschreibung()+", "+team.getGruppenfuehrer().getId();
+		String columns= "teamid, name, gruendungsdatum, beschreibung, gruppenfuehrerid";
+		String values= "NULL, '"+team.getName()+"', "+gruendungsdatum+", '"
+				+team.getBeschreibung()+"', "+team.getGruppenfuehrer().getId();
 		int testID;
 		
 		try {
@@ -59,8 +59,8 @@ public class TeamVerwaltung {
 		
 		//Aktualisieren des Teams
 		String table= "teams";
-		String updateString= "name="+team.getName()+", beschreibung="+team.getBeschreibung()
-				+", gruppenfuehrerid="+team.getGruppenfuehrer().getId();
+		String updateString= "name='"+team.getName()+"', beschreibung='"+team.getBeschreibung()
+				+"', gruppenfuehrerid="+team.getGruppenfuehrer().getId();
 		String where= "teamid="+team.getId();
 		
 		try {
@@ -212,7 +212,7 @@ public class TeamVerwaltung {
 	public static ArrayList<Team> getListeVonMitglied(long mitgliedID){
 		ArrayList<Team> al = new ArrayList<Team>();
 		try{
-			String sql = "SELECT * FROM teams JOIN mitglieder_teams "
+			String sql = "SELECT teams.* FROM teams JOIN mitglieder_teams "
 				+"ON teams.teamid= mitglieder_teams.teamid "
 				+"JOIN mitglieder ON mitglieder.mitgliedid = mitglieder_teams.mitgliedid "
 				+"WHERE mitglieder.mitgliedid= " + mitgliedID;

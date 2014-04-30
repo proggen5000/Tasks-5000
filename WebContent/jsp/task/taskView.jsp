@@ -51,6 +51,8 @@
 					<div class="list-group-item"><span class="glyphicon glyphicon-bell"></span> <fmt:formatDate pattern="dd.MM.yyyy" value="${task.deadlineAsDate}" /></div>
 					<div class="list-group-item"><span class="glyphicon glyphicon-dashboard"></span> Status: ${task.status}%</div>
 				</div>
+				
+				<h1>Zuteilung</h1>
 				<div class="list-group">
 					<c:forEach var="user" items="${users}">
 						<a href="/user?mode=view&id=${user.id}" class="list-group-item">

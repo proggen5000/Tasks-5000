@@ -25,14 +25,14 @@
 			<c:if test="${param.mode == 'edit'}"><h1>${file.name}</h1></c:if>
 			
 			<form class="form" action="/file" method="post" enctype="multipart/form-data">
-		  		<div class="form-group col-xs row">
-		  			<div class="col-md-6">
+		  		<div class="form-group col-xs">
+		  			<div class="col-xs">
 		  				<label for="name"><span class="glyphicon glyphicon-file"></span> Name*</label>
 						<input id="name" name="name" type="text" class="form-control input-lg" value="${file.name}" />
 		  			</div>
 		  			<div class="col-md-6">
 		  				<label for="task"><span class="glyphicon glyphicon-tag"></span> Aufgabe (Zuordnung)</label>
-						<select multiple name="task" size="1" class="form-control input-lg"> <%-- // TODO noch in tollere Auswahllite umwandeln --%>
+						<select multiple name="task" size="1" class="form-control input-lg"> <%-- // TODO noch in tollere Auswahlliste umwandeln --%>
 							<c:forEach var="task" items="${tasks}">
 								<c:if test="${task.id == file.aufgabe.id}">
 									<option value="${task.id}" selected>${task.name}</option>
@@ -55,6 +55,8 @@
 					</label>
 					<input type="file" id="fileUpload" name="fileUpload" accept=".png,.jpg,.gif,.txt,.pdf,.doc,.docx,.zip,.rar" />
 				</div>
+				
+				<%-- // TODO Zuordnung zu Aufgaben! --%>
 				
 				<c:if test="${param.mode == 'new'}"><input type="hidden" name="mode" value="new" /></c:if>
 				<c:if test="${param.mode == 'edit'}"><input type="hidden" name="mode" value="edit" /></c:if>

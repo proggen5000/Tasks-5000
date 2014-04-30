@@ -753,7 +753,7 @@ a::-moz-selection { background: /*t1d*/ #3a9184; /* Firefox */ }
   background-color: #fff;
   margin-top: 5px;
 }
-.container  .header {
+.container .header {
   background-color: /*t1*/ #49b8a8;
   padding: 10px 20px 5px;
   margin: 0 -15px;
@@ -763,6 +763,11 @@ a::-moz-selection { background: /*t1d*/ #3a9184; /* Firefox */ }
 .container .header a {
   color: #fff;
 }
+.container .header small {
+  color: /*t1d*/ #3a9184;
+  font-size: 20px;
+}
+
 .container  .content {
   padding: 10px 20px;
   border-right: 1px dotted /*gr*/ #ccc;
