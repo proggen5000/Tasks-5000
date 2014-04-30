@@ -50,7 +50,6 @@ public class TaskController extends HttpServlet {
 		}
 		
 		RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
-
 		
 		// Fehler - kein Login
 		if(!login){
@@ -228,7 +227,7 @@ public class TaskController extends HttpServlet {
 		}
 		
 		// Fehler - kein mode angegeben
-		else /*if (!mode.equals("new") && !mode.equals("edit") && !mode.equals("remove") )*/ {
+		else {
 			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
 			view = request.getRequestDispatcher("/error.jsp");
 		}

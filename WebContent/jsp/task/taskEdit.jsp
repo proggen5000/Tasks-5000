@@ -49,11 +49,11 @@
 			<form class="form" action="/task" method="post">
 		  		<div class="form-group col-xs row">
 		  			<div class="col-md-6">
-		  				<label for="name"><span class="glyphicon glyphicon-time"></span> Name</label>
+		  				<label for="name"><span class="glyphicon glyphicon-time"></span> Name*</label>
 						<input id="name" name="name" type="text" class="form-control input-lg" value="${task.name}" />
 		  			</div>
 		  			<div class="col-md-6">
-		  				<label for="group"><span class="glyphicon glyphicon-tag"></span> Aufgabengruppe</label>
+		  				<label for="group"><span class="glyphicon glyphicon-tag"></span> Aufgabengruppe*</label>
 						<select name="group" size="1" class="form-control input-lg">
 							<c:forEach var="group" items="${taskGroups}">
 								<c:if test="${group.id == task.gruppe.id}">
