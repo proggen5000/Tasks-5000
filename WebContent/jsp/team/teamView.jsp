@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page session="true" %>
 
 <%-- Zugriff nicht über Servlet --%>
 <c:if test="${!valid_request}">
@@ -58,7 +59,7 @@
 					<a href="/file?mode=new&teamId=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-file"></span> Datei hochladen</a>
 				</div>
 				<div class="list-group">
-					<c:if test="${user.id == task.ersteller.id}">
+					<c:if test="${sessionScope.currentUser == task.ersteller.id}">
 						<a href="/team?mode=edit&id=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Team bearbeiten</a>
 						<a href="/team?mode=remove&id=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-remove"></span> Team l&ouml;schen</a>
 					</c:if>
@@ -71,7 +72,7 @@
 					<a href="/user?mode=view&id=${user.id}" class="list-group-item">
 						<span class="glyphicon glyphicon-user"></span> ${user.username}
 						<c:if test="${user.id == team.gruppenfuehrer.id}">
-							<span class="label label-default">Manager</span>
+							<span class="label label-default pull-right">Manager</span>
 						</c:if>
 					</a>
 				</c:forEach>

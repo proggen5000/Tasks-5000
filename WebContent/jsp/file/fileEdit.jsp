@@ -32,7 +32,7 @@
 		  			</div>
 		  			<div class="col-md-6">
 		  				<label for="task"><span class="glyphicon glyphicon-tag"></span> Aufgabe (Zuordnung)</label>
-						<select name="task" size="1" class="form-control input-lg">
+						<select multiple name="task" size="1" class="form-control input-lg"> <%-- // TODO noch in tollere Auswahllite umwandeln --%>
 							<c:forEach var="task" items="${tasks}">
 								<c:if test="${task.id == file.aufgabe.id}">
 									<option value="${task.id}" selected>${task.name}</option>

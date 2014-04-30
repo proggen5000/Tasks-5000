@@ -297,17 +297,35 @@ public class MitgliederVerwaltung {
 	 * @param aufgabenID
 	 * @return
 	 */
-	public static ArrayList<Mitglied> getListeVonAufgabeRest(long aufgabenID){
-		ArrayList<Mitglied> usersTask = getListeVonAufgabe(aufgabenID);
-		ArrayList<Mitglied> usersRest = getListe();
+	public static ArrayList<Mitglied> getListeVonAufgabeRest(long teamId, long aufgabenId){
+		ArrayList<Mitglied> usersTeam = getListeVonTeam(teamId);
+		ArrayList<Mitglied> usersTask = getListeVonAufgabe(aufgabenId);
 		
-		for(Mitglied m : usersRest){
+		for(Mitglied m : usersTeam){
 			if(usersTask.contains(m)){
-				usersRest.remove(m);
+				usersTeam.remove(m);
 			}
 		}
 		
-		return usersRest;
+		return usersTeam;
+	}
+	
+	/**
+	 * Liefert alle Benutzer, die dem Team noch nicht zugeordnet sind
+	 * @param aufgabenID
+	 * @return
+	 */
+	public static ArrayList<Mitglied> getListeVonTeamRest(long teamId){
+		ArrayList<Mitglied> usersAll = getListe();
+		ArrayList<Mitglied> usersTeam = getListeVonTeam(teamId);
+		
+		for(Mitglied m : usersTeam){
+			if(usersAll.contains(m)){
+				usersAll.remove(m);
+			}
+		}
+		
+		return usersAll;
 	}
 
 	private static Mitglied createMitgliedbyRow(ResultSet rs){

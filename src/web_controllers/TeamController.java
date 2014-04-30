@@ -89,7 +89,7 @@ public class TeamController extends HttpServlet {
 			if(currentUser == team.getGruppenfuehrer().getId()){
 				request.setAttribute("team", team);
 				request.setAttribute("users", MitgliederVerwaltung.getListeVonTeam(id));
-				request.setAttribute("usersRest", MitgliederVerwaltung.getListeVonAufgabeRest(id));
+				request.setAttribute("usersRest", MitgliederVerwaltung.getListeVonTeamRest(id));
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/jsp/team/teamEdit.jsp");
@@ -102,12 +102,12 @@ public class TeamController extends HttpServlet {
 		// Team loeschen
 		else if(mode.equals("remove")){
 			entities.Team team = TeamVerwaltung.get(id);
-			if(TeamVerwaltung.vorhanden(team.getId())){
+			if(currentUser == team.getGruppenfuehrer().getId()){
 				request.setAttribute("team", team);
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/jsp/team/teamRemove.jsp");
 			} else {
-				request.setAttribute("error", "Team nicht gefunden!");
+				request.setAttribute("error", "Nur Teammanager d&uuml;rfen das Team l&ouml;schen!");
 				view = request.getRequestDispatcher("/error.jsp");
 			}
 		}

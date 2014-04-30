@@ -85,7 +85,7 @@
 				    	</div>
 				</div>
 				<div class="form-group col-xs">
-					<label for="users"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="Mehrere Mitglieder durck Gedr&uuml;ckthalten von <kbd>Strg</kbd> bzw. <kbd>Cmd</kbd> markieren">?</span>
+					<label for="users"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="Mehrere Mitglieder durck Gedr&uuml;ckthalten von STRG bzw. CMD markieren">?</span>
 					<select multiple name="users" id="users" size="3" class="form-control">
 						<c:forEach var="userSelected" items="${usersSelected}">
 							<option value="${userSelected.id}" selected>${userSelected.username}</option>

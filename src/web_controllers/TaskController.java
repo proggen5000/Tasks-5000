@@ -97,7 +97,7 @@ public class TaskController extends HttpServlet {
 			// Ausgewählte Mitglieder:
 			request.setAttribute("usersSelected", MitgliederVerwaltung.getListeVonAufgabe(id));
 			// Restliche Mitglieder:
-			request.setAttribute("users", MitgliederVerwaltung.getListeVonAufgabeRest(id));
+			request.setAttribute("users", MitgliederVerwaltung.getListeVonAufgabeRest(task.getGruppe().getTeam().getId(), id));
 			request.setAttribute("mode", mode);
 			request.setAttribute("valid_request", true);
 			view = request.getRequestDispatcher("/jsp/task/taskEdit.jsp");
