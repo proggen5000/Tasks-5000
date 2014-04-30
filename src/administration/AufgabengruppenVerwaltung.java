@@ -18,7 +18,7 @@ public class AufgabengruppenVerwaltung {
 	 */
 	public static Aufgabengruppe neu (Aufgabengruppe aufgabengruppe){		
 
-		String values = aufgabengruppe.getName() + ", " + aufgabengruppe.getBeschreibung() + ", " + aufgabengruppe.getTeam().getId();
+		String values = "'"+aufgabengruppe.getName() + "', '" + aufgabengruppe.getBeschreibung() + "', " + aufgabengruppe.getTeam().getId();
 		long id;
 		try {
 			id = Queries.insertQuery("AufgabenGruppen", "Name, Beschreibung, Team", values);
@@ -42,7 +42,7 @@ public class AufgabengruppenVerwaltung {
 	public static Aufgabengruppe bearbeiten (Aufgabengruppe aufgabengruppe){
 		//Aktualisieren des Aufgabengruppe
 		String table = "AufgabenGruppen";
-		String updateString = "Name = " + aufgabengruppe.getName() + ", Beschreibung = " + aufgabengruppe.getBeschreibung()  + ", Team = " + aufgabengruppe.getTeam().getId();
+		String updateString = "Name = '" + aufgabengruppe.getName() + "', Beschreibung = '" + aufgabengruppe.getBeschreibung()  + "', Team = " + aufgabengruppe.getTeam().getId();
 		String where = "AufgabenGruppeID = " + aufgabengruppe.getId();
 
 		Aufgabengruppe aufgabengruppe_neu = null;

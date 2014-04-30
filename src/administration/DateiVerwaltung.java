@@ -22,8 +22,8 @@ public class DateiVerwaltung {
 		//Einfuegen der Werte (ohne ID)
 		String table= "dateien";
 		String columns= "dateiid, name, beschreibung, pfad, teamid, erstellerid";
-		String values= "NULL, "+datei.getName()+", "+datei.getBeschreibung()+", "
-				+datei.getPfad()+", "+datei.getTeam().getId()
+		String values= "NULL, '"+datei.getName()+"', '"+datei.getBeschreibung()+"', '"
+				+datei.getPfad()+"', "+datei.getTeam().getId()
 				+", "+datei.getErsteller().getId();
 		int testID;
 		
@@ -52,9 +52,9 @@ public class DateiVerwaltung {
 		
 		//Aktualisieren der Dateibeschreibung
 		String table= "dateien";
-		String updateString= "name="+datei.getName()+", beschreibung="
-				+datei.getBeschreibung()+", pfad="+datei.getPfad()
-				+", teamid="+datei.getTeam().getId();
+		String updateString= "name='"+datei.getName()+"', beschreibung='"
+				+datei.getBeschreibung()+"', pfad='"+datei.getPfad()
+				+"', teamid="+datei.getTeam().getId();
 		String where= "dateiid="+datei.getId();
 		
 		try {
