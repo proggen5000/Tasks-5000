@@ -80,6 +80,7 @@ public class TaskController extends HttpServlet {
 				request.setAttribute("team", team);
 				request.setAttribute("taskGroups", AufgabengruppenVerwaltung.getListeVonTeam(team.getId()));
 				request.setAttribute("users", MitgliederVerwaltung.getListeVonAufgabe(teamId));
+				request.setAttribute("today", new Date());
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/jsp/task/taskEdit.jsp");

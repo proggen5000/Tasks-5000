@@ -53,7 +53,7 @@ public class FileController extends HttpServlet {
 		
 		long teamId = -1;
 		try {
-			id = Long.parseLong(request.getParameter("teamId"));
+			teamId = Long.parseLong(request.getParameter("teamId"));
 		} catch (NumberFormatException e){
 			request.setAttribute("error", e);
 		}

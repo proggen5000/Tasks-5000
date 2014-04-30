@@ -212,7 +212,7 @@ public class TeamVerwaltung {
 	public static ArrayList<Team> getListeVonMitglied(long mitgliedID){
 		ArrayList<Team> al = new ArrayList<Team>();
 		try{
-			String sql = "SELECT * FROM teams JOIN mitglieder_teams "
+			String sql = "SELECT teams.* FROM teams JOIN mitglieder_teams "
 				+"ON teams.teamid= mitglieder_teams.teamid "
 				+"JOIN mitglieder ON mitglieder.mitgliedid = mitglieder_teams.mitgliedid "
 				+"WHERE mitglieder.mitgliedid= " + mitgliedID;
