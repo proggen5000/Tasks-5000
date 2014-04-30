@@ -13,7 +13,7 @@
 				<div class="col-md-4">
 					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Login</button>
 				</div>
-				<div class="col-md-8">
+				<div class="col-lg-8">
 					<label><input type="checkbox" name="cookie" /> Login merken</label>
 				</div>
 			</div>

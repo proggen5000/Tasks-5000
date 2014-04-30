@@ -50,18 +50,34 @@ public class IndexController extends HttpServlet {
 			view = request.getRequestDispatcher("/jsp/sites/" + page + ".jsp");
 		}
 		
-		// ausgeloggt, aber Cookie vorhanden
-		else if(!login && currentUserCookie != null){
-			if(MitgliederVerwaltung.vorhanden(currentUserCookie)){
-				Mitglied user = MitgliederVerwaltung.get(currentUserCookie);
-				request.setAttribute("username", user.getUsername());
-				request.setAttribute("password", user.getPw());
-				request.setAttribute("cookie_forward", true);
-				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("/login?mode=login");
-			} else {
-				// TODO Benutzer nicht vorhanden! (Fehlermeldung)
-			}	
+		// ausgeloggt
+		else if(!login){
+			// kein Cookie vorhanden
+			if(currentUserCookie == null){
+				view = request.getRequestDispatcher("/jsp/sites/index.jsp");
+			}
+			
+			// Cookie vorhanden
+			else if(currentUserCookie != null){
+				if(MitgliederVerwaltung.vorhanden(currentUserCookie)){
+					Mitglied user = MitgliederVerwaltung.get(currentUserCookie);
+					request.setAttribute("username", user.getUsername());
+					request.setAttribute("password", user.getPw());
+					request.setAttribute("cookie_forward", true);
+					request.setAttribute("valid_request", true);
+					view = request.getRequestDispatcher("/login?mode=login");
+				} else {
+					// TODO Fehlermeldung kommt in komischer Situation
+					// System.out.println("Cookie: " + currentUserCookie);
+					/*// Cookie entfernen:
+					Cookie cookie = new Cookie("currentUser", "");
+					cookie.setMaxAge(0);
+					
+					request.setAttribute("error", "Benutzer ihres Cookies nicht gefunden! Bitte loggen Sie sich neu ein oder registrieren Sie sich.");
+					view = request.getRequestDispatcher("/error.jsp");
+					*/
+				}
+			}
 		}
 		
 		// eingeloggt
@@ -73,6 +89,7 @@ public class IndexController extends HttpServlet {
 			request.setAttribute("valid_request", true);
 			view = request.getRequestDispatcher("/jsp/sites/indexUser.jsp");
 		}
+		
 		view.forward(request, response);
 	}
 

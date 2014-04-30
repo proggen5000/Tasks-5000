@@ -81,9 +81,4 @@ public class Datei implements Serializable {
 		return 4; // TODO
 		// fileItem.getSize();
 	}
-	
-	/*// TODO funktioniert erst mit "getVonDatei" in AufgabenDateien
-	public Aufgabe getAufgabe(){
-		return AufgabenVerwaltung.getVonDatei(id);
-	} */
 }

@@ -128,7 +128,7 @@ public class LoginController extends HttpServlet {
 				view = request.getRequestDispatcher("/error.jsp");
 			}
 			
-		// Logout
+		// Logout (Aktion)
 		} else if(mode.equals("logout")){
 			if(login){
 				HttpSession session = request.getSession(true);
