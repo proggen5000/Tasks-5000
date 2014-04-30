@@ -46,7 +46,7 @@
 			<c:if test="${param.mode == 'new'}"><h1>Aufgabe erstellen</h1></c:if>
 			<c:if test="${param.mode == 'edit'}"><h1>Aufgabe bearbeiten</h1></c:if>
 			
-			<form class="form" action="/task" method="post" enctype="multipart/form-data">
+			<form class="form" action="/task" method="post">
 		  		<div class="form-group col-xs row">
 		  			<div class="col-md-6">
 		  				<label for="name"><span class="glyphicon glyphicon-time"></span> Name</label>
@@ -127,7 +127,7 @@
 				
 				<c:if test="${param.mode == 'new'}"><input type="hidden" name="mode" value="new" /></c:if>
 				<c:if test="${param.mode == 'edit'}"><input type="hidden" name="mode" value="edit" /></c:if>
-				<input type="hidden" name="team" value="${team.id}" />
+				<input type="hidden" name="team" value="${task.id}" />
 				
 				<div class="form-group col-xs">
 					<c:if test="${param.mode == 'new'}">

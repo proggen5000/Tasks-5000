@@ -41,14 +41,11 @@
 	  			<p><a href="/file?mode=new&teamId=${team.id}">Laden Sie Dateien hoch</a>, um diese hier f&uuml;r Ihr Team aufzulisten.</p>
 	  		</c:if>
 	  		<c:if test="${fn:length(files) > 0}">
-				<div class="panel panel-default">
-					<div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-paperclip"></span> Dateien</h3></div>
-					<div class="panel-body">
-						<c:forEach var="file" items="${files}">
-							<p><span class="glyphicon glyphicon-file"></span> <a href="/file?mode=view&id=${file.id}">${file.name}</a> (${file.size} KB)</p>
-						</c:forEach>
-					</div>
-				</div>
+	  			<ul class="list-group">
+					<c:forEach var="file" items="${files}">
+						<a href="/file?mode=view&id=${file.id}" class="list-group-item"><span class="glyphicon glyphicon-file"></span> ${file.name} (${file.size} KB)</a>
+					</c:forEach>
+				</ul>
 			</c:if>
 
 		</div><%-- Ende content --%>
