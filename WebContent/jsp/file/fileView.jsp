@@ -21,7 +21,7 @@
 			<form action="/file" method="post">
 				<input type="hidden" name="id" value="${task.id}" />
 				<input type="hidden" name="mode" value="download" />
-				<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-download"></span> Download <small>(XY KB)</small></button>
+				<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-download"></span> Download <small>(${file.size} KB)</small></button>
 			</form>
 			
 			</div><%-- Ende content --%>

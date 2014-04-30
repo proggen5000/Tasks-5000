@@ -58,9 +58,9 @@
 					<textarea id="description" name="description" class="form-control" rows="2">${team.beschreibung}</textarea>
 				</div>
 				<div class="form-group col-xs">
-					<label for="members"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="Mehrere Mitglieder durck Gedr&uuml;ckthalten von <kbd>Strg</kbd> bzw. <kbd>Cmd</kbd> markieren">?</span>
+					<label for="members"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="Mehrere Mitglieder durck Gedr&uuml;ckthalten von STRG bzw. CMD markieren">?</span>
 					<div class="row">
-						<div class="col-xs-4">
+						<div class="col-xs-5">
 							<select multiple name="members" id="members" size="8" class="form-control">
 								<c:forEach var="user" items="${users}">
 									<option value="${user.id}">${user.username}</option>
@@ -73,7 +73,7 @@
 	       					<input type="button" id="btnRight" class="btn btn-default" value="&gt;&gt;" />
 						</div>
 						
-						<div class="col-xs-4">
+						<div class="col-xs-5">
 							<select multiple name="membersAll" id="membersAll" size="8" class="form-control">
 								<c:forEach var="userAll" items="${usersRest}">
 									<option value="${userAll.id}">${userAll.username} (${userAll.vorname} ${userAll.nachname})</option>

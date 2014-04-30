@@ -46,7 +46,7 @@
 			<c:if test="${param.mode == 'new'}"><h1>Aufgabe erstellen</h1></c:if>
 			<c:if test="${param.mode == 'edit'}"><h1>Aufgabe bearbeiten</h1></c:if>
 			
-			<form class="form" action="/task" method="post" enctype="multipart/form-data">
+			<form class="form" action="/task" method="post">
 		  		<div class="form-group col-xs row">
 		  			<div class="col-md-6">
 		  				<label for="name"><span class="glyphicon glyphicon-time"></span> Name</label>
@@ -73,7 +73,12 @@
 				<div class="form-group col-xs row">
 				    	<div class="col-xs-4">
 				    		<label><span class="glyphicon glyphicon-calendar"></span> Erstellungsdatum</label>
-				    		<p class="form-control-static"><fmt:formatDate pattern="dd.MM.yyyy" value="${task.erstellungsdatumAsDate}" /></p>
+				    		<c:if test="${param.mode == 'new'}">
+				    			<p class="form-control-static"><fmt:formatDate pattern="dd.MM.yyyy" value="${today}" /></p>
+				    		</c:if>
+				    		<c:if test="${param.mode == 'edit'}">
+				    			<p class="form-control-static"><fmt:formatDate pattern="dd.MM.yyyy" value="${task.erstellungsdatumAsDate}" /></p>
+				    		</c:if>
 				    	</div>
 				    	<div class="col-xs-4">
 				    		<label for="deadline"><span class="glyphicon glyphicon-bell"></span> Deadline</label>
@@ -85,7 +90,7 @@
 				    	</div>
 				</div>
 				<div class="form-group col-xs">
-					<label for="users"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="Mehrere Mitglieder durck Gedr&uuml;ckthalten von <kbd>Strg</kbd> bzw. <kbd>Cmd</kbd> markieren">?</span>
+					<label for="users"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="Mehrere Mitglieder durck Gedr&uuml;ckthalten von STRG bzw. CMD markieren">?</span>
 					<select multiple name="users" id="users" size="3" class="form-control">
 						<c:forEach var="userSelected" items="${usersSelected}">
 							<option value="${userSelected.id}" selected>${userSelected.username}</option>
@@ -122,7 +127,7 @@
 				
 				<c:if test="${param.mode == 'new'}"><input type="hidden" name="mode" value="new" /></c:if>
 				<c:if test="${param.mode == 'edit'}"><input type="hidden" name="mode" value="edit" /></c:if>
-				<input type="hidden" name="team" value="${team.id}" />
+				<input type="hidden" name="team" value="${task.id}" />
 				
 				<div class="form-group col-xs">
 					<c:if test="${param.mode == 'new'}">
