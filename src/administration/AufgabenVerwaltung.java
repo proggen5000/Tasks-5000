@@ -27,7 +27,7 @@ public class AufgabenVerwaltung {
 				+ aufgabe.getDeadline();
 		long id = -1;
 		try {
-			id = Queries.insertQuery("Aufgabe", "AufgabenGruppeID, ErstellerID, Name, Beschreibung, Status, Erstellungsdatum, Deadline", values);
+			id = Queries.insertQuery("Aufgaben", "AufgabenGruppeID, ErstellerID, Name, Beschreibung, Status, Erstellungsdatum, Deadline", values);
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
