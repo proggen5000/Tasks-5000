@@ -2,6 +2,9 @@ package administration;
 
 import java.sql.SQLException;
 import java.util.Calendar;
+
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
 import database.Queries;
 
 public class MitgliederTeams {
@@ -22,28 +25,23 @@ public class MitgliederTeams {
 		
 		//Parameter vorbereiten
 		String table= "mitglieder_teams";
-		String columns= "mitglieder_mitgliedid, teams_teamid, berechtigung, beitrittsdatum";
+		String columns= "mitgliedid, teamid, berechtigung, beitrittsdatum";
 		if (berechtigung==null){
 			berechtigung="mitglied";
 		}
-		String values= mitgliedid+", "+teamid+", "+berechtigung+", "+beitrittsdatum;
+		String values= mitgliedid+", "+teamid+", '"+berechtigung+"', "+beitrittsdatum;
 		int testID;
 		
-		//SQL mit Parametern ausf�hren
+		//SQL mit Parametern ausführen
 		try {
 			testID = Queries.insertQuery(table, columns, values);
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			testID= -1;
+		} catch (MySQLIntegrityConstraintViolationException e) {
+			testID= 0;
+		} catch(SQLException e){
+			e.printStackTrace();
+			testID = -1;
 		}
-		
-		if (testID!= -1){
-			return true;
-		}
-		else{
-			return false;
-		}
+		return testID >= 0;
 	}
 	
 	/**

@@ -142,7 +142,8 @@ public class Queries {
 	 * @throws SQLException Wird bei Fehlern bei Ausf�hrung der SQL-Anweisung geworfen.
 	 */
 	public static int insertQuery(String table, String columns, String values) throws SQLException{
-		PreparedStatement query = Connect.getConnection().prepareStatement("INSERT INTO "+table+" ("+columns+") VALUES ("+values+")");
+		PreparedStatement query = Connect.getConnection().prepareStatement("INSERT INTO "+table+" ("+columns+") VALUES ("+values+")", Statement.RETURN_GENERATED_KEYS );
+		
 		if(query.executeUpdate() == 1){
 			// Statement erfolgreich ausgeführt
 			try{
