@@ -320,6 +320,7 @@ public class MitgliederVerwaltung {
 		ArrayList<Mitglied> usersTeam = getListeVonTeam(teamId);
 		
 		for(Mitglied m : usersTeam){
+			
 			if(usersAll.contains(m)){
 				usersAll.remove(m);
 			}

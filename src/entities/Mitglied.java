@@ -78,4 +78,21 @@ public class Mitglied implements Serializable{
 	public Date getRegdatumAsDate(){
 		return new java.util.Date(regdatum);
 	}
+	
+	/**
+	 * Überschreibt Vergleichsmethode für Mitgliedobjekte
+	 * @param o Zu vergleichendes Objekt
+	 * @return Vegleich erfolgreich (true) / nicht erfolgreich (false)
+	 */
+	@Override
+	public boolean equals(Object o){
+		if(o.getClass() == this.getClass()){
+			Mitglied m = (Mitglied)o;
+			return m.getId()==this.id;
+		}else if(o.getClass() == Long.class){
+			Long l = (Long)o;
+			return l == this.getId();
+		}
+		return false;
+	}
 }
