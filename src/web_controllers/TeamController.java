@@ -1,7 +1,6 @@
 package web_controllers;
 
 import java.io.IOException;
-import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -44,6 +43,12 @@ public class TeamController extends HttpServlet {
 		} catch (NumberFormatException e){
 			request.setAttribute("error", e);
 		}
+		if(request.getAttribute("id") != null){
+			id = Long.parseLong((String) request.getAttribute("id"));
+			// TODO Debug:
+			System.out.println("ID-Attribut: " + id);
+		}
+		
 		
 		String mode = request.getParameter("mode");
 		if(request.getAttribute("mode") != null){
@@ -150,9 +155,13 @@ public class TeamController extends HttpServlet {
 		}
 		
 		String mode = request.getParameter("mode");
+		// TODO Debug
+		System.out.println("Modus durch getParameter: " + mode);
+		
+		/*
 		if(request.getAttribute("mode") != null){
 			mode = (String) request.getAttribute("mode");
-		}
+		} */
 		
 		RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
 
@@ -165,15 +174,35 @@ public class TeamController extends HttpServlet {
 	
 		// Team erstellen (Aktion)
 		else if(mode.equals("new")){
-			entities.Team team = new entities.Team();
-			team.setGruppenfuehrer(MitgliederVerwaltung.get(currentUser));
-			team.setGruendungsdatum(new Date().getTime()); // TODO ggf. unnötig?
-			team.setName(request.getParameter("name"));
-			team.setBeschreibung(request.getParameter("description"));
-			entities.Team teamNew = TeamVerwaltung.neu(team);
+			String name = request.getParameter("name");
+			// TODO Debug:
+			System.out.println("Name: " + name);
+			System.out.println("Namenslaenge: " + name.length());
 			
-			request.setAttribute("valid_request", true);
-			view = request.getRequestDispatcher("/team?mode=view&id="+teamNew.getId());
+			
+			if(name.length() > 0){
+				entities.Team team = new entities.Team();
+				team.setGruppenfuehrer(MitgliederVerwaltung.get(currentUser));
+				// team.setGruendungsdatum(new Date().getTime());
+				team.setName(name);
+				team.setBeschreibung(request.getParameter("description"));
+				
+				entities.Team teamNew = TeamVerwaltung.neu(team);
+				
+				// request.setAttribute("valid_request", true);
+				// request.setAttribute("mode", "view");
+				// request.setAttribute("id", teamNew.getId());
+				// view = request.getRequestDispatcher("/team?mode=view&id="+teamNew.getId());
+				// TODO So?
+				response.sendRedirect("/team?mode=view&id="+teamNew.getId());
+			} else {
+				request.setAttribute("alert", "Bitte geben Sie alle Daten an, die mit einem Sternchen (*) gekennzeichnet sind.");
+				request.setAttribute("alert_mode", "danger");
+				request.setAttribute("mode", "new");
+				// response.sendRedirect("/team?mode=new");
+				view = request.getRequestDispatcher("/team");
+			}
+			
 		}
 		
 		// Team bearbeiten (Aktion)

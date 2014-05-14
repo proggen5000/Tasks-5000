@@ -9,8 +9,3 @@ $("#btnRight").click(function () {
     var selectedItem = $("#members option:selected");
     $("#membersAll").append(selectedItem);
 });
-
-$("#membersAll").change(function () {
-    var selectedItem = $("#membersAll option:selected");
-    $("#membersSearch").val(selectedItem.text());
-});
