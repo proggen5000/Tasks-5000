@@ -69,8 +69,8 @@ public class Queries {
 	 * @throws SQLException Wird bei Fehlern bei Ausf�hrung der SQL-Anweisung geworfen.
 	 */
 	public static boolean updateQuery(String table, String updateString, String where) throws SQLException{
-		PreparedStatement query = Connect.getConnection().prepareStatement("UPDATE "+table+" SET "+updateString+" WHERE "+where);
-		if(query.executeUpdate() == 1){
+		Statement query = Connect.getConnection().createStatement();
+		if(query.executeUpdate("UPDATE "+table+" SET "+updateString+" WHERE "+where) == 1){
 			// Statement erfolgreich ausgeführt
 			try{
 				//Es wurde automatisch ein Schlüssel genereiert
@@ -116,8 +116,8 @@ public class Queries {
 	 * @throws SQLException Wird bei Fehlern bei Ausf�hrung der SQL-Anweisung geworfen.
 	 */
 	public static boolean deleteQuery(String table, String where) throws SQLException{
-		PreparedStatement query = Connect.getConnection().prepareStatement("DELETE FROM "+table+" WHERE "+where);
-		query.executeUpdate();
+		Statement query = Connect.getConnection().createStatement();
+		query.executeUpdate("DELETE FROM "+table+" WHERE "+where);
 		return true;
 	}
 	 
@@ -142,9 +142,8 @@ public class Queries {
 	 * @throws SQLException Wird bei Fehlern bei Ausf�hrung der SQL-Anweisung geworfen.
 	 */
 	public static int insertQuery(String table, String columns, String values) throws SQLException{
-		PreparedStatement query = Connect.getConnection().prepareStatement("INSERT INTO "+table+" ("+columns+") VALUES ("+values+")", Statement.RETURN_GENERATED_KEYS );
-		
-		if(query.executeUpdate() == 1){
+		Statement query  = Connect.getConnection().createStatement();
+		if(query.executeUpdate("INSERT INTO "+table+" ("+columns+") VALUES ("+values+")", Statement.RETURN_GENERATED_KEYS) == 1){
 			// Statement erfolgreich ausgeführt
 			try{
 				//Es wurde automatisch ein Schlüssel genereiert

@@ -26,9 +26,9 @@ public class MitgliederVerwaltung {
 		String table= "mitglieder";
 		String columns= "mitgliedid, username, pw, email, vorname, nachname, "
 				+"regdatum";
-		String values= "NULL, "+mitglied.getUsername()+", "+mitglied.getPw()+", "
-				+mitglied.getEmail()+", "+mitglied.getVorname()+", "+mitglied.getNachname()
-				+", "+regdatum;
+		String values= "NULL, '"+mitglied.getUsername()+"', PASSWORD('"+mitglied.getPw()+"'), '"
+				+mitglied.getEmail()+"', '"+mitglied.getVorname()+"', '"+mitglied.getNachname()
+				+"', "+regdatum;
 		long testID;
 		try {
 			testID = Queries.insertQuery(table, columns, values);
@@ -43,7 +43,7 @@ public class MitgliederVerwaltung {
 		}
 		else{
 			Mitglied testmitglied= get(testID);
-				return testmitglied;
+			return testmitglied;
 		}
 	}
 	
