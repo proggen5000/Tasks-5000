@@ -166,7 +166,6 @@ public class TaskController extends HttpServlet {
 		else if(mode.equals("new")){
 			Aufgabe task = new Aufgabe();
 			task.setErsteller(MitgliederVerwaltung.get(currentUser));
-			task.setErstellungsdatum(new Date().getTime()); // TODO unnoetig?
 			task.setName(request.getParameter("name"));
 			task.setBeschreibung(request.getParameter("description"));
 			task.setGruppe(AufgabengruppenVerwaltung.get(Long.parseLong(request.getParameter("group"))));

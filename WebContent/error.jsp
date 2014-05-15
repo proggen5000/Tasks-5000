@@ -13,10 +13,12 @@
 			  		</div>
 			  		<div class="col-xs-2 error pull-right"><span class="glyphicon glyphicon-fire"></span></div>
 		  		</div>
-		  		<c:if test="${requestScope.error != null or param.error != null}">
+		  		<c:if test="${requestScope.error != null or sessionScope.error != null or param.error != null}">
 		  			<h2>Fehlermeldung</h2>
 		  			<p class="errorlog">${requestScope.error}</p>
+		  			<p class="errorlog">${sessionScope.error}</p>
 		  			<p class="errorlog">${param.error}</p>
+		  			<c:remove var="error" />
 		  		</c:if>
 		  		
 		  		<br />

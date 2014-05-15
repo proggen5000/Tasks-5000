@@ -63,7 +63,7 @@
 					<label for="members"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="Mehrere Mitglieder durck Gedr&uuml;ckthalten von STRG bzw. CMD markieren">?</span>
 					<div class="row">
 						<div class="col-xs-5">
-							<select multiple id="leftValues" name="members" size="8" class="form-control">
+							<select multiple id="leftValues" name="users" size="8" class="form-control">
 								<c:forEach var="user" items="${users}">
 									<option value="${user.id}">${user.username} (${user.vorname} ${user.nachname})</option>
 								</c:forEach>
@@ -77,33 +77,12 @@
 						
 						<div class="col-xs-5">
 							<select multiple id="rightValues" size="8" class="form-control">
-								<c:forEach var="userAll" items="${usersRest}">
-									<option value="${userAll.id}">${userAll.username} (${userAll.vorname} ${userAll.nachname})</option>
+								<c:forEach var="userRest" items="${usersRest}">
+									<option value="${userRest.id}">${userRest.username} (${userRest.vorname} ${userRest.nachname})</option>
 								</c:forEach>
 							</select>
 						</div>
-					</div>
-					
-					<section class="container">
-					    <div>
-					        <select id="leftValues" size="5" multiple></select>
-					    </div>
-					    <div>
-					        <input type="button" id="btnLeft" value="&lt;&lt;" />
-					        <input type="button" id="btnRight" value="&gt;&gt;" />
-					    </div>
-					    <div>
-					        <select id="rightValues" size="4" multiple>
-					            <option>1</option>
-					            <option>2</option>
-					            <option>3</option>
-					        </select>
-					        <div>
-					            <input type="text" id="txtRight" />
-					        </div>
-					    </div>
-					</section>
-					
+					</div>					
 				</div>
 				
 				<c:if test="${param.mode == 'new'}"><input type="hidden" name="mode" value="new" /></c:if>
