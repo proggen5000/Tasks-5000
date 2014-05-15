@@ -14,14 +14,16 @@
 
 <jsp:include page="../menu.jsp"><jsp:param name="menu" value="teams" /></jsp:include>
 			
-			<%-- Alerts, falls übergeben --%>
-			<c:if test="${requestScope.alert != null}">
-	  			<c:if test="${requestScope.alert_mode == null}">
-	  				<div class="alert alert-success">${requestScope.alert}</div>
+			<%-- Alerts, falls via Session übergeben --%>
+			<c:if test="${sessionScope.alert != null}">
+	  			<c:if test="${sessionScope.alert_mode == null}">
+	  				<div class="alert alert-success">${sessionScope.alert}</div>
 	  			</c:if>
-	  			<c:if test="${requestScope.alert_mode != null}">
-	  				<div class="alert alert-${requestScope.alert_mode}">${requestScope.alert}</div>
+	  			<c:if test="${sessionScope.alert_mode != null}">
+	  				<div class="alert alert-${sessionScope.alert_mode}">${sessionScope.alert}</div>
 	  			</c:if>
+	  			<c:remove var="alert" />
+	  			<c:remove var="alert_mode" />
 	  		</c:if>
 			
 			<%-- Team bearbeiten/erstellen --%>
@@ -61,7 +63,7 @@
 					<label for="members"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="Mehrere Mitglieder durck Gedr&uuml;ckthalten von STRG bzw. CMD markieren">?</span>
 					<div class="row">
 						<div class="col-xs-5">
-							<select multiple name="members" id="members" size="8" class="form-control">
+							<select multiple id="leftValues" name="members" size="8" class="form-control">
 								<c:forEach var="user" items="${users}">
 									<option value="${user.id}">${user.username} (${user.vorname} ${user.nachname})</option>
 								</c:forEach>
@@ -74,13 +76,34 @@
 						</div>
 						
 						<div class="col-xs-5">
-							<select multiple name="membersAll" id="membersAll" size="8" class="form-control">
+							<select multiple id="rightValues" size="8" class="form-control">
 								<c:forEach var="userAll" items="${usersRest}">
 									<option value="${userAll.id}">${userAll.username} (${userAll.vorname} ${userAll.nachname})</option>
 								</c:forEach>
 							</select>
 						</div>
 					</div>
+					
+					<section class="container">
+					    <div>
+					        <select id="leftValues" size="5" multiple></select>
+					    </div>
+					    <div>
+					        <input type="button" id="btnLeft" value="&lt;&lt;" />
+					        <input type="button" id="btnRight" value="&gt;&gt;" />
+					    </div>
+					    <div>
+					        <select id="rightValues" size="4" multiple>
+					            <option>1</option>
+					            <option>2</option>
+					            <option>3</option>
+					        </select>
+					        <div>
+					            <input type="text" id="txtRight" />
+					        </div>
+					    </div>
+					</section>
+					
 				</div>
 				
 				<c:if test="${param.mode == 'new'}"><input type="hidden" name="mode" value="new" /></c:if>

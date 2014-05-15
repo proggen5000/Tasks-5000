@@ -33,13 +33,13 @@
 			</c:if>
 			
 			
-			<%-- Alerts, falls übergeben --%>
-			<c:if test="${requestScope.alert != null}">
-	  			<c:if test="${requestScope.alert_mode == null}">
-	  				<div class="alert alert-success">${requestScope.alert}</div>
+			<%-- Alerts, falls via Session übergeben --%>
+			<c:if test="${sessionScope.alert != null}">
+	  			<c:if test="${sessionScope.alert_mode == null}">
+	  				<div class="alert alert-success">${sessionScope.alert}</div>
 	  			</c:if>
-	  			<c:if test="${requestScope.alert_mode != null}">
-	  				<div class="alert alert-${requestScope.alert_mode}">${requestScope.alert}</div>
+	  			<c:if test="${sessionScope.alert_mode != null}">
+	  				<div class="alert alert-${sessionScope.alert_mode}">${sessionScope.alert}</div>
 	  			</c:if>
 	  		</c:if>
 		

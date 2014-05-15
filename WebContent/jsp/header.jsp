@@ -8,9 +8,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link type="text/css" rel="stylesheet" href="<c:url value="/css/bootstrap.css" />" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="js/bootstrap.js"></script>
-    <script src="js/tooltip.js"></script>
-    <script src="js/selector.js"></script>
+	<script src="/js/bootstrap.js"></script>
+	<script src="/js/tooltip.js"></script>
+	<script src="/js/selector.js"></script>
 	<title>Tasks 5000 &#187; ${param.page_title}</title>
 </head>
 <body> 

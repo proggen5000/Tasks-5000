@@ -1,11 +1,13 @@
-// http://jsfiddle.net/eUDRV/3/ 
+/**
+ * for selecting team members, http://jsfiddle.net/eUDRV/3/
+ */
 
 $("#btnLeft").click(function () {
-	var selectedItem = $("#membersAll option:selected");
-    $("#members").append(selectedItem);
+	var selectedItem = $("#rightValues option:selected");
+	$("#leftValues").append(selectedItem);
 });
 
 $("#btnRight").click(function () {
-    var selectedItem = $("#members option:selected");
-    $("#membersAll").append(selectedItem);
+	var selectedItem = $("#leftValues option:selected");
+	$("#rightValues").append(selectedItem);
 });
