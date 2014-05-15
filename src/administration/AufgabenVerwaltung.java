@@ -71,7 +71,7 @@ public class AufgabenVerwaltung {
 	 * @return boolean ob gelöscht oder nicht
 	 */
 	public static boolean loeschen (Aufgabe aufgabe){
-		String table = "Aufgabe";
+		String table = "Aufgaben";
 		String where = "AufgabeID = " + aufgabe.getId();
 		try {
 			Queries.deleteQuery("aufgaben_dateien", "AufgabeID = " + aufgabe.getId());

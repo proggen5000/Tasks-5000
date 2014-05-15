@@ -79,7 +79,7 @@ public class MitgliederTeams {
 	public static boolean austreten(long mitgliedid, long teamid){
 		
 		String table= "mitglieder_teams";
-		String where= "mitglieder_mitgliedid="+mitgliedid+" AND teams_teamid="+teamid;
+		String where= "mitgliedid="+mitgliedid+" AND teamid="+teamid;
 		try {
 			return Queries.deleteQuery(table, where);
 		} catch (SQLException e) {

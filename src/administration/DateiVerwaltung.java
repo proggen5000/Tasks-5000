@@ -82,14 +82,14 @@ public class DateiVerwaltung {
 		//Datei anhand der ID löschen
 		String table= "dateien";
 		String where= "dateiid="+dateiid;
-		String aufgabensql= "SELECT aufgabenid FROM aufgaben_dateien WHERE dateiid= "+dateiid;
+		String aufgabensql= "SELECT aufgabeid FROM aufgaben_dateien WHERE dateiid= "+dateiid;
 		
 		try {
 			//löschen aller Verbindungen zu Aufgaben
 			ResultSet rs= Queries.rowQuery(aufgabensql);
 			if (rs!= null){
 				while (rs.next()){
-					AufgabenDateien.entfernen(get(dateiid), AufgabenVerwaltung.get(rs.getLong("aufgabenid")));
+					AufgabenDateien.entfernen(get(dateiid), AufgabenVerwaltung.get(rs.getLong("aufgabeid")));
 				}
 			}
 			

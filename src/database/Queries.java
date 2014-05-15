@@ -117,7 +117,7 @@ public class Queries {
 	 */
 	public static boolean deleteQuery(String table, String where) throws SQLException{
 		PreparedStatement query = Connect.getConnection().prepareStatement("DELETE FROM "+table+" WHERE "+where);
-		query.executeQuery();
+		query.executeUpdate();
 		return true;
 	}
 	 

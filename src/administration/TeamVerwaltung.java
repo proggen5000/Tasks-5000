@@ -93,7 +93,7 @@ public class TeamVerwaltung {
 		String mitgliederteamsql= "SELECT mitgliedid FROM "
 								+"mitglieder_teams WHERE teamid= "+teamid;
 		String aufgabengruppensql= "SELECT aufgabengruppeid FROM aufgabengruppen "
-								+"WHERE TEAM= "+teamid;
+								+"WHERE team = "+teamid;
 				
 		try {
 			//löschen der dazugehörenden Dateien
