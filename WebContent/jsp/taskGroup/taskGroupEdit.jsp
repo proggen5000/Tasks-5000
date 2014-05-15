@@ -46,10 +46,12 @@
 				<div class="form-group col-xs">
 					<c:if test="${param.mode == 'new'}">
 						<input type="hidden" name="teamId" value="${team.id}" />
+						<input type="hidden" name="mode" value="new" />
 						<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Erstellen</button>
 						<a href="/team?mode=view&id=${team.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
 					</c:if>
 					<c:if test="${param.mode == 'edit'}">
+						<input type="hidden" name="mode" value="edit" />
 						<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Speichern</button>
 						<a href="/team?mode=view&id=${team.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
 						<a href="/taskGroup?mode=remove&id=${taskGroup.id}" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Aufgabengruppe l&ouml;schen</a>

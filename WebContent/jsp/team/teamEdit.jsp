@@ -14,18 +14,6 @@
 
 <jsp:include page="../menu.jsp"><jsp:param name="menu" value="teams" /></jsp:include>
 			
-			<%-- Alerts, falls via Session übergeben --%>
-			<c:if test="${sessionScope.alert != null}">
-	  			<c:if test="${sessionScope.alert_mode == null}">
-	  				<div class="alert alert-success">${sessionScope.alert}</div>
-	  			</c:if>
-	  			<c:if test="${sessionScope.alert_mode != null}">
-	  				<div class="alert alert-${sessionScope.alert_mode}">${sessionScope.alert}</div>
-	  			</c:if>
-	  			<c:remove var="alert" />
-	  			<c:remove var="alert_mode" />
-	  		</c:if>
-			
 			<%-- Team bearbeiten/erstellen --%>
 			<c:if test="${param.mode == 'edit'}"><h1>Team bearbeiten</h1></c:if>
 			<c:if test="${param.mode == 'new'}"><h1>Team erstellen</h1></c:if>

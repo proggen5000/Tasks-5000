@@ -127,7 +127,6 @@
 				
 				<c:if test="${param.mode == 'new'}"><input type="hidden" name="mode" value="new" /></c:if>
 				<c:if test="${param.mode == 'edit'}"><input type="hidden" name="mode" value="edit" /></c:if>
-				<input type="hidden" name="team" value="${task.id}" />
 				
 				<div class="form-group col-xs">
 					<c:if test="${param.mode == 'new'}">

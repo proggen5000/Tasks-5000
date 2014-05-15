@@ -76,9 +76,6 @@ public class LoginController extends HttpServlet {
 		String password = request.getParameter("password");
 		
 		String mode = request.getParameter("mode");
-		if(request.getAttribute("mode") != null){
-			mode = (String) request.getAttribute("mode");
-		}
 		
 		RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
 		
@@ -150,13 +147,12 @@ public class LoginController extends HttpServlet {
 		} else if(mode.equals("register")){
 			if(!login){
 				Mitglied user = new Mitglied();
-				// user.setId(id); // TODO noetig?
 				user.setUsername(request.getParameter("username"));
 				user.setVorname(request.getParameter("vorname"));
 				user.setNachname(request.getParameter("nachname"));
 				user.setEmail(request.getParameter("email"));
 				user.setPw(request.getParameter("password"));
-				user.setRegdatum(new Date().getTime()); // TODO noetig?
+				// user.setRegdatum(new Date().getTime()); // TODO noetig?
 				
 				Mitglied userNew = MitgliederVerwaltung.neu(user);
 				request.setAttribute("valid_request", true);

@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import entities.Mitglied;
-import administration.AufgabenMitglieder;
 import administration.AufgabengruppenVerwaltung;
 import administration.DateiVerwaltung;
 import administration.MitgliederTeams;
@@ -33,12 +31,10 @@ public class TeamController extends HttpServlet {
 		}
 		
 		long currentUser = -1;
-		if(request.getSession().getAttribute("currentUser") != null){
-			try {
-				currentUser = Long.parseLong(request.getSession().getAttribute("currentUser").toString());
-			} catch (NullPointerException e){
-				request.setAttribute("error", e);
-			}
+		try {
+			currentUser = Long.parseLong(request.getSession().getAttribute("currentUser").toString());
+		} catch (NullPointerException e){
+			request.setAttribute("error", e);
 		}
 		
 		long id = -1; // TeamID
@@ -46,20 +42,9 @@ public class TeamController extends HttpServlet {
 			id = Long.parseLong(request.getParameter("id"));
 		} catch (NumberFormatException e){
 			request.setAttribute("error", e);
-		}
-		if(request.getAttribute("id") != null){
-			id = Long.parseLong((String) request.getAttribute("id"));
-			// TODO Debug:
-			System.out.println("ID-Attribut: " + id);
-		}
-		
+		}		
 		
 		String mode = request.getParameter("mode");
-		if(request.getAttribute("mode") != null){
-			mode = (String) request.getAttribute("mode");
-			// TODO Debug:
-			System.out.println("Mode-Attribut: " + id);
-		}
 		
 		RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
 
@@ -73,12 +58,17 @@ public class TeamController extends HttpServlet {
 		// Team ansehen
 		else if(mode.equals("view")){
 			if(TeamVerwaltung.vorhanden(id)){
-				request.setAttribute("team", TeamVerwaltung.get(id));
-				request.setAttribute("taskGroups", AufgabengruppenVerwaltung.getListeVonTeam(id));				
-				request.setAttribute("files", DateiVerwaltung.getListeVonTeam(id));
-				request.setAttribute("users", MitgliederVerwaltung.getListeVonTeam(id));
-				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("/jsp/team/teamView.jsp");
+				if(MitgliederVerwaltung.istMitgliedInTeam(currentUser, id)){
+					request.setAttribute("team", TeamVerwaltung.get(id));
+					request.setAttribute("taskGroups", AufgabengruppenVerwaltung.getListeVonTeam(id));				
+					request.setAttribute("files", DateiVerwaltung.getListeVonTeam(id));
+					request.setAttribute("users", MitgliederVerwaltung.getListeVonTeam(id));
+					request.setAttribute("valid_request", true);
+					view = request.getRequestDispatcher("/jsp/team/teamView.jsp");
+				} else {
+					request.setAttribute("error", "Sie sind kein Mitglied dieses Teams!");
+					view = request.getRequestDispatcher("/error.jsp");
+				}
 			} else {
 				request.setAttribute("error", "Team nicht gefunden!");
 				view = request.getRequestDispatcher("/error.jsp");
@@ -141,6 +131,7 @@ public class TeamController extends HttpServlet {
 		view.forward(request, response);
 	}
 
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		boolean login = false;
@@ -216,8 +207,13 @@ public class TeamController extends HttpServlet {
 				team.setBeschreibung(request.getParameter("description"));
 				entities.Team teamUpdated = TeamVerwaltung.bearbeiten(team);
 				
-				session.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!");
-				response.sendRedirect("/team?mode=view&id=" + teamUpdated.getId());
+				if(teamUpdated != null){
+					session.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!");
+					response.sendRedirect("/team?mode=view&id=" + teamUpdated.getId());
+				} else {
+					session.setAttribute("error", "Team konnte nicht bearbeitet werden!");
+					response.sendRedirect("/team?mode=view&id=" + id);
+				}
 			} else {
 				session.setAttribute("error", "Nur Teammanager d&uuml;rfen die Teamdetails bearbeiten!");
 				response.sendRedirect("/error.jsp");
