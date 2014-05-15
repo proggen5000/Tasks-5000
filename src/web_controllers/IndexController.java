@@ -28,7 +28,7 @@ public class IndexController extends HttpServlet {
 		
 		boolean login = false;
 		if(request.getSession().getAttribute("login") != null){
-			login = (boolean) request.getSession().getAttribute("login");
+			login = (Boolean) request.getSession().getAttribute("login");
 		}
 		
 		// Cookie auslesen
@@ -83,7 +83,7 @@ public class IndexController extends HttpServlet {
 		// eingeloggt
 		else if(login){
 			HttpSession session = request.getSession(true);
-			long currentUser = (long) session.getAttribute("currentUser");
+			long currentUser = (Long) session.getAttribute("currentUser");
 			request.setAttribute("teams", TeamVerwaltung.getListeVonMitglied(currentUser));
 			request.setAttribute("tasks", AufgabenVerwaltung.getListeVonMitglied(currentUser));
 			request.setAttribute("valid_request", true);

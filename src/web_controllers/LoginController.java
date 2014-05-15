@@ -27,7 +27,7 @@ public class LoginController extends HttpServlet {
 		
 		boolean login = false;
 		if(request.getSession().getAttribute("login") != null){
-			login = (boolean) request.getSession().getAttribute("login");
+			login = (Boolean) request.getSession().getAttribute("login");
 		}
 		
 		String mode = request.getParameter("mode");
@@ -69,7 +69,7 @@ public class LoginController extends HttpServlet {
 		
 		boolean login = false;
 		if(request.getSession().getAttribute("login") != null){
-			login = (boolean) request.getSession().getAttribute("login");
+			login = (Boolean) request.getSession().getAttribute("login");
 		}
 		
 		String username = request.getParameter("username");
@@ -104,7 +104,7 @@ public class LoginController extends HttpServlet {
 					// Weiterleitung ohne Cookie
 					boolean cookie_forward = false;
 					if(request.getAttribute("cookie_forward") != null){
-						cookie_forward = (boolean) request.getAttribute("cookie_forward");
+						cookie_forward = (Boolean) request.getAttribute("cookie_forward");
 					}
 					
 					if(!cookie_forward){
