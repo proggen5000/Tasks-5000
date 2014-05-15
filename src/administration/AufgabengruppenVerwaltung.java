@@ -21,7 +21,7 @@ public class AufgabengruppenVerwaltung {
 		String values = "'"+aufgabengruppe.getName() + "', '" + aufgabengruppe.getBeschreibung() + "', " + aufgabengruppe.getTeam().getId();
 		long id;
 		try {
-			id = Queries.insertQuery("AufgabenGruppen", "Name, Beschreibung, Team", values);
+			id = Queries.insertQuery("aufgabengruppen", "name, beschreibung, team", values);
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 			return null;
@@ -41,9 +41,9 @@ public class AufgabengruppenVerwaltung {
 	 */
 	public static Aufgabengruppe bearbeiten (Aufgabengruppe aufgabengruppe){
 		//Aktualisieren des Aufgabengruppe
-		String table = "AufgabenGruppen";
-		String updateString = "Name = '" + aufgabengruppe.getName() + "', Beschreibung = '" + aufgabengruppe.getBeschreibung()  + "', Team = " + aufgabengruppe.getTeam().getId();
-		String where = "AufgabenGruppeID = " + aufgabengruppe.getId();
+		String table = "aufgabengruppen";
+		String updateString = "name = '" + aufgabengruppe.getName() + "', beschreibung = '" + aufgabengruppe.getBeschreibung()  + "', team = " + aufgabengruppe.getTeam().getId();
+		String where = "aufgabengruppeID = " + aufgabengruppe.getId();
 
 		Aufgabengruppe aufgabengruppe_neu = null;
 		try {
@@ -69,8 +69,8 @@ public class AufgabengruppenVerwaltung {
 			AufgabenVerwaltung.loeschen(a.get(i));
 		}
 
-		String table = "AufgabenGruppen";
-		String where = "AufgabenGruppeID = " + aufgabengruppe.getId();
+		String table = "aufgabengruppen";
+		String where = "aufgabengruppeID = " + aufgabengruppe.getId();
 		try {
 			return Queries.deleteQuery(table, where);
 		} catch (SQLException e) {
@@ -97,7 +97,7 @@ public class AufgabengruppenVerwaltung {
 		//Suchen der Aufgabe anhand der ID
 		Aufgabengruppe aufgabengruppe = null;
 		try {
-			ResultSet rs = Queries.rowQuery("*", "AufgabenGruppen", "AufgabenGruppeID = " + id);
+			ResultSet rs = Queries.rowQuery("*", "aufgabengruppen", "aufgabengruppeID = " + id);
 			rs.next();
 			aufgabengruppe = createAufgabegruppeByRow(rs);
 		} catch (SQLException e) {
@@ -124,7 +124,7 @@ public class AufgabengruppenVerwaltung {
 		//Suchen der Aufgabe anhand der Name
 		Aufgabengruppe aufgabengruppe = null;
 		try {
-			ResultSet rs = Queries.rowQuery("*", "AufgabenGruppen", "Name = " + name);
+			ResultSet rs = Queries.rowQuery("*", "aufgabengruppen", "name = " + name);
 			rs.next();
 			aufgabengruppe = createAufgabegruppeByRow(rs);
 		} catch (SQLException e) {
@@ -139,15 +139,15 @@ public class AufgabengruppenVerwaltung {
 	 */
 	public static ArrayList<Aufgabengruppe> getListe(){
 		// returnd eine ArrayListe aller Aufgabe
-		String sql = "SELECT * FROM Aufgaben";
+		String sql = "SELECT * FROM aufgaben";
 		ArrayList<Aufgabengruppe> al = new ArrayList<Aufgabengruppe>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
 
 			while(rs.next()){
 				//add every result in resultset to ArrayList
-				Aufgabengruppe a = new Aufgabengruppe(rs.getLong("AufgabenGruppeID"), rs.getString("Name"), 
-						rs.getString("Beschreibung"), TeamVerwaltung.get(rs.getLong("Team")));
+				Aufgabengruppe a = new Aufgabengruppe(rs.getLong("aufgabengruppeID"), rs.getString("name"), 
+						rs.getString("beschreibung"), TeamVerwaltung.get(rs.getLong("team")));
 				al.add(a);
 			}
 		} catch (SQLException e) {
@@ -164,14 +164,14 @@ public class AufgabengruppenVerwaltung {
 	 * @return ArrayList alle Aufgabengruppe für die gesuchte ID
 	 */
 	public static ArrayList<Aufgabengruppe> getListeVonTeam(long teamID){
-		String sql = "SELECT * FROM `aufgabengruppen` WHERE `Team` = "+ teamID +" group by `AufgabenGruppeID`";
+		String sql = "SELECT * FROM `aufgabengruppen` WHERE `team` = "+ teamID +" group by `aufgabengruppeID`";
 		ArrayList<Aufgabengruppe> al = new ArrayList<Aufgabengruppe>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
 
 			while(rs.next()){
 				//add every result in resultset to ArrayList
-				Aufgabengruppe a = AufgabengruppenVerwaltung.get(rs.getLong("AufgabenGruppeID"));
+				Aufgabengruppe a = AufgabengruppenVerwaltung.get(rs.getLong("aufgabengruppeID"));
 				al.add(a);
 			}
 		} catch (SQLException e) {
@@ -188,8 +188,8 @@ public class AufgabengruppenVerwaltung {
 	 */
 	private static Aufgabengruppe createAufgabegruppeByRow(ResultSet rs){
 		try {
-			Aufgabengruppe a = new Aufgabengruppe(rs.getLong("AufgabenGruppeID"), rs.getString("Name"), 
-					rs.getString("Beschreibung"), TeamVerwaltung.get(rs.getLong("Team")));
+			Aufgabengruppe a = new Aufgabengruppe(rs.getLong("aufgabenGruppeID"), rs.getString("name"), 
+					rs.getString("beschreibung"), TeamVerwaltung.get(rs.getLong("team")));
 			return a;
 		} catch (SQLException e) {
 			e.printStackTrace();

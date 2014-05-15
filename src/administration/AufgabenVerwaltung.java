@@ -27,7 +27,7 @@ public class AufgabenVerwaltung {
 				+ aufgabe.getDeadline();
 		long id = -1;
 		try {
-			id = Queries.insertQuery("Aufgaben", "AufgabenGruppeID, ErstellerID, Name, Beschreibung, Status, Erstellungsdatum, Deadline", values);
+			id = Queries.insertQuery("aufgaben", "aufgabengruppeID, erstellerID, name, beschreibung, status, erstellungsdatum, deadline", values);
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -46,13 +46,13 @@ public class AufgabenVerwaltung {
 	 */
 	public static Aufgabe bearbeiten (Aufgabe aufgabe){
 		//Aktualisieren der Aufgabe
-		String table = "Aufgaben";
+		String table = "aufgaben";
 		// AufgabenGruppeID, ErstellerID, Name, Beschreibung, Status, Erstellungsdatum, Deadline
-		String updateString = "AufgabenGruppeID = " + aufgabe.getGruppe().getId()
-				+ ", ErstellerID = " + aufgabe.getErsteller().getId() + ", Name = '" + aufgabe.getName()
-				+ "', Beschreibung = '" + aufgabe.getBeschreibung() + "', Status = " + aufgabe.getStatus()
-				+ ", Erstellungsdatum = " + aufgabe.getDeadline() + ", Deadline = " + aufgabe.getDeadline();
-		String where = "AufgabeID = " + aufgabe.getId();
+		String updateString = "aufgabengruppeID = " + aufgabe.getGruppe().getId()
+				+ ", erstellerID = " + aufgabe.getErsteller().getId() + ", name = '" + aufgabe.getName()
+				+ "', beschreibung = '" + aufgabe.getBeschreibung() + "', status = " + aufgabe.getStatus()
+				+ ", erstellungsdatum = " + aufgabe.getDeadline() + ", deadline = " + aufgabe.getDeadline();
+		String where = "aufgabeID = " + aufgabe.getId();
 
 		try {
 			if (Queries.updateQuery(table, updateString, where) == true) {
@@ -71,11 +71,11 @@ public class AufgabenVerwaltung {
 	 * @return boolean ob gelöscht oder nicht
 	 */
 	public static boolean loeschen (Aufgabe aufgabe){
-		String table = "Aufgaben";
-		String where = "AufgabeID = " + aufgabe.getId();
+		String table = "aufgaben";
+		String where = "aufgabeID = " + aufgabe.getId();
 		try {
-			Queries.deleteQuery("aufgaben_dateien", "AufgabeID = " + aufgabe.getId());
-			Queries.deleteQuery("aufgaben_mitglieder", "AufgabeID = " + aufgabe.getId());
+			Queries.deleteQuery("aufgaben_dateien", "aufgabeID = " + aufgabe.getId());
+			Queries.deleteQuery("aufgaben_mitglieder", "aufgabeID = " + aufgabe.getId());
 			return Queries.deleteQuery(table, where);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -101,7 +101,7 @@ public class AufgabenVerwaltung {
 		//Suchen der Aufgabe anhand der ID
 		Aufgabe aufgabe_neu = null;
 		try {
-			ResultSet rs = Queries.rowQuery("*", "Aufgaben", "AufgabeID = " + id);
+			ResultSet rs = Queries.rowQuery("*", "aufgaben", "aufgabeID = " + id);
 			rs.next();
 			aufgabe_neu = createAufgabeByRow(rs);
 		} catch (SQLException e) {
@@ -112,7 +112,7 @@ public class AufgabenVerwaltung {
 
 	public static ArrayList<Aufgabe> getListe(){
 		// returnd eine ArrayListe aller Aufgabe
-		String sql = "SELECT * FROM Aufgaben";
+		String sql = "SELECT * FROM aufgaben";
 		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
@@ -140,7 +140,7 @@ public class AufgabenVerwaltung {
 	 */
 	public static ArrayList<Aufgabe> getListeVonDatei(long dateiID){
 		// returnd eine ArrayListe aller Aufgabe die zu einer bestimmten datei geh�hren
-		String sql = "SELECT * FROM aufgaben JOIN aufgaben_dateien ON aufgaben.AufgabeID = aufgaben_dateien.Aufgaben_AufgabeID JOIN dateien ON dateien.DateiID = aufgaben_dateien.Dateien_DateiID WHERE DateiID = " + dateiID;
+		String sql = "SELECT * FROM aufgaben JOIN aufgaben_dateien ON aufgaben.aufgabeID = aufgaben_dateien.aufgabeID JOIN dateien ON dateien.DateiID = aufgaben_dateien.dateiID WHERE dateiID = " + dateiID;
 		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
@@ -164,7 +164,7 @@ public class AufgabenVerwaltung {
 	 */
 	public static ArrayList<Aufgabe> getListeVonGruppe(long gruppenID){
 		// returnd eine ArrayListe aller Aufgabe
-		String sql = "SELECT * FROM Aufgaben WHERE AufgabenGruppeID = " + gruppenID;
+		String sql = "SELECT * FROM aufgaben WHERE aufgabengruppeID = " + gruppenID;
 		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
@@ -187,7 +187,7 @@ public class AufgabenVerwaltung {
 	 * @return Liste mit Aufgaben des angegebenen Mitglieds
 	 */
 	public static ArrayList<Aufgabe> getListeVonMitglied(long mitgliedID){
-		String sql = "SELECT * FROM  `aufgaben_mitglieder` INNER JOIN  `aufgaben` USING ( AufgabeID ) WHERE MitgliedID = "+ mitgliedID +" OR ErstellerID = "+ mitgliedID +" GROUP BY AufgabeID";
+		String sql = "SELECT * FROM  `aufgaben_mitglieder` INNER JOIN  `aufgaben` USING ( aufgabeID ) WHERE mitgliedID = "+ mitgliedID +" OR erstellerID = "+ mitgliedID +" GROUP BY aufgabeID";
 		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
@@ -211,7 +211,7 @@ public class AufgabenVerwaltung {
 	 * @return Liste mit Aufgaben des angegebenen Teams
 	 */
 	public static ArrayList<Aufgabe> getListeVonTeam(long teamID){
-		String sql = "SELECT * FROM aufgaben INNER JOIN aufgabengruppen USING(AufgabenGruppeID) WHERE TEAM = " + teamID + " GROUP BY AufgabeID";
+		String sql = "SELECT * FROM aufgaben INNER JOIN aufgabengruppen USING(aufgabengruppeID) WHERE team = " + teamID + " GROUP BY aufgabeID";
 		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
@@ -236,7 +236,7 @@ public class AufgabenVerwaltung {
 	 */
 	public static ArrayList<Aufgabe> getListeVonMitgliedVonTeam(long mitgliedID, long teamID){
 		// returnd eine ArrayListe aller Aufgabe
-		String sql = "SELECT * FROM  `aufgaben_mitglieder` INNER JOIN  `aufgaben` USING ( AufgabeID ) INNER JOIN aufgabengruppen USING(AufgabenGruppeID) WHERE (MitgliedID = " + mitgliedID + " OR ErstellerID = " + mitgliedID + ") AND TEAM = " + teamID + " GROUP BY AufgabeID";
+		String sql = "SELECT * FROM  `aufgaben_mitglieder` INNER JOIN  `aufgaben` USING ( aufgabeID ) INNER JOIN aufgabengruppen USING(aufgabengruppeID) WHERE (mitgliedID = " + mitgliedID + " OR erstellerID = " + mitgliedID + ") AND team = " + teamID + " GROUP BY aufgabeID";
 		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
@@ -259,10 +259,10 @@ public class AufgabenVerwaltung {
 	 */
 	static Aufgabe createAufgabeByRow(ResultSet rs){
 		try {
-			Aufgabe a= new Aufgabe(rs.getLong("AufgabeID"),
-					AufgabengruppenVerwaltung.get(rs.getLong("AufgabenGruppeID")),
-					MitgliederVerwaltung.get(rs.getLong("ErstellerID")), rs.getString("Name"),
-					rs.getString("Beschreibung"), rs.getInt("Status"), rs.getLong("Erstellungsdatum"), rs.getLong("Deadline"));
+			Aufgabe a= new Aufgabe(rs.getLong("aufgabeID"),
+					AufgabengruppenVerwaltung.get(rs.getLong("aufgabengruppeID")),
+					MitgliederVerwaltung.get(rs.getLong("erstellerID")), rs.getString("name"),
+					rs.getString("beschreibung"), rs.getInt("status"), rs.getLong("erstellungsdatum"), rs.getLong("deadline"));
 			return a;
 		} catch (SQLException e) {
 			e.printStackTrace();

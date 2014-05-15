@@ -136,13 +136,14 @@ public class MitgliederVerwaltung {
 	 */
 	public static Mitglied get(long id){
 		try{
-			ResultSet rs = Queries.rowQuery("*", "Mitglieder", "MitgliedId = "+id);
+			ResultSet rs = Queries.rowQuery("*", "mitglieder", "mitgliedId = "+id);
 			if(rs.isBeforeFirst()){
 				rs.next();
 				return createMitgliedbyRow(rs);
 			}
 		}catch(SQLException e){
 			System.err.println("Mitgliederverwaltung.get(long) - SQL ERROR");
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -156,7 +157,7 @@ public class MitgliederVerwaltung {
 	public static Mitglied get(String username){
 		
 		try{
-			ResultSet rs = Queries.rowQuery("*", "Mitglieder", "username = '"+username+"'");
+			ResultSet rs = Queries.rowQuery("*", "mitglieder", "username = '"+username+"'");
 			rs.next();
 			return createMitgliedbyRow(rs);
 		}catch(SQLException e){
@@ -192,7 +193,7 @@ public class MitgliederVerwaltung {
 	public static ArrayList<Mitglied> getListe(){
 		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
 		try {
-			ResultSet rs = Queries.rowQuery("*", "Mitglieder", "true ORDER BY username ASC");
+			ResultSet rs = Queries.rowQuery("*", "mitglieder", "true ORDER BY username ASC");
 			while(rs.next()){
 				al.add(createMitgliedbyRow(rs));
 			}
@@ -263,12 +264,13 @@ public class MitgliederVerwaltung {
 	 */
 	public static boolean istMitgliedInTeam(long mitgliedID, long teamID){
 		try {
-			ResultSet rs = Queries.rowQuery("*", "mitglieder_teams", "MitgliedID = " + mitgliedID + " AND TeamID = " + teamID);
+			ResultSet rs = Queries.rowQuery("*", "mitglieder_teams", "mitgliedID = " + mitgliedID + " AND teamID = " + teamID);
 			if (rs.isBeforeFirst()){
 				return true;
 			}
 		} catch (SQLException e) {
 			System.err.println("istMitgliedInTeam - SQLERROR");
+			e.printStackTrace();
 		}
 		return false;
 	}
@@ -281,7 +283,7 @@ public class MitgliederVerwaltung {
 	 */
 	public static boolean pruefeLogin(String username, String password){
 		try{
-			ResultSet rs = Queries.rowQuery("*", "Mitglieder", "username = '"+username+"' AND pw = PASSWORD('"+password+"')");
+			ResultSet rs = Queries.rowQuery("*", "mitglieder", "username = '"+username+"' AND pw = PASSWORD('"+password+"')");
 			if(rs.next()){
 				return true;
 			}
@@ -334,8 +336,8 @@ public class MitgliederVerwaltung {
 	private static Mitglied createMitgliedbyRow(ResultSet rs){
 		try {
 			if(!rs.isBeforeFirst() && !rs.isAfterLast()){
-				Mitglied m = new Mitglied(rs.getLong("MitgliedID"), rs.getString("username"),
-						rs.getString("PW"), rs.getString("email"),
+				Mitglied m = new Mitglied(rs.getLong("mitgliedID"), rs.getString("username"),
+						rs.getString("pw"), rs.getString("email"),
 						rs.getString("vorname"), rs.getString("nachname"),
 						rs.getLong("regdatum"));
 				return m;
@@ -344,6 +346,7 @@ public class MitgliederVerwaltung {
 			}
 		} catch (SQLException e) {
 			System.err.println("Mitgliederverwaltung.createMitgliedbyRow - SQL ERROR");
+			e.printStackTrace();
 			return null;
 		}
 	}

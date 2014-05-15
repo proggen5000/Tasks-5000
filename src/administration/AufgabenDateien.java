@@ -12,7 +12,7 @@ public class AufgabenDateien{
 
 	public static boolean zuweisen (Datei d, Aufgabe a){
 		try{
-			return Queries.insertQuery("aufgaben_dateien", "AufgabeID, DateiID", a.getId()+", "+d.getId())>=0;
+			return Queries.insertQuery("aufgaben_dateien", "aufgabeID, dateiID", a.getId()+", "+d.getId())>=0;
 		}catch(SQLException e){
 			return false;
 		}
@@ -20,7 +20,7 @@ public class AufgabenDateien{
 
 	public static boolean entfernen (Datei d, Aufgabe a){
 		try{
-			return Queries.deleteQuery("aufgaben_dateien", "DateiID = " + d.getId()+" AND AufgabeID = "+a.getId());
+			return Queries.deleteQuery("aufgaben_dateien", "dateiID = " + d.getId()+" AND aufgabeID = "+a.getId());
 		}catch(SQLException e){
 			e.printStackTrace();
 			return false;
@@ -28,7 +28,7 @@ public class AufgabenDateien{
 	}
 	public static ArrayList<Aufgabe> getListAufgabenVonDatei(long dateiId){
 		// returnd eine ArrayListe aller Aufgabe
-		String sql = "SELECT * FROM aufgaben_dateien WHERE DateiID = " + dateiId + " GROUP BY DateiID";
+		String sql = "SELECT * FROM aufgaben_dateien WHERE dateiID = " + dateiId + " GROUP BY dateiID";
 		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
