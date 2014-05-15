@@ -58,15 +58,15 @@ public class MitgliederVerwaltung {
 		
 		//Aktualisieren des Mitglieds
 		String table= "mitglieder";
-		String updateString= "username="+mitglied.getUsername()+", pw="
-				+mitglied.getPw()+", email="+mitglied.getEmail()+", vorname="
-				+mitglied.getVorname()+", nachname="+mitglied.getNachname();
+		String updateString= "username='"+mitglied.getUsername()+"', pw='"
+				+mitglied.getPw()+"', email='"+mitglied.getEmail()+"', vorname='"
+				+mitglied.getVorname()+"', nachname='"+mitglied.getNachname()+"'";
 		String where= "mitgliedid="+mitglied.getId();
 		
 		try {
 			if (Queries.updateQuery(table, updateString, where)==true) {
 				Mitglied testmitglied= get(mitglied.getId());
-					return testmitglied;
+				return testmitglied;
 			}
 			else{
 				return null;
