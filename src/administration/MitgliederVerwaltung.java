@@ -210,9 +210,9 @@ public class MitgliederVerwaltung {
 	 * @return al ArrayList mit Mitgliedern
 	 */
 	public static ArrayList<Mitglied> getListeVonAufgabe(long aufgID){
-		String sql = "SELECT * FROM mitglieder JOIN aufgaben_mitglieder "
+		String sql = "SELECT * FROM mitglieder INNER JOIN aufgaben_mitglieder "
 					+"ON mitglieder.mitgliedid= aufgaben_mitglieder.mitgliedid "
-					+"JOIN aufgaben ON aufgaben.aufgabeid = aufgaben_mitglieder.aufgabeid "
+					+"INNER JOIN aufgaben ON aufgaben.aufgabeid = aufgaben_mitglieder.aufgabeid "
 					+"WHERE aufgaben.aufgabeid= " + aufgID +" ORDER BY username ASC";
 		ArrayList<Mitglied> al = new ArrayList<Mitglied>();
 		
@@ -299,15 +299,17 @@ public class MitgliederVerwaltung {
 	 */
 	public static ArrayList<Mitglied> getListeVonAufgabeRest(long teamId, long aufgabenId){
 		ArrayList<Mitglied> usersTeam = getListeVonTeam(teamId);
-		ArrayList<Mitglied> usersTask = getListeVonAufgabe(aufgabenId);
+		ArrayList<Mitglied> usersTask = getListeVonAufgabe(aufgabenId);		
 		
 		for(Mitglied m : usersTeam){
 			if(usersTask.contains(m)){
-				usersTeam.remove(m);
+				usersTask.remove(m);
+			}else{
+				usersTask.add(m);
 			}
 		}
 		
-		return usersTeam;
+		return usersTask;
 	}
 	
 	/**
