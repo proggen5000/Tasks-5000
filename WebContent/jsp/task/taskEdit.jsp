@@ -31,18 +31,7 @@
 					<li class="active"></li>
 				</ol>
 			</c:if>
-			
-			
-			<%-- Alerts, falls via Session übergeben --%>
-			<c:if test="${sessionScope.alert != null}">
-	  			<c:if test="${sessionScope.alert_mode == null}">
-	  				<div class="alert alert-success">${sessionScope.alert}</div>
-	  			</c:if>
-	  			<c:if test="${sessionScope.alert_mode != null}">
-	  				<div class="alert alert-${sessionScope.alert_mode}">${sessionScope.alert}</div>
-	  			</c:if>
-	  		</c:if>
-		
+					
 			<c:if test="${param.mode == 'new'}"><h1>Aufgabe erstellen</h1></c:if>
 			<c:if test="${param.mode == 'edit'}"><h1>Aufgabe bearbeiten</h1></c:if>
 			
@@ -81,8 +70,8 @@
 				    		</c:if>
 				    	</div>
 				    	<div class="col-xs-4">
-				    		<label for="deadline"><span class="glyphicon glyphicon-bell"></span> Deadline</label>
-							<input id="deadline" name="deadline" type="date" class="form-control" value="<fmt:formatDate pattern="yyyy-MM-dd" value="${task.deadlineAsDate}" />" />
+				    		<label for="deadline" data-toggle="tooltip" data-placement="right" data-original-title="Geben Sie das Datum im Format jjjj-mm-tt an (z.B. 2015-04-21)."><span class="glyphicon glyphicon-bell"></span> Deadline</label>
+							<input id="deadline" name="deadline" type="date" class="form-control" value="<fmt:formatDate pattern="yyyy-MM-dd" value="${task.deadlineAsDate}" />" placeholder="jjjj-mm-tt" />
 				    	</div>
 				    	<div class="col-xs-4">
 				    		<label for="status"><span class="glyphicon glyphicon-dashboard"></span> Status</label> <small>(%)</small>

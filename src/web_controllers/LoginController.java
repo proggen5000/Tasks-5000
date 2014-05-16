@@ -75,7 +75,8 @@ public class LoginController extends HttpServlet {
 		
 		String mode = request.getParameter("mode");
 		
-		RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
+		HttpSession session = request.getSession(true);
+		// RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
 		
 		// Login (Aktion)
 		if(mode.equals("login")){
@@ -83,7 +84,6 @@ public class LoginController extends HttpServlet {
 				if(MitgliederVerwaltung.pruefeLogin(username, password)){
 					Mitglied user =  MitgliederVerwaltung.get(username);
 					
-					HttpSession session = request.getSession(true);
 					session.setAttribute("login", true);
 					session.setAttribute("currentUser", user.getId());
 					
@@ -103,30 +103,24 @@ public class LoginController extends HttpServlet {
 					}
 					
 					if(!cookie_forward){
-						request.setAttribute("title", "Login erfolgreich");
-						request.setAttribute("message", "Sie haben sich erfolgreich eingeloggt!<br />Herzlich willkommen, " + user.getUsername() + ".");
-						request.setAttribute("link_url", "/");
-						request.setAttribute("link_text", "Weiter zur pers&ouml;nlichen Startseite");
-						request.setAttribute("valid_request", true);
-						view = request.getRequestDispatcher("/success.jsp");
+						session.setAttribute("alert", "Sie haben sich erfolgreich eingeloggt! Herzlich willkommen, " + user.getUsername() + ".");
+						response.sendRedirect("/index");
 					} else {
 						// direkte Weiterleitung zur Startseite, falls Cookie gefunden
-						request.setAttribute("valid_request", true);
-						view = request.getRequestDispatcher("/index");
+						response.sendRedirect("/index");
 					}
 				} else {
-					request.setAttribute("error", "Benutzername und Password stimmen nicht &uuml;berein!<br />Bitte versuchen Sie es erneut oder <a href=\"/?page=register\">registrieren</a> Sie sich, falls Sie noch kein Benutzerprofil angelegt haben.");
-					view = request.getRequestDispatcher("/error.jsp");
+					session.setAttribute("error", "Benutzername und Password stimmen nicht &uuml;berein!<br />Bitte versuchen Sie es erneut oder <a href=\"/?page=register\">registrieren</a> Sie sich, falls Sie noch kein Benutzerprofil angelegt haben.");
+					response.sendRedirect("/error.jsp");
 				}
 			} else {
-				request.setAttribute("error", "Sie sind bereits eingeloggt!");
-				view = request.getRequestDispatcher("/error.jsp");
+				session.setAttribute("error", "Sie sind bereits eingeloggt!");
+				response.sendRedirect("/error.jsp");
 			}
 			
 		// Logout (Aktion)
 		} else if(mode.equals("logout")){
 			if(login){
-				HttpSession session = request.getSession(true);
 				session.removeAttribute("login");
 				session.removeAttribute("currentUser");
 				
@@ -134,43 +128,45 @@ public class LoginController extends HttpServlet {
 				Cookie cookie = new Cookie("currentUser", "");
 				cookie.setMaxAge(0);
 				
-				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("/jsp/login/logout.jsp");
+				session.setAttribute("alert", "Sie haben sich erfolgreich ausgeloggt! Haben Sie noch einen sch&ouml;nen Tag.");
+				response.sendRedirect("/index");
 			} else {
-				request.setAttribute("error", "Sie sind bereits ausgeloggt!");
-				view = request.getRequestDispatcher("/error.jsp");
+				session.setAttribute("error", "Sie sind bereits ausgeloggt!");
+				response.sendRedirect("/error.jsp");
 			}
 		
 		// Registrierung (Aktion)
 		} else if(mode.equals("register")){
 			if(!login){
-				Mitglied user = new Mitglied();
-				user.setUsername(request.getParameter("username"));
-				user.setVorname(request.getParameter("vorname"));
-				user.setNachname(request.getParameter("nachname"));
-				user.setEmail(request.getParameter("email"));
-				// if
-				user.setPw(request.getParameter("password"));
-				
-				Mitglied userNew = MitgliederVerwaltung.neu(user);
-				// if(userNew != null)
-				request.setAttribute("valid_request", true);
-				request.setAttribute("title", "Erfolgreich registriert");
-				request.setAttribute("message", "Sie haben sich hiermit erfolgreich als \"<b>" + userNew.getUsername() + "</b>\" registriert und k&ouml;nnen sich ab sofort mit Ihrem Passwort einloggen.<br />Herzlich willkommen! :)");
-				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("/success.jsp");
+				String passwordRepeat = request.getParameter("password");
+				if(password.equals(passwordRepeat)){
+					Mitglied user = new Mitglied();
+					user.setUsername(request.getParameter("username"));
+					user.setVorname(request.getParameter("vorname"));
+					user.setNachname(request.getParameter("nachname"));
+					user.setEmail(request.getParameter("email"));
+					user.setPw(password);
+					
+					Mitglied userNew = MitgliederVerwaltung.neu(user);
+					// if(userNew != null)
+					session.setAttribute("title", "Erfolgreich registriert");
+					session.setAttribute("message", "Sie haben sich hiermit erfolgreich als \"<b>" + userNew.getUsername() + "</b>\" registriert und k&ouml;nnen sich ab sofort mit Ihrem Passwort einloggen.<br />Herzlich willkommen! :)");
+					response.sendRedirect("/success.jsp");
+				} else {
+					session.setAttribute("alert", "Ihre Passw&ouml;rter stimmen nicht &uuml;berein!");
+					session.setAttribute("alert_mode", "danger");
+					response.sendRedirect("/?page=register");
+				}
 			} else {
-				request.setAttribute("error", "Sie sind bereits registriert und eingeloggt!");
-				view = request.getRequestDispatcher("/error.jsp");
+				session.setAttribute("error", "Sie sind bereits registriert und eingeloggt!");
+				response.sendRedirect("/error.jsp");
 			}
 		}
 		
 		// Fehler - kein mode angegeben
 		else {
-			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
-			view = request.getRequestDispatcher("/error.jsp");
+			session.setAttribute("error", "Ung&uuml;ltiger Modus!");
+			response.sendRedirect("/error.jsp");
 		}
-		
-		view.forward(request, response);
 	}
 }

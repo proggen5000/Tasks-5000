@@ -58,8 +58,8 @@ public class MitgliederVerwaltung {
 		
 		//Aktualisieren des Mitglieds
 		String table= "mitglieder";
-		String updateString= "username='"+mitglied.getUsername()+"', pw='"
-				+mitglied.getPw()+"', email='"+mitglied.getEmail()+"', vorname='"
+		String updateString= "username='"+mitglied.getUsername()+"', pw=PASSWORD('"
+				+mitglied.getPw()+"'), email='"+mitglied.getEmail()+"', vorname='"
 				+mitglied.getVorname()+"', nachname='"+mitglied.getNachname()+"'";
 		String where= "mitgliedid="+mitglied.getId();
 		

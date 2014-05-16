@@ -1,6 +1,8 @@
 package web_controllers;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
@@ -47,9 +49,9 @@ public class TaskController extends HttpServlet {
 			request.setAttribute("error", e);
 		}
 		
-		long teamId = -1;
+		long teamID = -1;
 		try {
-			teamId = Long.parseLong(request.getParameter("teamId"));
+			teamID = Long.parseLong(request.getParameter("teamId"));
 		} catch (NumberFormatException e){
 			request.setAttribute("error", e);
 		}
@@ -84,11 +86,12 @@ public class TaskController extends HttpServlet {
 		
 		// Aufgabe erstellen (Formular)
 		else if(mode.equals("new")){
-			if(TeamVerwaltung.vorhanden(teamId)){
-				entities.Team team = TeamVerwaltung.get(teamId);
-				if(MitgliederVerwaltung.istMitgliedInTeam(currentUser, teamId)){
+			if(TeamVerwaltung.vorhanden(teamID)){
+				entities.Team team = TeamVerwaltung.get(teamID);
+				if(MitgliederVerwaltung.istMitgliedInTeam(currentUser, teamID)){
+					request.setAttribute("team", TeamVerwaltung.get(teamID));
 					request.setAttribute("taskGroups", AufgabengruppenVerwaltung.getListeVonTeam(team.getId()));
-					request.setAttribute("users", MitgliederVerwaltung.getListeVonAufgabe(teamId));
+					request.setAttribute("users", MitgliederVerwaltung.getListeVonTeam(teamID));
 					request.setAttribute("today", new Date());
 					request.setAttribute("mode", mode);
 					request.setAttribute("valid_request", true);
@@ -184,19 +187,25 @@ public class TaskController extends HttpServlet {
 			task.setBeschreibung(request.getParameter("description"));
 			task.setGruppe(AufgabengruppenVerwaltung.get(Long.parseLong(request.getParameter("group"))));
 			task.setStatus(Integer.parseInt(request.getParameter("status")));
-			// TODO Debug:
-			// System.out.println("Deadline aus Formular: " + request.getParameter("deadline"));
-			// task.setDeadline(request.getParameter("deadline")); // TODO
-			/*
-			String[] userIDs = request.getParameterValues("users");
-			for(String userId : userIDs){
-				Mitglied user = MitgliederVerwaltung.get(Long.parseLong(userId));
-				AufgabenMitglieder.zuweisen(user, task);
-			} */
-
+			task.setErstellungsdatum(new Date().getTime());
+			
+			String deadlineString = request.getParameter("deadline");
+			SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+			Date deadline = new Date();
+			try {
+				deadline = f.parse(deadlineString);
+				task.setDeadline(deadline.getTime());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			
 			Aufgabe taskNew = AufgabenVerwaltung.neu(task);
 			
-			// System.out.println("Neue Aufgabe: " + taskNew.getId() + taskNew.getName());
+			String[] userIDs = request.getParameterValues("users");
+			for(String userID : userIDs){
+				Mitglied user = MitgliederVerwaltung.get(Long.parseLong(userID));
+				AufgabenMitglieder.zuweisen(user, task);
+			}
 			
 			session.setAttribute("alert", "Aufgabe erfolgreich erstellt!");
 			response.sendRedirect("/task?mode=view&id="+taskNew.getId());
@@ -207,13 +216,23 @@ public class TaskController extends HttpServlet {
 			Aufgabe task = AufgabenVerwaltung.get(id);
 			task.setName(request.getParameter("name"));
 			task.setGruppe(AufgabengruppenVerwaltung.get(Long.parseLong(request.getParameter("group"))));
-			task.setBeschreibung(request.getParameter("description"));			
+			task.setBeschreibung(request.getParameter("description"));
 			task.setStatus(Integer.parseInt(request.getParameter("status")));
-			// task.setDeadline(request.getParameter("deadline")); // TODO
-			String[] userIDs = request.getParameterValues("users");
+			
+			String deadlineString = request.getParameter("deadline");
+			SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+			Date deadline = new Date();
+			try {
+				deadline = f.parse(deadlineString);
+				task.setDeadline(deadline.getTime());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			
 			AufgabenMitglieder.entfernenAlle(task);
-			for(String userId : userIDs){
-				Mitglied user = MitgliederVerwaltung.get(Long.parseLong(userId));
+			String[] userIDs = request.getParameterValues("users");
+			for(String userID : userIDs){
+				Mitglied user = MitgliederVerwaltung.get(Long.parseLong(userID));
 				AufgabenMitglieder.zuweisen(user, task);
 			}
 
@@ -224,8 +243,7 @@ public class TaskController extends HttpServlet {
 			} else {
 				session.setAttribute("error", "Fehler bei der Speicherung der &Auml;nderungen!");
 				response.sendRedirect("/error.jsp");
-			}
-			
+			}	
 		}
 		
 		// Aufgabe loeschen (Aktion)
