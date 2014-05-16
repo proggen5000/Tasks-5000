@@ -200,6 +200,8 @@ public class TeamController extends HttpServlet {
 		// Team bearbeiten (Aktion)
 		else if(mode.equals("edit")){			
 			entities.Team team = TeamVerwaltung.get(id);
+			// TODO Debug:
+			System.out.println("Team zu bearbeiten: " + team.getName());
 			
 			if(currentUser == team.getGruppenfuehrer().getId()){
 				team.setGruppenfuehrer(MitgliederVerwaltung.get(Long.parseLong(request.getParameter("manager"))));

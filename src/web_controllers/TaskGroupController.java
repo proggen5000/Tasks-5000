@@ -175,7 +175,7 @@ public class TaskGroupController extends HttpServlet {
 			Aufgabengruppe taskGroupUpdated = AufgabengruppenVerwaltung.bearbeiten(taskGroup);
 			if(taskGroupUpdated != null){
 				session.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!");
-				response.sendRedirect("/team?mode=view&id="+taskGroupUpdated.getTeam().getId()); // TODO ändern zu normaler Weiterleitung?
+				response.sendRedirect("/team?mode=view&id="+taskGroupUpdated.getTeam().getId());
 			} else {
 				session.setAttribute("error", "Fehler bei der Speicherung!");
 				response.sendRedirect("/error.jsp");
@@ -184,8 +184,7 @@ public class TaskGroupController extends HttpServlet {
 		
 		// Aufgabengruppe loeschen (Aktion)
 		else if(mode.equals("remove")){
-			String sure = request.getParameter("sure");
-			if (AufgabengruppenVerwaltung.vorhanden(id) && sure.equals("true")){
+			if (AufgabengruppenVerwaltung.vorhanden(id)){
 				long teamId = AufgabengruppenVerwaltung.get(id).getTeam().getId();
 				if(AufgabengruppenVerwaltung.loeschen(AufgabengruppenVerwaltung.get(id))){
 					response.sendRedirect("/team?mode=view&id="+teamId);

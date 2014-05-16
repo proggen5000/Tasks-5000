@@ -20,7 +20,6 @@
 				<form action="/taskGroup" method="post">
 					<input type="hidden" name="id" value="${taskGroup.id}" />
 					<input type="hidden" name="mode" value="remove" />
-					<input type="hidden" name="sure" value="true" />
 					<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-ok"></span> Ja, l&ouml;schen</button>
 					<a href="/taskGroup?mode=edit&id=${taskGroup.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Nein, abbrechen</a>
 				</form>

@@ -10,16 +10,16 @@
 			    <label for="username" data-toggle="tooltip" data-placement="right" data-original-title="Bitte w&auml;hlen Sie einen einzigartigen Benutzernamen.">
 			    	<span class="glyphicon glyphicon-user"></span> Benutzername*
 		    	</label>
-			    <input type="text" class="form-control input-lg" id="username" />
+			    <input type="text" class="form-control input-lg" name="username" id="username" />
 			  </div>
 			  <div class="form-group">
 			    <label for="vorname"><span class="glyphicon glyphicon-user"></span> Echter Name</label>
 			    <div class="row">
 			    	<div class="col-xs-6">
-			    		<input type="text" class="form-control" id="vorname" placeholder="Vorname" />
+			    		<input type="text" class="form-control" name="vorname" id="vorname" placeholder="Vorname" />
 			    	</div>
 			    	<div class="col-xs-6">
-			    		<input type="text" class="form-control" id="Nachname" placeholder="Nachname" />
+			    		<input type="text" class="form-control" name="nachname" id="Nachname" placeholder="Nachname" />
 			    	</div>
 			    </div>
 			  </div>
@@ -27,7 +27,7 @@
 			    <label for="email" data-toggle="tooltip" data-placement="right" data-original-title="Ihre E-Mail-Adresse dient zum Zusenden Ihrer Registrierungsbest&auml;tigung und ggf. zum Zur&uuml;cksetzen Ihres Passworts.">
 			    	<span class="glyphicon glyphicon-envelope"></span> E-Mail-Adresse*
 		    	</label>
-			    <input type="email" class="form-control" id="email" placeholder="benutzer@email.de" />
+			    <input type="email" class="form-control" name="email" id="email" placeholder="benutzer@email.de" />
 			  </div>
 			  <div class="form-group">
 			    <label for="password" data-toggle="tooltip" data-placement="right" data-original-title="Ihr Passwort wird verschl&uuml;sselt gespeichert.">
@@ -35,10 +35,10 @@
 		    	</label>
 			    <div class="row">
 			    	<div class="col-xs-6">
-			    		<input type="password" class="form-control" id="password" placeholder="Passwort" />
+			    		<input type="password" class="form-control" name="password" id="password" placeholder="Passwort" />
 			    	</div>
 			    	<div class="col-xs-6">
-			    		<input type="password" class="form-control" id="passwordRepeat" placeholder="Passwort wiederholen" />
+			    		<input type="password" class="form-control" name="passwordRepeat" id="passwordRepeat" placeholder="Passwort wiederholen" />
 			    	</div>
 		    	</div>
 			  </div>

@@ -1,8 +1,6 @@
 package web_controllers;
 
 import java.io.IOException;
-import java.util.Date;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -151,10 +149,11 @@ public class LoginController extends HttpServlet {
 				user.setVorname(request.getParameter("vorname"));
 				user.setNachname(request.getParameter("nachname"));
 				user.setEmail(request.getParameter("email"));
+				// if
 				user.setPw(request.getParameter("password"));
-				// user.setRegdatum(new Date().getTime()); // TODO noetig?
 				
 				Mitglied userNew = MitgliederVerwaltung.neu(user);
+				// if(userNew != null)
 				request.setAttribute("valid_request", true);
 				request.setAttribute("title", "Erfolgreich registriert");
 				request.setAttribute("message", "Sie haben sich hiermit erfolgreich als \"<b>" + userNew.getUsername() + "</b>\" registriert und k&ouml;nnen sich ab sofort mit Ihrem Passwort einloggen.<br />Herzlich willkommen! :)");

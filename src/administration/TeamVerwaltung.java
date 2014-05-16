@@ -138,7 +138,7 @@ public class TeamVerwaltung {
 	 */
 	public static Team get(long teamid){
 		try {
-			ResultSet rs = Queries.rowQuery("*", "teams", "teamid = "+teamid);
+			ResultSet rs = Queries.rowQuery("*", "teams", "teamID = "+teamid);
 			rs.next();
 			return createTeambyRow(rs);
 		} catch (SQLException e) {
