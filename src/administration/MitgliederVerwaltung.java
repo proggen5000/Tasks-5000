@@ -90,7 +90,7 @@ public class MitgliederVerwaltung {
 		String where= "mitgliedid="+id;
 		String gruppenfuehrersql= "SELECT teamid FROM teams WHERE gruppenfuehrerid= "+id;
 		String teamsql="SELECT teamid FROM mitglieder_teams WHERE mitgliedid= "+id;
-		String aufgabensql= "SELECT aufgabenid FROM aufgaben_mitglieder WHERE mitgliedid= "+id;
+		String aufgabensql= "SELECT aufgabeid FROM aufgaben_mitglieder WHERE mitgliedid= "+id;
 				
 		try {
 			//löscht Teams wo das Mitglied gruppenfuehrer war
