@@ -42,10 +42,10 @@ public class Mitglied implements Serializable{
 		this.username = username;
 	}
 	public String getEmail() {
-		return email;
+		return email.replace("'", "");
 	}
 	public void setEmail(String email) {
-		this.email = email;
+		this.email = email.replace("'", "");
 	}
 	public String getPw() {
 		return pw;
