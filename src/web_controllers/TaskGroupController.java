@@ -119,7 +119,7 @@ public class TaskGroupController extends HttpServlet {
 
 		boolean login = false;
 		if(request.getSession().getAttribute("login") != null){
-			login = Boolean.parseBoolean((String) request.getSession().getAttribute("login"));
+			login = Boolean.parseBoolean(request.getSession().getAttribute("login").toString());
 		}
 		
 		long id = -1; // Aufgabengruppen-ID

@@ -162,40 +162,44 @@ public class UserController extends HttpServlet {
 		if(!login){
 			session.setAttribute("error", "Sie sind nicht eingeloggt!");
 			response.sendRedirect("/error.jsp");
+			return;
 		}
 
 		// Profil bearbeiten (Aktion)
 		if(mode.equals("edit")){
 			Mitglied user = MitgliederVerwaltung.get(currentUser);
-			String password = request.getParameter("password");
-			String username = request.getParameter("username");
-			String currentUsername = MitgliederVerwaltung.get(currentUser).getUsername();
-			// TODO Debug:
-			System.out.println("username: " + username);
-			System.out.println("currentUsername: " + currentUsername);
 			
+			String currentUsername = user.getUsername();
+			String username = request.getParameter("username");
 			// neuer Username
-			/*
 			if(!username.equals(currentUsername)){
 				if(!MitgliederVerwaltung.vorhanden(username)){
 					user.setUsername(username);
 				} else {
-					session.setAttribute("error", "Dieser Benutzername ist schon vergeben! Bitte <a href=\"/user?mode=edit\">versuchen Sie es erneut</a> mit einem anderen Benutzernamen.");
-					response.sendRedirect("/error.jsp");
+					// TODO Debug:
+					System.out.println("Name " + username +  " schon vergeben!");
+					session.setAttribute("alert", "Dieser Benutzername ist schon vergeben! Bitte versuchen Sie es erneut mit einem anderen Benutzernamen.");
+					session.setAttribute("alert_mode", "danger");
+					response.sendRedirect("/user?mode=edit");
+					return;
 				}
-			} */
+			}
 
 			user.setVorname(request.getParameter("vorname"));
 			user.setNachname(request.getParameter("nachname"));
 			user.setEmail(request.getParameter("email"));
 
+			String password = request.getParameter("password");
+			
 			// neues Passwort
-			if(password != null){
+			if(password != null && password.length() > 0){
 				if(password.equals(request.getParameter("passwordRepeat"))){
 					user.setPw(password);
 				} else {
-					session.setAttribute("error", "Sie haben zwei verschiedene Passw&ouml;rter eingegeben! Bitte <a href=\"/user?mode=edit\">versuchen Sie es erneut</a>.");
-					response.sendRedirect("/error.jsp");
+					session.setAttribute("alert", "Sie haben zwei verschiedene Passw&ouml;rter eingegeben! Bitte versuchen Sie es erneut.");
+					session.setAttribute("alert_mode", "danger");
+					response.sendRedirect("/user?mode=edit");
+					return;
 				}
 			}
 			
@@ -203,7 +207,6 @@ public class UserController extends HttpServlet {
 			
 			if(userUpdated != null){
 				session.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!");
-				session.setAttribute("alert_mode", "success");
 				response.sendRedirect("/user?mode=edit");
 			} else {
 				session.setAttribute("error", "Fehler beim Speichern der Profildaten!");

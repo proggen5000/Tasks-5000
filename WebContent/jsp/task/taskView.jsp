@@ -7,7 +7,7 @@
 	<c:redirect url="/error.jsp"><c:param name="error" value="Zugriff verweigert" /></c:redirect>
 </c:if>
 
-<jsp:include page="../header.jsp"><jsp:param name="page_title" value="${name}" /></jsp:include>
+<jsp:include page="../header.jsp"><jsp:param name="page_title" value="${task.name}" /></jsp:include>
 <jsp:include page="../menu.jsp"><jsp:param name="menu" value="teams" /></jsp:include>
 			
 				<ol class="breadcrumb">
