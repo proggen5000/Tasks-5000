@@ -95,15 +95,17 @@ public class AufgabengruppenVerwaltung {
 	 */
 	public static Aufgabengruppe get (long id){
 		//Suchen der Aufgabe anhand der ID
-		Aufgabengruppe aufgabengruppe = null;
 		try {
 			ResultSet rs = Queries.rowQuery("*", "aufgabengruppen", "aufgabengruppeID = " + id);
-			rs.next();
-			aufgabengruppe = createAufgabegruppeByRow(rs);
+			if(rs.isBeforeFirst()){
+				rs.next();
+				return createAufgabegruppeByRow(rs);
+			}
 		} catch (SQLException e) {
+			System.err.println("AufgbengruppenVerwaltung.get(long) - SQL ERROR");
 			e.printStackTrace();
 		}
-		return aufgabengruppe;
+		return null;
 	}
 
 	/**
@@ -125,9 +127,12 @@ public class AufgabengruppenVerwaltung {
 		Aufgabengruppe aufgabengruppe = null;
 		try {
 			ResultSet rs = Queries.rowQuery("*", "aufgabengruppen", "name = " + name);
-			rs.next();
-			aufgabengruppe = createAufgabegruppeByRow(rs);
+			if(rs.isBeforeFirst()){
+				rs.next();
+				return createAufgabegruppeByRow(rs);
+			}
 		} catch (SQLException e) {
+			System.err.println("AufgabenGruppenVerwaltung.get(String) - SQL ERROR");
 			e.printStackTrace();
 		}
 		return aufgabengruppe;

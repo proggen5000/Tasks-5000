@@ -99,15 +99,17 @@ public class AufgabenVerwaltung {
 	 */
 	public static Aufgabe get (long id){
 		//Suchen der Aufgabe anhand der ID
-		Aufgabe aufgabe_neu = null;
 		try {
 			ResultSet rs = Queries.rowQuery("*", "aufgaben", "aufgabeID = " + id);
-			rs.next();
-			aufgabe_neu = createAufgabeByRow(rs);
+			if(rs.isBeforeFirst()){
+				rs.next();
+				return createAufgabeByRow(rs);
+			}
 		} catch (SQLException e) {
+			System.err.println("AufgabenVerwaltung.get(long) - SQL ERROR");
 			e.printStackTrace();
 		}
-		return aufgabe_neu;
+		return null;
 	}
 
 	public static ArrayList<Aufgabe> getListe(){
