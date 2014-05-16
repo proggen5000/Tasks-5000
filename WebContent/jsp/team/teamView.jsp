@@ -54,7 +54,9 @@
 		<div class="sidebar col-sm-3">
 			<h1>Aktionen</h1>
 				<div class="list-group">
-					<a href="/task?mode=new&teamId=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-time"></span> Aufgabe erstellen</a>
+					<c:if test="${fn:length(taskGroups) > 0}">
+						<a href="/task?mode=new&teamId=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-time"></span> Aufgabe erstellen</a>
+					</c:if>
 					<a href="/taskGroup?mode=new&teamId=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-tag"></span> Aufgabengruppe erstellen</a>
 					<a href="/file?mode=new&teamId=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-file"></span> Datei hochladen</a>
 				</div>

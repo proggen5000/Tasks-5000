@@ -138,7 +138,7 @@ public class LoginController extends HttpServlet {
 		// Registrierung (Aktion)
 		} else if(mode.equals("register")){
 			if(!login){
-				String passwordRepeat = request.getParameter("password");
+				String passwordRepeat = request.getParameter("passwordRepeat");
 				if(password.equals(passwordRepeat)){
 					Mitglied user = new Mitglied();
 					user.setUsername(request.getParameter("username"));
@@ -152,14 +152,17 @@ public class LoginController extends HttpServlet {
 					session.setAttribute("title", "Erfolgreich registriert");
 					session.setAttribute("message", "Sie haben sich hiermit erfolgreich als \"<b>" + userNew.getUsername() + "</b>\" registriert und k&ouml;nnen sich ab sofort mit Ihrem Passwort einloggen.<br />Herzlich willkommen! :)");
 					response.sendRedirect("/success.jsp");
+					return;
 				} else {
 					session.setAttribute("alert", "Ihre Passw&ouml;rter stimmen nicht &uuml;berein!");
 					session.setAttribute("alert_mode", "danger");
 					response.sendRedirect("/?page=register");
+					return;
 				}
 			} else {
 				session.setAttribute("error", "Sie sind bereits registriert und eingeloggt!");
 				response.sendRedirect("/error.jsp");
+				return;
 			}
 		}
 		

@@ -26,7 +26,7 @@
 		  		<div class="form-group col-xs row">
 		  			<div class="col-xs-6">
 		  				<label for="name"><span class="glyphicon glyphicon-tag"></span> Aufgabengruppenname*</label>
-						<input id="name" name="name" type="text" class="form-control input-lg" placeholder="" value="${taskGroup.name}">
+						<input type="text" id="name" name="name" class="form-control input-lg" value="${taskGroup.name}" />
 		  			</div>
 				</div>
 				<div class="form-group col-xs">
@@ -41,6 +41,7 @@
 						<a href="/team?mode=view&id=${team.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
 					</c:if>
 					<c:if test="${param.mode == 'edit'}">
+						<input type="hidden" name="id" value="${taskGroup.id}" />
 						<input type="hidden" name="mode" value="edit" />
 						<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Speichern</button>
 						<a href="/team?mode=view&id=${team.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>

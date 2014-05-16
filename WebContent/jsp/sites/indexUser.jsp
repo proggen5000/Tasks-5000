@@ -32,7 +32,7 @@
 					</table>
 		  		</c:if>
 		  		<c:if test="${fn:length(teams) == 0}">
-		  			<p>Momentan sind Sie kein Mitglied in einem Team. <a href="/team?mode=new">Erstellen</a> Sie doch einfach Ihr eigenes Team!</p>
+		  			<p>Momentan sind Sie kein Mitglied in einem Team. <a href="/team?mode=new">Erstellen</a> Sie Ihr eigenes Team oder lassen Sie sich von einem anderem Teammanager einladen.</p>
 		  		</c:if>
 		  		
 		  		<h1>Meine Aufgaben</h1>

@@ -225,9 +225,11 @@ public class UserController extends HttpServlet {
 				session.setAttribute("title", "Profil gel&ouml;scht");
 				session.setAttribute("message", "Sie haben Ihr Profil endg&uuml;ltig gel&ouml;scht!<br />Auf Wiedersehen. :'(");
 				response.sendRedirect("/success.jsp");
+				return;
 			} else {
 				session.setAttribute("error", "Ihr Profil konnte nicht gel&ouml;scht werden!");
 				response.sendRedirect("/error.jsp");
+				return;
 			}
 			
 		}
@@ -256,6 +258,7 @@ public class UserController extends HttpServlet {
 		else {
 			session.setAttribute("error", "Ung&uuml;ltiger Modus!");
 			response.sendRedirect("/error.jsp");
+			return;
 		}
 	}
 }

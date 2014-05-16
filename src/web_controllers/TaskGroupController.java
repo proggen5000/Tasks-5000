@@ -123,6 +123,11 @@ public class TaskGroupController extends HttpServlet {
 		}
 		
 		long id = -1; // Aufgabengruppen-ID
+		try {
+			id = Long.parseLong(request.getParameter("id"));
+		} catch (NumberFormatException e){
+			request.setAttribute("error", e);
+		}
 		if(request.getSession().getAttribute("id") != null){
 			try {
 				id = Long.parseLong(request.getSession().getAttribute("id").toString());
@@ -169,6 +174,7 @@ public class TaskGroupController extends HttpServlet {
 		// Aufgabengruppe bearbeiten (Aktion)
 		else if(mode.equals("edit")){
 			Aufgabengruppe taskGroup = AufgabengruppenVerwaltung.get(id);
+			
 			taskGroup.setName(request.getParameter("name"));
 			taskGroup.setBeschreibung(request.getParameter("description"));
 
@@ -176,9 +182,11 @@ public class TaskGroupController extends HttpServlet {
 			if(taskGroupUpdated != null){
 				session.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!");
 				response.sendRedirect("/team?mode=view&id="+taskGroupUpdated.getTeam().getId());
+				return;
 			} else {
 				session.setAttribute("error", "Fehler bei der Speicherung!");
 				response.sendRedirect("/error.jsp");
+				return;
 			}
 		}
 		
@@ -187,6 +195,7 @@ public class TaskGroupController extends HttpServlet {
 			if (AufgabengruppenVerwaltung.vorhanden(id)){
 				long teamId = AufgabengruppenVerwaltung.get(id).getTeam().getId();
 				if(AufgabengruppenVerwaltung.loeschen(AufgabengruppenVerwaltung.get(id))){
+					session.setAttribute("alert", "Aufgabengruppe gel&ouml;scht!");
 					response.sendRedirect("/team?mode=view&id="+teamId);
 				} else {
 					session.setAttribute("error", "Aufgabengruppe konnte nicht gel&ouml;scht werden!");
@@ -199,7 +208,7 @@ public class TaskGroupController extends HttpServlet {
 		}
 		
 		// Fehler - kein mode angegeben
-		else if (!mode.equals("new") && !mode.equals("edit") && !mode.equals("remove")) {
+		else {
 			session.setAttribute("error", "Ung&uuml;ltiger Modus!");
 			response.sendRedirect("/error.jsp");
 		}
