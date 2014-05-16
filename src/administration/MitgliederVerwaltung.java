@@ -158,12 +158,15 @@ public class MitgliederVerwaltung {
 		
 		try{
 			ResultSet rs = Queries.rowQuery("*", "mitglieder", "username = '"+username+"'");
-			rs.next();
-			return createMitgliedbyRow(rs);
+			if(rs.isBeforeFirst()){
+				rs.next();
+				return createMitgliedbyRow(rs);
+			}
 		}catch(SQLException e){
+			System.err.println("Mitgliederverwaltung.get(String) - SQL ERROR");
 			e.printStackTrace();
-			return null;
 		}
+		return null;
 	}
 	
 	/**

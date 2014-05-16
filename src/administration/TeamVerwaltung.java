@@ -139,13 +139,15 @@ public class TeamVerwaltung {
 	public static Team get(long teamid){
 		try {
 			ResultSet rs = Queries.rowQuery("*", "teams", "teamID = "+teamid);
-			rs.next();
-			return createTeambyRow(rs);
+			if(rs.isBeforeFirst()){
+				rs.next();
+				return createTeambyRow(rs);
+			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.err.println("TeamVerwaltung.get(long) - SQL ERROR");
 			e.printStackTrace();
-			return null;
 		}
+		return null;
 	}
 	
 	/**
@@ -157,13 +159,15 @@ public class TeamVerwaltung {
 	public static Team get(String teamname){
 		try {
 			ResultSet rs = Queries.rowQuery("*", "teams", "teamname = '"+teamname+"'");
+			if(rs.isBeforeFirst()){
 			rs.next();
 			return createTeambyRow(rs);
+			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.err.println("TeamVerwaltung.get(String) - SQL ERROR");
 			e.printStackTrace();
-			return null;
 		}
+		return null;
 	}
 	
 	/**
