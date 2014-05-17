@@ -48,20 +48,24 @@
 				<div class="list-group">
 					<div class="list-group-item"><span class="glyphicon glyphicon-barcode"></span> ID: ${task.id}</div>
 					<div class="list-group-item"><span class="glyphicon glyphicon-calendar"></span> <fmt:formatDate pattern="dd.MM.yyyy" value="${task.erstellungsdatumAsDate}" /></div>
-					<div class="list-group-item"><span class="glyphicon glyphicon-bell"></span> <fmt:formatDate pattern="dd.MM.yyyy" value="${task.deadlineAsDate}" /></div>
+					<c:if test="${task.deadline > 0}">
+						<div class="list-group-item"><span class="glyphicon glyphicon-bell"></span> <fmt:formatDate pattern="dd.MM.yyyy" value="${task.deadlineAsDate}" /></div>
+					</c:if>
 					<div class="list-group-item"><span class="glyphicon glyphicon-dashboard"></span> Status: ${task.status}%</div>
 				</div>
 				
-				<h1>Zuteilung</h1>
-				<div class="list-group">
-					<c:forEach var="user" items="${users}">
-						<a href="/user?mode=view&id=${user.id}" class="list-group-item">
-							<span class="glyphicon glyphicon-user"></span> ${user.username}
-							<c:if test="${user.id == task.ersteller.id}">
-								<span class="label label-default">Ersteller</span>
-							</c:if>
-						</a>
-					</c:forEach>						
-				</div>
+				<c:if test="${fn:length(users) > 0}">
+					<h1>Zuteilung</h1>
+					<div class="list-group">
+						<c:forEach var="user" items="${users}">
+							<a href="/user?mode=view&id=${user.id}" class="list-group-item">
+								<span class="glyphicon glyphicon-user"></span> ${user.username}
+								<c:if test="${user.id == task.ersteller.id}">
+									<span class="label label-default">Ersteller</span>
+								</c:if>
+							</a>
+						</c:forEach>						
+					</div>
+				</c:if>
 			</div><%-- Ende Sidebar --%>
 <jsp:include page="../footer.jsp" />

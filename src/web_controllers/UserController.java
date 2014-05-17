@@ -171,34 +171,42 @@ public class UserController extends HttpServlet {
 			
 			String currentUsername = user.getUsername();
 			String username = request.getParameter("username");
-			// neuer Username
+			// Username (falls neu)
 			if(!username.equals(currentUsername)){
-				if(!MitgliederVerwaltung.vorhanden(username)){
+				if(username.length() > 0 && !MitgliederVerwaltung.vorhanden(username)){
 					user.setUsername(username);
 				} else {
-					// TODO Debug:
-					System.out.println("Name " + username +  " schon vergeben!");
-					session.setAttribute("alert", "Dieser Benutzername ist schon vergeben! Bitte versuchen Sie es erneut mit einem anderen Benutzernamen.");
+					session.setAttribute("alert", "Dieser Benutzername ist ung&uuml;ltig oder schon vergeben! Bitte versuchen Sie es erneut mit einem anderen Benutzernamen.");
 					session.setAttribute("alert_mode", "danger");
-					response.sendRedirect("/user?mode=edit");
+					response.sendRedirect(request.getHeader("Referer"));
 					return;
 				}
 			}
 
 			user.setVorname(request.getParameter("vorname"));
 			user.setNachname(request.getParameter("nachname"));
-			user.setEmail(request.getParameter("email"));
-
+			
+			// E-Mail-Adresse
+			String email = request.getParameter("email");
+			if(email.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"	+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")){
+				user.setEmail(email);
+			} else {
+				session.setAttribute("alert", "Ihre E-Mail-Adresse ist ung&uuml;ltig! Bitte &uuml;berpr&uuml;fen Sie diese und speichern Sie erneut.");
+				session.setAttribute("alert_mode", "danger");
+				response.sendRedirect(request.getHeader("Referer"));
+				return;
+			}
+			
 			String password = request.getParameter("password");
 			
-			// neues Passwort
+			// Passwort (falls neu)
 			if(password != null && password.length() > 0){
 				if(password.equals(request.getParameter("passwordRepeat"))){
 					user.setPw(password);
 				} else {
 					session.setAttribute("alert", "Sie haben zwei verschiedene Passw&ouml;rter eingegeben! Bitte versuchen Sie es erneut.");
 					session.setAttribute("alert_mode", "danger");
-					response.sendRedirect("/user?mode=edit");
+					response.sendRedirect(request.getHeader("Referer"));
 					return;
 				}
 			}
@@ -207,7 +215,7 @@ public class UserController extends HttpServlet {
 			
 			if(userUpdated != null){
 				session.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!");
-				response.sendRedirect("/user?mode=edit");
+				response.sendRedirect(request.getHeader("Referer"));
 			} else {
 				session.setAttribute("error", "Fehler beim Speichern der Profildaten!");
 				response.sendRedirect("/error.jsp");

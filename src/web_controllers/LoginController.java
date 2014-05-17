@@ -1,6 +1,7 @@
 package web_controllers;
 
 import java.io.IOException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -138,23 +139,48 @@ public class LoginController extends HttpServlet {
 		// Registrierung (Aktion)
 		} else if(mode.equals("register")){
 			if(!login){
+				Mitglied user = new Mitglied();
+				
+				if(username.length() > 0 && !MitgliederVerwaltung.vorhanden(username)){
+					user.setUsername(username);
+				} else {
+					session.setAttribute("alert", "Der gew&auml;hlte Benutzername ist ung&uuml;ltig oder bereits vergeben! Bitte w&auml;hlen Sie einen anderen.");
+					session.setAttribute("alert_mode", "danger");
+					response.sendRedirect("/?page=register");
+					return;
+				}
+				
+				user.setVorname(request.getParameter("vorname"));
+				user.setNachname(request.getParameter("nachname"));
+				
+				String email = request.getParameter("email");
+				if(email.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"	+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")){
+					user.setEmail(email);						
+				} else {
+					session.setAttribute("alert", "Ihre E-Mail-Adresse ist ung&uuml;ltig! Bitte &uuml;berpr&uuml;fen Sie diese und versuchen Sie es erneut.");
+					session.setAttribute("alert_mode", "danger");
+					response.sendRedirect("/?page=register");
+					return;
+				}
+				
 				String passwordRepeat = request.getParameter("passwordRepeat");
-				if(password.equals(passwordRepeat)){
-					Mitglied user = new Mitglied();
-					user.setUsername(request.getParameter("username"));
-					user.setVorname(request.getParameter("vorname"));
-					user.setNachname(request.getParameter("nachname"));
-					user.setEmail(request.getParameter("email"));
+				if(password.length() > 0 && password.equals(passwordRepeat)){	
 					user.setPw(password);
-					
-					Mitglied userNew = MitgliederVerwaltung.neu(user);
-					// if(userNew != null)
+				} else {
+					session.setAttribute("alert", "Ihre Passw&ouml;rter stimmen nicht &uuml;berein oder sind leer!");
+					session.setAttribute("alert_mode", "danger");
+					response.sendRedirect("/?page=register");
+					return;
+				}
+				
+				Mitglied userNew = MitgliederVerwaltung.neu(user);
+				if(userNew != null){
 					session.setAttribute("title", "Erfolgreich registriert");
 					session.setAttribute("message", "Sie haben sich hiermit erfolgreich als \"<b>" + userNew.getUsername() + "</b>\" registriert und k&ouml;nnen sich ab sofort mit Ihrem Passwort einloggen.<br />Herzlich willkommen! :)");
 					response.sendRedirect("/success.jsp");
 					return;
 				} else {
-					session.setAttribute("alert", "Ihre Passw&ouml;rter stimmen nicht &uuml;berein!");
+					session.setAttribute("alert", "Fehler bei der Erstellung des Profils! Bitte versuchen Sie es erneut.");
 					session.setAttribute("alert_mode", "danger");
 					response.sendRedirect("/?page=register");
 					return;

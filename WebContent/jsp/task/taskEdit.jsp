@@ -39,7 +39,7 @@
 		  		<div class="form-group col-xs row">
 		  			<div class="col-md-6">
 		  				<label for="name"><span class="glyphicon glyphicon-time"></span> Name*</label>
-						<input id="name" name="name" type="text" class="form-control input-lg" value="${task.name}" />
+						<input id="name" name="name" type="text" class="form-control input-lg" value='${task.name}' />
 		  			</div>
 		  			<div class="col-md-6">
 		  				<label for="group"><span class="glyphicon glyphicon-tag"></span> Aufgabengruppe*</label>
@@ -70,7 +70,7 @@
 				    		</c:if>
 				    	</div>
 				    	<div class="col-xs-4">
-				    		<label for="deadline" data-toggle="tooltip" data-placement="right" data-original-title="Geben Sie das Datum im Format jjjj-mm-tt an (z.B. 2015-04-21)."><span class="glyphicon glyphicon-bell"></span> Deadline</label>
+				    		<label for="deadline" data-toggle="tooltip" data-placement="right" data-original-title="Falls die Datumsauswahl nicht angezeigt wird (Firefox und Internet Explorer): Geben Sie das Datum im Format jjjj-mm-tt an (z.B. 2015-04-21)."><span class="glyphicon glyphicon-bell"></span> Deadline</label>
 							<input id="deadline" name="deadline" type="date" class="form-control" value="<fmt:formatDate pattern="yyyy-MM-dd" value="${task.deadlineAsDate}" />" placeholder="jjjj-mm-tt" />
 				    	</div>
 				    	<div class="col-xs-4">
@@ -79,15 +79,15 @@
 				    	</div>
 				</div>
 				<div class="form-group col-xs">
-					<label for="users"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="Mehrere Mitglieder durck Gedr&uuml;ckthalten von STRG bzw. CMD markieren">?</span>
-					<select multiple name="users" id="users" size="3" class="form-control">
-						<c:forEach var="userSelected" items="${usersSelected}">
-							<option value="${userSelected.id}" selected>${userSelected.username}</option>
+					<label for="users"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="W&auml;hlen Sie hier die Mitglieder aus, welche die Aufgabe bearbeiten sollen.">?</span>
+					<div class="checkbox">
+						<c:forEach var="userSelected" items="${usersSelected}">							
+							<label><input type="checkbox" name="users" value="${userSelected.id}" checked> ${userSelected.username} (${userSelected.vorname} ${userSelected.nachname}) </label><br />
 						</c:forEach>
 						<c:forEach var="user" items="${users}">
-							<option value="${user.id}">${user.username}</option>
+							<label><input type="checkbox" name="users" value="${user.id}"> ${user.username} (${user.vorname} ${user.nachname}) </label><br />
 						</c:forEach>
-					</select>
+					</div>
 				</div>
 				
 				<table class="table table-hover col-xs">
@@ -115,7 +115,10 @@
 				</table>
 				
 				<c:if test="${param.mode == 'new'}"><input type="hidden" name="mode" value="new" /></c:if>
-				<c:if test="${param.mode == 'edit'}"><input type="hidden" name="mode" value="edit" /></c:if>
+				<c:if test="${param.mode == 'edit'}">
+					<input type="hidden" name="mode" value="edit" />
+					<input type="hidden" name="id" value="${task.id}" />
+				</c:if>
 				
 				<div class="form-group col-xs">
 					<c:if test="${param.mode == 'new'}">

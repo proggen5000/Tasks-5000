@@ -32,7 +32,7 @@
 		  			</div>
 				</div>
 				<div class="form-group col-xs">
-					<label for="description"><span class="glyphicon glyphicon-align-left"></span> Beschreibung*</label>
+					<label for="description"><span class="glyphicon glyphicon-align-left"></span> Beschreibung</label>
 					<textarea id="description" name="description" class="form-control" rows="5">${file.beschreibung}</textarea>
 				</div>
 				
@@ -45,8 +45,8 @@
 				
 				<%-- // TODO noch in tollere Auswahlliste umwandeln --%>
 				<div class="form-group col-xs">
-	  				<label for="task"><span class="glyphicon glyphicon-tag"></span> Aufgabe (Zuordnung)</label>
-					<select multiple name="task" size="1" class="form-control">
+	  				<label for="tasks"><span class="glyphicon glyphicon-time"></span> Aufgaben-Zuordnung</label>
+					<select multiple id="tasks" name="tasks" size="4" class="form-control">
 						<c:forEach var="task" items="${tasks}">
 							<c:if test="${task.id == file.aufgabe.id}">
 								<option value="${task.id}" selected>${task.name}</option>
@@ -59,7 +59,10 @@
 	  			</div>
 				
 				<c:if test="${param.mode == 'new'}"><input type="hidden" name="mode" value="new" /></c:if>
-				<c:if test="${param.mode == 'edit'}"><input type="hidden" name="mode" value="edit" /></c:if>
+				<c:if test="${param.mode == 'edit'}">
+					<input type="hidden" name="mode" value="edit" />
+					<input type="hidden" name="id" value="${file.id}" />
+				</c:if>
 				<input type="hidden" name="team" value="${team.id}" />
 				
 				<div class="form-group">

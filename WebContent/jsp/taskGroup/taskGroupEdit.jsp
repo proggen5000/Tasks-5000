@@ -26,7 +26,7 @@
 		  		<div class="form-group col-xs row">
 		  			<div class="col-xs-6">
 		  				<label for="name"><span class="glyphicon glyphicon-tag"></span> Aufgabengruppenname*</label>
-						<input type="text" id="name" name="name" class="form-control input-lg" value="${taskGroup.name}" />
+						<input type="text" id="name" name="name" class="form-control input-lg" value='${taskGroup.name}' />
 		  			</div>
 				</div>
 				<div class="form-group col-xs">

@@ -161,6 +161,11 @@ public class TaskController extends HttpServlet {
 		}
 
 		long id = -1; // Aufgaben-ID
+		try {
+			id = Long.parseLong(request.getParameter("id"));
+		} catch (NumberFormatException e){
+			request.setAttribute("error", e);
+		}
 		if(request.getSession().getAttribute("id") != null){
 			try {
 				id = Long.parseLong(request.getSession().getAttribute("id").toString());
@@ -182,84 +187,168 @@ public class TaskController extends HttpServlet {
 		// Aufgabe erstellen (Aktion)
 		else if(mode.equals("new")){
 			Aufgabe task = new Aufgabe();
+			
+			String name = request.getParameter("name");
+			if(name != null && name.length() > 0){
+				task.setName(name);
+			} else {
+				session.setAttribute("alert", "Bitte geben Sie einen g&uuml;ltigen Aufgabennamen an!");
+				session.setAttribute("alert_mode", "danger");
+				response.sendRedirect(request.getHeader("Referer"));
+				return;
+			}
+			
 			task.setErsteller(MitgliederVerwaltung.get(currentUser));
-			task.setName(request.getParameter("name"));
+			
 			task.setBeschreibung(request.getParameter("description"));
 			task.setGruppe(AufgabengruppenVerwaltung.get(Long.parseLong(request.getParameter("group"))));
-			task.setStatus(Integer.parseInt(request.getParameter("status")));
+			
+			String status = request.getParameter("status");
+			if(status != null && status.length() > 0){
+				int statusInt = 0;
+				try {
+					statusInt = Integer.parseInt(status);
+				} catch (NumberFormatException e){
+					session.setAttribute("alert", "Bitte geben Sie einen g&uuml;ltigen Status (0 bis 100) an!");
+					session.setAttribute("alert_mode", "danger");
+					response.sendRedirect(request.getHeader("Referer"));
+					return;
+				}
+				if(statusInt >= 0 && statusInt <= 100){
+					task.setStatus(statusInt);				
+				} else {
+					session.setAttribute("alert", "Bitte geben Sie einen g&uuml;ltigen Status (0 bis 100) an!");
+					session.setAttribute("alert_mode", "danger");
+					response.sendRedirect(request.getHeader("Referer"));
+					return;
+				}
+			}
+			
 			task.setErstellungsdatum(new Date().getTime());
 			
 			String deadlineString = request.getParameter("deadline");
-			SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
-			Date deadline = new Date();
-			try {
-				deadline = f.parse(deadlineString);
-				task.setDeadline(deadline.getTime());
-			} catch (ParseException e) {
-				e.printStackTrace();
+			if(deadlineString != null && deadlineString.length() > 0){
+				SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+				Date deadline = new Date();
+				try {
+					deadline = f.parse(deadlineString);
+					task.setDeadline(deadline.getTime());
+				} catch (ParseException e) {
+					session.setAttribute("alert", "Bitte geben Sie ein g&uuml;ltiges Datum als Deadline an!");
+					session.setAttribute("alert_mode", "danger");
+					response.sendRedirect(request.getHeader("Referer"));
+					return;
+				}
 			}
 			
 			Aufgabe taskNew = AufgabenVerwaltung.neu(task);
 			
 			String[] userIDs = request.getParameterValues("users");
-			for(String userID : userIDs){
-				Mitglied user = MitgliederVerwaltung.get(Long.parseLong(userID));
-				AufgabenMitglieder.zuweisen(user, task);
+			if(userIDs != null && userIDs.length > 0){
+				for(String userID : userIDs){
+					Mitglied user = MitgliederVerwaltung.get(Long.parseLong(userID));
+					AufgabenMitglieder.zuweisen(user, taskNew);
+				}
 			}
 			
 			session.setAttribute("alert", "Aufgabe erfolgreich erstellt!");
 			response.sendRedirect("/task?mode=view&id="+taskNew.getId());
+			return;
 		}
 		
 		// Aufgabe bearbeiten (Aktion)
 		else if(mode.equals("edit")){
 			Aufgabe task = AufgabenVerwaltung.get(id);
-			task.setName(request.getParameter("name"));
+			
+			String name = request.getParameter("name");			
+			if(name != null && name.length() > 0){
+				task.setName(name);
+			} else {
+				session.setAttribute("alert", "Bitte geben Sie einen g&uuml;ltigen Aufgabennamen an!");
+				session.setAttribute("alert_mode", "danger");
+				response.sendRedirect(request.getHeader("Referer"));
+				return;
+			}
+			
 			task.setGruppe(AufgabengruppenVerwaltung.get(Long.parseLong(request.getParameter("group"))));
 			task.setBeschreibung(request.getParameter("description"));
-			task.setStatus(Integer.parseInt(request.getParameter("status")));
+			
+			String status = request.getParameter("status");
+			if(status != null && status.length() > 0){
+				int statusInt = 0;
+				try {
+					statusInt = Integer.parseInt(status);
+				} catch (NumberFormatException e){
+					session.setAttribute("alert", "Bitte geben Sie einen g&uuml;ltigen Status (0 bis 100) an!");
+					session.setAttribute("alert_mode", "danger");
+					response.sendRedirect(request.getHeader("Referer"));
+					return;
+				}
+				if(statusInt >= 0 && statusInt <= 100){
+					task.setStatus(statusInt);	
+				} else {
+					session.setAttribute("alert", "Bitte geben Sie einen g&uuml;ltigen Status (0 bis 100) an!");
+					session.setAttribute("alert_mode", "danger");
+					response.sendRedirect(request.getHeader("Referer"));
+					return;
+				}
+			}
 			
 			String deadlineString = request.getParameter("deadline");
-			SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
-			Date deadline = new Date();
-			try {
-				deadline = f.parse(deadlineString);
-				task.setDeadline(deadline.getTime());
-			} catch (ParseException e) {
-				e.printStackTrace();
+			if(deadlineString != null && deadlineString.length() > 0){
+				SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+				Date deadline = new Date();
+				try {
+					deadline = f.parse(deadlineString);
+					task.setDeadline(deadline.getTime());
+				} catch (ParseException e) {
+					session.setAttribute("alert", "Bitte geben Sie ein g&uuml;ltiges Datum als Deadline an!");
+					session.setAttribute("alert_mode", "danger");
+					response.sendRedirect(request.getHeader("Referer"));
+					return;
+				}
 			}
 			
 			AufgabenMitglieder.entfernenAlle(task);
 			String[] userIDs = request.getParameterValues("users");
-			for(String userID : userIDs){
-				Mitglied user = MitgliederVerwaltung.get(Long.parseLong(userID));
-				AufgabenMitglieder.zuweisen(user, task);
+			if(userIDs != null && userIDs.length > 0){
+				for(String userID : userIDs){
+					Mitglied user = MitgliederVerwaltung.get(Long.parseLong(userID));
+					AufgabenMitglieder.zuweisen(user, task);
+				}
 			}
 
 			Aufgabe taskUpdated = AufgabenVerwaltung.bearbeiten(task);
 			if(taskUpdated != null){
 				session.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!");
 				response.sendRedirect("/task?mode=view&id="+taskUpdated.getId());
+				return;
 			} else {
-				session.setAttribute("error", "Fehler bei der Speicherung der &Auml;nderungen!");
-				response.sendRedirect("/error.jsp");
+				session.setAttribute("alert", "Fehler bei der Speicherung der &Auml;nderungen!");
+				session.setAttribute("alert_mode", "danger");
+				response.sendRedirect(request.getHeader("Referer"));
+				return;
 			}	
 		}
 		
-		// Aufgabe loeschen (Aktion)
-		else if(mode.equals("remove")){
+		// Aufgabe löschen (Aktion)
+		else if(mode.equals("remove")){			
 			if (AufgabenVerwaltung.vorhanden(id)){
 				long teamId = AufgabenVerwaltung.get(id).getGruppe().getTeam().getId();
 				if(AufgabenVerwaltung.loeschen(AufgabenVerwaltung.get(id))){
+					session.setAttribute("alert", "Aufgabe erfolgreich gel&ouml;scht!");
 					response.sendRedirect("/team?mode=view&id="+teamId);
+					return;
 				} else {
-					session.setAttribute("error", "Aufgabe konnte nicht gel&ouml;scht werden!");
-					response.sendRedirect("/error.jsp");
+					session.setAttribute("alert", "Aufgabe konnte nicht gel&ouml;scht werden!");
+					session.setAttribute("alert_mode", "danger");
+					response.sendRedirect("/team?mode=view&id="+teamId);
+					return;
 				}
-				
 			} else {
 				session.setAttribute("error", "Aufgabe nicht gefunden!");
 				response.sendRedirect("/error.jsp");
+				return;
 			}
 		}
 		
@@ -267,6 +356,7 @@ public class TaskController extends HttpServlet {
 		else {
 			session.setAttribute("error", "Ung&uuml;ltiger Modus!");
 			response.sendRedirect("/error.jsp");
+			return;
 		}
 	}
 }

@@ -19,7 +19,6 @@
 			<form action="/task" method="post">
 				<input type="hidden" name="id" value="${task.id}" />
 				<input type="hidden" name="mode" value="remove" />
-				<input type="hidden" name="sure" value="true" />
 				<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-ok"></span> Ja, l&ouml;schen</button>
 				<a href="/task?mode=view&id=${task.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Nein, abbrechen</a>
 			</form>

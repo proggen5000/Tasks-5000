@@ -1,6 +1,7 @@
 package web_controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import entities.Mitglied;
 import administration.AufgabengruppenVerwaltung;
 import administration.DateiVerwaltung;
 import administration.MitgliederTeams;
@@ -77,10 +79,9 @@ public class TeamController extends HttpServlet {
 		
 		// Team erstellen (Formular)
 		else if(mode.equals("new")){
-			// TODO Manager sollte automatisch Mitglied sein:
-			//ArrayList<Mitglied> users = new ArrayList<Mitglied>();
-			//users.add(MitgliederVerwaltung.get(currentUser));
-			//request.setAttribute("users", users);
+			ArrayList<Mitglied> users = new ArrayList<Mitglied>();
+			users.add(MitgliederVerwaltung.get(currentUser));
+			request.setAttribute("users", users);
 			request.setAttribute("usersRest", MitgliederVerwaltung.getListe());
 			request.setAttribute("mode", mode);
 			request.setAttribute("valid_request", true);
@@ -167,54 +168,113 @@ public class TeamController extends HttpServlet {
 	
 		// Team erstellen (Aktion)
 		else if(mode.equals("new")){
-			String name = request.getParameter("name");
+			entities.Team team = new entities.Team();
 			
+			String name = request.getParameter("name");
 			if(name.length() > 0){
-				entities.Team team = new entities.Team();
-				team.setGruppenfuehrer(MitgliederVerwaltung.get(currentUser));
-				team.setName(name);
-				team.setBeschreibung(request.getParameter("description"));
-				
-				entities.Team teamNew = TeamVerwaltung.neu(team);
-				
-				if(teamNew != null){
-					String[] userIDs = request.getParameterValues("users");
-					for(String userID : userIDs){
-						long userIDLong = Long.parseLong(userID);
-						MitgliederTeams.beitreten(userIDLong, teamNew.getId(), "Mitglied");
-					}
-					session.setAttribute("alert", "Sie haben das Team erfolgreich erstellt!");
-					session.setAttribute("alert_mode", "success");
-					response.sendRedirect("/team?mode=view&id=" + teamNew.getId());
+				if(!TeamVerwaltung.vorhanden(name)){
+					team.setName(name);
 				} else {
-					session.setAttribute("error", "Fehler beim Speichern des Teams!");
-					response.sendRedirect("/error.jsp");
+					session.setAttribute("alert", "Dieser Teamname ist bereits vergeben! Bitte verwenden Sie einen anderen.");
+					session.setAttribute("alert_mode", "danger");
+					response.sendRedirect(request.getHeader("Referer"));
+					return;
 				}
 			} else {
-				session.setAttribute("alert", "Bitte geben Sie alle Daten an, die mit einem Sternchen (*) gekennzeichnet sind.");
+				session.setAttribute("alert", "Bitte geben Sie einen g&uuml;ltigen Teamnamen an.");
 				session.setAttribute("alert_mode", "danger");
 				response.sendRedirect(request.getHeader("Referer"));
+				return;
 			}
+			
+			team.setGruppenfuehrer(MitgliederVerwaltung.get(currentUser));
+			team.setBeschreibung(request.getParameter("description"));
+			
+			String[] userIDs = request.getParameterValues("users");
+			if(userIDs == null || userIDs.length == 0){
+				session.setAttribute("alert", "Sie m&uuml;ssen Mitglieder zu Ihrem Team hinzuf&uuml;gen!");
+				session.setAttribute("alert_mode", "danger");
+				response.sendRedirect(request.getHeader("Referer"));
+				return;
+			}
+			
+			entities.Team teamNew = TeamVerwaltung.neu(team);
+			
+			if(teamNew != null){
+				for(String userID : userIDs){
+					long userIDLong = Long.parseLong(userID);
+					if(userIDLong != currentUser){
+						MitgliederTeams.beitreten(userIDLong, teamNew.getId(), "Mitglied");
+					}
+				}
+				MitgliederTeams.beitreten(currentUser, teamNew.getId(), "Manager");
+				
+				session.setAttribute("alert", "Sie haben das Team erfolgreich erstellt!");
+				response.sendRedirect("/team?mode=view&id=" + teamNew.getId());
+				return;
+			} else {
+				session.setAttribute("error", "Fehler beim Speichern des Teams!");
+				response.sendRedirect("/error.jsp");
+				return;
+			}		
 		}
 		
 		// Team bearbeiten (Aktion)
 		else if(mode.equals("edit")){			
 			entities.Team team = TeamVerwaltung.get(id);
-			// TODO Debug:
-			System.out.println("Team zu bearbeiten: " + team.getName());
 			
-			if(currentUser == team.getGruppenfuehrer().getId()){
+			if(currentUser == team.getGruppenfuehrer().getId()){				
+				
+				// Name (falls neu)
+				String currentName = team.getName();
+				String newName = request.getParameter("name");
+				if(!newName.equals(currentName)){
+					if(newName.length() > 0){
+						if(!TeamVerwaltung.vorhanden(newName)){
+							team.setName(newName);
+						} else {
+							session.setAttribute("alert", "Dieser Teamname ist bereits vergeben! Bitte verwenden Sie einen anderen.");
+							session.setAttribute("alert_mode", "danger");
+							response.sendRedirect(request.getHeader("Referer"));
+							return;
+						}
+					} else {
+						session.setAttribute("alert", "Bitte geben Sie einen g&uuml;ltigen Teamnamen an.");
+						session.setAttribute("alert_mode", "danger");
+						response.sendRedirect(request.getHeader("Referer"));
+						return;
+					}
+				}
+				
 				team.setGruppenfuehrer(MitgliederVerwaltung.get(Long.parseLong(request.getParameter("manager"))));
-				team.setName(request.getParameter("name"));
+				
 				team.setBeschreibung(request.getParameter("description"));
+				
+				String[] userIDs = request.getParameterValues("users");
+				if(userIDs == null || userIDs.length == 0){
+					session.setAttribute("alert", "Sie m&uuml;ssen Mitglieder zu Ihrem Team hinzuf&uuml;gen!");
+					session.setAttribute("alert_mode", "danger");
+					response.sendRedirect(request.getHeader("Referer"));
+					return;
+				}
+				
 				entities.Team teamUpdated = TeamVerwaltung.bearbeiten(team);
 				
 				if(teamUpdated != null){
+					for(String userID : userIDs){
+						long userIDLong = Long.parseLong(userID);
+						if(userIDLong != currentUser){
+							MitgliederTeams.beitreten(userIDLong, teamUpdated.getId(), "Mitglied");
+						}
+					}
+					MitgliederTeams.beitreten(currentUser, teamUpdated.getId(), "Manager");
+					
 					session.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!");
 					response.sendRedirect("/team?mode=view&id=" + teamUpdated.getId());
 				} else {
-					session.setAttribute("error", "Team konnte nicht bearbeitet werden!");
-					response.sendRedirect("/team?mode=view&id=" + id);
+					session.setAttribute("alert", "Team konnte nicht bearbeitet werden!");
+					session.setAttribute("alert_mode", "danger");
+					response.sendRedirect(request.getHeader("Referer"));
 				}
 			} else {
 				session.setAttribute("error", "Nur Teammanager d&uuml;rfen die Teamdetails bearbeiten!");
@@ -225,11 +285,12 @@ public class TeamController extends HttpServlet {
 		// Team löschen (Aktion)
 		else if(mode.equals("remove")){
 			entities.Team team = TeamVerwaltung.get(id);
+			String name = team.getName();
 			
 			if(currentUser == team.getGruppenfuehrer().getId()){
 				if(TeamVerwaltung.loeschen(team.getId())){
 					session.setAttribute("title", "Team gel&ouml;scht");
-					session.setAttribute("message", "Sie haben das Team erfolgreich gel&ouml;scht!");
+					session.setAttribute("message", "Sie haben das Team <b>" + name + "</b> erfolgreich gel&ouml;scht!");
 					response.sendRedirect("/success.jsp");
 				} else {
 					session.setAttribute("error", "Fehler beim L&ouml;schen!");

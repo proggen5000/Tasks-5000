@@ -115,9 +115,13 @@ public class DateiVerwaltung {
 		
 		try {
 			ResultSet rs= Queries.rowQuery(sql);
-			rs.next();
-			Datei testdatei= createDateibyRow(rs);
-			return testdatei;
+			if(rs.isBeforeFirst()){
+				rs.next();
+				Datei testdatei= createDateibyRow(rs);
+				return testdatei;
+			} else {
+				return null;
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

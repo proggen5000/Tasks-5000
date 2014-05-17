@@ -12,17 +12,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import administration.AufgabenDateien;
+import administration.AufgabenMitglieder;
 import administration.AufgabenVerwaltung;
 import administration.DateiVerwaltung;
 import administration.MitgliederVerwaltung;
 import administration.TeamVerwaltung;
+import entities.Aufgabe;
 import entities.Datei;
+import entities.Mitglied;
 
 @WebServlet("/file")
 @MultipartConfig
@@ -77,7 +82,6 @@ public class FileController extends HttpServlet {
 			if(id != -1){
 				Datei file = DateiVerwaltung.get(id);
 				request.setAttribute("file", file);
-				// request.setAttribute("group", ); // TODO
 				// request.setAttribute("task", ); // TODO
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/jsp/file/fileView.jsp");
@@ -161,10 +165,13 @@ public class FileController extends HttpServlet {
 		
 		String mode = request.getParameter("mode");
 		
+		HttpSession session = request.getSession(true);
+		
 		// Fehler - kein Login
 		if(!login){
-			request.setAttribute("error", "Sie sind nicht eingeloggt!");
+			session.setAttribute("error", "Sie sind nicht eingeloggt!");
 			response.sendRedirect("/error.jsp");
+			return;
 		}
 		
 		// Datei herunterladen (Aktion)
@@ -173,8 +180,9 @@ public class FileController extends HttpServlet {
 				Datei file = DateiVerwaltung.get(id);
 				response.sendRedirect("/"+file.getPfad()); // TODO funktioniert der Download so?
 			} else {
-				request.setAttribute("error", "Datei nicht gefunden!");
+				session.setAttribute("error", "Datei nicht gefunden!");
 				response.sendRedirect("/error.jsp");
+				return;
 			}
 		}
 
@@ -182,14 +190,25 @@ public class FileController extends HttpServlet {
 		else if(mode.equals("new")){
 			Datei file = new Datei();
 			file.setErsteller(MitgliederVerwaltung.get(currentUser));
-			file.setName(request.getParameter("name"));
+			
+			String name = request.getParameter("name");
+			if(name != null && name.length() > 0){
+				file.setName(name);
+			} else {
+				session.setAttribute("alert", "Bitte geben Sie einen g&uuml;ltigen Dateinamen an!");
+				session.setAttribute("alert_mode", "danger");
+				response.sendRedirect(request.getHeader("Referer"));
+				return;
+			}
+			
 			file.setBeschreibung(request.getParameter("description"));
 			file.setTeam(TeamVerwaltung.get(Long.parseLong(request.getParameter("team"))));
 			
 			// Check that we have a file upload request // TODO vermutlich unnoetig
 	        if(!ServletFileUpload.isMultipartContent(request)){
-	        	request.setAttribute("error", "Fehler bei der Speicherung!");
+	        	session.setAttribute("error", "Fehler bei der Speicherung!");
 				response.sendRedirect("/error.jsp");
+				return;
 	        }
 	        DiskFileItemFactory factory = new DiskFileItemFactory();
 	        factory.setSizeThreshold(MAX_MEMORY_SIZE);
@@ -215,15 +234,24 @@ public class FileController extends HttpServlet {
 	        }
 	        catch (FileUploadException ex) { throw new ServletException(ex); }
 	        catch (Exception ex) { throw new ServletException(ex); }			
-			
-			// TODO Aufgabenzuordnung via request.getParameter("tasks")
 
 			Datei fileNew = DateiVerwaltung.neu(file);
 			if(fileNew != null){
+				// Aufgabenzuordnung
+		        String[] taskIDs = request.getParameterValues("tasks");
+				if(taskIDs != null && taskIDs.length > 0){
+					for(String taskID : taskIDs){
+						Aufgabe task = AufgabenVerwaltung.get(Long.parseLong(taskID));
+						AufgabenDateien.zuweisen(fileNew, task);
+					}
+				}
+				session.setAttribute("alert", "Datei erfolgreich hochgeladen!");
 				response.sendRedirect("/file?mode=view&id="+fileNew.getId());
+				return;
 			} else {
-				request.setAttribute("error", "Fehler bei der Speicherung!");
+				session.setAttribute("error", "Datei konnte nicht erstellt werden!");
 				response.sendRedirect("/error.jsp");
+				return;
 			}
 		}
 		
@@ -237,33 +265,37 @@ public class FileController extends HttpServlet {
 			// TODO Aufgabenzuordnung via request.getParameter("tasks")
 
 			Datei fileUpdated = DateiVerwaltung.bearbeiten(file);
-			request.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!"); // TODO wird das angezeigt?
+			session.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!"); // TODO wird das angezeigt?
 			response.sendRedirect("/file?mode=view&id="+fileUpdated.getId());
 		}
 		
-		// Datei loeschen (Aktion)
+		// Datei löschen (Aktion)
 		else if(mode.equals("remove")){
-			Datei file = DateiVerwaltung.get(id);
 			if(DateiVerwaltung.vorhanden(id)){
+				Datei file = DateiVerwaltung.get(id);
 				long teamId = file.getTeam().getId();
 				if(DateiVerwaltung.loeschen(file.getId())){
 					// TODO auch phys. Datei loeschen! 
-					request.setAttribute("valid_request", true);
+					session.setAttribute("alert", "Datei erfolgreich gel&ouml;scht!");
 					response.sendRedirect("/team?mode=view&id="+teamId);
+					return;
 				} else {
-					request.setAttribute("error", "Datei konnte nicht gel&ouml;scht werden!");
+					session.setAttribute("error", "Datei konnte nicht gel&ouml;scht werden!");
 					response.sendRedirect("/error.jsp");
+					return;
 				}
 			} else {
-				request.setAttribute("error", "Datei nicht gefunden!");
+				session.setAttribute("error", "Datei nicht gefunden!");
 				response.sendRedirect("/error.jsp");
+				return;
 			}
 		}
 		
 		// Fehler - kein mode angegeben
 		else {
-			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
+			session.setAttribute("error", "Ung&uuml;ltiger Modus!");
 			response.sendRedirect("/error.jsp");
+			return;
 		}
 	}
 }

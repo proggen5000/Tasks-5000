@@ -158,7 +158,7 @@ public class TeamVerwaltung {
 	 */
 	public static Team get(String teamname){
 		try {
-			ResultSet rs = Queries.rowQuery("*", "teams", "teamname = '"+teamname+"'");
+			ResultSet rs = Queries.rowQuery("*", "teams", "name = '"+teamname+"'");
 			if(rs.isBeforeFirst()){
 			rs.next();
 			return createTeambyRow(rs);

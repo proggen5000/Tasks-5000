@@ -32,7 +32,10 @@
 					</table>
 		  		</c:if>
 		  		<c:if test="${fn:length(teams) == 0}">
-		  			<p>Momentan sind Sie kein Mitglied in einem Team. <a href="/team?mode=new">Erstellen</a> Sie Ihr eigenes Team oder lassen Sie sich von einem anderem Teammanager einladen.</p>
+		  			<p>
+		  				Momentan sind Sie kein Mitglied in einem Team.<br />
+		  				<a href="/team?mode=new">Erstellen</a> Sie Ihr eigenes Team oder lassen Sie sich von einem anderem Teammanager einladen.
+		  			</p>
 		  		</c:if>
 		  		
 		  		<h1>Meine Aufgaben</h1>
@@ -49,6 +52,7 @@
 								</div>
 								<h4 class="list-group-item-heading">${task.name}</h4>
 								<p class="list-group-item-text">
+									<c:if test="${fn:length(task.beschreibung) == 0}">&nbsp;</c:if>
 									<c:if test="${fn:length(task.beschreibung) <= 50}">
 										${task.beschreibung}
 									</c:if>

@@ -22,7 +22,7 @@
 		  		<div class="form-group col-xs row">
 		  			<div class="col-md-6">
 		  				<label for="name"><span class="glyphicon glyphicon-briefcase"></span> Teamname*</label>
-						<input id="name" name="name" type="text" class="form-control input-lg" value="${team.name}" />
+						<input id="name" name="name" type="text" class="form-control input-lg" value='${team.name}' />
 		  			</div>
 		  			<div class="col-md-6">
 		  				<label for="manager"><span class="glyphicon glyphicon-user"></span> Teammanager*</label>
@@ -48,12 +48,12 @@
 					<textarea id="description" name="description" class="form-control" rows="2">${team.beschreibung}</textarea>
 				</div>
 				<div class="form-group col-xs">
-					<label for="members"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="Mehrere Mitglieder durck Gedr&uuml;ckthalten von STRG bzw. CMD markieren">?</span>
+					<label for="members"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="Mehrere Mitglieder durch Gedr&uuml;ckthalten von STRG bzw. CMD markieren.">?</span>
 					<div class="row">
 						<div class="col-xs-5">
 							<select multiple id="leftValues" name="users" size="8" class="form-control">
 								<c:forEach var="user" items="${users}">
-									<option value="${user.id}">${user.username} (${user.vorname} ${user.nachname})</option>
+									<option value="${user.id}" selected>${user.username} (${user.vorname} ${user.nachname})</option>
 								</c:forEach>
 							</select>
 						</div>
@@ -74,7 +74,10 @@
 				</div>
 				
 				<c:if test="${param.mode == 'new'}"><input type="hidden" name="mode" value="new" /></c:if>
-				<c:if test="${param.mode == 'edit'}"><input type="hidden" name="mode" value="edit" /></c:if>
+				<c:if test="${param.mode == 'edit'}">
+					<input type="hidden" name="mode" value="edit" />
+					<input type="hidden" name="id" value="${team.id}" />
+				</c:if>
 				
 				<div class="form-group">
 					<c:if test="${param.mode == 'new'}">

@@ -12,16 +12,16 @@
 			<form class="form" action="/user" method="post">
 				<div class="form-group col-xs">
 					<label for="username"><span class="glyphicon glyphicon-user"></span> Benutzername*</label>
-					<input type="text" class="form-control input-lg" name="username" value="${user.username}" />
+					<input type="text" class="form-control input-lg" name="username" value='${user.username}' />
 				</div>
 				  <div class="form-group">
 				    <label for="vorname"><span class="glyphicon glyphicon-user"></span> Echter Name</label>
 				    <div class="row">
 				    	<div class="col-xs-6">
-				    		<input type="text" class="form-control" name="vorname" placeholder="Vorname" value="${user.vorname}">
+				    		<input type="text" class="form-control" name="vorname" placeholder="Vorname" value='${user.vorname}'>
 				    	</div>
 				    	<div class="col-xs-6">
-				    		<input type="text" class="form-control" name="nachname" placeholder="Nachname" value="${user.nachname}">
+				    		<input type="text" class="form-control" name="nachname" placeholder="Nachname" value='${user.nachname}'>
 				    	</div>
 				    </div>
 				  </div>
@@ -30,7 +30,9 @@
 				  	<input type="email" class="form-control" id="email" name="email" placeholder="" value="${user.email}" />
 				  </div>
 				  <div class="form-group">
-				  	<label for="newPassword"><span class="glyphicon glyphicon-lock"></span> Neues Passwort</label>
+				  	<label for="newPassword" data-toggle="tooltip" data-placement="right" data-original-title="Wenn Sie ihr Passwort &auml;ndern m&ouml;chten, k&ouml;nnen Sie hier ein neues Passwort vergeben. Ansonsten k&ouml;nnen Sie diese Felder einfach leer lassen.">
+				  		<span class="glyphicon glyphicon-lock"></span> Neues Passwort
+				  	</label>
 				    <div class="row">
 				    	<div class="col-xs-6">
 				    		<input type="password" class="form-control" name="password" placeholder="Passwort" />
