@@ -4,5 +4,6 @@
 .project
 /src/database/ConnectionData.java
 /src/database/test.java
+/WebContent/config/db.config
 .idea/*
 ./Aufgaben-Verwaltung-5000.iml
