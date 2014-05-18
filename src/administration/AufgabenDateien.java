@@ -44,4 +44,15 @@ public class AufgabenDateien{
 		}
 		return al;
 	}
+	/**
+	  * Entfernt alle Aufgabenzuordnungen der angegebenen Datei
+	  */
+	public static boolean entfernenAlle(Datei d){
+		try{
+			return Queries.deleteQuery("aufgaben_dateien", "dateiID="+d.getId());
+		}catch(SQLException e){
+			e.printStackTrace();
+			return false;
+		}
+	}
 }
