@@ -271,5 +271,19 @@ public class AufgabenVerwaltung {
 			return null;
 		}
 	}
+	static ArrayList<Aufgabe> getListeVonDateiRest(long teamID, long dateiID){
+		ArrayList<Aufgabe> aufgabenTeam = getListeVonTeam(teamID);
+		ArrayList<Aufgabe> aufgabenDatei = getListeVonDatei(dateiID);
+		
+		
+		for(Aufgabe a : aufgabenDatei){
+			
+			if(aufgabenTeam.contains(a)){
+				aufgabenTeam.remove(a);
+			}
+		}
+		
+		return aufgabenTeam;
+	}
 
 }
