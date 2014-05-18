@@ -9,7 +9,7 @@
 <jsp:include page="../menu.jsp"><jsp:param name="menu" value="me" /></jsp:include>
 			
 			<h1>Profil bearbeiten</h1>
-			<form class="form" action="/user" method="post">
+			<form class="form" action="${pageContext.request.contextPath}/user" method="post">
 				<div class="form-group col-xs">
 					<label for="username"><span class="glyphicon glyphicon-user"></span> Benutzername*</label>
 					<input type="text" class="form-control input-lg" name="username" value='${user.username}' />
@@ -47,8 +47,8 @@
 				  
 				  <div class="form-group">
 					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Speichern</button>
-					<a href="/user?mode=view&id=${user.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
-					<a href="/user?mode=remove&id=${user.id}" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Profil l&ouml;schen</a>
+					<a href="${pageContext.request.contextPath}/user?mode=view&id=${user.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
+					<a href="${pageContext.request.contextPath}/user?mode=remove&id=${user.id}" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Profil l&ouml;schen</a>
 				  </div>
 			</form>
 			

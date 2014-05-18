@@ -22,14 +22,14 @@
 				<dt>Mitglied seit</dt><dd><fmt:formatDate pattern="dd.MM.yyyy" value="${user.regdatumAsDate}" /></dd>
 				<dt>Mitglied in</dt>
 					<c:forEach var="team" items="${teams}">
-	  					<dd><span class="glyphicon glyphicon-briefcase"></span> <a href="/team?mode=view&id=${team.id}">${team.name}</a></dd>
+	  					<dd><span class="glyphicon glyphicon-briefcase"></span> <a href="${pageContext.request.contextPath}/team?mode=view&id=${team.id}">${team.name}</a></dd>
 					</c:forEach>
 					<c:if test="${fn:length(teams) == 0}">
 						<dd>keinem Team.</dd>
 					</c:if>
 			</dl>	
 			<c:if test="${user.id == currentUser}">
-				<br /><a href="/user?mode=edit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Profil bearbeiten</a>
+				<br /><a href="${pageContext.request.contextPath}/user?mode=edit" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Profil bearbeiten</a>
 			</c:if>
 
 			<jsp:include page="../sidebar.jsp" />

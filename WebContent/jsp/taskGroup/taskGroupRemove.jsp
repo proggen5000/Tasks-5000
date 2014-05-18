@@ -9,19 +9,19 @@
 <jsp:include page="../menu.jsp"><jsp:param name="menu" value="teams" /></jsp:include>
 
 				<ol class="breadcrumb">
-					<li><a href="/">Start</a></li>
-					<li><a href="/team?mode=view&id=${taskGroup.team.id}">${taskGroup.team.name}</a></li>
+					<li><a href="${pageContext.request.contextPath}/">Start</a></li>
+					<li><a href="${pageContext.request.contextPath}/team?mode=view&id=${taskGroup.team.id}">${taskGroup.team.name}</a></li>
 					<li class="active"></li>
 				</ol>
 				
 				<h1>Aufgabengruppe l&ouml;schen</h1>
 				<p>Sind Sie sicher, dass Sie die Aufgabengruppe "<b>${taskGroup.name}</b>" entfernen m&ouml;chten?</p>
 				<p>Warnung: Dadurch werden auch <b>alle darin enthaltenen Aufgaben gel&ouml;scht</b>!</p>
-				<form action="/taskGroup" method="post">
+				<form action="${pageContext.request.contextPath}/taskGroup" method="post">
 					<input type="hidden" name="id" value="${taskGroup.id}" />
 					<input type="hidden" name="mode" value="remove" />
 					<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-ok"></span> Ja, l&ouml;schen</button>
-					<a href="/taskGroup?mode=edit&id=${taskGroup.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Nein, abbrechen</a>
+					<a href="${pageContext.request.contextPath}/taskGroup?mode=edit&id=${taskGroup.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Nein, abbrechen</a>
 				</form>
 					
 				<jsp:include page="../sidebar.jsp" />

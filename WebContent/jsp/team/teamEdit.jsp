@@ -18,7 +18,7 @@
 			<c:if test="${param.mode == 'edit'}"><h1>Team bearbeiten</h1></c:if>
 			<c:if test="${param.mode == 'new'}"><h1>Team erstellen</h1></c:if>
 			
-			<form class="form" action="/team" method="post">
+			<form class="form" action="${pageContext.request.contextPath}/team" method="post">
 		  		<div class="form-group col-xs row">
 		  			<div class="col-md-6">
 		  				<label for="name"><span class="glyphicon glyphicon-briefcase"></span> Teamname*</label>
@@ -82,12 +82,12 @@
 				<div class="form-group">
 					<c:if test="${param.mode == 'new'}">
 						<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Erstellen</button>
-						<a href="/" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
+						<a href="${pageContext.request.contextPath}/" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
 					</c:if>
 					<c:if test="${param.mode == 'edit'}">
 						<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Speichern</button>
-						<a href="/team?mode=view&id=${team.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
-						<a href="/team?mode=remove&id=${team.id}" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Team l&ouml;schen</a>
+						<a href="${pageContext.request.contextPath}/team?mode=view&id=${team.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
+						<a href="${pageContext.request.contextPath}/team?mode=remove&id=${team.id}" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Team l&ouml;schen</a>
 					</c:if>
 				</div>
 			</form>

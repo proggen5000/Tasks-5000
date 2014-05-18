@@ -18,16 +18,16 @@
 		
 			<c:if test="${param.mode == 'new'}">
 				<ol class="breadcrumb">
-					<li><a href="/">Start</a></li>
-					<li><a href="/team?mode=view&id=${team.id}">${team.name}</a></li>
+					<li><a href="${pageContext.request.contextPath}/">Start</a></li>
+					<li><a href="${pageContext.request.contextPath}/team?mode=view&id=${team.id}">${team.name}</a></li>
 					<li class="active"></li>
 				</ol>
 			</c:if>
 			
 			<c:if test="${param.mode == 'edit'}">
 				<ol class="breadcrumb">
-					<li><a href="/">Start</a></li>
-					<li><a href="/team?mode=view&id=${task.gruppe.team.id}">${task.gruppe.team.name}</a></li>
+					<li><a href="${pageContext.request.contextPath}/">Start</a></li>
+					<li><a href="${pageContext.request.contextPath}/team?mode=view&id=${task.gruppe.team.id}">${task.gruppe.team.name}</a></li>
 					<li class="active"></li>
 				</ol>
 			</c:if>
@@ -35,7 +35,7 @@
 			<c:if test="${param.mode == 'new'}"><h1>Aufgabe erstellen</h1></c:if>
 			<c:if test="${param.mode == 'edit'}"><h1>Aufgabe bearbeiten</h1></c:if>
 			
-			<form class="form" action="/task" method="post">
+			<form class="form" action="${pageContext.request.contextPath}/task" method="post">
 		  		<div class="form-group col-xs row">
 		  			<div class="col-md-6">
 		  				<label for="name"><span class="glyphicon glyphicon-time"></span> Name*</label>
@@ -123,12 +123,12 @@
 				<div class="form-group col-xs">
 					<c:if test="${param.mode == 'new'}">
 						<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Erstellen</button>
-						<a href="/team?mode=view&id=${team.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
+						<a href="${pageContext.request.contextPath}/team?mode=view&id=${team.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
 					</c:if>
 					<c:if test="${param.mode == 'edit'}">
 						<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Speichern</button>
-						<a href="/task?mode=view&id=${task.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
-						<a href="/task?mode=remove&id=${task.id}" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Aufgabe l&ouml;schen</a>
+						<a href="${pageContext.request.contextPath}/task?mode=view&id=${task.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
+						<a href="${pageContext.request.contextPath}/task?mode=remove&id=${task.id}" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Aufgabe l&ouml;schen</a>
 					</c:if>
 				</div>
 			</form>

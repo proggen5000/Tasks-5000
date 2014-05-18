@@ -10,7 +10,7 @@
 <jsp:include page="../menu.jsp" />
 
 		  		<h1>Meine Teams</h1>
-		  		<c:if test="${fn:length(teams) > 0}">
+		  		<c:if test="${fn:length(teams_menu) > 0}">
 		  			<table class="table table-striped table-hover">
 			  			<thead>
 				  			<tr>
@@ -21,9 +21,9 @@
 						    </tr>
 					    </thead>
 			  			<tbody>
-			  				<c:forEach var="team" items="${teams}">
+			  				<c:forEach var="team" items="${teams_menu}">
 			  					<tr>
-							        <td><a href="team?mode=view&id=${team.id}">${team.name}</a></td>
+							        <td><a href="${pageContext.request.contextPath}/team?mode=view&id=${team.id}">${team.name}</a></td>
 							        <td>${team.anzahlAufgaben} (${team.getAnzahlAufgabenVonMitglied(currentUser)})</td>
 							        <td>${team.anzahlDateien}</td>
 							        <td>${team.anzahlMitglieder} </td>
@@ -32,10 +32,10 @@
 						</tbody>
 					</table>
 		  		</c:if>
-		  		<c:if test="${fn:length(teams) == 0}">
+		  		<c:if test="${fn:length(teams_menu) == 0}">
 		  			<p>
 		  				Momentan sind Sie kein Mitglied in einem Team.<br />
-		  				<a href="/team?mode=new">Erstellen</a> Sie Ihr eigenes Team oder lassen Sie sich von einem anderem Teammanager einladen.
+		  				<a href="${pageContext.request.contextPath}/team?mode=new">Erstellen</a> Sie Ihr eigenes Team oder lassen Sie sich von einem anderem Teammanager einladen.
 		  			</p>
 		  		</c:if>
 		  		
@@ -43,7 +43,7 @@
 		  		<c:if test="${fn:length(tasks) > 0}">
 		  			<div class="list-group">
 				  		<c:forEach var="task" items="${tasks}">
-				  			<a href="task?mode=view&id=${task.id}" class="list-group-item">
+				  			<a href="${pageContext.request.contextPath}/task?mode=view&id=${task.id}" class="list-group-item">
 								<div class="task-progress"><div class="progress">
 									<div class="progress-bar" role="progressbar" aria-valuenow="${task.status}" aria-valuemin="0" aria-valuemax="100" style="width: ${task.status}%;">${task.status}%</div>
 								</div></div>

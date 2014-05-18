@@ -75,7 +75,7 @@ public class FileController extends HttpServlet {
 			mode = (String) request.getAttribute("mode");
 		}
 		
-		RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
+		RequestDispatcher view = request.getRequestDispatcher(request.getContextPath()+"/error.jsp");
 
 		
 		// Fehler - kein Login
@@ -184,7 +184,7 @@ public class FileController extends HttpServlet {
 		// Fehler - kein Login
 		if(!login){
 			session.setAttribute("error", "Sie sind nicht eingeloggt!");
-			response.sendRedirect("/error.jsp");
+			response.sendRedirect(request.getContextPath()+"/error.jsp");
 			return;
 		}
 		
@@ -192,10 +192,10 @@ public class FileController extends HttpServlet {
 		else if(mode.equals("download")){
 			if(DateiVerwaltung.vorhanden(id)){
 				Datei file = DateiVerwaltung.get(id);
-				response.sendRedirect("/"+file.getPfad()); // TODO funktioniert der Download so?
+				response.sendRedirect(request.getContextPath()+"/"+file.getPfad()); // TODO funktioniert der Download so?
 			} else {
 				session.setAttribute("error", "Datei nicht gefunden!");
-				response.sendRedirect("/error.jsp");
+				response.sendRedirect(request.getContextPath()+"/error.jsp");
 				return;
 			}
 		}
@@ -218,10 +218,10 @@ public class FileController extends HttpServlet {
 			file.setBeschreibung(request.getParameter("description"));
 			file.setTeam(TeamVerwaltung.get(Long.parseLong(request.getParameter("team"))));
 			
-			// Check that we have a file upload request // TODO vermutlich unnoetig
+			// Check that we have a file upload request // TODO vermutlich unnötig
 	        if(!ServletFileUpload.isMultipartContent(request)){
 	        	session.setAttribute("error", "Fehler bei der Speicherung!");
-				response.sendRedirect("/error.jsp");
+				response.sendRedirect(request.getContextPath()+"/error.jsp");
 				return;
 	        }
 	        DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -261,11 +261,11 @@ public class FileController extends HttpServlet {
 					}
 				}
 				session.setAttribute("alert", "Datei erfolgreich hochgeladen!");
-				response.sendRedirect("/file?mode=view&id="+fileNew.getId());
+				response.sendRedirect(request.getContextPath()+"/file?mode=view&id="+fileNew.getId());
 				return;
 			} else {
 				session.setAttribute("error", "Datei konnte nicht erstellt werden!");
-				response.sendRedirect("/error.jsp");
+				response.sendRedirect(request.getContextPath()+"/error.jsp");
 				return;
 			}
 		}
@@ -302,7 +302,7 @@ public class FileController extends HttpServlet {
 			}
 			
 			session.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!"); // TODO wird das angezeigt?
-			response.sendRedirect("/file?mode=view&id="+fileUpdated.getId());
+			response.sendRedirect(request.getContextPath()+"/file?mode=view&id="+fileUpdated.getId());
 		}
 		
 		// Datei löschen (Aktion)
@@ -313,16 +313,16 @@ public class FileController extends HttpServlet {
 				if(DateiVerwaltung.loeschen(file.getId())){
 					// TODO auch phys. Datei loeschen!
 					session.setAttribute("alert", "Datei erfolgreich gel&ouml;scht!");
-					response.sendRedirect("/team?mode=view&id="+teamId);
+					response.sendRedirect(request.getContextPath()+"/team?mode=view&id="+teamId);
 					return;
 				} else {
 					session.setAttribute("error", "Datei konnte nicht gel&ouml;scht werden!");
-					response.sendRedirect("/error.jsp");
+					response.sendRedirect(request.getContextPath()+"/error.jsp");
 					return;
 				}
 			} else {
 				session.setAttribute("error", "Datei nicht gefunden!");
-				response.sendRedirect("/error.jsp");
+				response.sendRedirect(request.getContextPath()+"/error.jsp");
 				return;
 			}
 		}
@@ -330,7 +330,7 @@ public class FileController extends HttpServlet {
 		// Fehler - kein mode angegeben
 		else {
 			session.setAttribute("error", "Ung&uuml;ltiger Modus!");
-			response.sendRedirect("/error.jsp");
+			response.sendRedirect(request.getContextPath()+"/error.jsp");
 			return;
 		}
 	}

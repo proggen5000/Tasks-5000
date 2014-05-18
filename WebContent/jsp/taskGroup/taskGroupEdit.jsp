@@ -15,14 +15,14 @@
 <jsp:include page="../menu.jsp"><jsp:param name="menu" value="teams" /></jsp:include>
 		
 			<ol class="breadcrumb">
-				<li><a href="/">Start</a></li>
-				<li><a href="/team?mode=view&id=${team.id}">${team.name}</a></li>
+				<li><a href="${pageContext.request.contextPath}/">Start</a></li>
+				<li><a href="${pageContext.request.contextPath}/team?mode=view&id=${team.id}">${team.name}</a></li>
 				<li class="active"></li>
 			</ol>
 			
 			<c:if test="${param.mode == 'new'}"><h1>Aufgabengruppe erstellen</h1></c:if>
 			<c:if test="${param.mode == 'edit'}"><h1>Aufgabengruppe bearbeiten</h1></c:if>
-			<form class="form" action="/taskGroup" method="post">
+			<form class="form" action="${pageContext.request.contextPath}/taskGroup" method="post">
 		  		<div class="form-group col-xs row">
 		  			<div class="col-xs-6">
 		  				<label for="name"><span class="glyphicon glyphicon-tag"></span> Aufgabengruppenname*</label>
@@ -38,14 +38,14 @@
 						<input type="hidden" name="teamId" value="${team.id}" />
 						<input type="hidden" name="mode" value="new" />
 						<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Erstellen</button>
-						<a href="/team?mode=view&id=${team.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
+						<a href="${pageContext.request.contextPath}/team?mode=view&id=${team.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
 					</c:if>
 					<c:if test="${param.mode == 'edit'}">
 						<input type="hidden" name="id" value="${taskGroup.id}" />
 						<input type="hidden" name="mode" value="edit" />
 						<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Speichern</button>
-						<a href="/team?mode=view&id=${team.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
-						<a href="/taskGroup?mode=remove&id=${taskGroup.id}" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Aufgabengruppe l&ouml;schen</a>
+						<a href="${pageContext.request.contextPath}/team?mode=view&id=${team.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
+						<a href="${pageContext.request.contextPath}/taskGroup?mode=remove&id=${taskGroup.id}" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Aufgabengruppe l&ouml;schen</a>
 					</c:if>
 				</div>
 			</form>

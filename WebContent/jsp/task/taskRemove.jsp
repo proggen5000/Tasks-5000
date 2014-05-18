@@ -9,18 +9,18 @@
 <jsp:include page="../menu.jsp"><jsp:param name="menu" value="teams" /></jsp:include>
 			
 			<ol class="breadcrumb">
-				<li><a href="/">Start</a></li>
-				<li><a href="/team?mode=view&id=${task.gruppe.team.id}">${task.gruppe.team.name}</a></li>
+				<li><a href="${pageContext.request.contextPath}/">Start</a></li>
+				<li><a href="${pageContext.request.contextPath}/team?mode=view&id=${task.gruppe.team.id}">${task.gruppe.team.name}</a></li>
 				<li>${task.gruppe.name}</li>
 				<li class="active"></li>
 			</ol>
 			<h1>Aufgabe l&ouml;schen</h1>
 			<p>Sind Sie sicher, dass Sie die Aufgabe "<b>${task.name}</b>" l&ouml;schen m&ouml;chten?</p>
-			<form action="/task" method="post">
+			<form action="${pageContext.request.contextPath}/task" method="post">
 				<input type="hidden" name="id" value="${task.id}" />
 				<input type="hidden" name="mode" value="remove" />
 				<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-ok"></span> Ja, l&ouml;schen</button>
-				<a href="/task?mode=view&id=${task.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Nein, abbrechen</a>
+				<a href="${pageContext.request.contextPath}/task?mode=view&id=${task.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Nein, abbrechen</a>
 			</form>
 
 			<jsp:include page="../sidebar.jsp" />

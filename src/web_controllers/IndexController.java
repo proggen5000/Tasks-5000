@@ -42,7 +42,7 @@ public class IndexController extends HttpServlet {
 			}
 		}
 		
-		RequestDispatcher view = request.getRequestDispatcher("/jsp/sites/index.jsp");
+		RequestDispatcher view = request.getRequestDispatcher(request.getContextPath()+"/jsp/sites/index.jsp");
 		
 		// ?=seitenname führt zur Weiterleitung nach /jsp/sites/seitenname.jsp
 		String page = request.getParameter("page");
@@ -99,7 +99,7 @@ public class IndexController extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("/index");
+		response.sendRedirect(request.getContextPath()+"/index");
 	}
 
 }

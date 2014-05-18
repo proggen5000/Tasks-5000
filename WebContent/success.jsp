@@ -15,14 +15,14 @@
 		  		</c:if>
 		  		
 		  		<c:if test="${requestScope.link_url != null and requestScope.link_text != null}">
-		  			<a class="btn btn-primary" href="${requestScope.link_url}">${requestScope.link_text}</a>
+		  			<a class="btn btn-primary" href="${pageContext.request.contextPath}/${requestScope.link_url}">${requestScope.link_text}</a>
 		  		</c:if>
 		  		<c:if test="${sessionScope.link_url != null and sessionScope.link_text != null}">
-		  			<a class="btn btn-primary" href="${sessionScope.link_url}">${sessionScope.link_text}</a>
+		  			<a class="btn btn-primary" href="${pageContext.request.contextPath}/${sessionScope.link_url}">${sessionScope.link_text}</a>
 		  		</c:if>
 		  		
 		  		<c:if test="${requestScope.link_url == null and requestScope.link == null and sessionScope.link_url == null and sessionScope.link == null}">
-		  			<a class="btn btn-primary" href="/">Zur Startseite</a>
+		  			<a class="btn btn-primary" href="${pageContext.request.contextPath}/">Zur Startseite</a>
 		  		</c:if>
 
 				<jsp:include page="jsp/sidebar.jsp" />

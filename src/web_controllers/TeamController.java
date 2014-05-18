@@ -49,7 +49,7 @@ public class TeamController extends HttpServlet {
 		
 		String mode = request.getParameter("mode");
 		
-		RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
+		RequestDispatcher view = request.getRequestDispatcher(request.getContextPath()+"/error.jsp");
 
 		
 		// Fehler - kein Login
@@ -164,7 +164,7 @@ public class TeamController extends HttpServlet {
 		// Fehler - kein Login
 		if(!login){
 			session.setAttribute("error", "Sie sind nicht eingeloggt!");
-			response.sendRedirect("/error.jsp");
+			response.sendRedirect(request.getContextPath()+"/error.jsp");
 		}
 	
 		// Team erstellen (Aktion)
@@ -211,11 +211,11 @@ public class TeamController extends HttpServlet {
 				MitgliederTeams.beitreten(currentUser, teamNew.getId(), "Manager");
 				
 				session.setAttribute("alert", "Sie haben das Team erfolgreich erstellt!");
-				response.sendRedirect("/team?mode=view&id=" + teamNew.getId());
+				response.sendRedirect(request.getContextPath()+"/team?mode=view&id=" + teamNew.getId());
 				return;
 			} else {
 				session.setAttribute("error", "Fehler beim Speichern des Teams!");
-				response.sendRedirect("/error.jsp");
+				response.sendRedirect(request.getContextPath()+"/error.jsp");
 				return;
 			}		
 		}
@@ -271,7 +271,7 @@ public class TeamController extends HttpServlet {
 					MitgliederTeams.beitreten(currentUser, teamUpdated.getId(), "Manager");
 					
 					session.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!");
-					response.sendRedirect("/team?mode=view&id=" + teamUpdated.getId());
+					response.sendRedirect(request.getContextPath()+"/team?mode=view&id=" + teamUpdated.getId());
 				} else {
 					session.setAttribute("alert", "Team konnte nicht bearbeitet werden!");
 					session.setAttribute("alert_mode", "danger");
@@ -279,7 +279,7 @@ public class TeamController extends HttpServlet {
 				}
 			} else {
 				session.setAttribute("error", "Nur Teammanager d&uuml;rfen die Teamdetails bearbeiten!");
-				response.sendRedirect("/error.jsp");
+				response.sendRedirect(request.getContextPath()+"/error.jsp");
 			}
 		}
 		
@@ -292,21 +292,21 @@ public class TeamController extends HttpServlet {
 				if(TeamVerwaltung.loeschen(team.getId())){
 					session.setAttribute("title", "Team gel&ouml;scht");
 					session.setAttribute("message", "Sie haben das Team <b>" + name + "</b> erfolgreich gel&ouml;scht!");
-					response.sendRedirect("/success.jsp");
+					response.sendRedirect(request.getContextPath()+"/success.jsp");
 				} else {
 					session.setAttribute("error", "Fehler beim L&ouml;schen!");
-					response.sendRedirect("/error.jsp");
+					response.sendRedirect(request.getContextPath()+"/error.jsp");
 				}
 			} else {
 				session.setAttribute("error", "Nur Teammanager d&uuml;rfen das Team l&ouml;schen!");
-				response.sendRedirect("/error.jsp");
+				response.sendRedirect(request.getContextPath()+"/error.jsp");
 			}
 		}
 		
 		// Fehler - kein mode angegeben
 		else {
 			session.setAttribute("error", "Ung&uuml;ltiger Modus!");
-			response.sendRedirect("/error.jsp");
+			response.sendRedirect(request.getContextPath()+"/error.jsp");
 		}
 	}
 

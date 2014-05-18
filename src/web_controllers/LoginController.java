@@ -34,7 +34,7 @@ public class LoginController extends HttpServlet {
 			mode = (String) request.getAttribute("mode");
 		}
 		
-		RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
+		RequestDispatcher view = request.getRequestDispatcher(request.getContextPath()+"/error.jsp");
 		
 		if(mode == null){
 			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
@@ -103,18 +103,18 @@ public class LoginController extends HttpServlet {
 					
 					if(!cookie_forward){
 						session.setAttribute("alert", "Sie haben sich erfolgreich eingeloggt! Herzlich willkommen, " + user.getUsername() + ".");
-						response.sendRedirect("/index");
+						response.sendRedirect(request.getContextPath()+"/index");
 					} else {
 						// direkte Weiterleitung zur Startseite, falls Cookie gefunden
-						response.sendRedirect("/index");
+						response.sendRedirect(request.getContextPath()+"/index");
 					}
 				} else {
 					session.setAttribute("error", "Benutzername und Password stimmen nicht &uuml;berein!<br />Bitte versuchen Sie es erneut oder <a href=\"/?page=register\">registrieren</a> Sie sich, falls Sie noch kein Benutzerprofil angelegt haben.");
-					response.sendRedirect("/error.jsp");
+					response.sendRedirect(request.getContextPath()+"/error.jsp");
 				}
 			} else {
 				session.setAttribute("error", "Sie sind bereits eingeloggt!");
-				response.sendRedirect("/error.jsp");
+				response.sendRedirect(request.getContextPath()+"/error.jsp");
 			}
 			
 		// Logout (Aktion)
@@ -128,10 +128,10 @@ public class LoginController extends HttpServlet {
 				cookie.setMaxAge(0);
 				
 				session.setAttribute("alert", "Sie haben sich erfolgreich ausgeloggt! Haben Sie noch einen sch&ouml;nen Tag.");
-				response.sendRedirect("/index");
+				response.sendRedirect(request.getContextPath()+"/index");
 			} else {
 				session.setAttribute("error", "Sie sind bereits ausgeloggt!");
-				response.sendRedirect("/error.jsp");
+				response.sendRedirect(request.getContextPath()+"/error.jsp");
 			}
 		
 		// Registrierung (Aktion)
@@ -144,7 +144,7 @@ public class LoginController extends HttpServlet {
 				} else {
 					session.setAttribute("alert", "Der gew&auml;hlte Benutzername ist ung&uuml;ltig oder bereits vergeben! Bitte w&auml;hlen Sie einen anderen.");
 					session.setAttribute("alert_mode", "danger");
-					response.sendRedirect("/?page=register");
+					response.sendRedirect(request.getContextPath()+"/?page=register");
 					return;
 				}
 				
@@ -157,7 +157,7 @@ public class LoginController extends HttpServlet {
 				} else {
 					session.setAttribute("alert", "Ihre E-Mail-Adresse ist ung&uuml;ltig! Bitte &uuml;berpr&uuml;fen Sie diese und versuchen Sie es erneut.");
 					session.setAttribute("alert_mode", "danger");
-					response.sendRedirect("/?page=register");
+					response.sendRedirect(request.getContextPath()+"/?page=register");
 					return;
 				}
 				
@@ -167,7 +167,7 @@ public class LoginController extends HttpServlet {
 				} else {
 					session.setAttribute("alert", "Ihre Passw&ouml;rter stimmen nicht &uuml;berein oder sind leer!");
 					session.setAttribute("alert_mode", "danger");
-					response.sendRedirect("/?page=register");
+					response.sendRedirect(request.getContextPath()+"/?page=register");
 					return;
 				}
 				
@@ -175,17 +175,17 @@ public class LoginController extends HttpServlet {
 				if(userNew != null){
 					session.setAttribute("title", "Erfolgreich registriert");
 					session.setAttribute("message", "Sie haben sich hiermit erfolgreich als \"<b>" + userNew.getUsername() + "</b>\" registriert und k&ouml;nnen sich ab sofort mit Ihrem Passwort einloggen.<br />Herzlich willkommen! :)");
-					response.sendRedirect("/success.jsp");
+					response.sendRedirect(request.getContextPath()+"/success.jsp");
 					return;
 				} else {
 					session.setAttribute("alert", "Fehler bei der Erstellung des Profils! Bitte versuchen Sie es erneut.");
 					session.setAttribute("alert_mode", "danger");
-					response.sendRedirect("/?page=register");
+					response.sendRedirect(request.getContextPath()+"/?page=register");
 					return;
 				}
 			} else {
 				session.setAttribute("error", "Sie sind bereits registriert und eingeloggt!");
-				response.sendRedirect("/error.jsp");
+				response.sendRedirect(request.getContextPath()+"/error.jsp");
 				return;
 			}
 		}
@@ -193,7 +193,7 @@ public class LoginController extends HttpServlet {
 		// Fehler - kein mode angegeben
 		else {
 			session.setAttribute("error", "Ung&uuml;ltiger Modus!");
-			response.sendRedirect("/error.jsp");
+			response.sendRedirect(request.getContextPath()+"/error.jsp");
 		}
 	}
 }

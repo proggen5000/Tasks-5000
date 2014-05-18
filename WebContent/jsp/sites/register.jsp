@@ -5,7 +5,7 @@
 			<p>Registrieren Sie sich mit einem einzigartigen Benutzernamen und Ihrer E-Mail-Adresse, um Tasks 5000 zu benutzen.<br />
 	  		Falls Sie bereits ein Benutzerprofil angelegt haben, k&ouml;nnen Sie sich auf der rechten Seite unter "Login" anmelden.</p>
 	  		
-	  		<form class="form" action="/login" method="post">
+	  		<form class="form" action="${pageContext.request.contextPath}/login" method="post">
 	  		  <div class="form-group">
 			    <label for="username" data-toggle="tooltip" data-placement="right" data-original-title="Bitte w&auml;hlen Sie einen einzigartigen Benutzernamen.">
 			    	<span class="glyphicon glyphicon-user"></span> Benutzername*

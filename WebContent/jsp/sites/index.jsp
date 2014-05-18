@@ -3,7 +3,7 @@
 
 			<h1>Willkommen bei Tasks 5000!</h1>
 			<p><b>Tasks 5000</b> ist unser Studienprojekt f&uuml;r das Fach Client-Server-Programmierung.</p>
-			<p>Wir stellen Ihnen mit dieser Webanwendung unglaubliche Funktionen zur Verwaltung von Aufgaben und Dateien innerhalb von Teams zur Verf&uuml;gung. Weitere Informationen zum Projekt finden Sie unter <a href="/?page=about">Impressum</a>.</p>
+			<p>Wir stellen Ihnen mit dieser Webanwendung unglaubliche Funktionen zur Verwaltung von Aufgaben und Dateien innerhalb von Teams zur Verf&uuml;gung. Weitere Informationen zum Projekt finden Sie unter <a href="${pageContext.request.contextPath}/?page=about">Impressum</a>.</p>
 			<p>Registrieren Sie sich oder loggen Sie sich in Ihren bestehenden Tasks 5000-Account ein, um die Anwendung zu nutzen.</p>
 			
 			<h1>Features</h1>

@@ -60,7 +60,7 @@ public class TaskGroupController extends HttpServlet {
 			mode = (String) request.getAttribute("mode");
 		}
 		
-		RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
+		RequestDispatcher view = request.getRequestDispatcher(request.getContextPath()+"/error.jsp");
 		
 		// Fehler - kein Login
 		if(!login){
@@ -144,7 +144,7 @@ public class TaskGroupController extends HttpServlet {
 		// Fehler - kein Login
 		if(!login){
 			session.setAttribute("error", "Sie sind nicht eingeloggt!");
-			response.sendRedirect("/error.jsp");
+			response.sendRedirect(request.getContextPath()+"/error.jsp");
 		}
 
 		// Aufgabengruppe erstellen (Aktion)
@@ -168,11 +168,11 @@ public class TaskGroupController extends HttpServlet {
 			Aufgabengruppe taskGroupNew = AufgabengruppenVerwaltung.neu(taskGroup);
 			if(taskGroupNew != null){
 				session.setAttribute("alert", "Neue Aufgabengruppe erstellt!");
-				response.sendRedirect("/team?mode=view&id="+team.getId());
+				response.sendRedirect(request.getContextPath()+"/team?mode=view&id="+team.getId());
 			} else {
 				session.setAttribute("alert", "Fehler bei der Speicherung der Aufgabengruppe!");
 				session.setAttribute("alert_mode", "danger");
-				response.sendRedirect("/team?mode=view&id="+team.getId());
+				response.sendRedirect(request.getContextPath()+"/team?mode=view&id="+team.getId());
 			}
 		}
 		
@@ -195,13 +195,13 @@ public class TaskGroupController extends HttpServlet {
 			Aufgabengruppe taskGroupUpdated = AufgabengruppenVerwaltung.bearbeiten(taskGroup);
 			if(taskGroupUpdated != null){
 				session.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!");
-				response.sendRedirect("/team?mode=view&id="+taskGroupUpdated.getTeam().getId());
+				response.sendRedirect(request.getContextPath()+"/team?mode=view&id="+taskGroupUpdated.getTeam().getId());
 				return;
 			} else {
 				session.setAttribute("alert", "Fehler bei der Speicherung der Aufgabengruppe!");
 				session.setAttribute("alert_mode", "danger");
 				Team team = TeamVerwaltung.get(Integer.parseInt(request.getParameter("teamId")));
-				response.sendRedirect("/team?mode=view&id="+team.getId());
+				response.sendRedirect(request.getContextPath()+"/team?mode=view&id="+team.getId());
 			}
 		}
 		
@@ -211,17 +211,17 @@ public class TaskGroupController extends HttpServlet {
 				long teamId = AufgabengruppenVerwaltung.get(id).getTeam().getId();
 				if(AufgabengruppenVerwaltung.loeschen(AufgabengruppenVerwaltung.get(id))){
 					session.setAttribute("alert", "Aufgabengruppe erfolgreich gel&ouml;scht!");
-					response.sendRedirect("/team?mode=view&id="+teamId);
+					response.sendRedirect(request.getContextPath()+"/team?mode=view&id="+teamId);
 					return;
 				} else {
 					session.setAttribute("alert", "Aufgabengruppe konnte nicht gel&ouml;scht werden!");
 					session.setAttribute("alert_mode", "danger");
-					response.sendRedirect("/team?mode=view&id="+teamId);
+					response.sendRedirect(request.getContextPath()+"/team?mode=view&id="+teamId);
 					return;
 				}
 			} else {
 				session.setAttribute("error", "Aufgabengruppe nicht gefunden!");
-				response.sendRedirect("/error.jsp");
+				response.sendRedirect(request.getContextPath()+"/error.jsp");
 				return;
 			}
 		}
@@ -229,7 +229,7 @@ public class TaskGroupController extends HttpServlet {
 		// Fehler - kein mode angegeben
 		else {
 			session.setAttribute("error", "Ung&uuml;ltiger Modus!");
-			response.sendRedirect("/error.jsp");
+			response.sendRedirect(request.getContextPath()+"/error.jsp");
 			return;
 		}
 	}

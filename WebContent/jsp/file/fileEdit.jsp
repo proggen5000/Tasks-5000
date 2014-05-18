@@ -16,15 +16,15 @@
 <jsp:include page="../menu.jsp"><jsp:param name="menu" value="teams" /></jsp:include>
 		
 			<ol class="breadcrumb">
-				<li><a href="/">Start</a></li>
-				<li><a href="/team?mode=view&id=${team.id}">${team.name}</a></li>
+				<li><a href="${pageContext.request.contextPath}/">Start</a></li>
+				<li><a href="${pageContext.request.contextPath}/team?mode=view&id=${team.id}">${team.name}</a></li>
 				<li class="active"></li>
 			</ol>
 
 			<c:if test="${param.mode == 'new'}"><h1>Datei hochladen</h1></c:if>
 			<c:if test="${param.mode == 'edit'}"><h1>${file.name}</h1></c:if>
 			
-			<form class="form" action="/file" method="post" enctype="multipart/form-data">
+			<form class="form" action="${pageContext.request.contextPath}/file" method="post" enctype="multipart/form-data">
 		  		<div class="form-group col-xs">
 		  			<div class="col-xs">
 		  				<label for="name"><span class="glyphicon glyphicon-file"></span> Name*</label>
@@ -66,12 +66,12 @@
 				<div class="form-group">
 					<c:if test="${param.mode == 'new'}">
 						<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Hochladen</button>
-						<a href="/team?mode=view&id=${team.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
+						<a href="${pageContext.request.contextPath}/team?mode=view&id=${team.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
 					</c:if>
 					<c:if test="${param.mode == 'edit'}">
 						<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Speichern</button>
-						<a href="/file?mode=view&id=${file.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
-						<a href="/file?mode=remove&id=${file.id}" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Datei l&ouml;schen</a>
+						<a href="${pageContext.request.contextPath}/file?mode=view&id=${file.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
+						<a href="${pageContext.request.contextPath}/file?mode=remove&id=${file.id}" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Datei l&ouml;schen</a>
 					</c:if>
 				</div>
 			</form>

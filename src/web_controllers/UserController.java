@@ -59,7 +59,7 @@ public class UserController extends HttpServlet {
 			mode = (String) request.getAttribute("mode");
 		}
 		
-		RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
+		RequestDispatcher view = request.getRequestDispatcher(request.getContextPath()+"/error.jsp");
 		
 		// Fehler - kein Login
 		if(!login){
@@ -109,7 +109,7 @@ public class UserController extends HttpServlet {
 				} else {
 					HttpSession session = request.getSession(true);
 					session.setAttribute("alert", "Sie k&ouml;nnen das Team nicht verlassen, weil Sie noch dessen <b>Teammanager</b> sind!<br />Bitte <a href=\"/team?mode=edit&id=" + teamId + "\">bearbeiten Sie das Team</a> und stellen Sie einen anderen Teammanager ein.");
-					response.sendRedirect("/team?mode=view&id="+teamId);
+					response.sendRedirect(request.getContextPath()+"/team?mode=view&id="+teamId);
 					return;
 				}
 			} else {
@@ -125,7 +125,7 @@ public class UserController extends HttpServlet {
 		// Fehler - kein mode angegeben
 		else {
 			request.setAttribute("error", "Ung&uuml;ltiger Modus!");
-			view = request.getRequestDispatcher("/error.jsp");
+			view = request.getRequestDispatcher(request.getContextPath()+"/error.jsp");
 		}
 		
 		view.forward(request, response);
@@ -164,7 +164,7 @@ public class UserController extends HttpServlet {
 		// Fehler - kein Login
 		if(!login){
 			session.setAttribute("error", "Sie sind nicht eingeloggt!");
-			response.sendRedirect("/error.jsp");
+			response.sendRedirect(request.getContextPath()+"/error.jsp");
 			return;
 		}
 
@@ -224,7 +224,7 @@ public class UserController extends HttpServlet {
 				return;
 			} else {
 				session.setAttribute("error", "Fehler beim Speichern der Profildaten!");
-				response.sendRedirect("/error.jsp");
+				response.sendRedirect(request.getContextPath()+"/error.jsp");
 				return;
 			}
 		}
@@ -239,11 +239,11 @@ public class UserController extends HttpServlet {
 				
 				session.setAttribute("title", "Profil gel&ouml;scht");
 				session.setAttribute("message", "Sie haben Ihr Profil endg&uuml;ltig gel&ouml;scht!<br />Auf Wiedersehen. :'(");
-				response.sendRedirect("/success.jsp");
+				response.sendRedirect(request.getContextPath()+"/success.jsp");
 				return;
 			} else {
 				session.setAttribute("error", "Ihr Profil konnte nicht gel&ouml;scht werden!");
-				response.sendRedirect("/error.jsp");
+				response.sendRedirect(request.getContextPath()+"/error.jsp");
 				return;
 			}
 			
@@ -258,16 +258,16 @@ public class UserController extends HttpServlet {
 				if(MitgliederTeams.austreten(user.getId(), team.getId())){
 					session.setAttribute("title", "Team verlassen");
 					session.setAttribute("message", "Sie haben das Team \"<b>" + team.getName() + "</b>\" verlassen.");
-					response.sendRedirect("/success.jsp");
+					response.sendRedirect(request.getContextPath()+"/success.jsp");
 					return;
 				} else {
 					session.setAttribute("error", "Sie konnten nicht aus dem Team entfernt werden! :(");
-					response.sendRedirect("/error.jsp");
+					response.sendRedirect(request.getContextPath()+"/error.jsp");
 					return;
 				}
 			} else {
 				session.setAttribute("error", "Dieses Team existiert nicht oder Sie sind kein Mitglied des Teams \"<b>" + team.getName() + "</b>\"!");
-				response.sendRedirect("/error.jsp");
+				response.sendRedirect(request.getContextPath()+"/error.jsp");
 				return;
 			}
 		}
@@ -275,7 +275,7 @@ public class UserController extends HttpServlet {
 		// Fehler - kein mode angegeben
 		else {
 			session.setAttribute("error", "Ung&uuml;ltiger Modus!");
-			response.sendRedirect("/error.jsp");
+			response.sendRedirect(request.getContextPath()+"/error.jsp");
 			return;
 		}
 	}

@@ -22,7 +22,7 @@
 		  		</c:if>
 		  		
 		  		<br />
-		  		<a class="btn btn-primary" href="/">Zur Startseite</a>
+		  		<a class="btn btn-primary" href="${pageContext.request.contextPath}/">Zur Startseite</a>
 		  		
 		  		<c:if test="${pageContext.exception != null}">
 		  			<h2>Ausnahme (Exception)</h2>

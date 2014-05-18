@@ -15,17 +15,17 @@
 	  		
 	  		<h1>Aufgaben</h1>
 	  		<c:if test="${fn:length(taskGroups) == 0}">
-	  			<p>Erstellen Sie zuerst <a href="/taskGroup?mode=new&teamId=${team.id}">Aufgabengruppen</a>, danach k&ouml;nnen Sie Aufgaben erstellen und den Gruppen zuordnen.</p>
+	  			<p>Erstellen Sie zuerst <a href="${pageContext.request.contextPath}/taskGroup?mode=new&teamId=${team.id}">Aufgabengruppen</a>, danach k&ouml;nnen Sie Aufgaben erstellen und den Gruppen zuordnen.</p>
 	  		</c:if>
 	  		<c:forEach var="taskGroup" items="${taskGroups}">
-	  			<h2><a href="/taskGroup?mode=edit&id=${taskGroup.id}" title="Aufgabengruppe bearbeiten">${taskGroup.name}</a></h2>
+	  			<h2><a href="${pageContext.request.contextPath}/taskGroup?mode=edit&id=${taskGroup.id}" title="Aufgabengruppe bearbeiten">${taskGroup.name}</a></h2>
 		  		<p>${taskGroup.beschreibung}</p>
 				<div class="list-group">
 					<c:if test="${fn:length(taskGroup.aufgaben) == 0}">
-			  			<p>Diese Gruppe enth&auml;lt noch keine Aufgaben. <a href="/task?mode=new&teamId=${team.id}">Aufgabe erstellen</a></p>
+			  			<p>Diese Gruppe enth&auml;lt noch keine Aufgaben. <a href="${pageContext.request.contextPath}/task?mode=new&teamId=${team.id}">Aufgabe erstellen</a></p>
 			  		</c:if>
 					<c:forEach var="task" items="${taskGroup.aufgaben}">
-		  				<a href="/task?mode=view&id=${task.id}" class="list-group-item">
+		  				<a href="${pageContext.request.contextPath}/task?mode=view&id=${task.id}" class="list-group-item">
 							<div class="task-progress"><div class="progress">
 								<div class="progress-bar" role="progressbar" aria-valuenow="${task.status}" aria-valuemin="0" aria-valuemax="100" style="width: ${task.status}%;">${task.status}%</div>
 							</div></div>
@@ -45,12 +45,12 @@
 	  		
 	  		<h1>Dateien</h1>
 	  		<c:if test="${fn:length(files) == 0}">
-	  			<p><a href="/file?mode=new&teamId=${team.id}">Laden Sie Dateien hoch</a>, um diese hier f&uuml;r Ihr Team aufzulisten.</p>
+	  			<p><a href="${pageContext.request.contextPath}/file?mode=new&teamId=${team.id}">Laden Sie Dateien hoch</a>, um diese hier f&uuml;r Ihr Team aufzulisten.</p>
 	  		</c:if>
 	  		<c:if test="${fn:length(files) > 0}">
 	  			<ul class="list-group">
 					<c:forEach var="file" items="${files}">
-						<a href="/file?mode=view&id=${file.id}" class="list-group-item">
+						<a href="${pageContext.request.contextPath}/file?mode=view&id=${file.id}" class="list-group-item">
 							<span class="glyphicon glyphicon-file"></span> ${file.name} (${file.size} KB)
 							<c:if test="${file.verknuepft}"><span class="glyphicon glyphicon-paperclip"></span></c:if>
 						</a>
@@ -64,23 +64,23 @@
 			<h1>Aktionen</h1>
 				<div class="list-group">
 					<c:if test="${fn:length(taskGroups) > 0}">
-						<a href="/task?mode=new&teamId=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-time"></span> Aufgabe erstellen</a>
+						<a href="${pageContext.request.contextPath}/task?mode=new&teamId=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-time"></span> Aufgabe erstellen</a>
 					</c:if>
-					<a href="/taskGroup?mode=new&teamId=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-tag"></span> Aufgabengruppe erstellen</a>
-					<a href="/file?mode=new&teamId=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-file"></span> Datei hochladen</a>
+					<a href="${pageContext.request.contextPath}/taskGroup?mode=new&teamId=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-tag"></span> Aufgabengruppe erstellen</a>
+					<a href="${pageContext.request.contextPath}/file?mode=new&teamId=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-file"></span> Datei hochladen</a>
 				</div>
 				<div class="list-group">
 					<c:if test="${sessionScope.currentUser == team.gruppenfuehrer.id}">
-						<a href="/team?mode=edit&id=${team.id}" class="list-group-item list-group-item-info"><span class="glyphicon glyphicon-pencil"></span> Team bearbeiten</a>
-						<a href="/team?mode=remove&id=${team.id}" class="list-group-item list-group-item-danger"><span class="glyphicon glyphicon-remove"></span> Team l&ouml;schen</a>
+						<a href="${pageContext.request.contextPath}/team?mode=edit&id=${team.id}" class="list-group-item list-group-item-info"><span class="glyphicon glyphicon-pencil"></span> Team bearbeiten</a>
+						<a href="${pageContext.request.contextPath}/team?mode=remove&id=${team.id}" class="list-group-item list-group-item-danger"><span class="glyphicon glyphicon-remove"></span> Team l&ouml;schen</a>
 					</c:if>
-					<a href="/user?mode=leaveTeam&teamId=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-log-out"></span> Team verlassen</a>
+					<a href="${pageContext.request.contextPath}/user?mode=leaveTeam&teamId=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-log-out"></span> Team verlassen</a>
 				</div>	
 		
 			<h1>Mitglieder</h1>
 			<div class="list-group">
 				<c:forEach var="user" items="${users}">
-					<a href="/user?mode=view&id=${user.id}" class="list-group-item">
+					<a href="${pageContext.request.contextPath}/user?mode=view&id=${user.id}" class="list-group-item">
 						<span class="glyphicon glyphicon-user"></span> ${user.username}
 						<c:if test="${user.id == team.gruppenfuehrer.id}">
 							<span class="label label-default pull-right">Manager</span>

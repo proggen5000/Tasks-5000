@@ -62,7 +62,7 @@ public class TaskController extends HttpServlet {
 			mode = (String) request.getAttribute("mode");
 		}
 		
-		RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
+		RequestDispatcher view = request.getRequestDispatcher(request.getContextPath()+"/error.jsp");
 		
 		// Fehler - kein Login
 		if(!login){
@@ -183,7 +183,7 @@ public class TaskController extends HttpServlet {
 		// Fehler - kein Login
 		if(!login){
 			session.setAttribute("error", "Sie sind nicht eingeloggt!");
-			response.sendRedirect("/error.jsp");
+			response.sendRedirect(request.getContextPath()+"/error.jsp");
 		}
 
 		// Aufgabe erstellen (Aktion)
@@ -254,7 +254,7 @@ public class TaskController extends HttpServlet {
 			}
 			
 			session.setAttribute("alert", "Aufgabe erfolgreich erstellt!");
-			response.sendRedirect("/task?mode=view&id="+taskNew.getId());
+			response.sendRedirect(request.getContextPath()+"/task?mode=view&id="+taskNew.getId());
 			return;
 		}
 		
@@ -321,12 +321,12 @@ public class TaskController extends HttpServlet {
 			}
 			
 			// TODO entsprechende Dateien löschen!
-			String[] fileIDs = request.getParameterValues("deleteFiles");
+			// String[] fileIDs = request.getParameterValues("deleteFiles");
 
 			Aufgabe taskUpdated = AufgabenVerwaltung.bearbeiten(task);
 			if(taskUpdated != null){
 				session.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!");
-				response.sendRedirect("/task?mode=view&id="+taskUpdated.getId());
+				response.sendRedirect(request.getContextPath()+"/task?mode=view&id="+taskUpdated.getId());
 				return;
 			} else {
 				session.setAttribute("alert", "Fehler bei der Speicherung der &Auml;nderungen!");
@@ -342,17 +342,17 @@ public class TaskController extends HttpServlet {
 				long teamId = AufgabenVerwaltung.get(id).getGruppe().getTeam().getId();
 				if(AufgabenVerwaltung.loeschen(AufgabenVerwaltung.get(id))){
 					session.setAttribute("alert", "Aufgabe erfolgreich gel&ouml;scht!");
-					response.sendRedirect("/team?mode=view&id="+teamId);
+					response.sendRedirect(request.getContextPath()+"/team?mode=view&id="+teamId);
 					return;
 				} else {
 					session.setAttribute("alert", "Aufgabe konnte nicht gel&ouml;scht werden!");
 					session.setAttribute("alert_mode", "danger");
-					response.sendRedirect("/team?mode=view&id="+teamId);
+					response.sendRedirect(request.getContextPath()+"/team?mode=view&id="+teamId);
 					return;
 				}
 			} else {
 				session.setAttribute("error", "Aufgabe nicht gefunden!");
-				response.sendRedirect("/error.jsp");
+				response.sendRedirect(request.getContextPath()+"/error.jsp");
 				return;
 			}
 		}
@@ -360,7 +360,7 @@ public class TaskController extends HttpServlet {
 		// Fehler - kein mode angegeben
 		else {
 			session.setAttribute("error", "Ung&uuml;ltiger Modus!");
-			response.sendRedirect("/error.jsp");
+			response.sendRedirect(request.getContextPath()+"/error.jsp");
 			return;
 		}
 	}

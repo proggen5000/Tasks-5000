@@ -11,9 +11,9 @@
 <jsp:include page="../menu.jsp"><jsp:param name="menu" value="teams" /></jsp:include>
 			
 				<ol class="breadcrumb">
-					<li><a href="/">Start</a></li>
-					<li><a href="team?mode=view&id=${task.gruppe.team.id}">${task.gruppe.team.name}</a></li>
-					<li><a href="taskGroup?mode=edit&id=${task.gruppe.id}">${task.gruppe.name}</a></li>
+					<li><a href="${pageContext.request.contextPath}/">Start</a></li>
+					<li><a href="${pageContext.request.contextPath}/team?mode=view&id=${task.gruppe.team.id}">${task.gruppe.team.name}</a></li>
+					<li><a href="${pageContext.request.contextPath}/taskGroup?mode=edit&id=${task.gruppe.id}">${task.gruppe.name}</a></li>
 					<li class="active"></li>
 				</ol>
 				
@@ -25,7 +25,7 @@
 						<div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-paperclip"></span> Verkn&uuml;pfte Dateien</h3></div>
 						<div class="panel-body">
 							<c:forEach var="file" items="${files}">
-								<p><span class="glyphicon glyphicon-file"></span> <a href="/file?mode=view&id=${file.id}">${file.name}</a> (${file.size} KB)</p>
+								<p><span class="glyphicon glyphicon-file"></span> <a href="${pageContext.request.contextPath}/file?mode=view&id=${file.id}">${file.name}</a> (${file.size} KB)</p>
 							</c:forEach>
 						</div>
 					</div>
@@ -36,12 +36,12 @@
 			<div class="sidebar col-sm-3">
 				<h1>Aktionen</h1>
 				<div class="list-group">
-					<a href="/task?mode=edit&id=${task.id}" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Aufgabe bearbeiten</a>
-					<a href="/task?mode=remove&id=${task.id}" class="list-group-item"><span class="glyphicon glyphicon-remove"></span> Aufgabe l&ouml;schen</a>
+					<a href="${pageContext.request.contextPath}/task?mode=edit&id=${task.id}" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Aufgabe bearbeiten</a>
+					<a href="${pageContext.request.contextPath}/task?mode=remove&id=${task.id}" class="list-group-item"><span class="glyphicon glyphicon-remove"></span> Aufgabe l&ouml;schen</a>
 				</div>
 				<%-- // TODO spaeter implementieren fuer mehr Komfort
 				<div class="list-group">
-					<a href="/file?mode=new&taskId=${task.id}" class="list-group-item"><span class="glyphicon glyphicon-file"></span> Datei hochladen</a>
+					<a href="${pageContext.request.contextPath}/file?mode=new&taskId=${task.id}" class="list-group-item"><span class="glyphicon glyphicon-file"></span> Datei hochladen</a>
 				</div> --%>	
 			
 				<h1>Details</h1>
@@ -58,7 +58,7 @@
 					<h1>Zuteilung</h1>
 					<div class="list-group">
 						<c:forEach var="user" items="${users}">
-							<a href="/user?mode=view&id=${user.id}" class="list-group-item">
+							<a href="${pageContext.request.contextPath}/user?mode=view&id=${user.id}" class="list-group-item">
 								<span class="glyphicon glyphicon-user"></span> ${user.username}
 								<c:if test="${user.id == task.ersteller.id}">
 									<span class="label label-default">Ersteller</span>
