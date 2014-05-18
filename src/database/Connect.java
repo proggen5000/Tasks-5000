@@ -7,11 +7,11 @@ import java.util.Properties;
 
 class Connect { // TODO
 	private static Connection con;
-	static String dbUser;
-	static String dbPw;
-	static String dbPort;
-	static String dbHost;
-	static String dbName;
+	private static String dbUser;
+	private static String dbPw;
+	private static String dbPort;
+	private static String dbHost;
+	private static String dbName;
 	
 	private Connect(){}
 	
