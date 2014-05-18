@@ -15,18 +15,18 @@
 </head>
 <body> 
 	<div class="container"><div id="mainbox">
-		<div class="header"><a href="/">Tasks 5000</a> <small>Prototyp Version 0.1</small></div>
+		<div class="header"><a href="/">Tasks 5000</a></div>
 		<div class="row">
 			<div class="content col-sm-9">
 			
-			<%-- Alerts, falls via Session übergeben --%>
-			<c:if test="${sessionScope.alert != null}">
-	  			<c:if test="${sessionScope.alert_mode == null}">
-	  				<div class="alert alert-success">${sessionScope.alert}</div>
-	  			</c:if>
-	  			<c:if test="${sessionScope.alert_mode != null}">
-	  				<div class="alert alert-${sessionScope.alert_mode}">${sessionScope.alert}</div>
-	  			</c:if>
-	  			<c:remove var="alert" />
-	  			<c:remove var="alert_mode" />
-	  		</c:if>
+				<%-- Alerts, falls via Session übergeben --%>
+				<c:if test="${sessionScope.alert != null}">
+		  			<c:if test="${sessionScope.alert_mode == null}">
+		  				<div class="alert alert-success">${sessionScope.alert}</div>
+		  			</c:if>
+		  			<c:if test="${sessionScope.alert_mode != null}">
+		  				<div class="alert alert-${sessionScope.alert_mode}">${sessionScope.alert}</div>
+		  			</c:if>
+		  			<c:remove var="alert" />
+		  			<c:remove var="alert_mode" />
+		  		</c:if>

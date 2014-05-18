@@ -52,15 +52,23 @@ public class MitgliederVerwaltung {
 	 * liefert ein Mitglied mit aktualisierten Werten zurueck
 	 * ID und Registrierungsdatum koennen nicht geaendert werden
 	 * @param mitglied mit aktualiserten Werten wird eingefuegt
+	 * @param passwordChange Angabe, ob das Passwort geändert wurde
 	 * @return testmitglied mit den aktualisierten Werten aus der DB
 	 */
-	public static Mitglied bearbeiten (Mitglied mitglied){
+	public static Mitglied bearbeiten (Mitglied mitglied, boolean passwordChange){
 		
 		//Aktualisieren des Mitglieds
 		String table= "mitglieder";
-		String updateString= "username='"+mitglied.getUsername()+"', pw=PASSWORD('"
-				+mitglied.getPw()+"'), email='"+mitglied.getEmail()+"', vorname='"
-				+mitglied.getVorname()+"', nachname='"+mitglied.getNachname()+"'";
+		String updateString = "";
+		if(passwordChange){
+			updateString= "username='"+mitglied.getUsername()+"', pw=PASSWORD('"
+					+mitglied.getPw()+"'), email='"+mitglied.getEmail()+"', vorname='"
+					+mitglied.getVorname()+"', nachname='"+mitglied.getNachname()+"'";
+		} else {
+			updateString= "username='"+mitglied.getUsername()+"', pw='"
+					+mitglied.getPw()+"', email='"+mitglied.getEmail()+"', vorname='"
+					+mitglied.getVorname()+"', nachname='"+mitglied.getNachname()+"'";
+		}
 		String where= "mitgliedid="+mitglied.getId();
 		
 		try {

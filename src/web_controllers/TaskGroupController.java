@@ -39,6 +39,7 @@ public class TaskGroupController extends HttpServlet {
 				request.setAttribute("error", e);
 			}
 		}
+		request.setAttribute("teams_menu", TeamVerwaltung.getListeVonMitglied(currentUser)); // TODO Workaround
 		
 		long id = -1; // Aufgabengruppen-ID
 		try {

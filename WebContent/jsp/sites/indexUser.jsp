@@ -8,8 +8,7 @@
 
 <jsp:include page="../header.jsp"><jsp:param name="page_title" value="Start" /></jsp:include>
 <jsp:include page="../menu.jsp" />
-				
-				<%-- Benutzer-Startseite (eingeloggt) --%>
+
 		  		<h1>Meine Teams</h1>
 		  		<c:if test="${fn:length(teams) > 0}">
 		  			<table class="table table-striped table-hover">

@@ -2,7 +2,7 @@
 
 <c:if test="${login}">
 	<%-- Menü --%>
-	<ul class="nav nav-tabs nav-justified">
+	<ul class="nav nav-tabs nav-justified">	  
 	  <c:if test="${param.menu == null}"><li class="active"><a href="/"><span class="glyphicon glyphicon-home"></span> Start</a></li></c:if>
 	  <c:if test="${param.menu != null}"><li class=""><a href="/"><span class="glyphicon glyphicon-home"></span> Start</a></li></c:if>
 	
@@ -12,7 +12,7 @@
 		      <span class="glyphicon glyphicon-briefcase"></span> Meine Teams <span class="caret"></span>
 		    </a>
 		    <ul class="dropdown-menu">
-		    	<c:forEach var="team" items="${teams}">
+		    	<c:forEach var="team" items="${teams_menu}">
 		    		<li><a href="team?mode=view&id=${team.id}"><span class="glyphicon glyphicon-briefcase"></span> ${team.name}</a></li>
 		    	</c:forEach>
 				<li class="divider"></li>

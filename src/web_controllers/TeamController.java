@@ -38,6 +38,7 @@ public class TeamController extends HttpServlet {
 		} catch (NullPointerException e){
 			request.setAttribute("error", e);
 		}
+		request.setAttribute("teams_menu", TeamVerwaltung.getListeVonMitglied(currentUser)); // TODO Workaround
 		
 		long id = -1; // TeamID
 		try {

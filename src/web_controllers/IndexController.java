@@ -47,6 +47,11 @@ public class IndexController extends HttpServlet {
 		// ?=seitenname führt zur Weiterleitung nach /jsp/sites/seitenname.jsp
 		String page = request.getParameter("page");
 		if(page != null){
+			if(login){
+				HttpSession session = request.getSession(true);
+				long currentUser = (Long) session.getAttribute("currentUser");
+				request.setAttribute("teams_menu", TeamVerwaltung.getListeVonMitglied(currentUser));
+			}
 			view = request.getRequestDispatcher("/jsp/sites/" + page + ".jsp");
 		}
 		
@@ -84,7 +89,7 @@ public class IndexController extends HttpServlet {
 		else if(login){
 			HttpSession session = request.getSession(true);
 			long currentUser = (Long) session.getAttribute("currentUser");
-			request.setAttribute("teams", TeamVerwaltung.getListeVonMitglied(currentUser));
+			request.setAttribute("teams_menu", TeamVerwaltung.getListeVonMitglied(currentUser));
 			request.setAttribute("tasks", AufgabenVerwaltung.getListeVonMitglied(currentUser));
 			request.setAttribute("valid_request", true);
 			view = request.getRequestDispatcher("/jsp/sites/indexUser.jsp");

@@ -14,11 +14,11 @@
 					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Login</button>
 				</div>
 				<div class="col-lg-8">
-					<label><input type="checkbox" name="cookie" /> Login merken</label>
+					<%-- // TODO <label><input type="checkbox" name="cookie" /> Login merken</label>--%>
 				</div>
 			</div>
 		</form>	
-		<a href="/?page=lostpw"><span class="glyphicon glyphicon-lock"></span> Passwort vergessen?</a><br />
+		<%-- // TODO <a href="/?page=lostpw"><span class="glyphicon glyphicon-lock"></span> Passwort vergessen?</a><br />--%>
 		<a href="/?page=register"><span class="glyphicon glyphicon-pencil"></span> Registrieren</a>
 	</c:if>
 

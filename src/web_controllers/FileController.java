@@ -20,14 +20,12 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import administration.AufgabenDateien;
-import administration.AufgabenMitglieder;
 import administration.AufgabenVerwaltung;
 import administration.DateiVerwaltung;
 import administration.MitgliederVerwaltung;
 import administration.TeamVerwaltung;
 import entities.Aufgabe;
 import entities.Datei;
-import entities.Mitglied;
 
 @WebServlet("/file")
 @MultipartConfig
@@ -48,6 +46,15 @@ public class FileController extends HttpServlet {
 		if(request.getSession().getAttribute("login") != null){
 			login = Boolean.parseBoolean(request.getSession().getAttribute("login").toString());
 		}
+		
+		// TODO currentUser eigentlich nicht benötigt
+		long currentUser = -1;
+		try {
+			currentUser = Long.parseLong(request.getSession().getAttribute("currentUser").toString());
+		} catch (NullPointerException e){
+			request.setAttribute("error", e);
+		}
+		request.setAttribute("teams_menu", TeamVerwaltung.getListeVonMitglied(currentUser)); // TODO Workaround
 		
 		long id = -1; // Datei-ID
 		try {

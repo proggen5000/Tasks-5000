@@ -38,6 +38,7 @@ public class UserController extends HttpServlet {
 				request.setAttribute("error", e);
 			} 
 		}
+		request.setAttribute("teams_menu", TeamVerwaltung.getListeVonMitglied(currentUser)); // TODO Workaround
 		
 		long id = -1;
 		try {
@@ -199,12 +200,14 @@ public class UserController extends HttpServlet {
 				return;
 			}
 			
-			String password = request.getParameter("password");
-			
 			// Passwort (falls neu)
+			String password = request.getParameter("password");
+			String passwordRepeat = request.getParameter("passwordRepeat");
+			boolean passwordChange = false;
 			if(password != null && password.length() > 0){
-				if(password.equals(request.getParameter("passwordRepeat"))){
+				if(password.equals(passwordRepeat)){
 					user.setPw(password);
+					passwordChange = true;
 				} else {
 					session.setAttribute("alert", "Sie haben zwei verschiedene Passw&ouml;rter eingegeben! Bitte versuchen Sie es erneut.");
 					session.setAttribute("alert_mode", "danger");
@@ -213,7 +216,7 @@ public class UserController extends HttpServlet {
 				}
 			}
 			
-			Mitglied userUpdated = MitgliederVerwaltung.bearbeiten(user);
+			Mitglied userUpdated = MitgliederVerwaltung.bearbeiten(user, passwordChange);
 			
 			if(userUpdated != null){
 				session.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!");

@@ -12,7 +12,7 @@ public class Datei implements Serializable {
 	private Team team;
 	private Mitglied ersteller;
 	
-	// Konstruktor!
+	// Konstruktor
 	public Datei(){
 	}
 	
@@ -80,7 +80,7 @@ public class Datei implements Serializable {
 	 * @return Dateigroesse in KB
 	 */
 	public int getSize(){
-		return 4;
+		return 0;
 		// TODO fileItem.getSize();
 	}
 	

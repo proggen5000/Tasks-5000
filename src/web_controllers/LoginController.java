@@ -93,8 +93,6 @@ public class LoginController extends HttpServlet {
 						Cookie cookie = new Cookie("currentUser", String.valueOf(user.getId()));
 						cookie.setMaxAge(30 * 24 * 60 * 60); // 30 Tage
 						response.addCookie(cookie);
-						// TODO Debug:
-						System.out.println("Cookie gesetzt! Cookie: " + cookie.getName() + " = " + cookie.getValue());
 					}
 					
 					// Weiterleitung ohne Cookie
