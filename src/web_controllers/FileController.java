@@ -91,11 +91,11 @@ public class FileController extends HttpServlet {
 			}
 		}
 		
-		// Datei hochladen (Formular)
+		// Datei hochladen/erstellen (Formular)
 		else if(mode.equals("new")){
 			if(TeamVerwaltung.vorhanden(teamId)){
 				request.setAttribute("team", TeamVerwaltung.get(teamId));
-				request.setAttribute("tasks", AufgabenVerwaltung.getListeVonTeam(teamId));
+				request.setAttribute("tasksRest", AufgabenVerwaltung.getListeVonTeam(teamId));
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/jsp/file/fileEdit.jsp");

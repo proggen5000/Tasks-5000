@@ -19,18 +19,23 @@
 			<h1>${file.name} <span class="glyphicon glyphicon-file small"></span></h1>
 			<p>${file.beschreibung}</p>
 			
-			<c:if test="${fn:length(tasks) > 0}">
-				<h1>Verkn&uuml;pfte Aufgaben</h1>
-				<c:forEach var="task" items="${tasks}">
-					<a href="/task?mode=view&id=${task.id}">${task.name}</a><br />
-				</c:forEach>
-			</c:if>
-			
 			<form action="/file" method="post">
 				<input type="hidden" name="id" value="${task.id}" />
 				<input type="hidden" name="mode" value="download" />
 				<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-download"></span> Download <small>(${file.size} KB)</small></button>
 			</form>
+			
+			<c:if test="${fn:length(tasks) > 0}">
+				<div class="panel panel-default" style="margin-top: 20px;">
+					<div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-paperclip"></span> Verkn&uuml;pfte Aufgaben</h3></div>
+					<div class="panel-body">
+						<c:forEach var="task" items="${tasks}">
+							<span class="glyphicon glyphicon-time"></span> <a href="/task?mode=view&id=${task.id}">${task.name}</a>
+						</c:forEach>
+					</div>
+				</div>
+			</c:if>
+			
 			
 			</div><%-- Ende content --%>
 			<%-- Sidebar --%>

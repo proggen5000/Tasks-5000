@@ -115,12 +115,13 @@ public class TaskController extends HttpServlet {
 			request.setAttribute("usersSelected", MitgliederVerwaltung.getListeVonAufgabe(id));
 			// Restliche Mitglieder:
 			request.setAttribute("users", MitgliederVerwaltung.getListeVonAufgabeRest(task.getGruppe().getTeam().getId(), id));
+			request.setAttribute("files", DateiVerwaltung.getListeVonAufgabe(id));
 			request.setAttribute("mode", mode);
 			request.setAttribute("valid_request", true);
 			view = request.getRequestDispatcher("/jsp/task/taskEdit.jsp");
 		}
 		
-		// Aufgabe loeschen
+		// Aufgabe löschen
 		else if(mode.equals("remove")){
 			if(AufgabenVerwaltung.vorhanden(id)){
 				Aufgabe task = AufgabenVerwaltung.get(id);
@@ -317,6 +318,9 @@ public class TaskController extends HttpServlet {
 					AufgabenMitglieder.zuweisen(user, task);
 				}
 			}
+			
+			// TODO entsprechende Dateien löschen!
+			String[] fileIDs = request.getParameterValues("deleteFiles");
 
 			Aufgabe taskUpdated = AufgabenVerwaltung.bearbeiten(task);
 			if(taskUpdated != null){

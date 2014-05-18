@@ -51,7 +51,7 @@ public class AufgabenVerwaltung {
 		String updateString = "aufgabengruppeID = " + aufgabe.getGruppe().getId()
 				+ ", erstellerID = " + aufgabe.getErsteller().getId() + ", name = '" + aufgabe.getName()
 				+ "', beschreibung = '" + aufgabe.getBeschreibung() + "', status = " + aufgabe.getStatus()
-				+ ", erstellungsdatum = " + aufgabe.getDeadline() + ", deadline = " + aufgabe.getDeadline();
+				+ ", deadline = " + aufgabe.getDeadline();
 		String where = "aufgabeID = " + aufgabe.getId();
 
 		try {

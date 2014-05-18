@@ -22,10 +22,10 @@
 				
 				<c:if test="${fn:length(files) > 0}">
 					<div class="panel panel-default">
-						<div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-paperclip"></span> Dateien</h3></div>
+						<div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-paperclip"></span> Verkn&uuml;pfte Dateien</h3></div>
 						<div class="panel-body">
 							<c:forEach var="file" items="${files}">
-								<p><span class="glyphicon glyphicon-file"></span> <a href="/file?mode=view&id=${file.id}">${file.name}</a> (72 KB)</p>
+								<p><span class="glyphicon glyphicon-file"></span> <a href="/file?mode=view&id=${file.id}">${file.name}</a> (${file.size} KB)</p>
 							</c:forEach>
 						</div>
 					</div>

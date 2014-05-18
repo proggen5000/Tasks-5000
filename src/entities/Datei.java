@@ -1,6 +1,8 @@
 package entities;
 import java.io.Serializable;
 
+import administration.AufgabenDateien;
+
 public class Datei implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private long id;
@@ -78,7 +80,15 @@ public class Datei implements Serializable {
 	 * @return Dateigroesse in KB
 	 */
 	public int getSize(){
-		return 4; // TODO
-		// fileItem.getSize();
+		return 4;
+		// TODO fileItem.getSize();
+	}
+	
+	/**
+	 * Zeigt an, ob die Datei mit mindestens einer Aufgabe verknüpft ist.
+	 * @return true, falls Datei mit einer oder mehr Aufgaben verknüpft ist
+	 */
+	public boolean getVerknuepft(){
+		return (AufgabenDateien.getListVonDatei(id).size() > 0);
 	}
 }

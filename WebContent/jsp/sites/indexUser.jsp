@@ -17,6 +17,7 @@
 				  			<tr>
 						        <th>Team</th>
 						        <th>Aufgaben <small>(eigene)</small></th>
+						        <th>Dateien</th>
 						        <th>Mitglieder</th>
 						    </tr>
 					    </thead>
@@ -24,8 +25,9 @@
 			  				<c:forEach var="team" items="${teams}">
 			  					<tr>
 							        <td><a href="team?mode=view&id=${team.id}">${team.name}</a></td>
-							        <td>${team.aufgabenAnzahl} (${team.getAufgabenAnzahlVonMitglied(currentUser)})</td>
-							        <td>${team.getAnzahlMitglieder()} </td>
+							        <td>${team.anzahlAufgaben} (${team.getAnzahlAufgabenVonMitglied(currentUser)})</td>
+							        <td>${team.anzahlDateien}</td>
+							        <td>${team.anzahlMitglieder} </td>
 							    </tr>
 			  				</c:forEach>
 						</tbody>
@@ -48,9 +50,12 @@
 								</div></div>
 								<div class="task-details">
 									<span class="glyphicon glyphicon-user"></span> ${task.ersteller.username}<br />
-									<span class="glyphicon glyphicon-file"></span> ${task.getAnzahlDateien()}
+									<span class="glyphicon glyphicon-paperclip"></span> ${task.getAnzahlDateien()}
 								</div>
-								<h4 class="list-group-item-heading">${task.name}</h4>
+								<h4 class="list-group-item-heading">
+									<span class="glyphicon glyphicon-time"></span> ${task.name}
+									<small>(<span class="glyphicon glyphicon-briefcase"></span> ${task.gruppe.team.name})</small>
+								</h4>
 								<p class="list-group-item-text">
 									<c:if test="${fn:length(task.beschreibung) == 0}">&nbsp;</c:if>
 									<c:if test="${fn:length(task.beschreibung) <= 50}">

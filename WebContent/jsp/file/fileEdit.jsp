@@ -70,7 +70,7 @@
 					</c:if>
 					<c:if test="${param.mode == 'edit'}">
 						<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Speichern</button>
-						<a href="/team?mode=view&id=${team.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
+						<a href="/file?mode=view&id=${file.id}" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Abbrechen</a>
 						<a href="/file?mode=remove&id=${file.id}" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span> Datei l&ouml;schen</a>
 					</c:if>
 				</div>

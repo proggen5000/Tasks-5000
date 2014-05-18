@@ -93,18 +93,18 @@
 				<table class="table table-hover col-xs">
 		  			<thead>
 		  			<tr>
-				        <th><span class="glyphicon glyphicon-paperclip"></span> Dateien</th>
+				        <th><span class="glyphicon glyphicon-paperclip"></span> Verkn&uuml;pfte Dateien</th>
 				        <th>Gr&ouml;&szlig;e</th>
-				        <th>L&ouml;schen</th>
+				        <th>Verkn&uuml;pfung l&ouml;schen</th>
 				    </tr>
 				    </thead>
 		  			<tbody>
 		  				<c:if test="${fn:length(files) > 0}">
 		  					<c:forEach var="file" items="${files}">
 			  					<tr>
-							        <td><a href="file?mode=view&id=${file.id}"><span class="glyphicon glyphicon-file"></span> ${file.name}</a></td>
-							        <td>XY KB</td><%-- // TODO --%>
-							        <td><input type="checkbox" name="delete" value="${file.id}"></td>
+							        <td><span class="glyphicon glyphicon-file"></span> <a href="file?mode=view&id=${file.id}">${file.name}</a></td>
+							        <td>${file.size} KB</td>
+							        <td><input type="checkbox" name="deleteFiles" value="${file.id}"></td>
 							    </tr>
 			  				</c:forEach>
 		  				</c:if>

@@ -3,6 +3,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import administration.AufgabenVerwaltung;
+import administration.DateiVerwaltung;
 import administration.MitgliederVerwaltung;
 
 public class Team implements Serializable {
@@ -75,11 +76,11 @@ public class Team implements Serializable {
 		return new java.util.Date(gruendungsdatum);
 	}
 	
-	public int getAufgabenAnzahl(){
+	public int getAnzahlAufgaben(){
 		return AufgabenVerwaltung.getListeVonTeam(id).size();
 	}
 	
-	public int getAufgabenAnzahlVonMitglied(long mitgliedID){
+	public int getAnzahlAufgabenVonMitglied(long mitgliedID){
 		return AufgabenVerwaltung.getListeVonMitgliedVonTeam(mitgliedID, id).size();
 	}
 	
@@ -90,5 +91,8 @@ public class Team implements Serializable {
 		}
 		return anzahl;
 	}
-
+	
+	public int getAnzahlDateien(){
+		return DateiVerwaltung.getListeVonTeam(id).size();
+	}
 }

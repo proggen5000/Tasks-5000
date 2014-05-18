@@ -29,8 +29,11 @@
 							<div class="task-progress"><div class="progress">
 								<div class="progress-bar" role="progressbar" aria-valuenow="${task.status}" aria-valuemin="0" aria-valuemax="100" style="width: ${task.status}%;">${task.status}%</div>
 							</div></div>
-							<div class="task-details"><span class="glyphicon glyphicon-user"></span> ${task.ersteller.username}<br /><span class="glyphicon glyphicon-file"></span> ${task.getAnzahlDateien()}</div>
-							<h4 class="list-group-item-heading">${task.name}</h4>
+							<div class="task-details">
+								<span class="glyphicon glyphicon-user"></span> ${task.ersteller.username}<br />
+								<span class="glyphicon glyphicon-paperclip"></span> ${task.getAnzahlDateien()}
+							</div>
+							<h4 class="list-group-item-heading"><span class="glyphicon glyphicon-time"></span> ${task.name}</h4>
 							<p class="list-group-item-text">
 								${task.beschreibung}
 								<c:if test="${fn:length(task.beschreibung) == 0}">&nbsp;</c:if>
@@ -47,7 +50,10 @@
 	  		<c:if test="${fn:length(files) > 0}">
 	  			<ul class="list-group">
 					<c:forEach var="file" items="${files}">
-						<a href="/file?mode=view&id=${file.id}" class="list-group-item"><span class="glyphicon glyphicon-file"></span> ${file.name} (${file.size} KB)</a>
+						<a href="/file?mode=view&id=${file.id}" class="list-group-item">
+							<span class="glyphicon glyphicon-file"></span> ${file.name} (${file.size} KB)
+							<c:if test="${file.verknuepft}"><span class="glyphicon glyphicon-paperclip"></span></c:if>
+						</a>
 					</c:forEach>
 				</ul>
 			</c:if>
@@ -65,8 +71,8 @@
 				</div>
 				<div class="list-group">
 					<c:if test="${sessionScope.currentUser == team.gruppenfuehrer.id}">
-						<a href="/team?mode=edit&id=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Team bearbeiten</a>
-						<a href="/team?mode=remove&id=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-remove"></span> Team l&ouml;schen</a>
+						<a href="/team?mode=edit&id=${team.id}" class="list-group-item list-group-item-info"><span class="glyphicon glyphicon-pencil"></span> Team bearbeiten</a>
+						<a href="/team?mode=remove&id=${team.id}" class="list-group-item list-group-item-danger"><span class="glyphicon glyphicon-remove"></span> Team l&ouml;schen</a>
 					</c:if>
 					<a href="/user?mode=leaveTeam&teamId=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-log-out"></span> Team verlassen</a>
 				</div>	
