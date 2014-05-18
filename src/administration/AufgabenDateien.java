@@ -26,7 +26,8 @@ public class AufgabenDateien{
 			return false;
 		}	
 	}
-	public static ArrayList<Aufgabe> getListAufgabenVonDatei(long dateiId){
+	
+	public static ArrayList<Aufgabe> getListVonDatei(long dateiId){
 		// returnd eine ArrayListe aller Aufgabe
 		String sql = "SELECT * FROM aufgaben_dateien WHERE dateiID = " + dateiId + " GROUP BY dateiID";
 		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();

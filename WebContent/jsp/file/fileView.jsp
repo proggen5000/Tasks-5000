@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%-- Zugriff nicht über Servlet --%>
 <c:if test="${!valid_request}">
@@ -17,6 +18,13 @@
 			
 			<h1>${file.name} <span class="glyphicon glyphicon-file small"></span></h1>
 			<p>${file.beschreibung}</p>
+			
+			<c:if test="${fn:length(tasks) > 0}">
+				<h1>Verkn&uuml;pfte Aufgaben</h1>
+				<c:forEach var="task" items="${tasks}">
+					<a href="/task?mode=view&id=${task.id}">${task.name}</a><br />
+				</c:forEach>
+			</c:if>
 			
 			<form action="/file" method="post">
 				<input type="hidden" name="id" value="${task.id}" />

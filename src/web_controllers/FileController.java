@@ -82,7 +82,7 @@ public class FileController extends HttpServlet {
 			if(id != -1){
 				Datei file = DateiVerwaltung.get(id);
 				request.setAttribute("file", file);
-				// request.setAttribute("task", ); // TODO
+				request.setAttribute("tasks", AufgabenDateien.getListVonDatei(id));
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/jsp/file/fileView.jsp");
 			} else {
@@ -110,7 +110,9 @@ public class FileController extends HttpServlet {
 			Datei file = DateiVerwaltung.get(id);
 			request.setAttribute("file", file);
 			request.setAttribute("team", file.getTeam());
-			request.setAttribute("tasks", AufgabenVerwaltung.getListeVonTeam(file.getTeam().getId()));
+			request.setAttribute("tasks", AufgabenVerwaltung.getListeVonDatei(id));
+			// TODO besser: AufgabenVerwaltung.getListeVonDateiRest(id)
+			request.setAttribute("tasksRest", AufgabenVerwaltung.getListeVonTeam(file.getTeam().getId()));
 			request.setAttribute("mode", mode);
 			request.setAttribute("valid_request", true);
 			view = request.getRequestDispatcher("/jsp/file/fileEdit.jsp");
@@ -154,13 +156,18 @@ public class FileController extends HttpServlet {
 			} 
 		}
 		
-		long id = -1; // Datei-ID
+		long id = -1; // Aufgaben-ID
+		try {
+			id = Long.parseLong(request.getParameter("id"));
+		} catch (NumberFormatException e){
+			request.setAttribute("error", e);
+		}
 		if(request.getSession().getAttribute("id") != null){
 			try {
 				id = Long.parseLong(request.getSession().getAttribute("id").toString());
 			} catch (NullPointerException e){
 				request.setAttribute("error", e);
-			} 
+			}
 		}
 		
 		String mode = request.getParameter("mode");
@@ -226,6 +233,7 @@ public class FileController extends HttpServlet {
 	                    String fileName = new File(item.getName()).getName();
 	                    String filePath = uploadFolder + File.separator + fileName;
 	                    File uploadedFile = new File(filePath);
+	                    // TODO Debug:
 	                    System.out.println(filePath);
 	                    file.setPfad(filePath);
 	                    item.write(uploadedFile);
@@ -258,13 +266,34 @@ public class FileController extends HttpServlet {
 		// Datei bearbeiten (Aktion)
 		else if(mode.equals("edit")){
 			Datei file = DateiVerwaltung.get(id);
-			file.setName(request.getParameter("name"));
+			
+			String name = request.getParameter("name");
+			if(name != null && name.length() > 0){
+				file.setName(name);
+			} else {
+				session.setAttribute("alert", "Bitte geben Sie einen g&uuml;ltigen Dateinamen an!");
+				session.setAttribute("alert_mode", "danger");
+				response.sendRedirect(request.getHeader("Referer"));
+				return;
+			}
+			
 			file.setBeschreibung(request.getParameter("description"));
+			
 			// file.setPfad(pfad);
 			// TODO Datei hochladen bzw. aendern (+alte Datei loeschen)
-			// TODO Aufgabenzuordnung via request.getParameter("tasks")
 
 			Datei fileUpdated = DateiVerwaltung.bearbeiten(file);
+			
+			// Aufgabenzuordnung
+			// TODO AufgabenDateien.entfernenAlle(file);
+	        String[] taskIDs = request.getParameterValues("tasks");
+			if(taskIDs != null && taskIDs.length > 0){
+				for(String taskID : taskIDs){
+					Aufgabe task = AufgabenVerwaltung.get(Long.parseLong(taskID));
+					AufgabenDateien.zuweisen(fileUpdated, task);
+				}
+			}
+			
 			session.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!"); // TODO wird das angezeigt?
 			response.sendRedirect("/file?mode=view&id="+fileUpdated.getId());
 		}
@@ -275,7 +304,7 @@ public class FileController extends HttpServlet {
 				Datei file = DateiVerwaltung.get(id);
 				long teamId = file.getTeam().getId();
 				if(DateiVerwaltung.loeschen(file.getId())){
-					// TODO auch phys. Datei loeschen! 
+					// TODO auch phys. Datei loeschen!
 					session.setAttribute("alert", "Datei erfolgreich gel&ouml;scht!");
 					response.sendRedirect("/team?mode=view&id="+teamId);
 					return;

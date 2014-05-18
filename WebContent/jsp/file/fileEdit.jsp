@@ -48,12 +48,10 @@
 	  				<label for="tasks"><span class="glyphicon glyphicon-time"></span> Aufgaben-Zuordnung</label>
 					<select multiple id="tasks" name="tasks" size="4" class="form-control">
 						<c:forEach var="task" items="${tasks}">
-							<c:if test="${task.id == file.aufgabe.id}">
-								<option value="${task.id}" selected>${task.name}</option>
-							</c:if>
-							<c:if test="${task.id != file.aufgabe.id}">
-								<option value="${task.id}">${task.name}</option>
-							</c:if>
+							<option value="${task.id}" selected>${task.name}</option>
+						</c:forEach>
+						<c:forEach var="taskRest" items="${tasksRest}">
+							<option value="${taskRest.id}">${taskRest.name}</option>
 						</c:forEach>
 					</select>
 	  			</div>
