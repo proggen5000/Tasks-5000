@@ -30,7 +30,6 @@ public class AufgabenDateien{
 	public static ArrayList<Aufgabe> getListVonDatei(long dateiId){
 		// returnd eine ArrayListe aller Aufgabe
 		String sql = "SELECT * FROM aufgaben INNER JOIN aufgaben_dateien ON aufgaben.aufgabeID = aufgaben_dateien.aufgabeID WHERE dateiID = " + dateiId;
-		System.out.println(sql);
 		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);

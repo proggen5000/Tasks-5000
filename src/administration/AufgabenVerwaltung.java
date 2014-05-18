@@ -142,7 +142,7 @@ public class AufgabenVerwaltung {
 	 */
 	public static ArrayList<Aufgabe> getListeVonDatei(long dateiID){
 		// returnd eine ArrayListe aller Aufgabe die zu einer bestimmten datei geh�hren
-		String sql = "SELECT * FROM aufgaben JOIN aufgaben_dateien ON aufgaben.aufgabeID = aufgaben_dateien.aufgabeID JOIN dateien ON dateien.DateiID = aufgaben_dateien.dateiID WHERE dateiID = " + dateiID;
+		String sql = "SELECT * FROM aufgaben JOIN aufgaben_dateien ON aufgaben.aufgabeID = aufgaben_dateien.aufgabeID JOIN dateien ON dateien.dateiID = aufgaben_dateien.dateiID WHERE dateien.dateiID = " + dateiID;
 		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
