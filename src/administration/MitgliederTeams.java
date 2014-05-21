@@ -6,6 +6,7 @@ import java.util.Calendar;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 import database.Queries;
+import entities.Team;
 
 public class MitgliederTeams {
 
@@ -88,5 +89,16 @@ public class MitgliederTeams {
 			return false;
 		}
 	}
-		
+	
+	/**
+	  * Entfernt alle Mitgliederzuordnungen des angegebenen Teams
+	  */
+	public static boolean entfernenAlle(Team team){
+		try {
+			return Queries.deleteQuery("mitglieder_teams", "teamID=" + team.getId());
+		} catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

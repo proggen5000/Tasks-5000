@@ -7,7 +7,7 @@
 </c:if>
 
 <jsp:include page="../header.jsp"><jsp:param name="page_title" value="${file.name}" /></jsp:include>
-<jsp:include page="../menu.jsp" />
+<jsp:include page="../menu.jsp"><jsp:param name="menu" value="teams" /></jsp:include>
 
 			<ol class="breadcrumb">
 				<li><a href="${pageContext.request.contextPath}/">Start</a></li>
@@ -30,12 +30,11 @@
 					<div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-paperclip"></span> Verkn&uuml;pfte Aufgaben</h3></div>
 					<div class="panel-body">
 						<c:forEach var="task" items="${tasks}">
-							<span class="glyphicon glyphicon-time"></span> <a href="${pageContext.request.contextPath}/task?mode=view&id=${task.id}">${task.name}</a>
+							<span class="glyphicon glyphicon-time"></span> <a href="${pageContext.request.contextPath}/task?mode=view&id=${task.id}">${task.name}</a><br />
 						</c:forEach>
 					</div>
 				</div>
 			</c:if>
-			
 			
 			</div><%-- Ende content --%>
 			<%-- Sidebar --%>

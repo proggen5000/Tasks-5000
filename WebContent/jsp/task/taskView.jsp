@@ -25,7 +25,7 @@
 						<div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-paperclip"></span> Verkn&uuml;pfte Dateien</h3></div>
 						<div class="panel-body">
 							<c:forEach var="file" items="${files}">
-								<p><span class="glyphicon glyphicon-file"></span> <a href="${pageContext.request.contextPath}/file?mode=view&id=${file.id}">${file.name}</a> (${file.size} KB)</p>
+								<span class="glyphicon glyphicon-file"></span> <a href="${pageContext.request.contextPath}/file?mode=view&id=${file.id}">${file.name}</a> (${file.size} KB)<br />
 							</c:forEach>
 						</div>
 					</div>
@@ -39,10 +39,9 @@
 					<a href="${pageContext.request.contextPath}/task?mode=edit&id=${task.id}" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Aufgabe bearbeiten</a>
 					<a href="${pageContext.request.contextPath}/task?mode=remove&id=${task.id}" class="list-group-item"><span class="glyphicon glyphicon-remove"></span> Aufgabe l&ouml;schen</a>
 				</div>
-				<%-- // TODO spaeter implementieren fuer mehr Komfort
 				<div class="list-group">
-					<a href="${pageContext.request.contextPath}/file?mode=new&taskId=${task.id}" class="list-group-item"><span class="glyphicon glyphicon-file"></span> Datei hochladen</a>
-				</div> --%>	
+					<a href="${pageContext.request.contextPath}/file?mode=new&teamId=${task.gruppe.team.id}&taskId=${task.id}" class="list-group-item"><span class="glyphicon glyphicon-file"></span> Datei hochladen &amp; verkn&uuml;pfen</a>
+				</div>	
 			
 				<h1>Details</h1>
 				<div class="list-group">

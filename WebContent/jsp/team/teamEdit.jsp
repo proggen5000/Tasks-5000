@@ -48,29 +48,17 @@
 					<textarea id="description" name="description" class="form-control" rows="2">${team.beschreibung}</textarea>
 				</div>
 				<div class="form-group col-xs">
-					<label for="members"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="Mehrere Mitglieder durch Gedr&uuml;ckthalten von STRG bzw. CMD markieren.">?</span>
-					<div class="row">
-						<div class="col-xs-5">
-							<select multiple id="leftValues" name="users" size="8" class="form-control">
-								<c:forEach var="user" items="${users}">
-									<option value="${user.id}" selected>${user.username} (${user.vorname} ${user.nachname})</option>
-								</c:forEach>
-							</select>
-						</div>
-						
-						<div class="col-xs-1" style="vertical-align: center;">
-							<input type="button" id="btnLeft" class="btn btn-default" value="&lt;&lt;" />
-	       					<input type="button" id="btnRight" class="btn btn-default" value="&gt;&gt;" />
-						</div>
-						
-						<div class="col-xs-5">
-							<select multiple id="rightValues" size="8" class="form-control">
-								<c:forEach var="userRest" items="${usersRest}">
-									<option value="${userRest.id}">${userRest.username} (${userRest.vorname} ${userRest.nachname})</option>
-								</c:forEach>
-							</select>
-						</div>
-					</div>					
+					<label for="users"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="W&auml;hlen Sie hier die Mitglieder f&uuml;r Ihr Team aus.">?</span>
+					<div class="checkbox">
+						<c:forEach var="user" items="${users}">
+							<label><input type="checkbox" name="users" value="${user.id}" checked> ${user.username} (${user.vorname} ${user.nachname}) </label><br />
+						</c:forEach>
+						<c:forEach var="userRest" items="${usersRest}">
+							<c:if test="${currentUser != userRest.id}">
+								<label><input type="checkbox" name="users" value="${userRest.id}"> ${userRest.username} (${userRest.vorname} ${userRest.nachname}) </label><br />
+							</c:if>
+						</c:forEach>
+					</div>
 				</div>
 				
 				<c:if test="${param.mode == 'new'}"><input type="hidden" name="mode" value="new" /></c:if>

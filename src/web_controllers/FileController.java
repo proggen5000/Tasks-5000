@@ -2,6 +2,7 @@ package web_controllers;
 
 import java.io.IOException;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -70,6 +71,13 @@ public class FileController extends HttpServlet {
 			request.setAttribute("error", e);
 		}
 		
+		long taskId = -1;
+		try {
+			taskId = Long.parseLong(request.getParameter("taskId"));
+		} catch (NumberFormatException e){
+			request.setAttribute("error", e);
+		}
+		
 		String mode = request.getParameter("mode");
 		if(request.getAttribute("mode") != null){
 			mode = (String) request.getAttribute("mode");
@@ -102,6 +110,12 @@ public class FileController extends HttpServlet {
 		else if(mode.equals("new")){
 			if(TeamVerwaltung.vorhanden(teamId)){
 				request.setAttribute("team", TeamVerwaltung.get(teamId));
+				if(taskId > -1){
+					ArrayList<Aufgabe> tasks = new ArrayList<Aufgabe>();
+					tasks.add(AufgabenVerwaltung.get(taskId));
+					request.setAttribute("tasks", tasks);
+					request.setAttribute("taskLink", taskId);
+				}
 				request.setAttribute("tasksRest", AufgabenVerwaltung.getListeVonTeam(teamId));
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
@@ -118,14 +132,13 @@ public class FileController extends HttpServlet {
 			request.setAttribute("file", file);
 			request.setAttribute("team", file.getTeam());
 			request.setAttribute("tasks", AufgabenVerwaltung.getListeVonDatei(id));
-			// TODO besser: AufgabenVerwaltung.getListeVonDateiRest(id)
-			request.setAttribute("tasksRest", AufgabenVerwaltung.getListeVonTeam(file.getTeam().getId()));
+			request.setAttribute("tasksRest", AufgabenVerwaltung.getListeVonDateiRest(file.getTeam().getId(), id));
 			request.setAttribute("mode", mode);
 			request.setAttribute("valid_request", true);
 			view = request.getRequestDispatcher("/jsp/file/fileEdit.jsp");
 		}
 		
-		// Datei loeschen (Rueckfrage)
+		// Datei löschen (Rückfrage)
 		else if(mode.equals("remove")){
 			if(DateiVerwaltung.vorhanden(id)){
 				request.setAttribute("file", DateiVerwaltung.get(id));

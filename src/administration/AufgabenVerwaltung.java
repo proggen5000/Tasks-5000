@@ -11,7 +11,7 @@ import entities.Aufgabe;
 
 public class AufgabenVerwaltung {
 	/**
-	 * Ersellt eine neue Aufgaben in der Datenbank
+	 * Erstellt eine neue Aufgabe in der Datenbank
 	 * @param aufgabe die gespeichert werden soll
 	 * @return Aufgabe, so wie sie in der Datenbank gespeichert wurde
 	 */
@@ -141,7 +141,7 @@ public class AufgabenVerwaltung {
 	 * @return ArrayList alle Aufgaben für die gesuchte ID
 	 */
 	public static ArrayList<Aufgabe> getListeVonDatei(long dateiID){
-		// returnd eine ArrayListe aller Aufgabe die zu einer bestimmten datei geh�hren
+		// returnd eine ArrayListe aller Aufgaben, die zu einer bestimmten datei gehören
 		String sql = "SELECT * FROM aufgaben JOIN aufgaben_dateien ON aufgaben.aufgabeID = aufgaben_dateien.aufgabeID JOIN dateien ON dateien.dateiID = aufgaben_dateien.dateiID WHERE dateien.dateiID = " + dateiID;
 		ArrayList<Aufgabe> al = new ArrayList<Aufgabe>();
 		try {
@@ -152,11 +152,29 @@ public class AufgabenVerwaltung {
 				al.add(createAufgabeByRow(rs));
 			}
 		} catch (SQLException e) {
-			// Falls ein Fehler auftritt soll eine lehere Liste zur�ckgegeben werden
+			// Falls ein Fehler auftritt, soll eine lehere Liste zurückgegeben werden
 			e.printStackTrace();
 			al = null;
 		}
 		return al;
+	}
+	
+	/**
+	 * Gibt alle Aufgaben des angegebenen Teams zurück, welche der angegebenen Datei noch nicht zugeordnet sind.
+	 * @param teamID 
+	 * @param dateiID
+	 * @return ArrayListe mit den gesuchten Aufgabeobjekten
+	 */
+	public static ArrayList<Aufgabe> getListeVonDateiRest(long teamID, long dateiID){
+		ArrayList<Aufgabe> aufgabenTeam = getListeVonTeam(teamID);
+		ArrayList<Aufgabe> aufgabenDatei = getListeVonDatei(dateiID);
+		
+		for(Aufgabe a : aufgabenDatei){	
+			if(aufgabenTeam.contains(a)){
+				aufgabenTeam.remove(a);
+			}
+		}
+		return aufgabenTeam;
 	}
 
 	/**
@@ -271,19 +289,4 @@ public class AufgabenVerwaltung {
 			return null;
 		}
 	}
-	static ArrayList<Aufgabe> getListeVonDateiRest(long teamID, long dateiID){
-		ArrayList<Aufgabe> aufgabenTeam = getListeVonTeam(teamID);
-		ArrayList<Aufgabe> aufgabenDatei = getListeVonDatei(dateiID);
-		
-		
-		for(Aufgabe a : aufgabenDatei){
-			
-			if(aufgabenTeam.contains(a)){
-				aufgabenTeam.remove(a);
-			}
-		}
-		
-		return aufgabenTeam;
-	}
-
 }

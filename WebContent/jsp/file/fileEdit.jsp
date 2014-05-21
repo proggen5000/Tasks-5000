@@ -43,15 +43,16 @@
 					<input type="file" id="fileUpload" name="fileUpload" accept=".png,.jpg,.gif,.txt,.pdf,.doc,.docx,.zip,.rar" />
 				</div>
 				
-				<%-- // TODO noch in tollere Auswahlliste umwandeln --%>
 				<div class="form-group col-xs">
-	  				<label for="tasks"><span class="glyphicon glyphicon-time"></span> Aufgaben-Zuordnung</label>
+	  				<label for="tasks"><span class="glyphicon glyphicon-time"></span> Aufgaben verkn&uuml;pfen</label> <span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="Durch Gedr&uuml;ckthalten von STRG bzw. CMD k&ouml;nnen mehrere Aufgaben markiert werden.">?</span>
 					<select multiple id="tasks" name="tasks" size="4" class="form-control">
 						<c:forEach var="task" items="${tasks}">
 							<option value="${task.id}" selected>${task.name}</option>
 						</c:forEach>
 						<c:forEach var="taskRest" items="${tasksRest}">
-							<option value="${taskRest.id}">${taskRest.name}</option>
+							<c:if test="${taskRest.id != taskLink}">
+								<option value="${taskRest.id}">${taskRest.name}</option>
+							</c:if>
 						</c:forEach>
 					</select>
 	  			</div>

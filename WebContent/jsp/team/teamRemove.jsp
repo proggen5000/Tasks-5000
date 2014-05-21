@@ -10,7 +10,7 @@
 		
 		<h1>Team l&ouml;schen</h1>
 		<p>Sind Sie sicher, dass Sie das Team "<b>${team.name}</b>" dauerhaft l&ouml;schen m&ouml;chten?</p>
-		<p>Warnung: Dadurch werden auch alle darin enthaltenen Aufgaben und Dateien gel&ouml;scht!</p>
+		<p>Warnung: Dadurch werden auch <b>alle darin enthaltenen Aufgaben und Dateien gel&ouml;scht</b>!</p>
 		
 		<form action="${pageContext.request.contextPath}/team" method="post">
 			<input type="hidden" name="id" value="${team.id}" />

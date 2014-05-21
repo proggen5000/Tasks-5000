@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import entities.Aufgabe;
+import entities.Datei;
 import entities.Mitglied;
+import administration.AufgabenDateien;
 import administration.AufgabenMitglieder;
 import administration.AufgabenVerwaltung;
 import administration.AufgabengruppenVerwaltung;
@@ -202,7 +204,17 @@ public class TaskController extends HttpServlet {
 			
 			task.setErsteller(MitgliederVerwaltung.get(currentUser));
 			
-			task.setBeschreibung(request.getParameter("description"));
+			final short descriptionLimit = 300;
+			String description = request.getParameter("description");
+			if(description.length() <= descriptionLimit){
+				task.setBeschreibung(description);
+			} else {
+				session.setAttribute("alert", "Bitte geben Sie eine k&uuml;rzere Beschreibung an! (Zeichenbeschr&auml;nkung: " + descriptionLimit + ")");
+				session.setAttribute("alert_mode", "danger");
+				response.sendRedirect(request.getHeader("Referer"));
+				return;
+			}
+			
 			task.setGruppe(AufgabengruppenVerwaltung.get(Long.parseLong(request.getParameter("group"))));
 			
 			String status = request.getParameter("status");
@@ -273,7 +285,17 @@ public class TaskController extends HttpServlet {
 			}
 			
 			task.setGruppe(AufgabengruppenVerwaltung.get(Long.parseLong(request.getParameter("group"))));
-			task.setBeschreibung(request.getParameter("description"));
+			
+			final short descriptionLimit = 300;
+			String description = request.getParameter("description");
+			if(description.length() <= descriptionLimit){
+				task.setBeschreibung(description);
+			} else {
+				session.setAttribute("alert", "Bitte geben Sie eine k&uuml;rzere Beschreibung an! (Zeichenbeschr&auml;nkung: " + descriptionLimit + ")");
+				session.setAttribute("alert_mode", "danger");
+				response.sendRedirect(request.getHeader("Referer"));
+				return;
+			}
 			
 			String status = request.getParameter("status");
 			if(status != null && status.length() > 0){
@@ -320,9 +342,15 @@ public class TaskController extends HttpServlet {
 				}
 			}
 			
-			// TODO entsprechende Dateien löschen!
-			// String[] fileIDs = request.getParameterValues("deleteFiles");
-
+			// Dateiverknüpfungen löschen
+			String[] fileIDs = request.getParameterValues("deleteFiles");
+			if(fileIDs != null && fileIDs.length > 0){
+				for(String fileID : fileIDs){
+					Datei file = DateiVerwaltung.get(Long.parseLong(fileID));
+					AufgabenDateien.entfernen(file, task);
+				}
+			}
+			
 			Aufgabe taskUpdated = AufgabenVerwaltung.bearbeiten(task);
 			if(taskUpdated != null){
 				session.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!");

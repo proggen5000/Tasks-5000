@@ -109,6 +109,7 @@ public class UserController extends HttpServlet {
 				} else {
 					HttpSession session = request.getSession(true);
 					session.setAttribute("alert", "Sie k&ouml;nnen das Team nicht verlassen, weil Sie noch dessen <b>Teammanager</b> sind!<br />Bitte <a href=\"/team?mode=edit&id=" + teamId + "\">bearbeiten Sie das Team</a> und stellen Sie einen anderen Teammanager ein.");
+					session.setAttribute("alert_mode", "danger");
 					response.sendRedirect(request.getContextPath()+"/team?mode=view&id="+teamId);
 					return;
 				}

@@ -23,7 +23,7 @@
 			  			<tbody>
 			  				<c:forEach var="team" items="${teams_menu}">
 			  					<tr>
-							        <td><a href="${pageContext.request.contextPath}/team?mode=view&id=${team.id}">${team.name}</a></td>
+							        <td><span class="glyphicon glyphicon-briefcase"></span> <a href="${pageContext.request.contextPath}/team?mode=view&id=${team.id}">${team.name}</a></td>
 							        <td>${team.anzahlAufgaben} (${team.getAnzahlAufgabenVonMitglied(currentUser)})</td>
 							        <td>${team.anzahlDateien}</td>
 							        <td>${team.anzahlMitglieder} </td>

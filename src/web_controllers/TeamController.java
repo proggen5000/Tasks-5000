@@ -262,6 +262,7 @@ public class TeamController extends HttpServlet {
 				entities.Team teamUpdated = TeamVerwaltung.bearbeiten(team);
 				
 				if(teamUpdated != null){
+					MitgliederTeams.entfernenAlle(teamUpdated);
 					for(String userID : userIDs){
 						long userIDLong = Long.parseLong(userID);
 						if(userIDLong != currentUser){

@@ -11,7 +11,7 @@
 			<ol class="breadcrumb">
 				<li><a href="${pageContext.request.contextPath}/">Start</a></li>
 				<li><a href="${pageContext.request.contextPath}/team?mode=view&id=${task.gruppe.team.id}">${task.gruppe.team.name}</a></li>
-				<li>${task.gruppe.name}</li>
+				<li><a href="${pageContext.request.contextPath}/taskGroup?mode=edit&id=${task.gruppe.id}">${task.gruppe.name}</a></li>
 				<li class="active"></li>
 			</ol>
 			<h1>Aufgabe l&ouml;schen</h1>
