@@ -48,10 +48,13 @@ public class LoginController extends HttpServlet {
 				session.removeAttribute("login");
 				session.removeAttribute("currentUser");
 				
-				request.setAttribute("title", "Logout erfolgreich");
-				request.setAttribute("message", "Sie haben sich erfolgreich ausgeloggt!<br />Auf Wiedersehen. :)");
-				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("/success.jsp");
+				// Cookie entfernen
+				Cookie cookie = new Cookie("currentUser", "");
+				cookie.setMaxAge(0);
+				
+				session.setAttribute("alert", "Sie haben sich erfolgreich ausgeloggt! Auf Wiedersehen. :)");
+				response.sendRedirect(request.getContextPath()+"/index");
+				return;
 			} else {
 				request.setAttribute("error", "Sie sind bereits ausgeloggt!");
 				view = request.getRequestDispatcher("/error.jsp");
@@ -117,23 +120,6 @@ public class LoginController extends HttpServlet {
 				response.sendRedirect(request.getContextPath()+"/error.jsp");
 			}
 			
-		// Logout (Aktion)
-		} else if(mode.equals("logout")){
-			if(login){
-				session.removeAttribute("login");
-				session.removeAttribute("currentUser");
-				
-				// Cookie entfernen
-				Cookie cookie = new Cookie("currentUser", "");
-				cookie.setMaxAge(0);
-				
-				session.setAttribute("alert", "Sie haben sich erfolgreich ausgeloggt! Haben Sie noch einen sch&ouml;nen Tag.");
-				response.sendRedirect(request.getContextPath()+"/index");
-			} else {
-				session.setAttribute("error", "Sie sind bereits ausgeloggt!");
-				response.sendRedirect(request.getContextPath()+"/error.jsp");
-			}
-		
 		// Registrierung (Aktion)
 		} else if(mode.equals("register")){
 			if(!login){
