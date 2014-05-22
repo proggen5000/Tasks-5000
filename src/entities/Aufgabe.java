@@ -16,8 +16,7 @@ public class Aufgabe implements Serializable {
 	private long erstellungsdatum;
 	private long deadline;
 	
-	public Aufgabe(){
-	}
+	public Aufgabe(){}
 	
 	public Aufgabe(long id, Aufgabengruppe gruppe, Mitglied ersteller, String name, String beschreibung, int status, long erstellungsdatum, long deadline){
 		this.id = id;

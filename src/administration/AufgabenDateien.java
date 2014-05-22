@@ -10,6 +10,12 @@ import database.Queries;
 
 public class AufgabenDateien{
 
+	/**
+	 * Weist einer Datei eine Aufgabe zu
+	 * @param d Datei, welche die Aufgabe zugewiesen wird
+	 * @param a Aufgabe, die der Datei zugewiesen werden soll
+	 * @return Zuweisung erfolgreich (true) / nicht erfolgreich (false)
+	 */
 	public static boolean zuweisen (Datei d, Aufgabe a){
 		try{
 			return Queries.insertQuery("aufgaben_dateien", "aufgabeID, dateiID", a.getId()+", "+d.getId())>=0;
@@ -18,6 +24,12 @@ public class AufgabenDateien{
 		}
 	}
 
+	/**
+	 * Entfernt die Zuweisung einer Aufgabe
+	 * @param d Datei, bei dem die Zuweisung gelöscht werden soll
+	 * @param a Aufgabe, bei dem die Zuweisung gelöscht werden soll
+	 * @return Löschen erfolgreich (true) / nicht erfolgreich (false)
+	 */
 	public static boolean entfernen (Datei d, Aufgabe a){
 		try{
 			return Queries.deleteQuery("aufgaben_dateien", "dateiID = " + d.getId()+" AND aufgabeID = "+a.getId());
@@ -27,6 +39,11 @@ public class AufgabenDateien{
 		}	
 	}
 	
+	/**
+	 * Erstellt eine Liste von Aufgaben, die einer Datei zugewiesen sind
+	 * @param dateiId ID einer Datei, für die die Liste zurückgegeben werden soll
+	 * @return Aufgaben-Liste
+	 */
 	public static ArrayList<Aufgabe> getListVonDatei(long dateiId){
 		// returnd eine ArrayListe aller Aufgabe
 		String sql = "SELECT * FROM aufgaben INNER JOIN aufgaben_dateien ON aufgaben.aufgabeID = aufgaben_dateien.aufgabeID WHERE dateiID = " + dateiId;
@@ -45,8 +62,10 @@ public class AufgabenDateien{
 		return al;
 	}
 	/**
-	  * Entfernt alle Aufgabenzuordnungen der angegebenen Datei
-	  */
+	 * Entfernt alle Aufgabenzuordnungen der angegebenen Datei
+	 * @param d Datei, zu dem die Zuweisungen gelöscht werden soll
+	 * @return Löschen der Zuweisungen erfolgreich (true) / nicht erfolgreich (false)
+	 */
 	public static boolean entfernenAlle(Datei d){
 		try{
 			return Queries.deleteQuery("aufgaben_dateien", "dateiID="+d.getId());

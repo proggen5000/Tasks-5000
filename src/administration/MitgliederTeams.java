@@ -91,8 +91,10 @@ public class MitgliederTeams {
 	}
 	
 	/**
-	  * Entfernt alle Mitgliederzuordnungen des angegebenen Teams
-	  */
+	 * Entfernt alle Mitgliederzuordnungen des angegebenen Teams
+	 * @param team Team, in dem alle Mitglieder gelöscht werden sollen
+	 * @return Löschen erfolgreich (true) / nicht erfolgreich (false)
+	 */
 	public static boolean entfernenAlle(Team team){
 		try {
 			return Queries.deleteQuery("mitglieder_teams", "teamID=" + team.getId());

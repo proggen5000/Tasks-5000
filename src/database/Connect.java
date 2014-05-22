@@ -14,7 +14,9 @@ class Connect { // TODO
 	private static String dbName = "";
 	
 	private Connect(){}
-	
+	/**
+	 * lädt die Einstellungen aus der Konfigurationsdatei
+	 */
 	static void load_data(){
 		Properties prop = new Properties();
 		InputStream input = null;

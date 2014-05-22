@@ -112,6 +112,10 @@ public class AufgabenVerwaltung {
 		return null;
 	}
 
+	/**
+	 * Erstellt eine Liste mit allen Aufgaben
+	 * @return Aufgaben-Liste
+	 */
 	public static ArrayList<Aufgabe> getListe(){
 		// returnd eine ArrayListe aller Aufgabe
 		String sql = "SELECT * FROM aufgaben";

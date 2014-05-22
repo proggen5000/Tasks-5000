@@ -138,6 +138,11 @@ public class DateiVerwaltung {
 		return get(id) != null;
 	}
 	
+	/**
+	 * Gibt eine Liste aller Dateien zurück, die einer Aufgabe zugewiesen sind
+	 * @param aufgabenID Aufgabe, zu dem die Dateien gelistet werden sollen
+	 * @return Datei-Liste
+	 */
 	public static ArrayList<Datei> getListeVonAufgabe(long aufgabenID){
 		
 		String sql = "SELECT dateien.dateiid FROM dateien JOIN aufgaben_dateien "
