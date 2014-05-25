@@ -37,11 +37,14 @@ class Connect { // TODO
 				dbHost = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
 				dbName = "tasks";
 			}
-			dbUser = ConnectionData.dbUser;
-			dbPw = ConnectionData.dbPw;
-			dbPort = ConnectionData.dbPort;
-			dbHost = ConnectionData.dbHost;
-			dbName = ConnectionData.dbName;
+			else{
+				dbUser = ConnectionData.dbUser;
+				dbPw = ConnectionData.dbPw;
+				dbPort = ConnectionData.dbPort;
+				dbHost = ConnectionData.dbHost;
+				dbName = ConnectionData.dbName;
+			}
+			
 			
 			System.err.println("Connect.java konnte die Datenbankkonfigurationsdatei nicht finden / lesen");
 		}finally{
