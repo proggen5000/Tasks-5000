@@ -21,7 +21,7 @@ class Connect { // TODO
 		Properties prop = new Properties();
 		InputStream input = null;
 		try{
-			input = new FileInputStream("WebContent/config/db.config");
+			input = new FileInputStream("db.config");
 			prop.load(input);
 			dbUser = prop.getProperty("dbUser");
 			dbPw = prop.getProperty("dbPw");
@@ -30,6 +30,13 @@ class Connect { // TODO
 			dbName = prop.getProperty("dbName");
 			
 		}catch(IOException e){
+			if(System.getenv("OPENSHIFT_MYSQL_DB_HOST") != null){
+				dbUser = System.getenv("OPENSHIFT_MYSQL_DB_USERNAME");
+				dbPw = System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD");
+				dbPort = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
+				dbHost = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
+				dbName = "tasks";
+			}
 			dbUser = ConnectionData.dbUser;
 			dbPw = ConnectionData.dbPw;
 			dbPort = ConnectionData.dbPort;
