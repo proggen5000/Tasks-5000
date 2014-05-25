@@ -21,7 +21,7 @@ class Connect { // TODO
 		Properties prop = new Properties();
 		InputStream input = null;
 		try{
-			input = new FileInputStream("db.config");
+			input = new FileInputStream("WebContent/config/db.config");
 			prop.load(input);
 			dbUser = prop.getProperty("dbUser");
 			dbPw = prop.getProperty("dbPw");
