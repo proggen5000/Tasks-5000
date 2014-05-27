@@ -160,7 +160,17 @@ public class TaskGroupController extends HttpServlet {
 				response.sendRedirect(request.getHeader("Referer"));
 				return;
 			}
-			taskGroup.setBeschreibung(request.getParameter("description"));
+			
+			final short descriptionLimit = 300;
+			String description = request.getParameter("description");
+			if(description.length() <= descriptionLimit){
+				taskGroup.setBeschreibung(description);
+			} else {
+				session.setAttribute("alert", "Bitte geben Sie eine k&uuml;rzere Beschreibung an! (Zeichenbeschr&auml;nkung: " + descriptionLimit + ")");
+				session.setAttribute("alert_mode", "danger");
+				response.sendRedirect(request.getHeader("Referer"));
+				return;
+			}
 			
 			Team team = TeamVerwaltung.get(Integer.parseInt(request.getParameter("teamId")));
 			taskGroup.setTeam(team);
@@ -190,7 +200,16 @@ public class TaskGroupController extends HttpServlet {
 				return;
 			}
 			
-			taskGroup.setBeschreibung(request.getParameter("description"));
+			final short descriptionLimit = 300;
+			String description = request.getParameter("description");
+			if(description.length() <= descriptionLimit){
+				taskGroup.setBeschreibung(description);
+			} else {
+				session.setAttribute("alert", "Bitte geben Sie eine k&uuml;rzere Beschreibung an! (Zeichenbeschr&auml;nkung: " + descriptionLimit + ")");
+				session.setAttribute("alert_mode", "danger");
+				response.sendRedirect(request.getHeader("Referer"));
+				return;
+			}
 
 			Aufgabengruppe taskGroupUpdated = AufgabengruppenVerwaltung.bearbeiten(taskGroup);
 			if(taskGroupUpdated != null){
