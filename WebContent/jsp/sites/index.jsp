@@ -13,7 +13,7 @@
 				<div class="col-xs-4"><h3><span class="glyphicon glyphicon-file"></span> Dateien</h3>Laden Sie Dateianh&auml;nge hoch, um Dokumente, Darstellungen und andere Dinge zu teilen. <b>Verr&uuml;ckt!</b></div>
 			</div>
 			
-			<h1>Benutzerrezensionen</h1>
+			<h1>Rezensionen</h1>
 			<p>Das sagen Anwender und die Fachpresse* &uuml;ber Tasks 5000:</p>
 			<blockquote>
 				"So etwas habe ich noch nie erlebt - Form, Funktion und Verf&uuml;gbarkeit erleben in dieser Anwendung ihre absoluten H&ouml;hepunkte."

@@ -750,8 +750,7 @@ a::-moz-selection { background: /*t1d*/ #3a9184; /* Firefox */ }
   margin-right: auto;
   margin-left: auto;
   border: 3px solid /*t1*/ #49b8a8;
-  background-color: #fff;
-  margin-top: 5px;
+  background-color: #f5f5f5;
 }
 .container .header {
   background-color: /*t1*/ #49b8a8;
@@ -763,14 +762,29 @@ a::-moz-selection { background: /*t1d*/ #3a9184; /* Firefox */ }
 .container .header a {
   color: #fff;
 }
+.container .header a:hover {
+  color: #f5f5f5;
+  text-decoration: none;
+}
+.container .header a .box {
+  color: /*t1*/ #49b8a8;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 0 5px;
+  display: inline;
+}
+.container .header a:hover .box {
+  background-color: #f5f5f5;
+}
 .container .header small {
   color: /*t1d*/ #3a9184;
   font-size: 20px;
 }
 
-.container  .content {
+.container .content {
   padding: 10px 20px;
   border-right: 1px dotted /*gr*/ #ccc;
+  background-color: #fff;
 }
 .container  .sidebar {
   padding: 10px 30px;
