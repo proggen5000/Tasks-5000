@@ -21,6 +21,7 @@ import administration.TeamVerwaltung;
 @WebServlet("/team")
 public class TeamController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	final short descriptionLimit = 5000;
        
     public TeamController() {
         super();
@@ -189,7 +190,16 @@ public class TeamController extends HttpServlet {
 			}
 			
 			team.setGruppenfuehrer(MitgliederVerwaltung.get(currentUser));
-			team.setBeschreibung(request.getParameter("description"));
+			
+			String description = request.getParameter("description");
+			if(description.length() <= descriptionLimit){
+				team.setBeschreibung(description);
+			} else {
+				session.setAttribute("alert", "Bitte geben Sie eine k&uuml;rzere Beschreibung an! (Zeichenbeschr&auml;nkung: " + descriptionLimit + ")");
+				session.setAttribute("alert_mode", "danger");
+				response.sendRedirect(request.getHeader("Referer"));
+				return;
+			}
 			
 			String[] userIDs = request.getParameterValues("users");
 			if(userIDs == null || userIDs.length == 0){

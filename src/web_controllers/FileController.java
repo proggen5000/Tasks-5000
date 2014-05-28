@@ -228,7 +228,17 @@ public class FileController extends HttpServlet {
 				return;
 			}
 			
-			file.setBeschreibung(request.getParameter("description"));
+			final short descriptionLimit = 5000;
+			String description = request.getParameter("description");
+			if(description.length() <= descriptionLimit){
+				file.setBeschreibung(description);
+			} else {
+				session.setAttribute("alert", "Bitte geben Sie eine k&uuml;rzere Beschreibung an! (Zeichenbeschr&auml;nkung: " + descriptionLimit + ")");
+				session.setAttribute("alert_mode", "danger");
+				response.sendRedirect(request.getHeader("Referer"));
+				return;
+			}
+			
 			file.setTeam(TeamVerwaltung.get(Long.parseLong(request.getParameter("team"))));
 			
 			// Check that we have a file upload request // TODO vermutlich unnötig
@@ -297,7 +307,16 @@ public class FileController extends HttpServlet {
 				return;
 			}
 			
-			file.setBeschreibung(request.getParameter("description"));
+			final short descriptionLimit = 5000;
+			String description = request.getParameter("description");
+			if(description.length() <= descriptionLimit){
+				file.setBeschreibung(description);
+			} else {
+				session.setAttribute("alert", "Bitte geben Sie eine k&uuml;rzere Beschreibung an! (Zeichenbeschr&auml;nkung: " + descriptionLimit + ")");
+				session.setAttribute("alert_mode", "danger");
+				response.sendRedirect(request.getHeader("Referer"));
+				return;
+			}
 			
 			// file.setPfad(pfad);
 			// TODO Datei hochladen bzw. aendern (+alte Datei loeschen)
@@ -314,8 +333,9 @@ public class FileController extends HttpServlet {
 				}
 			}
 			
-			session.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!"); // TODO wird das angezeigt?
+			session.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!");
 			response.sendRedirect(request.getContextPath()+"/file?mode=view&id="+fileUpdated.getId());
+			return;
 		}
 		
 		// Datei löschen (Aktion)

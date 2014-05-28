@@ -27,6 +27,7 @@ import administration.TeamVerwaltung;
 @WebServlet("/task")
 public class TaskController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	final short descriptionLimit = 5000;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
@@ -204,7 +205,6 @@ public class TaskController extends HttpServlet {
 			
 			task.setErsteller(MitgliederVerwaltung.get(currentUser));
 			
-			final short descriptionLimit = 300;
 			String description = request.getParameter("description");
 			if(description.length() <= descriptionLimit){
 				task.setBeschreibung(description);
@@ -286,7 +286,6 @@ public class TaskController extends HttpServlet {
 			
 			task.setGruppe(AufgabengruppenVerwaltung.get(Long.parseLong(request.getParameter("group"))));
 			
-			final short descriptionLimit = 300;
 			String description = request.getParameter("description");
 			if(description.length() <= descriptionLimit){
 				task.setBeschreibung(description);

@@ -19,6 +19,7 @@ import entities.Team;
 @WebServlet("/taskGroup")
 public class TaskGroupController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	final short descriptionLimit = 5000;
 
     public TaskGroupController() {
         super();
@@ -161,7 +162,6 @@ public class TaskGroupController extends HttpServlet {
 				return;
 			}
 			
-			final short descriptionLimit = 300;
 			String description = request.getParameter("description");
 			if(description.length() <= descriptionLimit){
 				taskGroup.setBeschreibung(description);
@@ -200,7 +200,6 @@ public class TaskGroupController extends HttpServlet {
 				return;
 			}
 			
-			final short descriptionLimit = 300;
 			String description = request.getParameter("description");
 			if(description.length() <= descriptionLimit){
 				taskGroup.setBeschreibung(description);
