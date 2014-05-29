@@ -60,7 +60,7 @@
 							<a href="${pageContext.request.contextPath}/user?mode=view&id=${user.id}" class="list-group-item">
 								<span class="glyphicon glyphicon-user"></span> ${user.username}
 								<c:if test="${user.id == task.ersteller.id}">
-									<span class="label label-default">Ersteller</span>
+									<span class="label label-default pull-right">Ersteller</span>
 								</c:if>
 							</a>
 						</c:forEach>						
