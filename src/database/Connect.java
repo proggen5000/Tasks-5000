@@ -64,7 +64,7 @@ class Connect {
 	 */
 	public static Connection getConnection() throws SQLException{
 		load_data();
-		if (con == null){
+		if (con == null || !con.isValid(0)){
 			try {
 				Class.forName("com.mysql.jdbc.Driver").newInstance();
 			} catch (Exception e) {
