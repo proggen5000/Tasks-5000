@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.sql.*;
 import java.util.Properties;
 
-class Connect { // TODO
+class Connect {
 	private static Connection con;
 	private static String dbUser = "";
 	private static String dbPw = "";
@@ -45,8 +45,7 @@ class Connect { // TODO
 				dbName = ConnectionData.dbName;
 			}
 			
-			
-			System.err.println("Connect.java konnte die Datenbankkonfigurationsdatei nicht finden / lesen");
+			// System.err.println("Connect.java konnte die Datenbankkonfigurationsdatei nicht finden / lesen");
 		}finally{
 			if(input != null){
 				try{
