@@ -26,9 +26,9 @@ public class MitgliederTeams {
 		
 		//Parameter vorbereiten
 		String table= "mitglieder_teams";
-		String columns= "mitgliedid, teamid, berechtigung, beitrittsdatum";
+		String columns= "mitgliedID, teamID, berechtigung, beitrittsdatum";
 		if (berechtigung==null){
-			berechtigung="mitglied";
+			berechtigung="Mitglied";
 		}
 		String values= mitgliedid+", "+teamid+", '"+berechtigung+"', "+beitrittsdatum;
 		int testID;
@@ -60,7 +60,7 @@ public class MitgliederTeams {
 		String updateString= "berechtigung="+berechtigung;
 		String where= "mitglieder_mitgliedid="+mitgliedid+" AND teams_teamid="+teamid;
 		
-		//SQL mit Parametern ausf�hren
+		//SQL mit Parametern ausführen
 		try {
 			return Queries.updateQuery(table, updateString, where);
 		} catch (SQLException e) {

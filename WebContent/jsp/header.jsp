@@ -8,11 +8,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="<c:url value="/css/bootstrap.css" />" type="text/css" rel="stylesheet" />
 	<link href="<c:url value="favicon.ico" />" type="image/x-icon" rel="icon" />
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" type="text/javascript"></script>
+	<script src="${pageContext.request.contextPath}/js/jquery-1.11.1.min.js" type="text/javascript"></script>
 	<script src="${pageContext.request.contextPath}/js/bootstrap.js" type="text/javascript"></script>
 	<script src="${pageContext.request.contextPath}/js/tooltip.js" type="text/javascript"></script>
 	<script src="${pageContext.request.contextPath}/js/selector.js" type="text/javascript"></script>
-	<title>Tasks 5000 &#187; ${param.page_title}</title>
+	<title>${param.page_title} &#124; Tasks 5000</title>
 </head>
 <body> 
 	<div class="container"><div id="mainbox">
