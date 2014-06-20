@@ -1,6 +1,7 @@
 package administration;
 
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Calendar;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
@@ -36,8 +37,9 @@ public class MitgliederTeams {
 		//SQL mit Parametern ausführen
 		try {
 			testID = Queries.insertQuery(table, columns, values);
-		} catch (MySQLIntegrityConstraintViolationException e) {
-			testID= 0;
+		} catch (SQLIntegrityConstraintViolationException e) {
+			e.printStackTrace();
+			testID = 0;
 		} catch(SQLException e){
 			e.printStackTrace();
 			testID = -1;
