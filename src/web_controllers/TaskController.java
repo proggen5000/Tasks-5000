@@ -13,9 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import entities.Aufgabe;
-import entities.Datei;
-import entities.Mitglied;
 import administration.AufgabenDateien;
 import administration.AufgabenMitglieder;
 import administration.AufgabenVerwaltung;
@@ -23,6 +20,9 @@ import administration.AufgabengruppenVerwaltung;
 import administration.DateiVerwaltung;
 import administration.MitgliederVerwaltung;
 import administration.TeamVerwaltung;
+import entities.Aufgabe;
+import entities.Datei;
+import entities.Mitglied;
 
 @WebServlet("/task")
 public class TaskController extends HttpServlet {
@@ -75,17 +75,27 @@ public class TaskController extends HttpServlet {
 
 		// Aufgabe ansehen
 		else if(mode.equals("view")){
-			if(id != -1){
-				Aufgabe task = AufgabenVerwaltung.get(id);
-				request.setAttribute("task", task);
-				request.setAttribute("files", DateiVerwaltung.getListeVonAufgabe(id));
-				request.setAttribute("users", MitgliederVerwaltung.getListeVonAufgabe(id));
-				request.setAttribute("valid_request", true);
-				view = request.getRequestDispatcher("/jsp/task/taskView.jsp");
+			if (AufgabenVerwaltung.vorhanden(id)) {
+				long tempTeamID = AufgabenVerwaltung.get(id).getGruppe().getTeam()
+						.getId();
+				if (MitgliederVerwaltung.istMitgliedInTeam(currentUser, tempTeamID)) {
+					Aufgabe task = AufgabenVerwaltung.get(id);
+					request.setAttribute("task", task);
+					request.setAttribute("files", DateiVerwaltung.getListeVonAufgabe(id));
+					request.setAttribute("users",
+							MitgliederVerwaltung.getListeVonAufgabe(id));
+					request.setAttribute("valid_request", true);
+					view = request.getRequestDispatcher("/jsp/task/taskView.jsp");
+				} else {
+					request.setAttribute("error", "Sie sind nicht Mitglied dieses Teams!");
+					view = request.getRequestDispatcher("/error.jsp");
+				}
+
 			} else {
 				request.setAttribute("error", "Ung&uuml;ltige Aufgaben-ID!");
 				view = request.getRequestDispatcher("/error.jsp");
 			}
+
 		}
 		
 		// Aufgabe erstellen (Formular)

@@ -4,19 +4,21 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Calendar;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
-
 import database.Queries;
 import entities.Team;
 
 public class MitgliederTeams {
 
 	/**
-	 * Schreibt eine neue Verbindung zwischen einem Mitglied und einem Team in die DB
-	 * liefert true bei Erfolg und false bei Misserfolg zurueck
-	 * @param mitgliedid ID des Mitglieds
-	 * @param teamid ID des Teams
-	 * @param berechtigung Berechtigung des Mitglieds (z.Bsp. admin, Mitglied, etc)
+	 * Schreibt eine neue Verbindung zwischen einem Mitglied und einem Team in
+	 * die DB. Liefert true bei Erfolg und false bei Misserfolg.
+	 * 
+	 * @param mitgliedid
+	 *            ID des Mitglieds
+	 * @param teamid
+	 *            ID des Teams
+	 * @param berechtigung
+	 *            Berechtigung des Mitglieds (z.Bsp. admin, Mitglied, etc)
 	 * @return boolean
 	 */
 	public static boolean beitreten(long mitgliedid, long teamid, String berechtigung){
@@ -48,11 +50,15 @@ public class MitgliederTeams {
 	}
 	
 	/**
-	 * Ändert die Berechtigung eines Mitglieds in einem Team
-	 * liefert true bei Aktualisierung, false bei Fehlern
-	 * @param mitgliedid ID des Mitglieds
-	 * @param teamid ID des Teams
-	 * @param berechtigung neue Berechtigung des Mitglieds
+	 * Ändert die Berechtigung eines Mitglieds in einem Team. Liefert true bei
+	 * Aktualisierung, false bei Fehlern.
+	 * 
+	 * @param mitgliedid
+	 *            ID des Mitglieds
+	 * @param teamid
+	 *            ID des Teams
+	 * @param berechtigung
+	 *            neue Berechtigung des Mitglieds
 	 * @return boolean
 	 */
 	public static boolean bearbeiten(long mitgliedid, long teamid, String berechtigung){
@@ -73,10 +79,13 @@ public class MitgliederTeams {
 	}
 	
 	/**
-	 * löscht die Verbindung zwischen Mitglied und Team in der DB
-	 * liefert true bei Erfolg, false bei Misserfolg zurueck
-	 * @param mitgliedid ID des Mitglieds
-	 * @param teamid ID des Teams
+	 * Löscht die Verbindung zwischen Mitglied und Team in der DB. Liefert true
+	 * bei Erfolg, false bei Misserfolg.
+	 * 
+	 * @param mitgliedid
+	 *            ID des Mitglieds
+	 * @param teamid
+	 *            ID des Teams
 	 * @return boolean
 	 */
 	public static boolean austreten(long mitgliedid, long teamid){
@@ -93,9 +102,12 @@ public class MitgliederTeams {
 	}
 	
 	/**
-	 * Entfernt alle Mitgliederzuordnungen des angegebenen Teams
-	 * @param team Team, in dem alle Mitglieder gelöscht werden sollen
-	 * @return Löschen erfolgreich (true) / nicht erfolgreich (false)
+	 * Entfernt alle Mitgliederzuordnungen des angegebenen Teams.
+	 * 
+	 * @param team
+	 *            Team, in dem alle Mitglieder(-zuordnungen) gelöscht werden
+	 *            sollen
+	 * @return Löschvorgang erfolgreich (true) / nicht erfolgreich (false)
 	 */
 	public static boolean entfernenAlle(Team team){
 		try {

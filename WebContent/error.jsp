@@ -7,11 +7,11 @@
 		  		
 		  		<h1>Fehler bei der Verarbeitung</h1>
 		  		<div class="row">
-			  		<div class="col-xs-10">
+			  		<div class="col-xs-9">
 			  			<p>Leider ist ein Fehler beim Abrufen der Seite entstanden. Bitte &uuml;berpr&uuml;fen Sie, ob Sie eingeloggt sind und &uuml;ber die n&ouml;tigen Rechte verf&uuml;gen, diese Seite aufzurufen.</p>
 				  		<p>Rufen Sie Seiten bei Tasks 5000 ausschlie&szlig;lich direkt &uuml;ber das System auf, um Fehler zu vermeiden.</p>
 			  		</div>
-			  		<div class="col-xs-2 error pull-right"><span class="glyphicon glyphicon-fire"></span></div>
+			  		<div class="col-xs-2 error"><span class="glyphicon glyphicon-fire"></span></div>
 		  		</div>
 		  		<c:if test="${requestScope.error != null or sessionScope.error != null or param.error != null}">
 		  			<h2>Fehlermeldung</h2>
