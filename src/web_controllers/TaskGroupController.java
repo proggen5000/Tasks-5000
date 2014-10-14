@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import administration.AufgabengruppenVerwaltung;
-import administration.MitgliederVerwaltung;
-import administration.TeamVerwaltung;
-import entities.Aufgabengruppe;
+import persistence.UserManager;
+import persistence.TaskGroupManager;
+import persistence.TeamManager;
+import entities.TaskGroup;
 import entities.Team;
 
 @WebServlet("/taskGroup")
@@ -40,7 +40,7 @@ public class TaskGroupController extends HttpServlet {
 				request.setAttribute("error", e);
 			}
 		}
-		request.setAttribute("teams_menu", TeamVerwaltung.getListeVonMitglied(currentUser)); // TODO Workaround
+		request.setAttribute("teams_menu", TeamManager.getListOfUser(currentUser)); // TODO Workaround
 		
 		long id = -1; // Aufgabengruppen-ID
 		try {
@@ -71,8 +71,8 @@ public class TaskGroupController extends HttpServlet {
 		
 		// Aufgabengruppe erstellen (Formular)
 		else if(mode.equals("new")){
-			if(MitgliederVerwaltung.istMitgliedInTeam(currentUser, teamId)){
-				Team team = TeamVerwaltung.get(teamId);
+			if(UserManager.isMemberInTeam(currentUser, teamId)){
+				Team team = TeamManager.get(teamId);
 				request.setAttribute("team", team);
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
@@ -85,7 +85,7 @@ public class TaskGroupController extends HttpServlet {
 		
 		// Aufgabengruppe bearbeiten (Formular)
 		else if(mode.equals("edit")){
-			Aufgabengruppe taskGroup = AufgabengruppenVerwaltung.get(id);
+			TaskGroup taskGroup = TaskGroupManager.get(id);
 			request.setAttribute("taskGroup", taskGroup);
 			request.setAttribute("team", taskGroup.getTeam());
 			request.setAttribute("mode", mode);
@@ -95,8 +95,8 @@ public class TaskGroupController extends HttpServlet {
 		
 		// Aufgabengruppe loeschen (Weiterleitung an Nachfrage)
 		else if(mode.equals("remove")){
-			if(AufgabengruppenVerwaltung.vorhanden(id) && MitgliederVerwaltung.istMitgliedInTeam(currentUser, AufgabengruppenVerwaltung.get(id).getTeam().getId())){
-				Aufgabengruppe taskGroup = AufgabengruppenVerwaltung.get(id);
+			if(TaskGroupManager.exists(id) && UserManager.isMemberInTeam(currentUser, TaskGroupManager.get(id).getTeam().getId())){
+				TaskGroup taskGroup = TaskGroupManager.get(id);
 				request.setAttribute("taskGroup", taskGroup);
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
@@ -150,7 +150,7 @@ public class TaskGroupController extends HttpServlet {
 
 		// Aufgabengruppe erstellen (Aktion)
 		else if(mode.equals("new")){
-			Aufgabengruppe taskGroup = new Aufgabengruppe();
+			TaskGroup taskGroup = new TaskGroup();
 			
 			String name = request.getParameter("name");
 			if(name != null && name.length() > 0){
@@ -172,10 +172,10 @@ public class TaskGroupController extends HttpServlet {
 				return;
 			}
 			
-			Team team = TeamVerwaltung.get(Integer.parseInt(request.getParameter("teamId")));
+			Team team = TeamManager.get(Integer.parseInt(request.getParameter("teamId")));
 			taskGroup.setTeam(team);
 
-			Aufgabengruppe taskGroupNew = AufgabengruppenVerwaltung.neu(taskGroup);
+			TaskGroup taskGroupNew = TaskGroupManager.add(taskGroup);
 			if(taskGroupNew != null){
 				session.setAttribute("alert", "Neue Aufgabengruppe erstellt!");
 				response.sendRedirect(request.getContextPath()+"/team?mode=view&id="+team.getId());
@@ -188,7 +188,7 @@ public class TaskGroupController extends HttpServlet {
 		
 		// Aufgabengruppe bearbeiten (Aktion)
 		else if(mode.equals("edit")){
-			Aufgabengruppe taskGroup = AufgabengruppenVerwaltung.get(id);
+			TaskGroup taskGroup = TaskGroupManager.get(id);
 			
 			String name = request.getParameter("name");
 			if(name != null && name.length() > 0){
@@ -210,7 +210,7 @@ public class TaskGroupController extends HttpServlet {
 				return;
 			}
 
-			Aufgabengruppe taskGroupUpdated = AufgabengruppenVerwaltung.bearbeiten(taskGroup);
+			TaskGroup taskGroupUpdated = TaskGroupManager.edit(taskGroup);
 			if(taskGroupUpdated != null){
 				session.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!");
 				response.sendRedirect(request.getContextPath()+"/team?mode=view&id="+taskGroupUpdated.getTeam().getId());
@@ -218,16 +218,16 @@ public class TaskGroupController extends HttpServlet {
 			} else {
 				session.setAttribute("alert", "Fehler bei der Speicherung der Aufgabengruppe!");
 				session.setAttribute("alert_mode", "danger");
-				Team team = TeamVerwaltung.get(Integer.parseInt(request.getParameter("teamId")));
+				Team team = TeamManager.get(Integer.parseInt(request.getParameter("teamId")));
 				response.sendRedirect(request.getContextPath()+"/team?mode=view&id="+team.getId());
 			}
 		}
 		
 		// Aufgabengruppe löschen (Aktion)
 		else if(mode.equals("remove")){
-			if (AufgabengruppenVerwaltung.vorhanden(id)){
-				long teamId = AufgabengruppenVerwaltung.get(id).getTeam().getId();
-				if(AufgabengruppenVerwaltung.loeschen(AufgabengruppenVerwaltung.get(id))){
+			if (TaskGroupManager.exists(id)){
+				long teamId = TaskGroupManager.get(id).getTeam().getId();
+				if(TaskGroupManager.remove(TaskGroupManager.get(id))){
 					session.setAttribute("alert", "Aufgabengruppe erfolgreich gel&ouml;scht!");
 					response.sendRedirect(request.getContextPath()+"/team?mode=view&id="+teamId);
 					return;

@@ -1,34 +1,35 @@
 package entities;
+
 import java.io.Serializable;
 import java.util.Date;
 
-import administration.AufgabenVerwaltung;
-import administration.DateiVerwaltung;
-import administration.MitgliederVerwaltung;
+import persistence.TaskManager;
+import persistence.UploadManager;
+import persistence.UserManager;
 
 public class Team implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private long id;
 	private String name;
-	private long gruendungsdatum;
-	private String beschreibung;
-	private Mitglied gruppenfuehrer;
-	
-	public Team(){
+	private String description;
+	private long date;
+	private User manager;
+
+	public Team() {
 	}
 
-	public Team(long id, String name, long gruendungsdatum, String beschreibung,
-			Mitglied gruppenfuehrer) {
+	public Team(long id, String name, long date,
+			String description, User manager) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.beschreibung = beschreibung;
-		this.gruppenfuehrer = gruppenfuehrer;
-		this.gruendungsdatum = gruendungsdatum;
+		this.description = description;
+		this.manager = manager;
+		this.date = date;
 	}
 
-	//Getters & Setters
+	// Getters & Setters
 	public long getId() {
 		return id;
 	}
@@ -45,54 +46,55 @@ public class Team implements Serializable {
 		this.name = name;
 	}
 
-	public long getGruendungsdatum() {
-		return gruendungsdatum;
+	public long getDate() {
+		return date;
 	}
 
-	public void setGruendungsdatum(long gruendungsdatum) {
-		this.gruendungsdatum = gruendungsdatum;
+	public void setDate(long date) {
+		this.date = date;
 	}
 
-	public String getBeschreibung() {
-		return beschreibung;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setBeschreibung(String beschreibung) {
-		this.beschreibung = beschreibung;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public Mitglied getGruppenfuehrer() {
-		return gruppenfuehrer;
+	public User getManager() {
+		return manager;
 	}
 
-	public void setGruppenfuehrer(Mitglied gruppenfuehrer) {
-		this.gruppenfuehrer = gruppenfuehrer;
+	public void setManager(User manager) {
+		this.manager = manager;
 	}
-	
+
 	/**
 	 * Liefert das Gruendungsdatum als Dateobjekt
 	 */
-	public Date getGruendungsdatumAsDate(){
-		return new java.util.Date(gruendungsdatum);
+	public Date getDateObject() {
+		return new java.util.Date(date);
 	}
-	
-	public int getAnzahlAufgaben(){
-		return AufgabenVerwaltung.getListeVonTeam(id).size();
+
+	public int getTasksCount() {
+		return TaskManager.getListeVonTeam(id).size();
 	}
-	
-	public int getAnzahlAufgabenVonMitglied(long mitgliedID){
-		return AufgabenVerwaltung.getListeVonMitgliedVonTeam(mitgliedID, id).size();
+
+	public int getTasksCount(long userId) {
+		return TaskManager.getListeVonMitgliedVonTeam(userId, id)
+				.size();
 	}
-	
-	public int getAnzahlMitglieder(){
-		int anzahl = 0;
-		if(MitgliederVerwaltung.getListeVonTeam(id) != null){
-			anzahl = MitgliederVerwaltung.getListeVonTeam(id).size();
+
+	public int getMembersCount() {
+		int count = 0;
+		if (UserManager.getListOfTeam(id) != null) {
+			count = UserManager.getListOfTeam(id).size();
 		}
-		return anzahl;
+		return count;
 	}
-	
-	public int getAnzahlDateien(){
-		return DateiVerwaltung.getListeVonTeam(id).size();
+
+	public int getFilesCount() {
+		return UploadManager.getListOfTeam(id).size();
 	}
 }

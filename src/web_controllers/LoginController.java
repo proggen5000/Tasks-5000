@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import administration.MitgliederVerwaltung;
-import entities.Mitglied;
+import persistence.UserManager;
+import entities.User;
 
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
@@ -85,8 +85,8 @@ public class LoginController extends HttpServlet {
 		// Login (Aktion)
 		if(mode.equals("login")){
 			if(!login){
-				if(MitgliederVerwaltung.pruefeLogin(username, password)){
-					Mitglied user =  MitgliederVerwaltung.get(username);
+				if(UserManager.checkLogin(username, password)){
+					User user =  UserManager.get(username);
 					
 					session.setAttribute("login", true);
 					session.setAttribute("currentUser", user.getId());
@@ -105,7 +105,7 @@ public class LoginController extends HttpServlet {
 					}
 					
 					if(!cookie_forward){
-						session.setAttribute("alert", "Sie haben sich erfolgreich eingeloggt! Herzlich willkommen, " + user.getUsername() + ".");
+						session.setAttribute("alert", "Sie haben sich erfolgreich eingeloggt! Herzlich willkommen, " + user.getName() + ".");
 						response.sendRedirect(request.getContextPath()+"/index");
 					} else {
 						// direkte Weiterleitung zur Startseite, falls Cookie gefunden
@@ -123,10 +123,10 @@ public class LoginController extends HttpServlet {
 		// Registrierung (Aktion)
 		} else if(mode.equals("register")){
 			if(!login){
-				Mitglied user = new Mitglied();
+				User user = new User();
 				
-				if(username.length() > 0 && !MitgliederVerwaltung.vorhanden(username)){
-					user.setUsername(username);
+				if(username.length() > 0 && !UserManager.exists(username)){
+					user.setName(username);
 				} else {
 					session.setAttribute("alert", "Der gew&auml;hlte Benutzername ist ung&uuml;ltig oder bereits vergeben! Bitte w&auml;hlen Sie einen anderen.");
 					session.setAttribute("alert_mode", "danger");
@@ -134,8 +134,8 @@ public class LoginController extends HttpServlet {
 					return;
 				}
 				
-				user.setVorname(request.getParameter("vorname"));
-				user.setNachname(request.getParameter("nachname"));
+				user.setFirstName(request.getParameter("vorname"));
+				user.setSecondName(request.getParameter("nachname"));
 				
 				String email = request.getParameter("email");
 				if(email.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"	+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")){
@@ -149,7 +149,7 @@ public class LoginController extends HttpServlet {
 				
 				String passwordRepeat = request.getParameter("passwordRepeat");
 				if(password.length() > 0 && password.equals(passwordRepeat)){	
-					user.setPw(password);
+					user.setPassword(password);
 				} else {
 					session.setAttribute("alert", "Ihre Passw&ouml;rter stimmen nicht &uuml;berein oder sind leer!");
 					session.setAttribute("alert_mode", "danger");
@@ -157,10 +157,10 @@ public class LoginController extends HttpServlet {
 					return;
 				}
 				
-				Mitglied userNew = MitgliederVerwaltung.neu(user);
+				User userNew = UserManager.add(user);
 				if(userNew != null){
 					session.setAttribute("title", "Erfolgreich registriert");
-					session.setAttribute("message", "Sie haben sich hiermit erfolgreich als \"<b>" + userNew.getUsername() + "</b>\" registriert und k&ouml;nnen sich ab sofort mit Ihrem Passwort einloggen.<br />Herzlich willkommen! :)");
+					session.setAttribute("message", "Sie haben sich hiermit erfolgreich als \"<b>" + userNew.getName() + "</b>\" registriert und k&ouml;nnen sich ab sofort mit Ihrem Passwort einloggen.<br />Herzlich willkommen! :)");
 					response.sendRedirect(request.getContextPath()+"/success.jsp");
 					return;
 				} else {

@@ -11,12 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import entities.Mitglied;
-import administration.AufgabengruppenVerwaltung;
-import administration.DateiVerwaltung;
-import administration.MitgliederTeams;
-import administration.MitgliederVerwaltung;
-import administration.TeamVerwaltung;
+import persistence.UploadManager;
+import persistence.UsersTeams;
+import persistence.UserManager;
+import persistence.TaskGroupManager;
+import persistence.TeamManager;
+import entities.User;
 
 @WebServlet("/team")
 public class TeamController extends HttpServlet {
@@ -39,7 +39,7 @@ public class TeamController extends HttpServlet {
 		} catch (NullPointerException e){
 			request.setAttribute("error", e);
 		}
-		request.setAttribute("teams_menu", TeamVerwaltung.getListeVonMitglied(currentUser)); // TODO Workaround
+		request.setAttribute("teams_menu", TeamManager.getListOfUser(currentUser)); // TODO Workaround
 		
 		long id = -1; // TeamID
 		try {
@@ -61,12 +61,12 @@ public class TeamController extends HttpServlet {
 
 		// Team ansehen
 		else if(mode.equals("view")){
-			if(TeamVerwaltung.vorhanden(id)){
-				if(MitgliederVerwaltung.istMitgliedInTeam(currentUser, id)){
-					request.setAttribute("team", TeamVerwaltung.get(id));
-					request.setAttribute("taskGroups", AufgabengruppenVerwaltung.getListeVonTeam(id));				
-					request.setAttribute("files", DateiVerwaltung.getListeVonTeam(id));
-					request.setAttribute("users", MitgliederVerwaltung.getListeVonTeam(id));
+			if(TeamManager.exists(id)){
+				if(UserManager.isMemberInTeam(currentUser, id)){
+					request.setAttribute("team", TeamManager.get(id));
+					request.setAttribute("taskGroups", TaskGroupManager.getList(id));				
+					request.setAttribute("files", UploadManager.getListOfTeam(id));
+					request.setAttribute("users", UserManager.getListOfTeam(id));
 					request.setAttribute("valid_request", true);
 					view = request.getRequestDispatcher("/jsp/team/teamView.jsp");
 				} else {
@@ -81,10 +81,10 @@ public class TeamController extends HttpServlet {
 		
 		// Team erstellen (Formular)
 		else if(mode.equals("new")){
-			ArrayList<Mitglied> users = new ArrayList<Mitglied>();
-			users.add(MitgliederVerwaltung.get(currentUser));
+			ArrayList<User> users = new ArrayList<User>();
+			users.add(UserManager.get(currentUser));
 			request.setAttribute("users", users);
-			request.setAttribute("usersRest", MitgliederVerwaltung.getListe());
+			request.setAttribute("usersRest", UserManager.getList());
 			request.setAttribute("mode", mode);
 			request.setAttribute("valid_request", true);
 			view = request.getRequestDispatcher("/jsp/team/teamEdit.jsp");
@@ -92,12 +92,12 @@ public class TeamController extends HttpServlet {
 		
 		// Team bearbeiten (Formular)
 		else if(mode.equals("edit")){			
-			entities.Team team = TeamVerwaltung.get(id);
+			entities.Team team = TeamManager.get(id);
 			
-			if(currentUser == team.getGruppenfuehrer().getId()){
+			if(currentUser == team.getManager().getId()){
 				request.setAttribute("team", team);
-				request.setAttribute("users", MitgliederVerwaltung.getListeVonTeam(id));
-				request.setAttribute("usersRest", MitgliederVerwaltung.getListeVonTeamRest(id));
+				request.setAttribute("users", UserManager.getListOfTeam(id));
+				request.setAttribute("usersRest", UserManager.getListOfTeamRest(id));
 				request.setAttribute("mode", mode);
 				request.setAttribute("valid_request", true);
 				view = request.getRequestDispatcher("/jsp/team/teamEdit.jsp");
@@ -109,9 +109,9 @@ public class TeamController extends HttpServlet {
 		
 		// Team löschen (Formular)
 		else if(mode.equals("remove")){
-			entities.Team team = TeamVerwaltung.get(id);
-			if(currentUser == team.getGruppenfuehrer().getId()){
-				if(TeamVerwaltung.vorhanden(team.getId())){
+			entities.Team team = TeamManager.get(id);
+			if(currentUser == team.getManager().getId()){
+				if(TeamManager.exists(team.getId())){
 					request.setAttribute("team", team);
 					request.setAttribute("valid_request", true);
 					view = request.getRequestDispatcher("/jsp/team/teamRemove.jsp");
@@ -174,7 +174,7 @@ public class TeamController extends HttpServlet {
 			
 			String name = request.getParameter("name");
 			if(name.length() > 0){
-				if(!TeamVerwaltung.vorhanden(name)){
+				if(!TeamManager.exists(name)){
 					team.setName(name);
 				} else {
 					session.setAttribute("alert", "Dieser Teamname ist bereits vergeben! Bitte verwenden Sie einen anderen.");
@@ -189,11 +189,11 @@ public class TeamController extends HttpServlet {
 				return;
 			}
 			
-			team.setGruppenfuehrer(MitgliederVerwaltung.get(currentUser));
+			team.setManager(UserManager.get(currentUser));
 			
 			String description = request.getParameter("description");
 			if(description.length() <= descriptionLimit){
-				team.setBeschreibung(description);
+				team.setDescription(description);
 			} else {
 				session.setAttribute("alert", "Bitte geben Sie eine k&uuml;rzere Beschreibung an! (Zeichenbeschr&auml;nkung: " + descriptionLimit + ")");
 				session.setAttribute("alert_mode", "danger");
@@ -209,16 +209,16 @@ public class TeamController extends HttpServlet {
 				return;
 			}
 			
-			entities.Team teamNew = TeamVerwaltung.neu(team);
+			entities.Team teamNew = TeamManager.add(team);
 			
 			if(teamNew != null){
 				for(String userID : userIDs){
 					long userIDLong = Long.parseLong(userID);
 					if(userIDLong != currentUser){
-						MitgliederTeams.beitreten(userIDLong, teamNew.getId(), "Mitglied");
+						UsersTeams.link(userIDLong, teamNew.getId(), "Mitglied");
 					}
 				}
-				MitgliederTeams.beitreten(currentUser, teamNew.getId(), "Manager");
+				UsersTeams.link(currentUser, teamNew.getId(), "Manager");
 				
 				session.setAttribute("alert", "Sie haben das Team erfolgreich erstellt!");
 				response.sendRedirect(request.getContextPath()+"/team?mode=view&id=" + teamNew.getId());
@@ -232,16 +232,16 @@ public class TeamController extends HttpServlet {
 		
 		// Team bearbeiten (Aktion)
 		else if(mode.equals("edit")){			
-			entities.Team team = TeamVerwaltung.get(id);
+			entities.Team team = TeamManager.get(id);
 			
-			if(currentUser == team.getGruppenfuehrer().getId()){				
+			if(currentUser == team.getManager().getId()){				
 				
 				// Name (falls neu)
 				String currentName = team.getName();
 				String newName = request.getParameter("name");
 				if(!newName.equals(currentName)){
 					if(newName.length() > 0){
-						if(!TeamVerwaltung.vorhanden(newName)){
+						if(!TeamManager.exists(newName)){
 							team.setName(newName);
 						} else {
 							session.setAttribute("alert", "Dieser Teamname ist bereits vergeben! Bitte verwenden Sie einen anderen.");
@@ -257,9 +257,9 @@ public class TeamController extends HttpServlet {
 					}
 				}
 				
-				team.setGruppenfuehrer(MitgliederVerwaltung.get(Long.parseLong(request.getParameter("manager"))));
+				team.setManager(UserManager.get(Long.parseLong(request.getParameter("manager"))));
 				
-				team.setBeschreibung(request.getParameter("description"));
+				team.setDescription(request.getParameter("description"));
 				
 				String[] userIDs = request.getParameterValues("users");
 				if(userIDs == null || userIDs.length == 0){
@@ -269,17 +269,17 @@ public class TeamController extends HttpServlet {
 					return;
 				}
 				
-				entities.Team teamUpdated = TeamVerwaltung.bearbeiten(team);
+				entities.Team teamUpdated = TeamManager.bearbeiten(team);
 				
 				if(teamUpdated != null){
-					MitgliederTeams.entfernenAlle(teamUpdated);
+					UsersTeams.unlinkAll(teamUpdated);
 					for(String userID : userIDs){
 						long userIDLong = Long.parseLong(userID);
 						if(userIDLong != currentUser){
-							MitgliederTeams.beitreten(userIDLong, teamUpdated.getId(), "Mitglied");
+							UsersTeams.link(userIDLong, teamUpdated.getId(), "Mitglied");
 						}
 					}
-					MitgliederTeams.beitreten(currentUser, teamUpdated.getId(), "Manager");
+					UsersTeams.link(currentUser, teamUpdated.getId(), "Manager");
 					
 					session.setAttribute("alert", "&Auml;nderungen erfolgreich gespeichert!");
 					response.sendRedirect(request.getContextPath()+"/team?mode=view&id=" + teamUpdated.getId());
@@ -296,11 +296,11 @@ public class TeamController extends HttpServlet {
 		
 		// Team löschen (Aktion)
 		else if(mode.equals("remove")){
-			entities.Team team = TeamVerwaltung.get(id);
+			entities.Team team = TeamManager.get(id);
 			String name = team.getName();
 			
-			if(currentUser == team.getGruppenfuehrer().getId()){
-				if(TeamVerwaltung.loeschen(team.getId())){
+			if(currentUser == team.getManager().getId()){
+				if(TeamManager.loeschen(team.getId())){
 					session.setAttribute("title", "Team gel&ouml;scht");
 					session.setAttribute("message", "Sie haben das Team <b>" + name + "</b> erfolgreich gel&ouml;scht!");
 					response.sendRedirect(request.getContextPath()+"/success.jsp");

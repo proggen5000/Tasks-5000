@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import entities.Mitglied;
-import administration.AufgabenVerwaltung;
-import administration.MitgliederVerwaltung;
-import administration.TeamVerwaltung;
+import persistence.TaskManager;
+import persistence.UserManager;
+import persistence.TeamManager;
+import entities.User;
 
 @WebServlet("/index")
 public class IndexController extends HttpServlet {
@@ -50,7 +50,7 @@ public class IndexController extends HttpServlet {
 			if(login){
 				HttpSession session = request.getSession(true);
 				long currentUser = (Long) session.getAttribute("currentUser");
-				request.setAttribute("teams_menu", TeamVerwaltung.getListeVonMitglied(currentUser));
+				request.setAttribute("teams_menu", TeamManager.getListOfUser(currentUser));
 			}
 			view = request.getRequestDispatcher("/jsp/sites/" + page + ".jsp");
 		}
@@ -64,10 +64,10 @@ public class IndexController extends HttpServlet {
 			
 			// Cookie vorhanden
 			else if(currentUserCookie != null){
-				if(MitgliederVerwaltung.vorhanden(currentUserCookie)){
-					Mitglied user = MitgliederVerwaltung.get(currentUserCookie);
-					request.setAttribute("username", user.getUsername());
-					request.setAttribute("password", user.getPw());
+				if(UserManager.exists(currentUserCookie)){
+					User user = UserManager.get(currentUserCookie);
+					request.setAttribute("username", user.getName());
+					request.setAttribute("password", user.getPassword());
 					request.setAttribute("cookie_forward", true);
 					request.setAttribute("valid_request", true);
 					view = request.getRequestDispatcher("/login?mode=login");
@@ -89,8 +89,8 @@ public class IndexController extends HttpServlet {
 		else if(login){
 			HttpSession session = request.getSession(true);
 			long currentUser = (Long) session.getAttribute("currentUser");
-			request.setAttribute("teams_menu", TeamVerwaltung.getListeVonMitglied(currentUser));
-			request.setAttribute("tasks", AufgabenVerwaltung.getListeVonMitglied(currentUser));
+			request.setAttribute("teams_menu", TeamManager.getListOfUser(currentUser));
+			request.setAttribute("tasks", TaskManager.getListeVonMitglied(currentUser));
 			request.setAttribute("valid_request", true);
 			view = request.getRequestDispatcher("/jsp/sites/indexUser.jsp");
 		}

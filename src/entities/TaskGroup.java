@@ -2,22 +2,22 @@ package entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import administration.AufgabenVerwaltung;
+import persistence.TaskManager;
 
-public class Aufgabengruppe implements Serializable {
+public class TaskGroup implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private long id;
 	private String name;
-	private String beschreibung;
+	private String description;
 	private Team team;
 	
-	public Aufgabengruppe(){}
+	public TaskGroup(){}
 	
-	public Aufgabengruppe(long id, String name, String beschreibung, Team team){
+	public TaskGroup(long id, String name, String description, Team team){
 		this.id = id;
 		this.name = name;
-		this.beschreibung = beschreibung;
+		this.description = description;
 		this.team = team;
 	}
 
@@ -39,11 +39,11 @@ public class Aufgabengruppe implements Serializable {
 	}
 	
 	public String getBeschreibung() {
-		return beschreibung;
+		return description;
 	}
 
 	public void setBeschreibung(String beschreibung) {
-		this.beschreibung = beschreibung;
+		this.description = beschreibung;
 	}
 
 	public Team getTeam() {
@@ -55,7 +55,7 @@ public class Aufgabengruppe implements Serializable {
 	}
 	
 	
-	public ArrayList<Aufgabe> getAufgaben(){
-		return AufgabenVerwaltung.getListeVonGruppe(id);
+	public ArrayList<Task> getTasks(){
+		return TaskManager.getListeVonGruppe(id);
 	}
 }
