@@ -4,30 +4,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import database.FieldNames;
 import database.Queries;
 import entities.Task;
 import entities.TaskGroup;
 
 public class TaskGroupManager {
 
-	/**
-	 * Ersellt eine neue AufgabenGruppe in der Datenbank
-	 * 
-	 * @param taskGroup
-	 *            die Aufgabengruppe die gespeichert werden soll
-	 * @return Aufgabengruppe, so wie sie in der Datenbank gespeichert wurde
-	 */
 	public static TaskGroup add(TaskGroup taskGroup) {
-
+		String table = FieldNames.TASKGROUPS;
 		String values = "'" + taskGroup.getName() + "', '"
 				+ taskGroup.getBeschreibung() + "', "
 				+ taskGroup.getTeam().getId();
 		long id;
 		try {
-			id = Queries.insertQuery("aufgabengruppen",
-					"name, beschreibung, team", values);
-		} catch (SQLException e1) {
-			e1.printStackTrace();
+			id = Queries.insertQuery(table, "name, beschreibung, team", values);
+		} catch (SQLException e) {
+			e.printStackTrace();
 			return null;
 		}
 		if (id == -1) {
@@ -40,28 +33,26 @@ public class TaskGroupManager {
 	/**
 	 * Die Daten werden auf die des übergebenen Objekts geupdated.
 	 * 
-	 * @param aufgabengruppe
+	 * @param taskGroup
 	 *            die aktualisiert werden soll.
 	 * @return Aufgabengruppe so wie sie in der Datenbank steht
 	 */
-	public static TaskGroup edit(TaskGroup aufgabengruppe) {
+	public static TaskGroup edit(TaskGroup taskGroup) {
 		// Aktualisieren des Aufgabengruppe
-		String table = "aufgabengruppen";
-		String updateString = "name = '" + aufgabengruppe.getName()
-				+ "', beschreibung = '" + aufgabengruppe.getBeschreibung()
-				+ "', team = " + aufgabengruppe.getTeam().getId();
-		String where = "aufgabengruppeID = " + aufgabengruppe.getId();
+		String table = FieldNames.TASKGROUPS;
+		String updateString = "name = '" + taskGroup.getName()
+				+ "', beschreibung = '" + taskGroup.getBeschreibung()
+				+ "', team = " + taskGroup.getTeam().getId();
+		String where = "aufgabengruppeID = " + taskGroup.getId();
 
-		TaskGroup aufgabengruppe_neu = null;
 		try {
 			if (Queries.updateQuery(table, updateString, where) == true) {
-				return get(aufgabengruppe.getId());
+				return get(taskGroup.getId());
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		;
-		return aufgabengruppe_neu;
+		return null;
 	}
 
 	/**
@@ -80,7 +71,7 @@ public class TaskGroupManager {
 			TaskManager.loeschen(a.get(i));
 		}
 
-		String table = "aufgabengruppen";
+		String table = FieldNames.TASKGROUPS;
 		String where = "aufgabengruppeID = " + aufgabengruppe.getId();
 		try {
 			return Queries.deleteQuery(table, where);
@@ -123,7 +114,7 @@ public class TaskGroupManager {
 	public static TaskGroup get(long id) {
 		// Suchen der Aufgabe anhand der ID
 		try {
-			ResultSet rs = Queries.rowQuery("*", "aufgabengruppen",
+			ResultSet rs = Queries.rowQuery("*", FieldNames.TASKGROUPS,
 					"aufgabengruppeID = " + id);
 			if (rs.isBeforeFirst()) {
 				rs.next();
@@ -149,8 +140,8 @@ public class TaskGroupManager {
 		// Suchen der Aufgabe anhand der Name
 		TaskGroup aufgabengruppe = null;
 		try {
-			ResultSet rs = Queries.rowQuery("*", "aufgabengruppen", "name = "
-					+ name);
+			ResultSet rs = Queries.rowQuery("*", FieldNames.TASKGROUPS,
+					"name = " + name);
 			if (rs.isBeforeFirst()) {
 				rs.next();
 				return createTaskGroupByRow(rs);
@@ -169,26 +160,25 @@ public class TaskGroupManager {
 	 * @return Alle AufgabeGruppen die in der Datenbank existieren
 	 */
 	public static ArrayList<TaskGroup> getList() {
-		// returnd eine ArrayListe aller Aufgabe
-		String sql = "SELECT * FROM aufgaben";
-		ArrayList<TaskGroup> al = new ArrayList<TaskGroup>();
+		// returnd eine ArrayListe aller Aufgaben
+		ArrayList<TaskGroup> list = new ArrayList<TaskGroup>();
 		try {
-			ResultSet rs = Queries.rowQuery(sql);
-
+			ResultSet rs = Queries
+					.rowQuery("SELECT * FROM " + FieldNames.TASKS);
+			// FIXME shouldn't this be TASK_GROUPS?
 			while (rs.next()) {
 				// add every result in resultset to ArrayList
-				TaskGroup a = new TaskGroup(rs.getLong("aufgabengruppeID"),
-						rs.getString("name"), rs.getString("beschreibung"),
-						TeamManager.get(rs.getLong("team")));
-				al.add(a);
+				TaskGroup taskGroup = new TaskGroup(
+						rs.getLong("aufgabengruppeID"), rs.getString("name"),
+						rs.getString("beschreibung"), TeamManager.get(rs
+								.getLong("team")));
+				list.add(taskGroup);
 			}
 		} catch (SQLException e) {
-			// Falls ein Fehler auftritt soll eine lehere Liste zur�ckgegeben
-			// werden
 			e.printStackTrace();
-			al = null;
+			return null;
 		}
-		return al;
+		return list;
 	}
 
 	/**
@@ -199,25 +189,22 @@ public class TaskGroupManager {
 	 * @return ArrayList alle Aufgabengruppe für die gesuchte ID
 	 */
 	public static ArrayList<TaskGroup> getList(long teamID) {
-		String sql = "SELECT * FROM `aufgabengruppen` WHERE `team` = " + teamID
-				+ " group by `aufgabengruppeID`";
-		ArrayList<TaskGroup> al = new ArrayList<TaskGroup>();
+		String sql = "SELECT * FROM `" + FieldNames.TASKGROUPS
+				+ "` WHERE `team` = " + teamID + " group by `aufgabengruppeID`";
+		ArrayList<TaskGroup> list = new ArrayList<TaskGroup>();
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
 
 			while (rs.next()) {
-				// add every result in resultset to ArrayList
 				TaskGroup a = TaskGroupManager.get(rs
 						.getLong("aufgabengruppeID"));
-				al.add(a);
+				list.add(a);
 			}
 		} catch (SQLException e) {
-			// Falls ein Fehler auftritt soll eine lehere Liste zur�ckgegeben
-			// werden
 			e.printStackTrace();
-			al = null;
+			return null;
 		}
-		return al;
+		return list;
 	}
 
 	/**

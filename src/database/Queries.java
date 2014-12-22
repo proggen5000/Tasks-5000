@@ -1,107 +1,115 @@
 package database;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Queries {
-	private Queries(){}
+	private Queries() {
+	}
 
 	/**
-	 * Führt eine SQL-Abfrage mit eindeutigem R�ckgabewert aus.
-	 * @param table Tabelle, in der gesucht werden soll.
-	 * @param column Spalte(n), in der gesucht werden soll.
-	 * @param where Bedingung, mit der gefiltert werden soll.
+	 * Führt eine SQL-Abfrage mit eindeutigem Rückgabewert aus.
+	 * 
+	 * @param table
+	 *            Tabelle, in der gesucht werden soll.
+	 * @param column
+	 *            Spalte(n), in der gesucht werden soll.
+	 * @param where
+	 *            Bedingung, mit der gefiltert werden soll.
 	 * @return Object Eindeutiges Ergebnis der Datenbankabfrage
-	 * @throws SQLException Wird bei Fehlern bei Ausf�hrung der Anweisung geworfen.
+	 * @throws SQLException
+	 *             Wird bei Fehlern bei Ausführung der Anweisung geworfen.
 	 */
-	public static Object scalarQuery(String table, String column, String where) throws SQLException{
+	public static Object scalarQuery(String table, String column, String where)
+			throws SQLException {
 		PreparedStatement query;
-		query = Connect.getConnection().prepareStatement("SELECT "+column+" FROM "+table+" WHERE "+where);
+		query = Connect.getConnection().prepareStatement(
+				"SELECT " + column + " FROM " + table + " WHERE " + where);
 		ResultSet rs = query.executeQuery();
-		rs.next(); 
+		rs.next();
 		return rs.getObject(1);
 	}
-	
+
 	/**
-	 * F�hrt eine SQL-Abfrage mit eindeutigem R�ckgabewert aus.
-	 * @param sql SELECT-Abfrage mit eindeutigem Ergebnis
+	 * Führt eine SQL-Abfrage mit eindeutigem Rückgabewert aus.
+	 * 
+	 * @param sql
+	 *            SELECT-Abfrage mit eindeutigem Ergebnis
 	 * @return Object Eindeutiges Ergebnis der Datenbankabfrage.
-	 * @throws SQLException Wird bei Fehlern bei Ausf�hrung der SQL-Anweisung geworfen.
+	 * @throws SQLException
+	 *             Wird bei Fehlern bei Ausführung der SQL-Anweisung geworfen.
 	 */
-	public static Object  scalarQuery(String sql) throws SQLException{
-			Statement query = Connect.getConnection().createStatement();
-			ResultSet rs = query.executeQuery(sql);
-			return rs.getObject(0);
+	public static Object scalarQuery(String sql) throws SQLException {
+		Statement query = Connect.getConnection().createStatement();
+		ResultSet rs = query.executeQuery(sql);
+		return rs.getObject(0);
 	}
-	
+
 	/**
-	 * Fuehrt eine SQL-Abfrage mit Zeilen als R�ckgabewert aus.
-	 * @param table Tabelle, in der gesucht werden soll.
-	 * @param column Spalte(n), in der gesucht werden soll.
-	 * @param where Bedingung, mit der gefiltert werden soll.
-	 * @return ResultSet Repr�sentiert das Abfrageergebnis der SQL-Abfrage
-	 * @throws SQLException Wird bei Fehlern bei Ausf�hrung der SQL-Anweisung geworfen.
+	 * Führt eine SQL-Abfrage mit Zeilen als Rückgabewert aus.
+	 * 
+	 * @param table
+	 *            Tabelle, in der gesucht werden soll.
+	 * @param column
+	 *            Spalte(n), in der gesucht werden soll.
+	 * @param where
+	 *            Bedingung, mit der gefiltert werden soll.
+	 * @return ResultSet Repräsentiert das Abfrageergebnis der SQL-Abfrage
+	 * @throws SQLException
+	 *             Wird bei Fehlern bei Ausführung der SQL-Anweisung geworfen.
 	 */
-	public static ResultSet rowQuery(String column, String table, String where) throws SQLException{
+	public static ResultSet rowQuery(String column, String table, String where)
+			throws SQLException {
 		PreparedStatement query;
-		query = Connect.getConnection().prepareStatement("SELECT "+column+" FROM "+table+" WHERE "+where);
+		query = Connect.getConnection().prepareStatement(
+				"SELECT " + column + " FROM " + table + " WHERE " + where);
 		ResultSet rs = query.executeQuery();
 		return rs;
 	}
-	
+
 	/**
-	 * Fuehrt eine SQL-Abfrage mit Zeilen als R�ckgabewert aus.
-	 * @param sql SQL-Abfrage mit Zeilen als R�ckgabewert.
-	 * @return ResultSet Repr�sentiert das Abfrageergebnis der SQL-Abfrage
-	 * @throws SQLException Wird bei Fehlern bei Ausf�hrung der SQL-Anweisung geworfen.
+	 * Führt eine SQL-Abfrage mit Zeilen als Rückgabewert aus.
+	 * 
+	 * @param sql
+	 *            SQL-Abfrage mit Zeilen als Rückgabewert.
+	 * @return ResultSet Repräsentiert das Abfrageergebnis der SQL-Abfrage
+	 * @throws SQLException
+	 *             Wird bei Fehlern bei Ausführung der SQL-Anweisung geworfen.
 	 */
-	public static ResultSet rowQuery(String sql) throws SQLException{
+	public static ResultSet rowQuery(String sql) throws SQLException {
 		Statement query = Connect.getConnection().createStatement();
 		ResultSet rs = query.executeQuery(sql);
-		return rs;	
+		return rs;
 	}
-	
+
 	/**
-	 * Fuehrt ein Update-Befehl aus.
-	 * @param table Tabelle, die aktualisiert werdensoll.
-	 * @param updateString Gibt Atrribute und Parameter an, die aktualisiert werden.
-	 * @param where Gibt eine Bedingung an, welche Datens�tze aktualisiert werden.
-	 * @return boolean Gibt an, ob das Update erfolgreich ausgef�hrt wurde.
-	 * @throws SQLException Wird bei Fehlern bei Ausf�hrung der SQL-Anweisung geworfen.
+	 * Führt ein Update-Befehl aus.
+	 * 
+	 * @param table
+	 *            Tabelle, die aktualisiert werdensoll.
+	 * @param updateString
+	 *            Gibt Atrribute und Parameter an, die aktualisiert werden.
+	 * @param where
+	 *            Gibt eine Bedingung an, welche Datensätze aktualisiert werden.
+	 * @return boolean Gibt an, ob das Update erfolgreich ausgeführt wurde.
+	 * @throws SQLException
+	 *             Wird bei Fehlern bei Ausführung der SQL-Anweisung geworfen.
 	 */
-	public static boolean updateQuery(String table, String updateString, String where) throws SQLException{
+	public static boolean updateQuery(String table, String updateString,
+			String where) throws SQLException {
 		Statement query = Connect.getConnection().createStatement();
-		if(query.executeUpdate("UPDATE "+table+" SET "+updateString+" WHERE "+where) == 1){
+		if (query.executeUpdate("UPDATE " + table + " SET " + updateString
+				+ " WHERE " + where) == 1) {
 			// Statement erfolgreich ausgeführt
-			try{
-				//Es wurde automatisch ein Schlüssel genereiert
+			try {
+				// Es wurde automatisch ein Schlüssel genereiert
 				ResultSet generatedKeys = query.getGeneratedKeys();
 				generatedKeys.next();
-				return generatedKeys.getInt(1)>0;
-			}catch(SQLException e){
-				//Es wurde kein Schlüssel generiert
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Fuehrt ein Update-Befehl aus.
-	 * @param sql Vollwertige SQL-Update-Anweisung
-	 * @return boolean Gibt an, ob das Update erfolgreich ausgef�hrt wurde.
-	 * @throws SQLException Wird bei Fehlern bei Ausf�hrung der SQL-Anweisung geworfen.
-	 */
-	public static boolean updateQuery(String sql) throws SQLException{
-		Statement query = Connect.getConnection().createStatement();
-		if(query.executeUpdate(sql) == 1){
-			// Statement erfolgreich ausgeführt
-			try{
-				//Es wurde automatisch ein Schlüssel genereiert
-				ResultSet generatedKeys = query.getGeneratedKeys();
-				generatedKeys.next();
-				return generatedKeys.getInt(1)>0;
-			}catch(SQLException e){
-				//Es wurde kein Schlüssel generiert
+				return generatedKeys.getInt(1) > 0;
+			} catch (SQLException e) {
+				// Es wurde kein Schlüssel generiert
 				return true;
 			}
 		}
@@ -109,72 +117,116 @@ public class Queries {
 	}
 
 	/**
-	 * Fuehrt ein DELETE-Befehl aus.
-	 * @param table Tabelle, in der der Datensatz gel�scht werden soll.
-	 * @param where Bedingung, mit der die zu l�schenden Datens�tze ausgew�hlt werden sollen.
-	 * @return boolean Gibt an, ob der Befehl erfolgreich ausgef�hrt wurde.
-	 * @throws SQLException Wird bei Fehlern bei Ausf�hrung der SQL-Anweisung geworfen.
+	 * Führt ein Update-Befehl aus.
+	 * 
+	 * @param sql
+	 *            Vollwertige SQL-Update-Anweisung
+	 * @return boolean Gibt an, ob das Update erfolgreich ausgeführt wurde.
+	 * @throws SQLException
+	 *             Wird bei Fehlern bei Ausführung der SQL-Anweisung geworfen.
 	 */
-	public static boolean deleteQuery(String table, String where) throws SQLException{
+	public static boolean updateQuery(String sql) throws SQLException {
 		Statement query = Connect.getConnection().createStatement();
-		query.executeUpdate("DELETE FROM "+table+" WHERE "+where);
+		if (query.executeUpdate(sql) == 1) {
+			// Statement erfolgreich ausgeführt
+			try {
+				// Es wurde automatisch ein Schlüssel genereiert
+				ResultSet generatedKeys = query.getGeneratedKeys();
+				generatedKeys.next();
+				return generatedKeys.getInt(1) > 0;
+			} catch (SQLException e) {
+				// Es wurde kein Schlüssel generiert
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Führt einen DELETE-Befehl aus.
+	 * 
+	 * @param table
+	 *            Tabelle, in der der Datensatz gelöscht werden soll.
+	 * @param where
+	 *            Bedingung, mit der die zu löschenden Datensätze ausgewählt
+	 *            werden sollen.
+	 * @return boolean Gibt an, ob der Befehl erfolgreich ausgeführt wurde.
+	 * @throws SQLException
+	 *             Wird bei Fehlern bei Ausführung der SQL-Anweisung geworfen.
+	 */
+	public static boolean deleteQuery(String table, String where)
+			throws SQLException {
+		Statement query = Connect.getConnection().createStatement();
+		query.executeUpdate("DELETE FROM " + table + " WHERE " + where);
 		return true;
 	}
-	 
+
 	/**
-	 * Fuehrt einen DELETE-Befehl aus.
-	 * @param sql Vollwertige SQL-Delete-Anweisung
-	 * @return boolean Gibt an, ob der Befehl erfolgreich ausgef�hrt wurde.
+	 * Führt einen DELETE-Befehl aus.
+	 * 
+	 * @param sql
+	 *            Vollwertige SQL-Delete-Anweisung
+	 * @return boolean Gibt an, ob der Befehl erfolgreich ausgeführt wurde.
 	 * @throws SQLException
 	 */
-	public static boolean deleteQuery(String sql) throws SQLException{
+	public static boolean deleteQuery(String sql) throws SQLException {
 		Statement query = Connect.getConnection().createStatement();
 		query.executeUpdate(sql);
-		return (query.getUpdateCount()>0);
+		return (query.getUpdateCount() > 0);
 	}
-	
+
 	/**
-	 * Fuehrt einen INSERT-Befehl aus.
-	 * @param table Tabelle, in der ein Datensatz eingef�gt werden soll.
-	 * @param columns Spalten, in die Daten eingetragen werden sollen.
-	 * @param values Werte, die in die Spalten eingetragen werden sollen.
-	 * @return int Der Prim�rschl�ssel des eingef�gten Datensatzes.
-	 * @throws SQLException Wird bei Fehlern bei Ausf�hrung der SQL-Anweisung geworfen.
+	 * Führt einen INSERT-Befehl aus.
+	 * 
+	 * @param table
+	 *            Tabelle, in der ein Datensatz eingefügt werden soll.
+	 * @param columns
+	 *            Spalten, in die Daten eingetragen werden sollen.
+	 * @param values
+	 *            Werte, die in die Spalten eingetragen werden sollen.
+	 * @return int Der Primärschlüssel des eingefügten Datensatzes.
+	 * @throws SQLException
+	 *             Wird bei Fehlern bei Ausführung der SQL-Anweisung geworfen.
 	 */
-	public static int insertQuery(String table, String columns, String values) throws SQLException{
-		Statement query  = Connect.getConnection().createStatement();
-		if(query.executeUpdate("INSERT INTO "+table+" ("+columns+") VALUES ("+values+")", Statement.RETURN_GENERATED_KEYS) == 1){
+	public static int insertQuery(String table, String columns, String values)
+			throws SQLException {
+		Statement query = Connect.getConnection().createStatement();
+		if (query.executeUpdate("INSERT INTO " + table + " (" + columns
+				+ ") VALUES (" + values + ")", Statement.RETURN_GENERATED_KEYS) == 1) {
 			// Statement erfolgreich ausgeführt
-			try{
-				//Es wurde automatisch ein Schlüssel genereiert
+			try {
+				// Es wurde automatisch ein Schlüssel genereiert
 				ResultSet generatedKeys = query.getGeneratedKeys();
 				generatedKeys.next();
 				return generatedKeys.getInt(1);
-			}catch(SQLException e){
-				//Es wurde kein Schlüssel generiert
+			} catch (SQLException e) {
+				// Es wurde kein Schlüssel generiert
 				return 0;
 			}
 		}
 		return -1;
 	}
-	
+
 	/**
-	 * Fuehrt einen INSERT-Befehl aus.
-	 * @param sql Vollwertige SQL-Insert-Anweisung.
-	 * @return int Der Prim�rschl�ssel des eingef�gten Datensatzes.
-	 * @throws SQLException Wird bei Fehlern bei Ausf�hrung der SQL-Anweisung geworfen.
+	 * Führt einen INSERT-Befehl aus.
+	 * 
+	 * @param sql
+	 *            Vollwertige SQL-Insert-Anweisung.
+	 * @return int Der Primärschlüssel des eingefügten Datensatzes.
+	 * @throws SQLException
+	 *             Wird bei Fehlern bei Ausführung der SQL-Anweisung geworfen.
 	 */
-	public static int insertQuery(String sql) throws SQLException{
+	public static int insertQuery(String sql) throws SQLException {
 		Statement query = Connect.getConnection().createStatement();
-		if(query.executeUpdate(sql) == 1){
+		if (query.executeUpdate(sql) == 1) {
 			// Statement erfolgreich ausgeführt
-			try{
-				//Es wurde automatisch ein Schlüssel genereiert
+			try {
+				// Es wurde automatisch ein Schlüssel genereiert
 				ResultSet generatedKeys = query.getGeneratedKeys();
 				generatedKeys.next();
 				return generatedKeys.getInt(1);
-			}catch(SQLException e){
-				//Es wurde kein Schlüssel generiert
+			} catch (SQLException e) {
+				// Es wurde kein Schlüssel generiert
 				return 0;
 			}
 		}

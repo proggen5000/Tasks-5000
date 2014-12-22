@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import database.FieldNames;
 import database.Queries;
 import entities.Team;
 
@@ -21,17 +22,15 @@ public class TeamManager {
 	public static Team add(Team team) {
 
 		// aktuelles Datum beziehen
-		Calendar cal = Calendar.getInstance();
-		long gruendungsdatum = cal.getTimeInMillis();
+		long date = Calendar.getInstance().getTimeInMillis();
 
 		// Einfuegen der Werte (ohne ID)
-		String table = "teams";
+		String table = FieldNames.TEAMS;
 		String columns = "teamid, name, gruendungsdatum, beschreibung, gruppenfuehrerid";
-		String values = "NULL, '" + team.getName() + "', " + gruendungsdatum
-				+ ", '" + team.getDescription() + "', "
-				+ team.getManager().getId();
-		int testID;
+		String values = "NULL, '" + team.getName() + "', " + date + ", '"
+				+ team.getDescription() + "', " + team.getManager().getId();
 
+		int testID;
 		try {
 			testID = Queries.insertQuery(table, columns, values);
 		} catch (SQLException e1) {
@@ -42,8 +41,7 @@ public class TeamManager {
 		if (testID == -1) {
 			return null;
 		} else {
-			Team testteam = get(testID);
-			return testteam;
+			return get(testID);
 		}
 	}
 
@@ -59,7 +57,7 @@ public class TeamManager {
 	public static Team bearbeiten(Team team) {
 
 		// Aktualisieren des Teams
-		String table = "teams";
+		String table = FieldNames.TEAMS;
 		String updateString = "name='" + team.getName() + "', beschreibung='"
 				+ team.getDescription() + "', gruppenfuehrerid="
 				+ team.getManager().getId();
@@ -67,8 +65,7 @@ public class TeamManager {
 
 		try {
 			if (Queries.updateQuery(table, updateString, where) == true) {
-				Team testteam = get(team.getId());
-				return testteam;
+				return get(team.getId());
 			} else {
 				return null;
 			}
@@ -88,7 +85,7 @@ public class TeamManager {
 	public static boolean loeschen(long teamid) {
 
 		// Team anhand der ID loeschen
-		String table = "teams";
+		String table = FieldNames.TEAMS;
 		String where = "teamid=" + teamid;
 		String dateisql = "SELECT dateiid FROM dateien WHERE teamid= " + teamid;
 		String mitgliederteamsql = "SELECT mitgliedid FROM "

@@ -12,7 +12,7 @@ public class TaskManager {
 	 * Erstellt eine neue Aufgabe in der Datenbank
 	 * 
 	 * @param task
-	 *            die gespeichert werden soll
+	 *            Aufgabe, die gespeichert werden soll
 	 * @return Aufgabe, so wie sie in der Datenbank gespeichert wurde
 	 */
 	public static Task add(Task task) {
@@ -324,8 +324,8 @@ public class TaskManager {
 	}
 
 	/**
-	 * Hilfsfunktion zum einfach erstellen einer Aufgabe aus einem ResultSet
-	 * kann innerhalb des gesamten Packages verwendet werden
+	 * Hilfsfunktion zum einfachen Erstellen einer Aufgabe aus einem ResultSet.
+	 * Kann innerhalb des gesamten Packages verwendet werden.
 	 * 
 	 * @param rs
 	 *            aus dem die Aufgabe erstellt werden soll

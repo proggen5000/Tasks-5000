@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import database.FieldNames;
 import database.Queries;
 import entities.Team;
 import entities.Upload;
@@ -13,22 +14,20 @@ public class UploadManager {
 
 	/**
 	 * Schreibt eine Datei in die DB liefert eine Datei mit den gespeicherten
-	 * Daten zurueck
+	 * Daten zurück.
 	 * 
 	 * @param upload
 	 *            mit einzuschreibenden Daten
 	 * @return testdatei mit gespeicherten Daten
 	 */
 	public static Upload add(Upload upload) {
-
-		// Einfuegen der Werte (ohne ID)
-		String table = "dateien";
+		String table = FieldNames.FILES;
 		String columns = "dateiid, name, beschreibung, pfad, teamid, erstellerid";
 		String values = "NULL, '" + upload.getName() + "', '"
 				+ upload.getDescription() + "', '" + upload.getPath() + "', "
 				+ upload.getTeam().getId() + ", " + upload.getAuthor().getId();
-		int testID;
 
+		int testID;
 		try {
 			testID = Queries.insertQuery(table, columns, values);
 		} catch (SQLException e1) {
@@ -39,8 +38,7 @@ public class UploadManager {
 		if (testID == -1) {
 			return null;
 		} else {
-			Upload testdatei = get(testID);
-			return testdatei;
+			return get(testID);
 		}
 	}
 
@@ -52,9 +50,7 @@ public class UploadManager {
 	 * @return testdatei aus der DB mit den aktualisierten Werten
 	 */
 	public static Upload edit(Upload upload) {
-
-		// Aktualisieren der Dateibeschreibung
-		String table = "dateien";
+		String table = FieldNames.FILES;
 		String updateString = "name='" + upload.getName() + "', beschreibung='"
 				+ upload.getDescription() + "', pfad='" + upload.getPath()
 				+ "', teamid=" + upload.getTeam().getId();
@@ -62,8 +58,7 @@ public class UploadManager {
 
 		try {
 			if (Queries.updateQuery(table, updateString, where) == true) {
-				Upload testdatei = get(upload.getId());
-				return testdatei;
+				return get(upload.getId());
 			} else {
 				return null;
 			}
@@ -81,27 +76,23 @@ public class UploadManager {
 	 * @return boolean
 	 */
 	public static boolean remove(long uploadId) {
-		// Datei anhand der ID löschen
-		String table = "dateien";
+		String table = FieldNames.FILES;
 		String where = "dateiid=" + uploadId;
-		String aufgabensql = "SELECT aufgabeid FROM aufgaben_dateien WHERE dateiid= "
-				+ uploadId;
+		// String aufgabensql =
+		// "SELECT aufgabeid FROM aufgaben_dateien WHERE dateiid= "
+		// + uploadId;
 
 		try {
 			// löschen aller Verbindungen zu Aufgaben
-			ResultSet rs = Queries.rowQuery(aufgabensql);
-			if (rs != null) {
-				while (rs.next()) {
-					TasksUploads.unlink(get(uploadId),
-							TaskManager.get(rs.getLong("aufgabeid")));
-				}
-			}
-
-			// löschen der Datei
+			TasksUploads.unlinkAll(get(uploadId));
+			/*
+			 * ResultSet rs = Queries.rowQuery(aufgabensql); if (rs != null) {
+			 * while (rs.next()) { TasksUploads.unlink(get(uploadId),
+			 * TaskManager.get(rs.getLong("aufgabeid"))); } }
+			 */
 			return Queries.deleteQuery(table, where);
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
@@ -115,21 +106,18 @@ public class UploadManager {
 	 * @return testdatei mit Werten der Datei
 	 */
 	public static Upload get(long id) {
-
-		// Suchen der Datei anhand der ID
-		String sql = "SELECT * FROM dateien WHERE dateiid=" + id;
+		String sql = "SELECT * FROM " + FieldNames.FILES + " WHERE dateiid="
+				+ id;
 
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
 			if (rs.isBeforeFirst()) {
 				rs.next();
-				Upload testdatei = createUploadbyRow(rs);
-				return testdatei;
+				return createUploadbyRow(rs);
 			} else {
 				return null;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -154,26 +142,24 @@ public class UploadManager {
 	 * @return Datei-Liste
 	 */
 	public static ArrayList<Upload> getListOfTask(long taskId) {
-
-		String sql = "SELECT dateien.dateiid FROM dateien JOIN aufgaben_dateien "
-				+ "ON dateien.dateiid= aufgaben_dateien.dateiid "
-				+ "JOIN aufgaben ON aufgaben.aufgabeid = aufgaben_dateien.aufgabeid "
+		String sql = "SELECT dateien.dateiid FROM " + FieldNames.FILES
+				+ " JOIN " + FieldNames.TASKS_FILES
+				+ " ON dateien.dateiid= aufgaben_dateien.dateiid " + "JOIN "
+				+ FieldNames.TASKS
+				+ " ON aufgaben.aufgabeid = aufgaben_dateien.aufgabeid "
 				+ "WHERE aufgaben.aufgabeid= " + taskId;
-		ArrayList<Upload> al = new ArrayList<Upload>();
+		ArrayList<Upload> list = new ArrayList<Upload>();
 
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
 			while (rs.next()) {
-				Upload d = get(rs.getLong("dateiid"));
-				al.add(d);
+				list.add(get(rs.getLong("dateiid")));
 			}
 		} catch (SQLException e) {
-			// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben
-			// werden
 			e.printStackTrace();
-			al = null;
+			return null;
 		}
-		return al;
+		return list;
 	}
 
 	/**
@@ -184,20 +170,17 @@ public class UploadManager {
 	 * @return al ArrayList mit Dateien
 	 */
 	public static ArrayList<Upload> getListOfTeam(long teamId) {
-
-		String sql = "SELECT dateiid FROM dateien WHERE teamid= " + teamId;
-		ArrayList<Upload> al = new ArrayList<Upload>();
+		String sql = "SELECT dateiid FROM " + FieldNames.FILES
+				+ " WHERE teamid= " + teamId;
+		ArrayList<Upload> list = new ArrayList<Upload>();
 
 		try {
 			ResultSet rs = Queries.rowQuery(sql);
 			while (rs.next()) {
-				Upload d = get(rs.getLong("dateiid"));
-				al.add(d);
+				list.add(get(rs.getLong("dateiid")));
 			}
-			return al;
+			return list;
 		} catch (SQLException e) {
-			// Falls ein Fehler auftritt soll eine leere Liste zurueckgegeben
-			// werden
 			e.printStackTrace();
 			return null;
 		}
@@ -206,8 +189,7 @@ public class UploadManager {
 	private static Upload createUploadbyRow(ResultSet rs) {
 		try {
 			Team team = TeamManager.get(rs.getLong("teamid"));
-			User ersteller = UserManager
-					.get(rs.getLong("erstellerid"));
+			User ersteller = UserManager.get(rs.getLong("erstellerid"));
 			Upload d = new Upload(rs.getLong("dateiid"), rs.getString("name"),
 					rs.getString("beschreibung"), rs.getString("pfad"), team,
 					ersteller);
@@ -217,5 +199,4 @@ public class UploadManager {
 			return null;
 		}
 	}
-
 }
