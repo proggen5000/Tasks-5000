@@ -32,11 +32,11 @@
 						<c:if test="${param.mode == 'edit'}">
 							<select name="manager" size="1" class="form-control input-lg">					
 								<c:forEach var="user" items="${users}">
-									<c:if test="${user.id == team.gruppenfuehrer.id}">
-										<option value="${user.id}" selected>${user.username}</option>
+									<c:if test="${user.id == team.manager.id}">
+										<option value="${user.id}" selected>${user.name}</option>
 									</c:if>
-									<c:if test="${user.id != team.gruppenfuehrer.id}">
-										<option value="${user.id}">${user.username}</option>
+									<c:if test="${user.id != team.manager.id}">
+										<option value="${user.id}">${user.name}</option>
 									</c:if>
 								</c:forEach>
 							</select>
@@ -45,17 +45,17 @@
 				</div>
 				<div class="form-group col-xs">
 					<label for="description"><span class="glyphicon glyphicon-align-left"></span> Slogan / Beschreibung</label>
-					<textarea id="description" name="description" class="form-control" rows="2">${team.beschreibung}</textarea>
+					<textarea id="description" name="description" class="form-control" rows="2">${team.description}</textarea>
 				</div>
 				<div class="form-group col-xs">
 					<label for="users"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="W&auml;hlen Sie hier die Mitglieder f&uuml;r Ihr Team aus.">?</span>
 					<div class="checkbox">
 						<c:forEach var="user" items="${users}">
-							<label><input type="checkbox" name="users" value="${user.id}" checked> ${user.username} (${user.vorname} ${user.nachname}) </label><br />
+							<label><input type="checkbox" name="users" value="${user.id}" checked> ${user.name} (${user.firstName} ${user.secondName}) </label><br />
 						</c:forEach>
 						<c:forEach var="userRest" items="${usersRest}">
 							<c:if test="${currentUser != userRest.id}">
-								<label><input type="checkbox" name="users" value="${userRest.id}"> ${userRest.username} (${userRest.vorname} ${userRest.nachname}) </label><br />
+								<label><input type="checkbox" name="users" value="${userRest.id}"> ${userRest.name} (${userRest.firstName} ${userRest.secondName}) </label><br />
 							</c:if>
 						</c:forEach>
 					</div>

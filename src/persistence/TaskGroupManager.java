@@ -14,7 +14,7 @@ public class TaskGroupManager {
 	public static TaskGroup add(TaskGroup taskGroup) {
 		String table = FieldNames.TASKGROUPS;
 		String values = "'" + taskGroup.getName() + "', '"
-				+ taskGroup.getBeschreibung() + "', "
+				+ taskGroup.getDescription() + "', "
 				+ taskGroup.getTeam().getId();
 		long id;
 		try {
@@ -41,7 +41,7 @@ public class TaskGroupManager {
 		// Aktualisieren des Aufgabengruppe
 		String table = FieldNames.TASKGROUPS;
 		String updateString = "name = '" + taskGroup.getName()
-				+ "', beschreibung = '" + taskGroup.getBeschreibung()
+				+ "', beschreibung = '" + taskGroup.getDescription()
 				+ "', team = " + taskGroup.getTeam().getId();
 		String where = "aufgabengruppeID = " + taskGroup.getId();
 

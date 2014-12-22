@@ -7,19 +7,19 @@
 	<c:redirect url="/error.jsp"><c:param name="error" value="Zugriff verweigert" /></c:redirect>
 </c:if>
 	
-<jsp:include page="../header.jsp"><jsp:param name="page_title" value="${user.username}" /></jsp:include>
+<jsp:include page="../header.jsp"><jsp:param name="page_title" value="${user.name}" /></jsp:include>
 <c:if test="${user.id != currentUser}"><jsp:include page="../menu.jsp" /></c:if>
 <c:if test="${user.id == currentUser}"><jsp:include page="../menu.jsp"><jsp:param name="menu" value="me" /></jsp:include></c:if>
 
-			<h1>${user.username} <span class="glyphicon glyphicon-user small"></span></h1>
+			<h1>${user.name} <span class="glyphicon glyphicon-user small"></span></h1>
 			<dl class="dl-horizontal">
 				<dt>Benutzer-ID</dt><dd>${user.id}</dd>
 				<dt>Echter Name</dt>
-					<c:if test="${fn:length(user.vorname) == 0 and fn:length(user.nachname) == 0}">
+					<c:if test="${fn:length(user.firstName) == 0 and fn:length(user.secondName) == 0}">
 						<dd>-</dd>
 					</c:if>
-					<dd>${user.vorname} ${user.nachname}</dd>
-				<dt>Mitglied seit</dt><dd><fmt:formatDate pattern="dd.MM.yyyy" value="${user.regdatumAsDate}" /></dd>
+					<dd>${user.firstName} ${user.secondName}</dd>
+				<dt>Mitglied seit</dt><dd><fmt:formatDate pattern="dd.MM.yyyy" value="${user.dateObject}" /></dd>
 				<dt>Mitglied in</dt>
 					<c:forEach var="team" items="${teams}">
 	  					<dd><span class="glyphicon glyphicon-briefcase"></span> <a href="${pageContext.request.contextPath}/team?mode=view&id=${team.id}">${team.name}</a></dd>

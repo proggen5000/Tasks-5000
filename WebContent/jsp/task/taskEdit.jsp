@@ -27,7 +27,7 @@
 			<c:if test="${param.mode == 'edit'}">
 				<ol class="breadcrumb">
 					<li><a href="${pageContext.request.contextPath}/">Start</a></li>
-					<li><a href="${pageContext.request.contextPath}/team?mode=view&id=${task.gruppe.team.id}">${task.gruppe.team.name}</a></li>
+					<li><a href="${pageContext.request.contextPath}/team?mode=view&id=${task.taskGroup.team.id}">${task.taskGroup.team.name}</a></li>
 					<li class="active"></li>
 				</ol>
 			</c:if>
@@ -45,10 +45,10 @@
 		  				<label for="group"><span class="glyphicon glyphicon-tag"></span> Aufgabengruppe*</label>
 						<select name="group" size="1" class="form-control input-lg">
 							<c:forEach var="group" items="${taskGroups}">
-								<c:if test="${group.id == task.gruppe.id}">
+								<c:if test="${group.id == task.taskGroup.id}">
 									<option value="${group.id}" selected>${group.name}</option>
 								</c:if>
-								<c:if test="${group.id != task.gruppe.id}">
+								<c:if test="${group.id != task.taskGroup.id}">
 									<option value="${group.id}">${group.name}</option>
 								</c:if>
 							</c:forEach>
@@ -57,7 +57,7 @@
 				</div>
 				<div class="form-group col-xs">
 					<label for="description"><span class="glyphicon glyphicon-align-left"></span> Beschreibung</label>
-					<textarea id="description" name="description" class="form-control" rows="5">${task.beschreibung}</textarea>
+					<textarea id="description" name="description" class="form-control" rows="5">${task.description}</textarea>
 				</div>
 				<div class="form-group col-xs row">
 				    	<div class="col-xs-4">
@@ -66,12 +66,12 @@
 				    			<p class="form-control-static"><fmt:formatDate pattern="dd.MM.yyyy" value="${today}" /></p>
 				    		</c:if>
 				    		<c:if test="${param.mode == 'edit'}">
-				    			<p class="form-control-static"><fmt:formatDate pattern="dd.MM.yyyy" value="${task.erstellungsdatumAsDate}" /></p>
+				    			<p class="form-control-static"><fmt:formatDate pattern="dd.MM.yyyy" value="${task.dateObject}" /></p>
 				    		</c:if>
 				    	</div>
 				    	<div class="col-xs-4">
 				    		<label for="deadline" data-toggle="tooltip" data-placement="right" data-original-title="Falls die Datumsauswahl nicht angezeigt wird (Firefox und Internet Explorer): Geben Sie das Datum im Format jjjj-mm-tt an (z.B. 2015-04-21)."><span class="glyphicon glyphicon-bell"></span> Deadline</label>
-							<input id="deadline" name="deadline" type="date" class="form-control" value="<fmt:formatDate pattern="yyyy-MM-dd" value="${task.deadlineAsDate}" />" placeholder="jjjj-mm-tt" />
+							<input id="deadline" name="deadline" type="date" class="form-control" value="<fmt:formatDate pattern="yyyy-MM-dd" value="${task.deadlineObject}" />" placeholder="jjjj-mm-tt" />
 				    	</div>
 				    	<div class="col-xs-4">
 				    		<label for="status"><span class="glyphicon glyphicon-dashboard"></span> Status</label> <small>(%)</small>
@@ -82,10 +82,10 @@
 					<label for="users"><span class="glyphicon glyphicon-user"></span> Mitglieder</label> <span class="badge" data-toggle="tooltip" data-placement="right" data-original-title="W&auml;hlen Sie hier die Mitglieder aus, welche die Aufgabe bearbeiten sollen.">?</span>
 					<div class="checkbox">
 						<c:forEach var="userSelected" items="${usersSelected}">							
-							<label><input type="checkbox" name="users" value="${userSelected.id}" checked> ${userSelected.username} (${userSelected.vorname} ${userSelected.nachname}) </label><br />
+							<label><input type="checkbox" name="users" value="${userSelected.id}" checked> ${userSelected.name} (${userSelected.firstName} ${userSelected.secondName}) </label><br />
 						</c:forEach>
 						<c:forEach var="user" items="${users}">
-							<label><input type="checkbox" name="users" value="${user.id}"> ${user.username} (${user.vorname} ${user.nachname}) </label><br />
+							<label><input type="checkbox" name="users" value="${user.id}"> ${user.name} (${user.firstName} ${user.secondName}) </label><br />
 						</c:forEach>
 					</div>
 				</div>

@@ -19,8 +19,8 @@ public class Team implements Serializable {
 	public Team() {
 	}
 
-	public Team(long id, String name, long date,
-			String description, User manager) {
+	public Team(long id, String name, long date, String description,
+			User manager) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -29,7 +29,6 @@ public class Team implements Serializable {
 		this.date = date;
 	}
 
-	// Getters & Setters
 	public long getId() {
 		return id;
 	}
@@ -70,9 +69,6 @@ public class Team implements Serializable {
 		this.manager = manager;
 	}
 
-	/**
-	 * Liefert das Gruendungsdatum als Dateobjekt
-	 */
 	public Date getDateObject() {
 		return new java.util.Date(date);
 	}
@@ -82,11 +78,10 @@ public class Team implements Serializable {
 	}
 
 	public int getTasksCount(long userId) {
-		return TaskManager.getListeVonMitgliedVonTeam(userId, id)
-				.size();
+		return TaskManager.getListeVonMitgliedVonTeam(userId, id).size();
 	}
 
-	public int getMembersCount() {
+	public int getUsersCount() {
 		int count = 0;
 		if (UserManager.getListOfTeam(id) != null) {
 			count = UserManager.getListOfTeam(id).size();

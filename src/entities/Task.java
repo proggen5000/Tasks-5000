@@ -97,7 +97,7 @@ public class Task implements Serializable {
 		this.deadline = deadline;
 	}
 
-	public int getAnzahlDateien() {
+	public int getFilesCount() {
 		return UploadManager.getListOfTask(id).size();
 	}
 
@@ -111,7 +111,7 @@ public class Task implements Serializable {
 	/**
 	 * Returns deadline as date object.
 	 */
-	public Date getDeadlineAsDate() {
+	public Date getDeadlineObject() {
 		return new java.util.Date(deadline);
 	}
 

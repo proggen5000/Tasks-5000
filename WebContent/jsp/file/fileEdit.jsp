@@ -33,7 +33,7 @@
 				</div>
 				<div class="form-group col-xs">
 					<label for="description"><span class="glyphicon glyphicon-align-left"></span> Beschreibung</label>
-					<textarea id="description" name="description" class="form-control" rows="5">${file.beschreibung}</textarea>
+					<textarea id="description" name="description" class="form-control" rows="5">${file.description}</textarea>
 				</div>
 				
 				<div class="form-group col-xs">

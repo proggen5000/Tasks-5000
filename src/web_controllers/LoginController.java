@@ -87,7 +87,6 @@ public class LoginController extends HttpServlet {
 		String mode = request.getParameter("mode");
 
 		HttpSession session = request.getSession(true);
-		// RequestDispatcher view = request.getRequestDispatcher("/error.jsp");
 
 		// Login (Aktion)
 		if (mode.equals("login")) {
@@ -147,11 +146,6 @@ public class LoginController extends HttpServlet {
 					user.setName(username);
 				} else {
 					errors.add("Der gew&auml;hlte Benutzername ist ung&uuml;ltig oder bereits vergeben! Bitte w&auml;hlen Sie einen anderen.");
-					// session.setAttribute("alert",
-					// "Der gew&auml;hlte Benutzername ist ung&uuml;ltig oder bereits vergeben! Bitte w&auml;hlen Sie einen anderen.");
-					// session.setAttribute("alert_mode", "danger");
-					// response.sendRedirect(request.getContextPath()+"/?page=register");
-					// return;
 				}
 
 				user.setFirstName(request.getParameter("vorname"));
@@ -163,13 +157,6 @@ public class LoginController extends HttpServlet {
 					user.setEmail(email);
 				} else {
 					errors.add("Ihre E-Mail-Adresse ist ung&uuml;ltig! Bitte &uuml;berpr&uuml;fen Sie diese und versuchen Sie es erneut.");
-					// session.setAttribute(
-					// "alert",
-					// "Ihre E-Mail-Adresse ist ung&uuml;ltig! Bitte &uuml;berpr&uuml;fen Sie diese und versuchen Sie es erneut.");
-					// session.setAttribute("alert_mode", "danger");
-					// response.sendRedirect(request.getContextPath()
-					// + "/?page=register");
-					// return;
 				}
 
 				String passwordRepeat = request.getParameter("passwordRepeat");
@@ -177,41 +164,39 @@ public class LoginController extends HttpServlet {
 					user.setPassword(password);
 				} else {
 					errors.add("Ihre Passw&ouml;rter stimmen nicht &uuml;berein oder sind leer!");
-					// session.setAttribute("alert",
-					// "Ihre Passw&ouml;rter stimmen nicht &uuml;berein oder sind leer!");
-					// session.setAttribute("alert_mode", "danger");
-					// response.sendRedirect(request.getContextPath()
-					// + "/?page=register");
-					// return;
-				}
-
-				User userNew = UserManager.add(user);
-				if (userNew == null) {
-					errors.add("Fehler bei der Erstellung des Profils! Bitte versuchen Sie es erneut.");
 				}
 
 				if (errors.size() > 0) {
-					session.setAttribute("alert_mode", "danger");
-					String errorStrings = "Bei der Registrierung sind folgende Fehler aufgetreten:";
+					StringBuilder errorStrings = new StringBuilder();
 					for (String errorString : errors) {
-						errorStrings.concat("<br />" + errorString);
+						errorStrings.append("<br />" + errorString);
 					}
-					session.setAttribute("alert", errorStrings);
+					session.setAttribute("alert_mode", "danger");
+					session.setAttribute("alert", errorStrings.toString());
 					response.sendRedirect(request.getContextPath()
 							+ "/?page=register");
 					return;
 				} else {
-					session.setAttribute("title", "Erfolgreich registriert");
-					session.setAttribute(
-							"message",
-							"Sie haben sich hiermit erfolgreich als \"<b>"
-									+ userNew.getName()
-									+ "</b>\" registriert und k&ouml;nnen sich ab sofort mit Ihrem Passwort einloggen.<br />Herzlich willkommen! :)");
-					response.sendRedirect(request.getContextPath()
-							+ "/success.jsp");
-					return;
+					User userNew = UserManager.add(user);
+					if (userNew != null) {
+						session.setAttribute("title", "Erfolgreich registriert");
+						session.setAttribute(
+								"message",
+								"Sie haben sich hiermit erfolgreich als \"<b>"
+										+ userNew.getName()
+										+ "</b>\" registriert und k&ouml;nnen sich ab sofort mit Ihrem Passwort einloggen.<br />Herzlich willkommen! :)");
+						response.sendRedirect(request.getContextPath()
+								+ "/success.jsp");
+						return;
+					} else {
+						session.setAttribute("alert_mode", "danger");
+						session.setAttribute("alert",
+								"Fehler bei der Erstellung des Profils! Bitte versuchen Sie es erneut.");
+						response.sendRedirect(request.getContextPath()
+								+ "/?page=register");
+						return;
+					}
 				}
-
 			} else {
 				session.setAttribute("error",
 						"Sie sind bereits registriert und eingeloggt!");

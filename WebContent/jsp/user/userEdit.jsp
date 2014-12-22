@@ -5,23 +5,23 @@
 	<c:redirect url="/error.jsp"><c:param name="error" value="Zugriff verweigert" /></c:redirect>
 </c:if>
 	
-<jsp:include page="../header.jsp"><jsp:param name="page_title" value="${user.username}" /></jsp:include>
+<jsp:include page="../header.jsp"><jsp:param name="page_title" value="${user.name}" /></jsp:include>
 <jsp:include page="../menu.jsp"><jsp:param name="menu" value="me" /></jsp:include>
 			
 			<h1>Profil bearbeiten</h1>
 			<form class="form" action="${pageContext.request.contextPath}/user" method="post">
 				<div class="form-group col-xs">
 					<label for="username"><span class="glyphicon glyphicon-user"></span> Benutzername*</label>
-					<input type="text" class="form-control input-lg" name="username" value='${user.username}' />
+					<input type="text" class="form-control input-lg" name="username" value='${user.name}' />
 				</div>
 				  <div class="form-group">
 				    <label for="vorname"><span class="glyphicon glyphicon-user"></span> Echter Name</label>
 				    <div class="row">
 				    	<div class="col-xs-6">
-				    		<input type="text" class="form-control" name="vorname" placeholder="Vorname" value='${user.vorname}'>
+				    		<input type="text" class="form-control" name="vorname" placeholder="Vorname" value='${user.firstName}'>
 				    	</div>
 				    	<div class="col-xs-6">
-				    		<input type="text" class="form-control" name="nachname" placeholder="Nachname" value='${user.nachname}'>
+				    		<input type="text" class="form-control" name="nachname" placeholder="Nachname" value='${user.secondName}'>
 				    	</div>
 				    </div>
 				  </div>

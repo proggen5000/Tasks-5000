@@ -12,13 +12,13 @@
 			
 				<ol class="breadcrumb">
 					<li><a href="${pageContext.request.contextPath}/">Start</a></li>
-					<li><a href="${pageContext.request.contextPath}/team?mode=view&id=${task.gruppe.team.id}">${task.gruppe.team.name}</a></li>
-					<li><a href="${pageContext.request.contextPath}/taskGroup?mode=edit&id=${task.gruppe.id}">${task.gruppe.name}</a></li>
+					<li><a href="${pageContext.request.contextPath}/team?mode=view&id=${task.taskGroup.team.id}">${task.taskGroup.team.name}</a></li>
+					<li><a href="${pageContext.request.contextPath}/taskGroup?mode=edit&id=${task.taskGroup.id}">${task.taskGroup.name}</a></li>
 					<li class="active"></li>
 				</ol>
 				
 				<h1>${task.name} <span class="glyphicon glyphicon-time small"></span></h1>
-				<p>${task.beschreibung}</p>
+				<p>${task.description}</p>
 				
 				<c:if test="${fn:length(files) > 0}">
 					<div class="panel panel-default">
@@ -40,15 +40,15 @@
 					<a href="${pageContext.request.contextPath}/task?mode=remove&id=${task.id}" class="list-group-item"><span class="glyphicon glyphicon-remove"></span> Aufgabe l&ouml;schen</a>
 				</div>
 				<div class="list-group">
-					<a href="${pageContext.request.contextPath}/file?mode=new&teamId=${task.gruppe.team.id}&taskId=${task.id}" class="list-group-item"><span class="glyphicon glyphicon-file"></span> Datei hochladen &amp; verkn&uuml;pfen</a>
+					<a href="${pageContext.request.contextPath}/file?mode=new&teamId=${task.taskGroup.team.id}&taskId=${task.id}" class="list-group-item"><span class="glyphicon glyphicon-file"></span> Datei hochladen &amp; verkn&uuml;pfen</a>
 				</div>	
 			
 				<h1>Details</h1>
 				<div class="list-group">
 					<div class="list-group-item"><span class="glyphicon glyphicon-barcode"></span> ID: ${task.id}</div>
-					<div class="list-group-item"><span class="glyphicon glyphicon-calendar"></span> <fmt:formatDate pattern="dd.MM.yyyy" value="${task.erstellungsdatumAsDate}" /></div>
+					<div class="list-group-item"><span class="glyphicon glyphicon-calendar"></span> <fmt:formatDate pattern="dd.MM.yyyy" value="${task.dateObject}" /></div>
 					<c:if test="${task.deadline > 0}">
-						<div class="list-group-item"><span class="glyphicon glyphicon-bell"></span> <fmt:formatDate pattern="dd.MM.yyyy" value="${task.deadlineAsDate}" /></div>
+						<div class="list-group-item"><span class="glyphicon glyphicon-bell"></span> <fmt:formatDate pattern="dd.MM.yyyy" value="${task.deadlineObject}" /></div>
 					</c:if>
 					<div class="list-group-item"><span class="glyphicon glyphicon-dashboard"></span> Status: ${task.status}%</div>
 				</div>
@@ -58,8 +58,8 @@
 					<div class="list-group">
 						<c:forEach var="user" items="${users}">
 							<a href="${pageContext.request.contextPath}/user?mode=view&id=${user.id}" class="list-group-item">
-								<span class="glyphicon glyphicon-user"></span> ${user.username}
-								<c:if test="${user.id == task.ersteller.id}">
+								<span class="glyphicon glyphicon-user"></span> ${user.name}
+								<c:if test="${user.id == task.author.id}">
 									<span class="label label-default pull-right">Ersteller</span>
 								</c:if>
 							</a>

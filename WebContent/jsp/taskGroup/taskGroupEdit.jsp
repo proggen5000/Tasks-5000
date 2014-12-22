@@ -31,7 +31,7 @@
 				</div>
 				<div class="form-group col-xs">
 					<label for="description"><span class="glyphicon glyphicon-align-left"></span> Beschreibung</label>
-					<textarea id="description" name="description" class="form-control" rows="2">${taskGroup.beschreibung}</textarea>
+					<textarea id="description" name="description" class="form-control" rows="2">${taskGroup.description}</textarea>
 				</div>
 				<div class="form-group col-xs">
 					<c:if test="${param.mode == 'new'}">

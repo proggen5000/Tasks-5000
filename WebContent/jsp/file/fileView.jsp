@@ -17,7 +17,7 @@
 			</ol>
 			
 			<h1>${file.name} <span class="glyphicon glyphicon-file small"></span></h1>
-			<p>${file.beschreibung}</p>
+			<p>${file.description}</p>
 			
 			<form action="${pageContext.request.contextPath}/file" method="post">
 				<input type="hidden" name="id" value="${task.id}" />
@@ -48,7 +48,7 @@
 				<h1>Details</h1>
 				<div class="list-group">
 					<div class="list-group-item"><span class="glyphicon glyphicon-barcode"></span> ID: ${file.id}</div>
-					<a href="${pageContext.request.contextPath}/user?mode=view&id=${file.ersteller.id}" class="list-group-item"><span class="glyphicon glyphicon-user"></span> ${file.ersteller.username} <span class="label label-default">Ersteller</span></a>
+					<a href="${pageContext.request.contextPath}/user?mode=view&id=${file.author.id}" class="list-group-item"><span class="glyphicon glyphicon-user"></span> ${file.author.name} <span class="label label-default">Ersteller</span></a>
 				</div>
 			</div><%-- Ende Sidebar --%>
 <jsp:include page="../footer.jsp" />

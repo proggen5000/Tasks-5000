@@ -28,8 +28,6 @@ public class Upload implements Serializable {
 		this.author = author;
 	}
 
-	// Getters & Setters
-
 	public long getId() {
 		return id;
 	}

@@ -164,7 +164,7 @@ public class TaskGroupController extends HttpServlet {
 			
 			String description = request.getParameter("description");
 			if(description.length() <= descriptionLimit){
-				taskGroup.setBeschreibung(description);
+				taskGroup.setDescription(description);
 			} else {
 				session.setAttribute("alert", "Bitte geben Sie eine k&uuml;rzere Beschreibung an! (Zeichenbeschr&auml;nkung: " + descriptionLimit + ")");
 				session.setAttribute("alert_mode", "danger");
@@ -202,7 +202,7 @@ public class TaskGroupController extends HttpServlet {
 			
 			String description = request.getParameter("description");
 			if(description.length() <= descriptionLimit){
-				taskGroup.setBeschreibung(description);
+				taskGroup.setDescription(description);
 			} else {
 				session.setAttribute("alert", "Bitte geben Sie eine k&uuml;rzere Beschreibung an! (Zeichenbeschr&auml;nkung: " + descriptionLimit + ")");
 				session.setAttribute("alert_mode", "danger");

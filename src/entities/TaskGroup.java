@@ -1,4 +1,5 @@
 package entities;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -11,17 +12,17 @@ public class TaskGroup implements Serializable {
 	private String name;
 	private String description;
 	private Team team;
-	
-	public TaskGroup(){}
-	
-	public TaskGroup(long id, String name, String description, Team team){
+
+	public TaskGroup() {
+	}
+
+	public TaskGroup(long id, String name, String description, Team team) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.team = team;
 	}
 
-	//Getters & Setters
 	public long getId() {
 		return id;
 	}
@@ -37,13 +38,13 @@ public class TaskGroup implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public String getBeschreibung() {
+
+	public String getDescription() {
 		return description;
 	}
 
-	public void setBeschreibung(String beschreibung) {
-		this.description = beschreibung;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Team getTeam() {
@@ -53,9 +54,8 @@ public class TaskGroup implements Serializable {
 	public void setTeam(Team team) {
 		this.team = team;
 	}
-	
-	
-	public ArrayList<Task> getTasks(){
+
+	public ArrayList<Task> getTasks() {
 		return TaskManager.getListeVonGruppe(id);
 	}
 }

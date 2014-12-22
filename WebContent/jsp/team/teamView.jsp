@@ -11,7 +11,7 @@
 <jsp:include page="../menu.jsp"><jsp:param name="menu" value="teams" /></jsp:include>
 
 			<h1>${team.name} <span class="glyphicon glyphicon-briefcase small"></span></h1>
-	  		<p>${team.beschreibung}</p>
+	  		<p>${team.description}</p>
 	  		
 	  		<h1>Aufgaben</h1>
 	  		<c:if test="${fn:length(taskGroups) == 0}">
@@ -19,28 +19,28 @@
 	  		</c:if>
 	  		<c:forEach var="taskGroup" items="${taskGroups}">
 	  			<h2><a href="${pageContext.request.contextPath}/taskGroup?mode=edit&id=${taskGroup.id}" title="Aufgabengruppe bearbeiten">${taskGroup.name}</a></h2>
-		  		<p>${taskGroup.beschreibung}</p>
+		  		<p>${taskGroup.description}</p>
 				<div class="list-group">
-					<c:if test="${fn:length(taskGroup.aufgaben) == 0}">
+					<c:if test="${fn:length(taskGroup.tasks) == 0}">
 			  			<p>Diese Gruppe enth&auml;lt noch keine Aufgaben. <a href="${pageContext.request.contextPath}/task?mode=new&teamId=${team.id}">Aufgabe erstellen</a></p>
 			  		</c:if>
-					<c:forEach var="task" items="${taskGroup.aufgaben}">
+					<c:forEach var="task" items="${taskGroup.tasks}">
 		  				<a href="${pageContext.request.contextPath}/task?mode=view&id=${task.id}" class="list-group-item">
 							<div class="task-progress"><div class="progress">
 								<div class="progress-bar" role="progressbar" aria-valuenow="${task.status}" aria-valuemin="0" aria-valuemax="100" style="width: ${task.status}%;">${task.status}%</div>
 							</div></div>
 							<div class="task-details">
-								<span class="glyphicon glyphicon-user"></span> ${task.ersteller.username}<br />
-								<span class="glyphicon glyphicon-paperclip"></span> ${task.getAnzahlDateien()}
+								<span class="glyphicon glyphicon-user"></span> ${task.author.name}<br />
+								<span class="glyphicon glyphicon-paperclip"></span> ${task.filesCount}
 							</div>
 							<h4 class="list-group-item-heading"><span class="glyphicon glyphicon-time"></span> ${task.name}</h4>
 							<p class="list-group-item-text">
-								<c:if test="${fn:length(task.beschreibung) == 0}">&nbsp;</c:if>
-								<c:if test="${fn:length(task.beschreibung) <= 50}">
-									${task.beschreibung}
+								<c:if test="${fn:length(task.description) == 0}">&nbsp;</c:if>
+								<c:if test="${fn:length(task.description) <= 50}">
+									${task.description}
 								</c:if>
-								<c:if test="${fn:length(task.beschreibung) > 50}">
-									${fn:substring(task.beschreibung, 0, 50)}...
+								<c:if test="${fn:length(task.description) > 50}">
+									${fn:substring(task.description, 0, 50)}...
 								</c:if>
 							</p>
 						</a>
@@ -57,20 +57,20 @@
 					<c:forEach var="file" items="${files}">				
 						<a href="${pageContext.request.contextPath}/file?mode=view&id=${file.id}" class="list-group-item">
 							<div class="task-details">
-								<span class="glyphicon glyphicon-user"></span> ${file.ersteller.username}<br />
+								<span class="glyphicon glyphicon-user"></span> ${file.author.name}<br />
 								<span class="glyphicon glyphicon-paperclip"></span> ${file.size} KB
 							</div>
 							<h4 class="list-group-item-heading">
 								<span class="glyphicon glyphicon-file"></span> ${file.name}
-								<c:if test="${file.verknuepft}"><span class="glyphicon glyphicon-paperclip small"></span></c:if>
+								<c:if test="${file.isLinked()}"><span class="glyphicon glyphicon-paperclip small"></span></c:if>
 							</h4>
 							<p class="list-group-item-text">
-								<c:if test="${fn:length(file.beschreibung) == 0}">&nbsp;</c:if>
-								<c:if test="${fn:length(file.beschreibung) <= 50}">
-									${file.beschreibung}
+								<c:if test="${fn:length(file.description) == 0}">&nbsp;</c:if>
+								<c:if test="${fn:length(file.description) <= 50}">
+									${file.description}
 								</c:if>
-								<c:if test="${fn:length(file.beschreibung) > 50}">
-									${fn:substring(file.beschreibung, 0, 50)}...
+								<c:if test="${fn:length(file.description) > 50}">
+									${fn:substring(file.description, 0, 50)}...
 								</c:if>
 							</p>
 						</a>
@@ -90,7 +90,7 @@
 					<a href="${pageContext.request.contextPath}/file?mode=new&teamId=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-file"></span> Datei hochladen</a>
 				</div>
 				<div class="list-group">
-					<c:if test="${sessionScope.currentUser == team.gruppenfuehrer.id}">
+					<c:if test="${sessionScope.currentUser == team.manager.id}">
 						<a href="${pageContext.request.contextPath}/team?mode=edit&id=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-pencil"></span> Team bearbeiten</a>
 						<a href="${pageContext.request.contextPath}/team?mode=remove&id=${team.id}" class="list-group-item"><span class="glyphicon glyphicon-remove"></span> Team l&ouml;schen</a>
 					</c:if>
@@ -101,8 +101,8 @@
 			<div class="list-group">
 				<c:forEach var="user" items="${users}">
 					<a href="${pageContext.request.contextPath}/user?mode=view&id=${user.id}" class="list-group-item">
-						<span class="glyphicon glyphicon-user"></span> ${user.username}
-						<c:if test="${user.id == team.gruppenfuehrer.id}">
+						<span class="glyphicon glyphicon-user"></span> ${user.name}
+						<c:if test="${user.id == team.manager.id}">
 							<span class="label label-default pull-right">Manager</span>
 						</c:if>
 					</a>
