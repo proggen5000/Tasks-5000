@@ -169,7 +169,7 @@ public class LoginController extends HttpServlet {
 				if (errors.size() > 0) {
 					StringBuilder errorStrings = new StringBuilder();
 					for (String errorString : errors) {
-						errorStrings.append("<br />" + errorString);
+						errorStrings.append(errorString + "<br />");
 					}
 					session.setAttribute("alert_mode", "danger");
 					session.setAttribute("alert", errorStrings.toString());
